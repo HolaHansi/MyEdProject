@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Room Overview</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="jumbotron red">
+        <h1><span class="glyphicon glyphicon-hand-right"></span>    PC Accessibility API</h1>
+    </div>
+    <!--{% load staticfiles %}
+    <link href="{% static "pc/style.css" %}" rel="stylesheet"> -->
+
+
+
+
+    {% if roomList %}
+        <ul>
+            {% for room in roomList %}
+
+                <li>{{ room.location }} - Free: {{ room.free }} - Seats: {{ room.seats }} - Ratio: {{ room.ratio }} </li>
+
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No rooms available - something went wrong</p>
+    {% endif %}
+
+
+</body>
+</html>
