@@ -17,7 +17,7 @@ def main():
 			abbreviation = room["abbreviation"]
 			longitude = float(room["longitude"])
 			latitude = float(room["latitude"])
-			obj1 = Building_Feed(key=abbreviation, longitude=longitude, latitude=latitude, id=count)
+			obj1 = Building_Feed(key=abbreviation, longitude=longitude, latitude=latitude)
 			obj1.save()
 			count += 1
 		except:
@@ -36,15 +36,14 @@ def main():
 		projector = "Projector" in dict["room"]["Room Attributes"]
 		pc = "PC" in dict["room"]["Room Attributes"]
 
-		obj2 = Room_Feed(key=building_host_key,
+		obj2 = Room_Feed(abbreviation=building_host_key,
 							field_building_name = field_building_name,
 							title = title,
 							capacity = capacity,
 							pc = pc,
 							whiteboard = whiteboard,
 							blackboard = blackboard,
-							projector = projector,
-						 	id = count)
+							projector = projector)
 		obj2.save()
 		count += 1
 
@@ -54,12 +53,12 @@ def main():
 def merge():
 
 	count = 0
-	for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B WHERE R.key=B.key"):
+	for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B WHERE R.abbreviation=B.abbreviation"):
 		# print(results)
 		# print(results.longitude, results.latitude)
 		# print()
 
-		obj3 = Bookable_Room(key=results.key,
+		obj3 = Bookable_Room(abbreviation=results.abbreviation,
 							 field_building_name = results.field_building_name,
 							 title = results.title,
 							 capacity = results.capacity,
@@ -68,7 +67,6 @@ def merge():
 							 blackboard = results.blackboard,
 							 projector = results.projector,
 							 longitude = results.longitude,
-							 latitude = results.latitude,
-							 id = count)
+							 latitude = results.latitude)
 		obj3.save()
 		count += 1
