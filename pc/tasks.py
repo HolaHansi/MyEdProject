@@ -1,4 +1,3 @@
-__author__ = 'hanschristiangregersen'
 import requests
 import xml.etree.ElementTree as ET
 from .models import Room
