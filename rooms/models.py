@@ -1,10 +1,9 @@
 from django.db import models
 
 class Room_Feed(models.Model):
-    id = models.IntegerField(primary_key=True)
-    key = models.IntegerField()
+    abbreviation = models.CharField(max_length=30)
     field_building_name = models.CharField(max_length=200)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, primary_key=True)
     capacity = models.IntegerField(default=0)
 
     ##attributes
@@ -41,20 +40,19 @@ class Room_Feed(models.Model):
 
 
 class Building_Feed(models.Model):
-    id = models.IntegerField(primary_key=True)
-    key = models.IntegerField()
+    name = models.CharField(max_length=100)
+    abbreviation = models.CharField(max_length=30, primary_key=True)
     longitude = models.FloatField()
     latitude = models.FloatField()
 
     def __str__(self):
-        return str(self.key)
+        return str(self.name)
 
 
 class Bookable_Room(models.Model):
-    id = models.IntegerField(primary_key=True)
-    key = models.IntegerField()
+    abbreviation = models.CharField(max_length=30)
     field_building_name = models.CharField(max_length=200)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, primary_key=True)
     capacity = models.IntegerField(default=0)
     pc = models.BooleanField(default=False)
     projector = models.BooleanField(default=False)

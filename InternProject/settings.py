@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'pc',
     'djcelery',
     'kombu.transport.django',
+    'rooms'
 )
 
 #celery:
@@ -50,12 +51,16 @@ BROKER_URL = 'django://'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 
-# for performing API call periodically.
+# for performing API calls and updating db periodically.
 CELERYBEAT_SCHEDULE = {
-    'get_data': {
+    'get_data_pc': {
         'task': 'pc.tasks.get_data',
-        'schedule': timedelta(seconds=5)
+        'schedule': timedelta(seconds=20)
     },
+    'get_data_rooms': {
+        'task': 'rooms.tasks.get_data',
+        'schedule': timedelta(seconds=30)
+    }
 }
 
 CELERY_TIMEZONE = 'Europe/London'
@@ -98,15 +103,26 @@ WSGI_APPLICATION = 'InternProject.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "bookdb",
-        "USER": "",
-        "PASSWORD": "",
-        "HOST": "localhost",
-        "PORT": "",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "bookdb",
+#         "USER": "",
+#         "PASSWORD": "",
+#         "HOST": "localhost",
+#         "PORT": "",
+#     }
+# }
 
 
 
