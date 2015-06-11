@@ -45,23 +45,12 @@ INSTALLED_APPS = (
 
 #celery:
 import djcelery
-from datetime import timedelta
 djcelery.setup_loader()
 BROKER_URL = 'django://'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
-
-# for performing API calls and updating db periodically.
-CELERYBEAT_SCHEDULE = {
-    'get_data_pc': {
-        'task': 'pc.tasks.get_data',
-        'schedule': timedelta(seconds=20)
-    },
-    'get_data_rooms': {
-        'task': 'rooms.tasks.get_data',
-        'schedule': timedelta(seconds=30)
-    }
-}
+#call celery schedule from celery module.
+from .celery import CELERYBEAT_SCHEDULE
 
 CELERY_TIMEZONE = 'Europe/London'
 

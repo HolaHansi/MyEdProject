@@ -12,4 +12,13 @@ class PC_Space(models.Model):
     def __str__(self):
         return self.location
 
+
+class Building_PC(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
+
+    def __str__(self):
+        return str(self.name)
+
 # Create your models here.
