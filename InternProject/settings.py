@@ -37,10 +37,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pc',
+    'rest_framework',
     'djcelery',
     'kombu.transport.django',
-    'rooms'
+    'rooms',
+    'pc'
 )
 
 #celery:

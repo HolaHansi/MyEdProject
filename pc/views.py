@@ -1,17 +1,17 @@
 from django.shortcuts import render
 import requests
 from django.http import HttpResponse
-from .models import Room
+from .models import PC_Space
 
 
 def index(request):
-    roomList = Room.objects.order_by('ratio').reverse()
+    roomList = PC_Space.objects.order_by('ratio').reverse()
     context = {'roomList': roomList}
     return render(request, 'pc/index.html', context)
 
 
 def get_group(request, group):
-    roomList = Room.objects.filter(group=group).order_by('ratio').reverse()
+    roomList = PC_Space.objects.filter(group=group).order_by('ratio').reverse()
     context = {'roomList': roomList}
     return render(request, 'pc/index.html', context)
 
