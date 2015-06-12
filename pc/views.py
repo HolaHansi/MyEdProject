@@ -14,3 +14,4 @@ def get_group(request, group):
     roomList = Room.objects.filter(group=group).order_by('ratio').reverse()
     context = {'roomList': roomList}
     return render(request, 'pc/index.html', context)
+
