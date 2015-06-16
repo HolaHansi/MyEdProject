@@ -1,0 +1,34 @@
+/* custom navbar */ 
+
+
+.navbar { 
+	margin-bottom: 0; 
+}
+
+.navbar-default .navbar-collapse {
+	border:none; // for mobile
+}
+
+.navbar-static-top {
+	border-bottom: 1px solid @brand-primary;
+	border-top: 1px solid @gray-lighter;
+	box-shadow: 0 4px 4px -4px rgba(0, 0, 0, 0.45);
+}
+
+.navbar-brand {
+	font-size: 30px;
+}
+
+// xs (mobile phone size) search form in navbar
+form.xs-search {
+	background: #fff;
+	
+	.form-control { 
+		display: inline-block; 
+		width: auto; 
+	}	
+}
+
+@media (max-width: @screen-xs-max) { 
+	.dropdown-header { color: @gray-dark; } 
+}
