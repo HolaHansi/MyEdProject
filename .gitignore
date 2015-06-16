@@ -1,0 +1,7 @@
+db.sqlite3
+*.pyc
+.idea
+.settings
+.coverage
+rooms/migrations/
+pc/migrations/
