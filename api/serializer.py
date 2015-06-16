@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import PC_Space
+from pc.models import PC_Space
 
 class PC_Space_Serializer(serializers.ModelSerializer):
     class Meta:
