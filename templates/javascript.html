@@ -1,0 +1,31 @@
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script>
+    $('.options-toggle').click(function () {
+        if ($('.container-options')[0]) {
+            $('.container-options').addClass('navbar-options');
+            $('.container-options').removeClass('container');
+            $('.container-options').removeClass('container-options');
+        } else {
+            $('.navbar-options').addClass('container-options');
+            $('.navbar-options').addClass('container');
+            $('.navbar-options').removeClass('navbar-options');
+        }
+    });
+
+    $('.btn-toggle').click(function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $(this).addClass('selected');
+        }
+    });
+    $('#retryBtn').click(function () {
+        $('.container-options').addClass('navbar-options');
+        $('.container-options').removeClass('container');
+        $('.container-options').removeClass('container-options');
+    });
+</script>
