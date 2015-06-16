@@ -10,3 +10,5 @@ urlpatterns = [
         view=views.PCReadUpdateDeleteView.as_view(),
         name="PC_API")
     ]
+
+

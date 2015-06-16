@@ -18,12 +18,13 @@ from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 
 
+#TODO discuss if this is sensible:
+from suggesterApp import views as suggester_views
 
 
 urlpatterns = [
+    url(r'^$', suggester_views.index, name="frontpage"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pc/', include('pc.urls')),
     url(r'^api/', include('api.urls')),
-    #for development only!
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

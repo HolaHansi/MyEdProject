@@ -86,7 +86,7 @@ ROOT_URLCONF = 'InternProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['InternProject/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -149,6 +149,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+STATICFILES_DIRS = (
+    ('assets', "/Users/hanschristiangregersen/PycharmProjects/InternProject/InternProject/static")
 )
