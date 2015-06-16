@@ -61,4 +61,3 @@ def get_pc_data():
             obj.save()
 
     return 'successfully updated database'
-
