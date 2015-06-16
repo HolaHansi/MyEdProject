@@ -1,6 +1,6 @@
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
-from PC.models import PC_Space
+from pc.models import PC_Space
 from .serializer import PC_Space_Serializer
 
 
