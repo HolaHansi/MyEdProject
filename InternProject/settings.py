@@ -56,6 +56,19 @@ from .celery import CELERYBEAT_SCHEDULE
 CELERY_TIMEZONE = 'Europe/London'
 
 
+# REST_FRAMEWORK SETTINGS
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
+
+
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
