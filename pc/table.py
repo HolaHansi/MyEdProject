@@ -32,32 +32,38 @@ def get_pc_data():
 
     for child in root:
         if 'location' in child.keys():
-            ratio = round(int(child.attrib['free'])/int(child.attrib['seats']), 3)
+
             location = child.attrib['location']
             free = int(child.attrib['free'])
             seats = int(child.attrib['seats'])
-            group = child.attrib['group']
-            longitude = 0.0
-            latitude = 0.0
+            ratio = round((free/seats), 3)
 
-            # get building :
-            for building in Building_PC.objects.all():
-                print('location PC: ',location)
-                print('building NAME: ', building.name)
-                if building.name in location:
-                    longitude = building.longitude
-                    latitude = building.latitude
-                    continue
+            # if object already exists, then update the ratio value.
+            if PC_Space.objects.filter(location = child.attrib['location']):
+                PC_Space.objects.filter(location=child.attrib['location']).update(ratio=ratio)
 
+            else:
+                group = child.attrib['group']
+                longitude = 0.0
+                latitude = 0.0
 
-            obj = PC_Space(location=location,
-                free=free,
-                seats=seats,
-                group=group,
-                ratio=ratio,
-                longitude=longitude,
-                latitude=latitude)
+                # get building :
+                for building in Building_PC.objects.all():
+                    print('location PC: ',location)
+                    print('building NAME: ', building.name)
+                    if building.name in location:
+                        longitude = building.longitude
+                        latitude = building.latitude
+                        continue
 
-            obj.save()
+                obj = PC_Space(location=location,
+                    free=free,
+                    seats=seats,
+                    group=group,
+                    ratio=ratio,
+                    longitude=longitude,
+                    latitude=latitude)
+
+                obj.save()
 
     return 'successfully updated database'
