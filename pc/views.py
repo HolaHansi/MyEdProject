@@ -23,13 +23,13 @@ def get_group(request, group):
 class PCCreateReadView(ListCreateAPIView):
     queryset = PC_Space.objects.all().order_by('ratio').reverse()
     serializer_class = PC_Space_Serializer
-    lookup_field = 'location'
+    lookup_field = 'id'
 
 
 class PCReadUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = PC_Space.objects.all().order_by('ratio').reverse()
     serializer_class = PC_Space_Serializer
-    lookup_field = 'location'
+    lookup_field = 'id'
 
 
 
