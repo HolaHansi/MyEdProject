@@ -5,4 +5,4 @@ from pc.models import PC_Space
 def index(request):
     roomList = PC_Space.objects.order_by('ratio').reverse()
     context = {'roomList': roomList}
-    return render(request, 'core/base.html', context)
+    return render(request, 'core/firstview.html', context)
