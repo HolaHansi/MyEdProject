@@ -150,5 +150,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    ('assets', "/Users/hanschristiangregersen/PycharmProjects/InternProject/InternProject/static")
+    ('assets', os.path.join(BASE_DIR, 'InternProject/static'))
 )
