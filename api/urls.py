@@ -4,10 +4,10 @@ from api import views
 
 urlpatterns = [
     url(r'^pc/$',
-        view = views.PCCreateReadView.as_view(),
+        view = views.PCListView.as_view(),
         name="PC_API"),
     url(r'^pc/(?P<id>\d+)/$',
-        view=views.PCReadUpdateDeleteView.as_view(),
+        view=views.PCRetrieveView.as_view(),
         name="PC_API")
     ]
 
