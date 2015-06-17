@@ -37,9 +37,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #plug-ins
     'rest_framework',
     'djcelery',
     'kombu.transport.django',
+
+    #local apps
     'rooms',
     'pc'
 )
