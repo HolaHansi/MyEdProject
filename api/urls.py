@@ -8,7 +8,13 @@ urlpatterns = [
         name="PC_API"),
     url(r'^pc/(?P<id>\d+)/$',
         view=views.PCRetrieveView.as_view(),
-        name="PC_API")
+        name="PC_API"),
+    url(r'^$',
+        views.index,
+        name='indexxx'),
+    url(r'^pc/filter/$',
+        view = views.pc_filter,
+        name="PC_API"),
     ]
 
 
