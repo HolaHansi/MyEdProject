@@ -45,7 +45,8 @@ INSTALLED_APPS = (
 
     #local apps
     'rooms',
-    'pc'
+    'pc',
+    'api'
 )
 
 #celery:
