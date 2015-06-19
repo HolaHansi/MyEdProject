@@ -19,12 +19,13 @@ from rest_framework import routers, serializers, viewsets
 
 
 #TODO discuss if this is sensible:
-from suggesterApp import views as suggester_views
+from frontpageApp import views as suggester_views
 
 
 urlpatterns = [
-    url(r'^$', include('suggesterApp.urls')),
+    url(r'^$', include('frontpageApp.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^pc/', include('pc.urls')),
+    url(r'^open/', include('pc.urls')),
+    url(r'^bookable/', include('rooms.urls')),
     url(r'^api/', include('api.urls')),
 ]

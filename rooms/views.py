@@ -1,8 +1,6 @@
 from django.shortcuts import render
 
-def get_rooms(sorted='no'):
-
-
-
+def index(request):
+    return render(request, 'rooms/index.html')
 
 # Create your views here.

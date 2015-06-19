@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     'rooms',
     'pc',
     'api',
-    'suggesterApp'
+    'frontpageApp'
 )
 
 #celery:
