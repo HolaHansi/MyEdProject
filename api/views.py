@@ -1,23 +1,25 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from pc.models import PC_Space
 from .serializer import PC_Space_Serializer
-from django.http import Http404
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-
-
-
 from django.shortcuts import render
 
-def index(request):
-    return render(request, 'core/base.html')
 
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
+def index(request):
+    # get_object_or_404(PC_Space, requests.POST.get('story'))
+    context = {}
+    return render(request, 'core/testerstuff.html', context)
 
 
 
@@ -33,9 +35,36 @@ class PCRetrieveView(RetrieveAPIView):
     lookup_field = 'id'
 
 
-@csrf_exempt
-def pc_filter(request):
-    if request.method == "POST":
-        data = JSONParser().parse(request)
-        HttpResponse(data)
+
+def test(request):
+    if request.method == "GET":
+        print('nearby:')
+        print(bool(request.GET['nearby']))
+
+
+        if bool(request.GET['empty']):
+            data = PC_Space.objects.all().order_by('-ratio')
+
+        if bool(request.GET['nearby']):
+            longitude = request.GET['longitude']
+            latitude = request.GET['latitude']
+
+
+
+            #some code for sorting according to proximity
+
+        if request.GET['campus'] != 'nopref':
+            data = PC_Space.objects.order_by('-ratio').filter(group=request.GET['campus'])
+
+
+
+        serializer = PC_Space_Serializer(data, many=True)
+        print(serializer.data[0])
+        return JSONResponse(serializer.data)
+
+
+
+        #
+        # print(request.GET['tutRoom'])
+        # print(request.GET['nearby'])
 

@@ -13,7 +13,7 @@ urlpatterns = [
         views.index,
         name='indexxx'),
     url(r'^pc/filter/$',
-        view = views.pc_filter,
+        view = views.test,
         name="PC_API"),
     ]
 

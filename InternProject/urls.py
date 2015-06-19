@@ -23,7 +23,7 @@ from suggesterApp import views as suggester_views
 
 
 urlpatterns = [
-    url(r'^$', suggester_views.index, name="frontpage"),
+    url(r'^$', include('suggesterApp.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^pc/', include('pc.urls')),
     url(r'^api/', include('api.urls')),

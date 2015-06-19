@@ -5,13 +5,13 @@ from django.views.generic import View
 import json
 
 def index(request):
-    roomList = PC_Space.objects.order_by('ratio').reverse()
+    roomList = PC_Space.objects.all()
     context = {'roomList': roomList}
     return render(request, 'pc/index.html', context)
 
 
 def get_group(request, group):
-    roomList = PC_Space.objects.filter(group=group).order_by('ratio').reverse()
+    roomList = PC_Space.objects.filter(group=group)
     context = {'roomList': roomList}
     return render(request, 'pc/index.html', context)
 

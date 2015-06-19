@@ -1,4 +1,5 @@
 from django.db import models
+import math
 
 class PC_Space(models.Model):
     location = models.CharField(max_length=200)
@@ -10,9 +11,15 @@ class PC_Space(models.Model):
     latitude = models.FloatField(default=0)
     id = models.AutoField(primary_key=True)
 
+    class Meta:
+        ordering = ['-ratio']
+
     def __str__(self):
         return self.location
 
+    def get_distance(self, usr_longitude, usr_latitude):
+        result = math.sqrt(((self.longitude - usr_longitude)**2) + ((self.latitude - usr_latitude)**2))
+        return result
 
 class Building_PC(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
