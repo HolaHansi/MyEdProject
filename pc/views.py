@@ -20,26 +20,22 @@ class JSONResponse(HttpResponse):
 
 
 def test(request):
+    return render(request, 'pc/jsonTest.html')
+
+def filter_suggestions(request):
     if request.method == "GET":
-        print('nearby:')
-        print(bool(request.GET['nearby']))
-
-
-        if bool(request.GET['empty']):
-            data = PC_Space.objects.all().order_by('-ratio')
+        print('received')
+        if request.GET['group'] != 'nopref':
+            data = PC_Space.objects.filter(group=request.GET['group'])
+        else:
+            data = PC_Space.object.all()
 
         if bool(request.GET['nearby']):
-            longitude = request.GET['longitude']
-            latitude = request.GET['latitude']
-
-            #some code for sorting according to proximity
-
-        if request.GET['campus'] != 'nopref':
-            data = PC_Space.objects.order_by('-ratio').filter(group=request.GET['campus'])
-
+            usr_longitude = float(request.GET['longitude'])
+            usr_latitude = float(request.GET['latitude'])
+            data = sorted(data, key=lambda x: x.get_distance(usr_longitude=usr_longitude, usr_latitude=usr_latitude))
 
 
         serializer = PC_Space_Serializer(data, many=True)
-        print(serializer.data[0])
         return JSONResponse(serializer.data)
 

@@ -18,7 +18,8 @@ class PC_Space(models.Model):
         return self.location
 
     def get_distance(self, usr_longitude, usr_latitude):
-        result = math.sqrt(((self.longitude - usr_longitude)**2) + ((self.latitude - usr_latitude)**2))
+        result = (self.longitude - usr_longitude)**2 + (self.latitude - usr_latitude)**2
+        result = math.sqrt(result)
         return result
 
 class Building_PC(models.Model):
