@@ -22,13 +22,14 @@ class JSONResponse(HttpResponse):
 def test(request):
     return render(request, 'pc/jsonTest.html')
 
+
 def filter_suggestions(request):
     if request.method == "GET":
-        print('received')
         if request.GET['group'] != 'nopref':
             data = PC_Space.objects.filter(group=request.GET['group'])
         else:
-            data = PC_Space.object.all()
+            data = PC_Space.objects.all()
+
 
         if bool(request.GET['nearby']):
             usr_longitude = float(request.GET['longitude'])
