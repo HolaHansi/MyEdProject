@@ -1,4 +1,5 @@
 from django.db import models
+import math
 
 class Room_Feed(models.Model):
     abbreviation = models.CharField(max_length=30)
@@ -63,3 +64,8 @@ class Bookable_Room(models.Model):
 
     def __str__(self):
         return self.field_building_name + ": " + self.title
+
+    def get_distance(self, usr_longitude, usr_latitude):
+        result = (self.longitude - usr_longitude)**2 + (self.latitude - usr_latitude)**2
+        result = math.sqrt(result)
+        return result
