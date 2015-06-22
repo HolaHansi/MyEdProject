@@ -26,13 +26,12 @@ def test(request):
 def filter_suggestions(request):
     if request.method == "GET":
 
-
         if request.GET['group'] != 'nopref':
             data = PC_Space.objects.filter(group=request.GET['group'])
         else:
             data = PC_Space.objects.all()
 
-
+        data = data.exclude(ratio=0)
 
         if (request.GET['nearby']=='true'):
             usr_longitude = float(request.GET['longitude'])
@@ -40,8 +39,7 @@ def filter_suggestions(request):
             data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
 
         if (request.GET['empty']=='true'):
-            data = sorted(data, key=lambda x:x.ratio)
-
+            data = sorted(data, key=lambda x:x.ratio, reverse=True)
 
         serializer = PC_Space_Serializer(data, many=True)
         return JSONResponse(serializer.data)
