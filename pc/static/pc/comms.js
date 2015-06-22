@@ -5,6 +5,24 @@ var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 getLocation();
 
+
+$(document).ready(function () {
+	$('#nextSuggestionBtn').click(function () {
+		currentChoice = suggestions[currentChoice.index + 1];
+		loadChoice();
+		if (currentChoice.index == suggestions.length - 1) {
+			$('#nextSuggestionBtn').addClass('disabled');
+		}
+	});
+	$('#retryBtn').click(function () {
+		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), 'nopref');
+		$('#nextSuggestionBtn').removeClass('disabled');
+	});
+});
+
+
+// Geolocation functions{
+
 function getLocation() {
 	//check that the browser is compatible
 	if (navigator.geolocation) {
@@ -40,16 +58,7 @@ function showError(error) {
 	}
 }
 
-$(document).ready(function () {
-	$('#nextSuggestionBtn').click(function () {
-		currentChoice = suggestions[currentChoice.index + 1];
-		loadChoice();
-		if (currentChoice.index == suggestions.length - 1) {
-			$('#nextSuggestionBtn').addClass('disabled');
-		}
-	});
-});
-
+// Geolocation functions}
 
 /* 
    Get the list of suggestions from the server
@@ -91,42 +100,20 @@ function getSuggestions(nearby, empty, group) {
    Parameters: none
 */
 function loadChoice() {
-	$('#roomName').html(processRoomName(currentChoice.location));
-	$('#buildingName').html(processBuildingName(currentChoice.location));
-	$('#distance').html(': '+sigFigs(distanceBetweenCoordinates(userLatitude,userLongitude,currentChoice.latitude,currentChoice.longitude),2)+'m');
-	$('#computersFree').html(': '+currentChoice.free+'/'+currentChoice.seats);
+	$('#roomName').html(processRoomName(currentChoice));
+	$('#buildingName').html(currentChoice.group);
+	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
+	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
 }
 
 /* 
    Process the name of the building to remove the campus
    Parameters:
-   name (string): the name of the building
+   suggestion (object): the suggestion being processed
 */
-function processRoomName(name) {
-	name = name.replace(/Central ?|ECA ?|Business School( - )? ?|Holyrood and High School Yards ?|Accommodation Services ?|KB Labs ?/g, '');
-	return name;
-}
-
-/* 
-   Takes the name supplied by the API and extracts the campus
-   Parameters:
-   name (string): the name of the building as given by the API
-*/
-function processBuildingName(name) {
-	if (name.search('Central') >= 0) {
-		return '(Central)'
-	} else if (name.search('ECA') >= 0) {
-		return '(ECA)'
-	} else if (name.search('Business School') >= 0) {
-		return '(Business School)'
-	} else if (name.search('Holyrood and High School Yards') >= 0) {
-		return '(Holyrood and High School Yards)'
-	} else if (name.search('Accommodation Services') >= 0) {
-		return '(Accommodation Services)'
-	} else if (name.search('KB Labs') >= 0) {
-		return '(KB Labs)'
-	}
-	return 'Unknown campus'
+function processRoomName(suggestion) {
+	var regex = new RegExp(suggestion.group + '( - )? ?', 'g');
+	return (suggestion.location).replace(regex, '');
 }
 
 /* 
@@ -139,7 +126,7 @@ function processBuildingName(name) {
    long2 (float): the longitude of the second point
 */
 function distanceBetweenCoordinates(lat1, long1, lat2, long2) {
-	var R = 6371000; // metres
+	var R = 6371; // kilometres
 	var t1 = toRadians(lat1);
 	var t2 = toRadians(lat2);
 	var dt = toRadians(lat2 - lat1);
@@ -152,10 +139,7 @@ function distanceBetweenCoordinates(lat1, long1, lat2, long2) {
 
 	return R * c;
 }
-function toRadians(x){
-	return x*Math.PI/180;
-}
-function sigFigs(n, sig) {
-    var mult = Math.pow(10, sig - Math.floor(Math.log(n) / Math.LN10) - 1);
-    return Math.ceil(Math.round(n * mult) / mult);
+
+function toRadians(x) {
+	return x * Math.PI / 180;
 }
