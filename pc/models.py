@@ -1,4 +1,3 @@
-from cmd import Cmd
 from django.db import models
 import math
 
