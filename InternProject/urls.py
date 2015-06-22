@@ -18,12 +18,15 @@ from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 
 
-#TODO discuss if this is sensible:
-from frontpageApp import views as suggester_views
+urlpatterns = [
+
+]
+
 
 
 urlpatterns = [
-    url(r'^$', include('frontpageApp.urls')),
+    url(r'^$', include('users.urls')),
+    url('^', include('django.contrib.auth.urls'))
     url(r'^admin/', include(admin.site.urls)),
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),

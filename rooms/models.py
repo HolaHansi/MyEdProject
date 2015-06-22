@@ -62,6 +62,7 @@ class Bookable_Room(models.Model):
     longitude = models.FloatField()
     latitude = models.FloatField()
 
+
     def __str__(self):
         return self.field_building_name + ": " + self.title
 

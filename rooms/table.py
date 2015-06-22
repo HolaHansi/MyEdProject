@@ -3,6 +3,9 @@ from rooms.models import Room_Feed
 from rooms.models import Building_Feed
 from rooms.models import Bookable_Room
 
+def get_names(listOfDicts):
+    names = ""
+
 
 def update_room_table():
     """
@@ -11,7 +14,29 @@ def update_room_table():
     :return: void
     """
     url = "http://www-test.bookablerooms.is.ed.ac.uk/json_feed" #larger bookables
+
+    # url = "http://devmac2.is.ed.ac.uk:8080/locations"
+
     rooms = requests.get(url)
+
+    #
+    # for room in rooms.json():
+    #     print('new room!')
+    #     locationId = room['locationId']
+    #     host_key = room['host_key']
+    #     name = room['name']
+    #     description = room['description']
+    #     capacity = int (room['capacity'])
+    #
+    #     for dict in room['suitabilities']:
+    #         print('this is a dict')
+    #         print(dict)
+    #         print('this is the values of the dict')
+    #         print(dict.values())
+    #
+    #
+
+
 
 
     for room in rooms.json()["locations"]:

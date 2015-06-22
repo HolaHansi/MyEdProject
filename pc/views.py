@@ -30,13 +30,12 @@ def filter_suggestions(request):
         else:
             data = PC_Space.objects.all()
 
-
         if bool(request.GET['nearby']):
             usr_longitude = float(request.GET['longitude'])
             usr_latitude = float(request.GET['latitude'])
             data = sorted(data, key=lambda x: x.get_distance(usr_longitude=usr_longitude, usr_latitude=usr_latitude))
 
-
+        print(data)
         serializer = PC_Space_Serializer(data, many=True)
         return JSONResponse(serializer.data)
 
