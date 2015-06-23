@@ -24,13 +24,17 @@ def filter_suggestions(request):
     if request.method == "GET":
         # remove any groups they didn't select
         groups = request.GET.getlist('groupsUnselected[]')
-        data = PC_Space.objects.all()
+        # don't suggest any full rooms either
+        data = PC_Space.objects.exclude(ratio=0)
         for group in groups:
             data = data.exclude(group=group)
+<<<<<<< HEAD
         #
         # if bool(request.GET['nearby']):
         # # don't suggest any full rooms:
         # data = data.exclude(ratio=0)
+=======
+>>>>>>> debd11b445f232313096009217f2731f3e4405d5
 
         # if sorting by location
         if (request.GET['nearby']=='true'):
