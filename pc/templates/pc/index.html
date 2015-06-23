@@ -5,17 +5,13 @@
 
 {% block head %}
     <script src='{% static "../static/pc/comms.js" %}'></script>
+    <script src='{% static "../static/pc/styling.js" %}'></script>
 {% endblock %}
 
 
-    {% block content %}
+{% block content %}
 
     {% include 'pc/body.html' %}
-
-
     {% include 'pc/options.html' %}
 
-    {% endblock %}
-
-
-</html>
+{% endblock %}
