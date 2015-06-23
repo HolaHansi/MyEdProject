@@ -3,20 +3,23 @@ var currentChoice = {};
 
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
-getLocation();
 
 
 $(document).ready(function () {
+	getLocation();
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
 	$('#retryBtn').click(function () {
-		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getSelectedGroups());
-		$('#nextSuggestionBtn').removeClass('disabled');
+		if ($('#openBtn').hasClass('selected')){
+			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getSelectedGroups());
+			$('#nextSuggestionBtn').removeClass('disabled');
+		} else {
+			location.href = ('/bookable/#close='+$('#nearbyBtn').hasClass('selected')+'&empty='+$('#emptyBtn').hasClass('selected')+'&groups='+getSelectedGroups().join().replace(/ /g,'%20'));
+		}
 	});
 });
-
 
 /* 
    Get the list of suggestions from the server
@@ -129,7 +132,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions(true, true, ['Central', 'Accommodation Services']);
+	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getSelectedGroups());
 }
 
 //if impossible to get user's current coordinates, display a relevant error message

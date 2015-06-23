@@ -23,4 +23,13 @@ $(document).ready(function() {
         $('.container-options').removeClass('container');
         $('.container-options').removeClass('container-options');
     });
+	$('#openBtn, #shutBtn').click(function(){
+		if($('#openBtn').hasClass('selected')){
+			$('#openBtn').removeClass('selected');
+			$('#shutBtn').addClass('selected');
+		}else{
+			$('#openBtn').addClass('selected');
+			$('#shutBtn').removeClass('selected');
+		}
+	});
 })
