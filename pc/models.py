@@ -52,6 +52,11 @@ class PC_Space(models.Model):
     #             long - the user's current longitude
     #             lat - the user's current latitude
     def get_heuristic(self,averageDistance,averageRatio,standardDeviationDistance,standardDeviationRatio, long, lat):
+        # avoid dividing by 0
+        if standardDeviationDistance==0:
+            standardDeviationDistance=0.00001
+        if standardDeviationRatio==0:
+            standardDeviationRatio=0.00001
         # normalise the building's distance and ratio (normalised mean=0, normalised SD=1)
         normalisedDistance=(self.get_distance(long,lat)-averageDistance)/standardDeviationDistance
         normalisedRatio=(self.get_ratio()-averageRatio)/standardDeviationRatio

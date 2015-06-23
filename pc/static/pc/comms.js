@@ -10,55 +10,13 @@ $(document).ready(function () {
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
-		if (currentChoice.index == suggestions.length - 1) {
-			$('#nextSuggestionBtn').addClass('disabled');
-		}
 	});
 	$('#retryBtn').click(function () {
-		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), 'nopref');
+		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getSelectedGroups());
 		$('#nextSuggestionBtn').removeClass('disabled');
 	});
 });
 
-
-// Geolocation functions{
-
-function getLocation() {
-	//check that the browser is compatible
-	if (navigator.geolocation) {
-		//get the user's current coordinates or throw an error if that's not possible
-		navigator.geolocation.getCurrentPosition(savePosition, showError);
-	} else {
-		alert('You browser does not support geolocation');
-	}
-}
-
-//save the current positions, then get suggestions from the server
-function savePosition(position) {
-	userLatitude = position.coords.latitude;
-	userLongitude = position.coords.longitude;
-	getSuggestions(true, true, 'nopref');
-}
-
-//if impossible to get user's current coordinates, display a relevant error message
-function showError(error) {
-	switch (error.code) {
-	case error.PERMISSION_DENIED:
-		alert("Geolocation required for this app.")
-		break;
-	case error.POSITION_UNAVAILABLE:
-		alert("Location information is unavailable.");
-		break;
-	case error.TIMEOUT:
-		alert("The request to get user location timed out.");
-		break;
-	case error.UNKNOWN_ERROR:
-		alert("An unknown error occurred when attempting to find your location.");
-		break;
-	}
-}
-
-// Geolocation functions}
 
 /* 
    Get the list of suggestions from the server
@@ -68,15 +26,13 @@ function showError(error) {
    group (string): the campus that the user is searching in.  
    One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
 */
-function getSuggestions(nearby, empty, group) {
-
-	console.info('Attempting to send with parameters ' + nearby + ', ' + empty + ', ' + group);
+function getSuggestions(nearby, empty, groups) {
 	$.get('http://127.0.0.1:8000/open/filter', {
 			'nearby': nearby,
 
 			'empty': empty,
 
-			'group': group,
+			'groupsUnselected[]': groups,
 
 			'latitude': userLatitude,
 
@@ -92,7 +48,6 @@ function getSuggestions(nearby, empty, group) {
 			currentChoice = suggestions[0];
 			loadChoice();
 		});
-	console.info('Attempt complete');
 }
 
 /* 
@@ -104,6 +59,19 @@ function loadChoice() {
 	$('#buildingName').html(currentChoice.group);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
+
+	if (currentChoice.index == suggestions.length - 1) {
+		$('#nextSuggestionBtn').addClass('disabled');
+	}
+}
+
+function getSelectedGroups() {
+	ids = [];
+	$('#campusGroup :not(.selected)').each(function () {
+		ids.push(this.id);
+	});
+	console.log(ids);
+	return ids;
 }
 
 /* 
@@ -143,3 +111,43 @@ function distanceBetweenCoordinates(lat1, long1, lat2, long2) {
 function toRadians(x) {
 	return x * Math.PI / 180;
 }
+
+
+// Geolocation functions{
+
+function getLocation() {
+	//check that the browser is compatible
+	if (navigator.geolocation) {
+		//get the user's current coordinates or throw an error if that's not possible
+		navigator.geolocation.getCurrentPosition(savePosition, showError);
+	} else {
+		alert('You browser does not support geolocation');
+	}
+}
+
+//save the current positions, then get suggestions from the server
+function savePosition(position) {
+	userLatitude = position.coords.latitude;
+	userLongitude = position.coords.longitude;
+	getSuggestions(true, true, ['Central', 'Accommodation Services']);
+}
+
+//if impossible to get user's current coordinates, display a relevant error message
+function showError(error) {
+	switch (error.code) {
+	case error.PERMISSION_DENIED:
+		alert("Geolocation required for this app.")
+		break;
+	case error.POSITION_UNAVAILABLE:
+		alert("Location information is unavailable.");
+		break;
+	case error.TIMEOUT:
+		alert("The request to get user location timed out.");
+		break;
+	case error.UNKNOWN_ERROR:
+		alert("An unknown error occurred when attempting to find your location.");
+		break;
+	}
+}
+
+// Geolocation functions}

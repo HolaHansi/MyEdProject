@@ -22,12 +22,11 @@ def test(request):
 
 def filter_suggestions(request):
     if request.method == "GET":
-
-        # filter by group:
-        if request.GET['group'] != 'nopref':
-            data = PC_Space.objects.filter(group=request.GET['group'])
-        else:
-            data = PC_Space.objects.all()
+        # remove any groups they didn't select
+        groups = request.GET.getlist('groupsUnselected[]')
+        data = PC_Space.objects.all()
+        for group in groups:
+            data = data.exclude(group=group)
 
         # don't suggest any full rooms:
         data = data.exclude(ratio=0)
@@ -45,23 +44,24 @@ def filter_suggestions(request):
                 # calculate the average distance and ratio:
                 averageDistance=0
                 averageRatio=0
+                sdDistance=0
+                sdRatio=0
                 i=0
                 for x in data:
                     averageDistance=averageDistance + x.get_distance(long1=usr_longitude, lat1=usr_latitude)
                     averageRatio=averageRatio + x.get_ratio()
                     i+=1
-                averageDistance=averageDistance/i
-                averageRatio=averageRatio/i
-                # calculate the standard deviation of distance and ratio
-                sdDistance=0
-                sdRatio=0
-                for x in data:
-                    sdDistance=sdDistance + (x.get_distance(long1=usr_longitude, lat1=usr_latitude)-averageDistance)**2
-                    sdRatio=sdRatio + (x.get_ratio()-averageRatio)**2
-                sdDistance=(sdDistance/i)**0.5
-                sdRatio=(sdRatio/i)**0.5
-                # sort the data based on both distance and ratio using a heuristic function of the normalised distance and ratio
-                data = sorted(data,key=lambda x:x.get_heuristic(averageDistance,averageRatio,sdDistance,sdRatio,usr_longitude,usr_latitude))
+                if i!=0:
+                    averageDistance=averageDistance/i
+                    averageRatio=averageRatio/i
+                    # calculate the standard deviation of distance and ratio
+                    for x in data:
+                        sdDistance=sdDistance + (x.get_distance(long1=usr_longitude, lat1=usr_latitude)-averageDistance)**2
+                        sdRatio=sdRatio + (x.get_ratio()-averageRatio)**2
+                    sdDistance=(sdDistance/i)**0.5
+                    sdRatio=(sdRatio/i)**0.5
+                    # sort the data based on both distance and ratio using a heuristic function of the normalised distance and ratio
+                    data = sorted(data,key=lambda x:x.get_heuristic(averageDistance,averageRatio,sdDistance,sdRatio,usr_longitude,usr_latitude))
 
         # if sorting only by emptiness
         elif (request.GET['empty']=='true'):
