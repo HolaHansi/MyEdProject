@@ -1,7 +1,5 @@
 import requests
-from rooms.models import Room_Feed
-from rooms.models import Building_Feed
-from rooms.models import Bookable_Room
+from rooms.models import Room_Feed, Building_Feed, Bookable_Room
 
 def get_names(listOfDicts):
     names = ""
@@ -13,56 +11,85 @@ def update_room_table():
     the Room_Feed table.
     :return: void
     """
-    url = "http://www-test.bookablerooms.is.ed.ac.uk/json_feed" #larger bookables
+    # url = "http://www-test.bookablerooms.is.ed.ac.uk/json_feed" #larger bookables
 
-    # url = "http://devmac2.is.ed.ac.uk:8080/locations"
+    url = "http://nightside.is.ed.ac.uk:8080/locations"
 
     rooms = requests.get(url)
 
-    #
-    # for room in rooms.json():
-    #     print('new room!')
-    #     locationId = room['locationId']
-    #     host_key = room['host_key']
-    #     name = room['name']
-    #     description = room['description']
-    #     capacity = int (room['capacity'])
-    #
-    #     for dict in room['suitabilities']:
-    #         print('this is a dict')
-    #         print(dict)
-    #         print('this is the values of the dict')
-    #         print(dict.values())
-    #
-    #
+    for room in rooms.json():
+        if 'locationId' in room.keys():
+            locationId = room['locationId']
+            abbreviation = room['host_key'][:4]
+            room_name = room['name']
+            description = room['description']
+            capacity = int(room['capacity'])
+            zoneId = room['zoneId']
 
+            #suitabilities values must be refreshed
+            whiteboard = False
+            pc = False
+            projector = False
+            blackboard = False
+            locally_allocated = False
 
+            for dict in room['suitabilities']:
+                suit = ""
+                for x in list(dict.values()):
+                    suit += str(x)
 
+                if 'Whiteboard' in suit:
+                    whiteboard = True
+                if 'Locally Allocated' in suit:
+                    locally_allocated = True
+                if 'PC' in suit:
+                    pc = True
+                if 'Projector' in suit:
+                    projector = True
+                if 'Blackboard' in suit:
+                    blackboard = True
 
-    for room in rooms.json()["locations"]:
-        #declare attributes
-        field_building_name = room["room"]["field_building_name"]
-        title = room["room"]["title"]
-        capacity = int(room["room"]["Capacity"].replace(" ", ""))
-        building_host_key = room["room"]["BuildingHostKey"]
+            obj = Room_Feed(locationId=locationId,
+                        abbreviation = abbreviation,
+                        room_name = room_name,
+                        description = description,
+                        capacity = capacity,
+                        pc = pc,
+                        whiteboard = whiteboard,
+                        blackboard = blackboard,
+                        projector = projector,
+                        locally_allocated = locally_allocated,
+                        zoneId = zoneId)
 
-        #boolean attributes - Checks in room Attributes string
-        whiteboard = "Whiteboard" in room["room"]["Room Attributes"]
-        blackboard = "Blackboard" in room["room"]["Room Attributes"]
-        projector = "Projector" in room["room"]["Room Attributes"]
-        pc = "PC" in room["room"]["Room Attributes"]
+            obj.save()
 
-        #create object and save to database
-        obj = Room_Feed(abbreviation=building_host_key,
-                            field_building_name = field_building_name,
-                            title = title,
-                            capacity = capacity,
-                            pc = pc,
-                            whiteboard = whiteboard,
-                            blackboard = blackboard,
-                            projector = projector)
-        obj.save()
     return 'success'
+
+
+    # for room in rooms.json()["locations"]:
+    #     #declare attributes
+    #     field_building_name = room["room"]["field_building_name"]
+    #     title = room["room"]["title"]
+    #     capacity = int(room["room"]["Capacity"].replace(" ", ""))
+    #     building_host_key = room["room"]["BuildingHostKey"]
+    #
+    #     #boolean attributes - Checks in room Attributes string
+    #     whiteboard = "Whiteboard" in room["room"]["Room Attributes"]
+    #     blackboard = "Blackboard" in room["room"]["Room Attributes"]
+    #     projector = "Projector" in room["room"]["Room Attributes"]
+    #     pc = "PC" in room["room"]["Room Attributes"]
+    #
+    #     #create object and save to database
+    #     obj = Room_Feed(abbreviation=building_host_key,
+    #                         field_building_name = field_building_name,
+    #                         title = title,
+    #                         capacity = capacity,
+    #                         pc = pc,
+    #                         whiteboard = whiteboard,
+    #                         blackboard = blackboard,
+    #                         projector = projector)
+    #     obj.save()
+    # return 'success'
 
 
 def update_building_table():
@@ -78,16 +105,16 @@ def update_building_table():
         # we're not interested in buildings without an abbreviation, as this is a critical component for linking
         # the this tables with Room_Feed.
         if 'abbreviation' in building.keys():
-            abbreviation = building["abbreviation"]
+            abbreviation = building["abbreviation"][:4]
             longitude = float(building["longitude"])
             latitude = float(building["latitude"])
-            name = building["name"]
+            building_name = building["name"]
 
             #create object and save to database
             obj = Building_Feed(abbreviation=abbreviation,
                                  longitude=longitude,
                                  latitude=latitude,
-                                 name=name)
+                                 building_name=building_name)
             obj.save()
     return 'success'
 
@@ -102,14 +129,19 @@ def merge_room_building():
         # print()
 
         obj = Bookable_Room(abbreviation=results.abbreviation,
-                             field_building_name = results.field_building_name,
-                             title = results.title,
-                             capacity = results.capacity,
-                             pc = results.pc,
-                             whiteboard = results.whiteboard,
-                             blackboard = results.blackboard,
-                             projector = results.projector,
-                             longitude = results.longitude,
-                             latitude = results.latitude)
+                            locationId = results.locationId,
+                            room_name = results.room_name,
+                            description = results.description,
+                            capacity = results.capacity,
+                            pc = results.pc,
+                            whiteboard = results.whiteboard,
+                            blackboard = results.blackboard,
+                            projector = results.projector,
+                            locally_allocated = results.locally_allocated,
+                            zoneId = results.zoneId,
+                            longitude = results.longitude,
+                            latitude = results.latitude,
+                            building_name = results.building_name)
+
         obj.save()
     return 'success'

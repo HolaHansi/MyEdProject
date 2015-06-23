@@ -24,8 +24,16 @@
 
 <div class="container">
 <br> <br> <br>
-
+    <!-- tests to check if user is authenticated -->
     {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}, you are logged in</p>
+
+
+        <a href="/logout/">log out here</a>
+    {% else %}
+        <p>not logged in</p>
+        <a href="/login/">log in here</a>
+    {% endif %}
   <div class="list-group">
     <a href="open" class="list-group-item"><i class="fa fa-search"></i> find <i class="fa fa-angle-right"></i></a>
     <a href="bookable" class="list-group-item"><i class="fa fa-book"></i> book <i class="fa fa-angle-right"></i></a>

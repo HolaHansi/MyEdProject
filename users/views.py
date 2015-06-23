@@ -15,7 +15,10 @@ def entry(request):
     if request.method == 'POST':
         form = EntryForm(request.POST)
         if form.is_valid():
-            form.save()
+            entry = form.save(commit=False)
+            entry.moderator = request.user
+            print(entry.moderator)
+            entry.save()
             return HttpResponseRedirect('/')
     else:
         form = EntryForm()

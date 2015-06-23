@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),
     url(r'^api/', include('api.urls')),
-
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
 ]

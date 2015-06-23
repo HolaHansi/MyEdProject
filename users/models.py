@@ -13,6 +13,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     moderator = models.ForeignKey(User)
+    id = models.IntegerField(primary_key=True)
 
     def __string__(self):
         return self.title
