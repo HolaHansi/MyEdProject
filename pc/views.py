@@ -17,9 +17,6 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-def test(request):
-    return render(request, 'pc/jsonTest.html')
-
 def filter_suggestions(request):
     if request.method == "GET":
         # remove any groups they didn't select
