@@ -18,17 +18,14 @@ from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 
 
-urlpatterns = [
-
-]
-
-
 
 urlpatterns = [
     url(r'^$', include('users.urls')),
-    url('^', include('django.contrib.auth.urls'))
+    url(r'^entry/$', 'users.views.entry'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),
     url(r'^api/', include('api.urls')),
+
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
 ]

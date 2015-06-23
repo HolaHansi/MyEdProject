@@ -36,10 +36,12 @@ def get_pc_data():
             location = child.attrib['location']
             free = int(child.attrib['free'])
             seats = int(child.attrib['seats'])
-            ratio = round((free/seats), 3)
+            ratio = round(free/seats, 3)
 
             # if object already exists, then update the ratio value.
             if PC_Space.objects.filter(location = child.attrib['location']):
+                PC_Space.objects.filter(location=child.attrib['location']).update(free=free)
+                PC_Space.objects.filter(location=child.attrib['location']).update(seats=seats)
                 PC_Space.objects.filter(location=child.attrib['location']).update(ratio=ratio)
 
             else:
