@@ -18,14 +18,14 @@ from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 
 
-#TODO discuss if this is sensible:
-from frontpageApp import views as suggester_views
-
 
 urlpatterns = [
-    url(r'^$', include('frontpageApp.urls')),
+    url(r'^$', include('users.urls')),
+    url(r'^entry/$', 'users.views.entry'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),
     url(r'^api/', include('api.urls')),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
 ]

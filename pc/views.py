@@ -35,7 +35,7 @@ def filter_suggestions(request):
             data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
 
             # if sorting by both location and emptiness
-            if (request.GET['empty']=='true'):
+            if (request.GET['empty'] == 'true'):
                 # calculate the average distance and ratio:
                 averageDistance=0
                 averageRatio=0

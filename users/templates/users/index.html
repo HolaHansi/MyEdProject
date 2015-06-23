@@ -1,0 +1,47 @@
+{% extends 'core/base.html' %}
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+  <!--<title>Bootstrap Example</title>-->
+  <!--<meta charset="utf-8">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+  <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">-->
+  <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+  <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+<!--</head>-->
+
+{% load staticfiles %}
+
+
+<body>
+
+
+{% block content %}
+
+
+
+<div class="container">
+<br> <br> <br>
+    <!-- tests to check if user is authenticated -->
+    {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}, you are logged in</p>
+
+
+        <a href="/logout/">log out here</a>
+    {% else %}
+        <p>not logged in</p>
+        <a href="/login/">log in here</a>
+    {% endif %}
+  <div class="list-group">
+    <a href="open" class="list-group-item"><i class="fa fa-search"></i> find <i class="fa fa-angle-right"></i></a>
+    <a href="bookable" class="list-group-item"><i class="fa fa-book"></i> book <i class="fa fa-angle-right"></i></a>
+    <a href="favourites" class="list-group-item"><i class="fa fa-star"></i> favorites <i class="fa fa-angle-right"></i></a>
+    <a href="history" class="list-group-item"><i class="fa fa-history"></i> history <i class="fa fa-angle-right"></i></a>
+  </div>
+</div>
+
+{% endblock %}
+</body>
+</html>

@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     'rooms',
     'pc',
     'api',
-    'frontpageApp'
+    'users'
 )
 
 #celery:
@@ -72,7 +72,9 @@ REST_FRAMEWORK = {
     ]
 }
 
-
+#Auth Settings
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 
 
