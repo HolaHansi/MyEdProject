@@ -13,6 +13,16 @@ $(document).ready(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
+
+    $('#likeBtn').click(function () {
+        var pc_id = currentChoice.id;
+
+    	$.post('http://127.0.0.1:8000/like/', {
+    		'pc_id': pc_id
+    	});
+
+    });
+
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
 		// if still searching for open study spaces
@@ -37,6 +47,7 @@ $(document).ready(function () {
 */
 function getSuggestions(nearby, empty, groups) {
 	//send the get request
+    console.log(groups);
 	$.get('http://127.0.0.1:8000/open/filter', {
 		'nearby': nearby,
 		'empty': empty,
@@ -47,6 +58,7 @@ function getSuggestions(nearby, empty, groups) {
 	.done(function (data) {
 		//if successful, save the data received
 		suggestions = data;
+        console.log(data);
 		//and an index to each of the JSONs
 		for (var i = 0; i < suggestions.length; i++) {
 			suggestions[i].index = i;

@@ -51,8 +51,6 @@ def get_pc_data():
 
                 # get building :
                 for building in Building_PC.objects.all():
-                    print('location PC: ',location)
-                    print('building NAME: ', building.name)
                     if building.name in location:
                         longitude = building.longitude
                         latitude = building.latitude

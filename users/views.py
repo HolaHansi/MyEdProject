@@ -10,6 +10,18 @@ def index(request):
     return render(request, 'users/index.html')
 
 
+
+def like(request):
+    if request.method == 'POST':
+        pc_id = request.POST['pc_id']
+
+        user = request.user
+
+        print('from user', user.username)
+        print('liked id:', pc_id)
+
+
+
 def register(request):
 
     # A boolean value for telling the template whether the registration was successful.
