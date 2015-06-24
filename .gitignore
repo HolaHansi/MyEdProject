@@ -3,5 +3,5 @@ db.sqlite3
 .idea
 .settings
 .coverage
-rooms/migrations/
-pc/migrations/
+*/migrations
+celerybeat.pid
