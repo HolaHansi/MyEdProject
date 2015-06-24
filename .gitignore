@@ -5,3 +5,7 @@ db.sqlite3
 .coverage
 */migrations
 celerybeat.pid
+rooms/migrations/
+pc/migrations/
+*.pyc
+

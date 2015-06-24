@@ -17,9 +17,6 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
-def test(request):
-    return render(request, 'pc/jsonTest.html')
-
 def filter_suggestions(request):
     if request.method == "GET":
         # remove any groups they didn't select
@@ -37,32 +34,29 @@ def filter_suggestions(request):
             # sort the buildings based on distance from user, closest first
             data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
 
-
-        print(data)
-
-        # if sorting by both location and emptiness
-        if (request.GET['empty'] == 'true'):
-            # calculate the average distance and ratio:
-            averageDistance=0
-            averageRatio=0
-            sdDistance=0
-            sdRatio=0
-            i=0
-            for x in data:
-                averageDistance=averageDistance + x.get_distance(long1=usr_longitude, lat1=usr_latitude)
-                averageRatio=averageRatio + x.get_ratio()
-                i+=1
-            if i!=0:
-                averageDistance=averageDistance/i
-                averageRatio=averageRatio/i
-                # calculate the standard deviation of distance and ratio
+            # if sorting by both location and emptiness
+            if (request.GET['empty'] == 'true'):
+                # calculate the average distance and ratio:
+                averageDistance=0
+                averageRatio=0
+                sdDistance=0
+                sdRatio=0
+                i=0
                 for x in data:
-                    sdDistance=sdDistance + (x.get_distance(long1=usr_longitude, lat1=usr_latitude)-averageDistance)**2
-                    sdRatio=sdRatio + (x.get_ratio()-averageRatio)**2
-                sdDistance=(sdDistance/i)**0.5
-                sdRatio=(sdRatio/i)**0.5
-                # sort the data based on both distance and ratio using a heuristic function of the normalised distance and ratio
-                data = sorted(data,key=lambda x:x.get_heuristic(averageDistance,averageRatio,sdDistance,sdRatio,usr_longitude,usr_latitude))
+                    averageDistance=averageDistance + x.get_distance(long1=usr_longitude, lat1=usr_latitude)
+                    averageRatio=averageRatio + x.get_ratio()
+                    i+=1
+                if i!=0:
+                    averageDistance=averageDistance/i
+                    averageRatio=averageRatio/i
+                    # calculate the standard deviation of distance and ratio
+                    for x in data:
+                        sdDistance=sdDistance + (x.get_distance(long1=usr_longitude, lat1=usr_latitude)-averageDistance)**2
+                        sdRatio=sdRatio + (x.get_ratio()-averageRatio)**2
+                    sdDistance=(sdDistance/i)**0.5
+                    sdRatio=(sdRatio/i)**0.5
+                    # sort the data based on both distance and ratio using a heuristic function of the normalised distance and ratio
+                    data = sorted(data,key=lambda x:x.get_heuristic(averageDistance,averageRatio,sdDistance,sdRatio,usr_longitude,usr_latitude))
 
         # if sorting only by emptiness
         elif (request.GET['empty']=='true'):

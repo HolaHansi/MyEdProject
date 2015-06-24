@@ -22,8 +22,8 @@
         <div class='row'>
             <div class="col-xs-12">
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <a class="btn btn-primary btn-toggle selected" role="button">Computer Lab</a>
-                    <a class="btn btn-primary btn-toggle selected" role="button">Tutorial Room</a>
+                    <a class="btn btn-primary btn-switch" role="button" id='openBtn'>Computer Lab</a>
+                    <a class="btn btn-primary btn-switch selected" role="button" id='shutBtn'>Tutorial Room</a>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
         <div class='row'>
             <div class="col-xs-12">
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <a class="btn btn-primary btn-toggle selected" role="button">Nearby</a>
-                    <a class="btn btn-primary btn-toggle selected" role="button">Empty</a>
+                    <a class="btn btn-primary btn-toggle selected" role="button" id="nearbyBtn">Nearby</a>
+                    <a class="btn btn-primary btn-toggle selected" role="button" id="emptyBtn">Empty</a>
                     <a class="btn btn-primary btn-toggle selected" role="button">Open late</a>
                 </div>
             </div>
@@ -63,15 +63,13 @@
         </div>
         <div class='row'>
             <div class="col-xs-12">
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <a class="btn btn-primary btn-toggle selected" role="button">Central</a>
-                    <a class="btn btn-primary btn-toggle selected" role="button">Kings <span class='hidden-xs'>Buildings</span></a>
-                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button">Easter Bush</a>
-                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button">Holyrood Campus</a>
-                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button">Lauriston</a>
-                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button">Little France</a>
-                    <a class="btn btn-primary btn-toggle hidden-xs hidden-sm hidden-md selected" role="button">New College</a>
-                    <a class="btn btn-primary btn-toggle selected" role="button">Other</a>
+                <div class="btn-group btn-group-justified" role="group" id='campusGroup'>
+                    <a class="btn btn-primary btn-toggle selected" role="button" id='Central'>Central</a>
+                    <a class="btn btn-primary btn-toggle selected" role="button" id='KB Labs'>Kings <span class='hidden-xs selected'>Buildings</span></a>
+                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button" id='Business School'>Business School</a>
+                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button" id='ECA'>ECA</a>
+                    <a class="btn btn-primary btn-toggle hidden-xs selected" role="button" id='Holyrood and High School Yards'>Holyrood and High School Yards</a>
+                    <a class="btn btn-primary btn-toggle hidden-xs hidden-sm hidden-md selected" role="button" id='Accommodation Services'>Accommodation Services</a>
                 </div>
             </div>
         </div>

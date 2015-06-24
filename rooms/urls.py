@@ -6,6 +6,5 @@ from rooms import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^filter/$', views.filter_suggestions, name='filterSuggestions'),
-    url(r'^test/$', views.test)
+    url(r'^filter/$', views.filter_suggestions, name='filterSuggestions')
 ]
