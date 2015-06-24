@@ -1,83 +1,92 @@
-var suggestions = [];
-var currentChoice = {};
+var suggestions = []; //all suggestions provided by the server
+var currentChoice = {}; //the suggestion currently on display
 
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
 
 $(document).ready(function () {
+	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
+	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
+	//when the user starts a search...
 	$('#retryBtn').click(function () {
+		// if still searching for open study spaces
 		if ($('#openBtn').hasClass('selected')){
-			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getSelectedGroups());
+			// get a new list of suggestions from the server based on the user's options
+			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
 			$('#nextSuggestionBtn').removeClass('disabled');
 		} else {
-			location.href = ('/bookable/#close='+$('#nearbyBtn').hasClass('selected')+'&empty='+$('#emptyBtn').hasClass('selected')+'&groups='+getSelectedGroups().join().replace(/ /g,'%20'));
+			//TODO: work out what to do
+			location.href = ('/bookable/#close='+$('#nearbyBtn').hasClass('selected')+'&empty='+$('#emptyBtn').hasClass('selected')+'&groups='+getUnselectedGroups().join().replace(/ /g,'%20'));
 		}
 	});
 });
 
-/* 
+/*
    Get the list of suggestions from the server
    Parameters:
    nearby (boolean): whether the user is filtering by nearby
    empty (boolean): whether the user is filtering by empty
-   group (string): the campus that the user is searching in.  
-   One of: â€˜Centralâ€™,â€˜ECAâ€™,'Accommodation Servicesâ€™, 'Holyrood and High School Yardsâ€™,â€˜KB Labsâ€™
+   group (string): the campus that the user is searching in.
+   One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
 */
 function getSuggestions(nearby, empty, groups) {
+	//send the get request
 	$.get('http://127.0.0.1:8000/open/filter', {
-			'nearby': nearby,
-
-			'empty': empty,
-
-			'groupsUnselected[]': groups,
-
-			'latitude': userLatitude,
-
-			'longitude': userLongitude
-
-		})
-		.done(function (data) {
-			console.log(data);
-			suggestions = data;
-			for (var i = 0; i < suggestions.length; i++) {
-				suggestions[i].index = i;
-			}
-			currentChoice = suggestions[0];
-			loadChoice();
-		});
+		'nearby': nearby,
+		'empty': empty,
+		'groupsUnselected[]': groups,
+		'latitude': userLatitude,
+		'longitude': userLongitude
+	})
+	.done(function (data) {
+		//if successful, save the data received
+		suggestions = data;
+		//and an index to each of the JSONs
+		for (var i = 0; i < suggestions.length; i++) {
+			suggestions[i].index = i;
+		}
+		//load the first suggestion
+		currentChoice = suggestions[0];
+		loadChoice();
+	});
 }
 
-/* 
+/*
    Populate the website with the suggestion
    Parameters: none
 */
 function loadChoice() {
+	//populate the html
 	$('#roomName').html(processRoomName(currentChoice));
 	$('#buildingName').html(currentChoice.group);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
 
+	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
 }
 
-function getSelectedGroups() {
+/*
+   Returns a list of all campuses in the options menu which aren't currently selected
+   Parameters: none
+*/
+function getUnselectedGroups() {
 	ids = [];
 	$('#campusGroup :not(.selected)').each(function () {
 		ids.push(this.id);
 	});
-	console.log(ids);
 	return ids;
 }
 
-/* 
+/*
    Process the name of the building to remove the campus
    Parameters:
    suggestion (object): the suggestion being processed
@@ -87,7 +96,7 @@ function processRoomName(suggestion) {
 	return (suggestion.location).replace(regex, '');
 }
 
-/* 
+/*
    Takes a pair of coordinates and calculates the distance between them, taking into account the curvature of the earth
    A little overkill maybe, but you never know, someone might be using MyEd from back home in Australia!
    Parameters:
@@ -132,7 +141,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getSelectedGroups());
+	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
@@ -142,13 +151,13 @@ function showError(error) {
 		alert("Geolocation required for this app.")
 		break;
 	case error.POSITION_UNAVAILABLE:
-		alert("Location information is unavailable.");
+		alert("Location information is unavailable.  Refresh the page or try again later.  ");
 		break;
 	case error.TIMEOUT:
-		alert("The request to get user location timed out.");
+		alert("The request to get user location timed out.  Refresh the page or try again later.  ");
 		break;
 	case error.UNKNOWN_ERROR:
-		alert("An unknown error occurred when attempting to find your location.");
+		alert("An unknown error occurred when attempting to find your location.  Refresh the page or try again later.  ");
 		break;
 	}
 }
