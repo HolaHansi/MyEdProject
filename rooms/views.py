@@ -20,10 +20,8 @@ class JSONResponse(HttpResponse):
 def index(request):
     return render(request, 'rooms/index.html')
 
-
 def filter_suggestions(request):
     if request.method == "GET":
-        print('received')
 
         if request.GET['group'] != 'nopref':
             data = Bookable_Room.filter(group=request.GET['group'])
