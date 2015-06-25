@@ -4,22 +4,19 @@ var currentChoice = {}; //the suggestion currently on display
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
-var pcLikedByUser = false; // true if current suggestion is liked by user
+var pcLikedByUser = 'false'; // true if current suggestion is liked by user
 
 
 $(document).ready(function () {
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
 
+
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
-
-
-
-
 
     $('#likeBtn').click(function () {
         var pc_id = currentChoice.id;
@@ -28,13 +25,12 @@ $(document).ready(function () {
             'pcLikedByUser': pcLikedByUser
     	})
         .done(function(){
-            if (!pcLikedByUser) {
-                $('#likeBtn').html('liked');
-                pcLikedByUser = true;
-            }
-            else {
-                $('#likeBtn').html('like');
-                pcLikedByUser = false;
+            if (pcLikedByUser=='false') {
+                $('#likeBtn').html('liked').css({'opacity':0.5});
+                pcLikedByUser = 'true';
+            } else {
+                $('#likeBtn').html('like').css({'opacity':1});
+                pcLikedByUser = 'false';
             }
         });
 
@@ -67,7 +63,11 @@ function liked(pc_id) {
     .done(function(data) {
         pcLikedByUser = data;
         console.log(pcLikedByUser);
-
+		if (pcLikedByUser=='true') {
+			$('#likeBtn').html('liked').css({'opacity':0.5});
+		}else{
+			$('#likeBtn').html('like').css({'opacity':1});
+		}
     });
 };
 
