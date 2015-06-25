@@ -35,7 +35,7 @@ $(document).ready(function () {
 		if ($('#shutBtn').hasClass('selected')) {
 			// get a new list of suggestions from the server based on the user's options
 			//TODO: update for tut rooms
-			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 			$('#nextSuggestionBtn').removeClass('disabled');
 		} else {
 			//TODO: work out what to do
@@ -53,12 +53,14 @@ $(document).ready(function () {
    One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
 */
 //TODO: update
-function getSuggestions(nearby, pc, whiteboard, projector, groups) {
+function getSuggestions(nearby, bookable, pc, whiteboard, blackboard, projector, groups) {
 	//send the get request
 	$.get('http://127.0.0.1:8000/bookable/filter', {
 			'nearby': nearby,
 			'pc': pc,
+			'bookable': bookable,
 			'whiteboard': whiteboard,
+			'blackboard': blackboard,
 			'projector': projector,
 			'groupsUnselected[]': groups,
 			'latitude': userLatitude,
@@ -89,8 +91,10 @@ function loadChoice() {
 	$('#buildingName').html(currentChoice.building_name);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computerTick').addClass(currentChoice.pc ? "tick" : "cross").removeClass(currentChoice.pc ? "cross" : "tick");
+	$('#bookableTick').addClass(currentChoice.locally_allocated ? "cross" : "tick").removeClass(currentChoice.locally_allocated ? "tick" : "cross");
 	$('#printerTick').addClass(currentChoice.pc ? "tick" : "cross").removeClass(currentChoice.pc ? "cross" : "tick"); //TODO: make printer
 	$('#whiteboardTick').addClass(currentChoice.whiteboard ? "tick" : "cross").removeClass(currentChoice.whiteboard ? "cross" : "tick");
+	$('#blackboardTick').addClass(currentChoice.blackboard ? "tick" : "cross").removeClass(currentChoice.blackboard ? "cross" : "tick");
 	$('#projectorTick').addClass(currentChoice.projector ? "tick" : "cross").removeClass(currentChoice.projector ? "cross" : "tick");
 
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
@@ -157,7 +161,7 @@ function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
 	//TODO: update
-	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
