@@ -5,7 +5,7 @@ from celery import Celery
 from datetime import timedelta
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MyEd.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'InternProject.settings')
 
 
 

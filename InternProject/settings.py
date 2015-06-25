@@ -120,8 +120,11 @@ DATABASES = {
     }
 }
 
-
-
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config()
+#
+# # Enable Connection Pooling
+# DATABASES['default']['ENGINE'] = 'django_postgrespool'
 
 
 # DATABASES = {
@@ -156,7 +159,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (
     ('assets', os.path.join(BASE_DIR, 'InternProject/static'))
 )
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

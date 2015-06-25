@@ -20,16 +20,16 @@ $(document).ready(function () {
 
     $('#likeBtn').click(function () {
         var pc_id = currentChoice.id;
-    	$.post('http://127.0.0.1:8000/like/', {
+    	$.post('/like/', {
     		'pc_id': pc_id,
             'pcLikedByUser': pcLikedByUser
     	})
         .done(function(){
             if (pcLikedByUser=='false') {
-                $('#likeBtn').html('liked').css({'opacity':0.5});
+                $('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
                 pcLikedByUser = 'true';
             } else {
-                $('#likeBtn').html('like').css({'opacity':1});
+                $('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
                 pcLikedByUser = 'false';
             }
         });
@@ -57,16 +57,16 @@ Liked returns true if the current suggestion is liked by the user, and false oth
  */
 
 function liked(pc_id) {
-    $.get('http://127.0.0.1:8000/like/', {
+    $.get('/like/', {
         'pc_id': pc_id
     })
     .done(function(data) {
         pcLikedByUser = data;
         console.log(pcLikedByUser);
 		if (pcLikedByUser=='true') {
-			$('#likeBtn').html('liked').css({'opacity':0.5});
+			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
 		}else{
-			$('#likeBtn').html('like').css({'opacity':1});
+			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
 		}
     });
 };
@@ -84,7 +84,7 @@ function liked(pc_id) {
 function getSuggestions(nearby, empty, groups) {
 	//send the get request
     console.log(groups);
-	$.get('http://127.0.0.1:8000/open/filter', {
+	$.get('/open/filter', {
 		'nearby': nearby,
 		'empty': empty,
 		'groupsUnselected[]': groups,
@@ -148,7 +148,7 @@ function processRoomName(suggestion) {
 
 /* 
    Takes a pair of coordinates and calculates the distance between them, taking into account the curvature of the earth
-   A little overkill maybe, but you never know, someone might be using MyEd from back home in Australia!
+   A little overkill maybe, but you never know, someone might be using InternProject from back home in Australia!
    Parameters:
    lat1 (float): the latitude of the first point
    long1 (float): the longitude of the first point

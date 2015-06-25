@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "MyEd.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "InternProject.settings")
 
 application = get_wsgi_application()
+
+#deployment stuff
+from whitenoise.django import DjangoWhiteNoise
+application = DjangoWhiteNoise(application)
