@@ -4,24 +4,39 @@ var currentChoice = {}; //the suggestion currently on display
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
+var pcLikedByUser = false; // true if current suggestion is liked by user
+
 
 $(document).ready(function () {
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
+
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
 
+
+
+
+
     $('#likeBtn').click(function () {
         var pc_id = currentChoice.id;
     	$.post('http://127.0.0.1:8000/like/', {
-    		'pc_id': pc_id
+    		'pc_id': pc_id,
+            'pcLikedByUser': pcLikedByUser
     	})
         .done(function(){
-            $('#likeBtn').html('liked');
-        })
+            if (!pcLikedByUser) {
+                $('#likeBtn').html('liked');
+                pcLikedByUser = true;
+            }
+            else {
+                $('#likeBtn').html('like');
+                pcLikedByUser = false;
+            }
+        });
 
 
     });
@@ -39,6 +54,24 @@ $(document).ready(function () {
 		}
 	});
 });
+
+
+/*
+Liked returns true if the current suggestion is liked by the user, and false otherwise.
+ */
+
+function liked(pc_id) {
+    $.get('http://127.0.0.1:8000/like/', {
+        'pc_id': pc_id
+    })
+    .done(function(data) {
+        pcLikedByUser = data;
+        console.log(pcLikedByUser);
+
+    });
+};
+
+
 
 /* 
    Get the list of suggestions from the server
@@ -87,6 +120,8 @@ function loadChoice() {
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
+    // check if current choice is liked by user. This updates the variable
+    liked(currentChoice.id);
 }
 
 /* 

@@ -34,16 +34,43 @@ def like(request):
         #get the user from session
         user = request.user
 
+        # get pcLikedByUser variable
+        pcLikedByUser = request.POST['pcLikedByUser']
+
 
         userprofile = UserProfile.objects.get(user=user)
 
         # get PC that was liked
         pc = PC_Space.objects.get(id=pc_id)
 
-        # add this pc to the favourites list
-        userprofile.pc_favourites.add(pc)
 
-    return HttpResponse(status=200)
+        if pcLikedByUser == 'false':
+            # add this pc to the favourites list
+            userprofile.pc_favourites.add(pc)
+        else:
+            userprofile.pc_favourites.remove(pc)
+
+        return HttpResponse(status=200)
+
+    if request.method == 'GET':
+        print('so far so good')
+        pc_id = request.GET['pc_id']
+
+        user = request.user
+
+        print('user received')
+        userprofile = UserProfile.objects.get(user=user)
+        print('userprofile received')
+
+        try:
+            userprofile.pc_favourites.get(id=pc_id)
+            pcLikedByUser = 'true'
+        except:
+            pcLikedByUser = 'false'
+        print('survived exceptions!!')
+        return JSONResponse(pcLikedByUser)
+
+
 
 @login_required
 def favourites(request):
