@@ -16,10 +16,13 @@ $(document).ready(function () {
 
     $('#likeBtn').click(function () {
         var pc_id = currentChoice.id;
-
     	$.post('http://127.0.0.1:8000/like/', {
     		'pc_id': pc_id
-    	});
+    	})
+        .done(function(){
+            $('#likeBtn').html('liked');
+        })
+
 
     });
 

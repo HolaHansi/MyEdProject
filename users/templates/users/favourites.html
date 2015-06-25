@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+
+<div class="container-fluid">
+{% block content %} <br><br><br>
+<p>hi <strong>{{ user.username }}</strong>, here are your favourites:</p>
+
+    {% for fav in list_of_favourites %}
+        <li>{{ fav }}</li>
+    {% endfor %}
+{% endblock %}
+
+</div>

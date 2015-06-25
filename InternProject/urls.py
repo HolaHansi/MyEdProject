@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^bookable/', include('rooms.urls')),
     url(r'^api/', include('api.urls')),
 
-
+    url(r'^favourites/$', 'users.views.favourites'),
     url(r'^like/', 'users.views.like'),
     url(r'^registration/$', 'users.views.register'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),

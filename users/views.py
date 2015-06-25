@@ -3,6 +3,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from pc.models import PC_Space
 from .forms import EntryForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+from pc.models import PC_Space
+from rest_framework.renderers import JSONRenderer
+
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
 
 
 
@@ -13,12 +29,32 @@ def index(request):
 
 def like(request):
     if request.method == 'POST':
+        # get the id of liked pc space
         pc_id = request.POST['pc_id']
-
+        #get the user from session
         user = request.user
 
-        print('from user', user.username)
-        print('liked id:', pc_id)
+
+        userprofile = UserProfile.objects.get(user=user)
+
+        # get PC that was liked
+        pc = PC_Space.objects.get(id=pc_id)
+
+        # add this pc to the favourites list
+        userprofile.pc_favourites.add(pc)
+
+    return HttpResponse(status=200)
+
+@login_required
+def favourites(request):
+    user = request.user
+    userprofile = UserProfile.objects.get(user=user)
+    query = userprofile.pc_favourites.all()
+    context = {'list_of_favourites': query,
+               'user': user}
+    return render(request, 'users/favourites.html', context)
+
+
 
 
 
