@@ -6,6 +6,22 @@ var userLongitude = 0; //current longitude of user
 
 
 $(document).ready(function () {
+	//toggle buttons based on any parameters from the url
+	if (location.href.indexOf('close=f') >= 0) {
+		$('#nearbyBtn').removeClass('selected');
+	}
+	if (location.href.indexOf('empty=f') >= 0) {
+		$('#emptyBtn').removeClass('selected');
+	}
+	if (location.href.indexOf('groups=') >= 0) {
+		//extract the groups from the url
+		groups=(location.href.substring(location.href.indexOf('groups=')+7,location.href.length)).replace(/%20/g,' ').split(',');
+		groups[groups.length-1]=groups[groups.length-1].substring(0,(groups[groups.length-1].indexOf('&')>=0?groups[groups.length-1].indexOf('&'):groups[groups.length-1].length));
+		//unselect the groups mentioned
+		for(i=0;i<groups.length;i++){
+			$('[id="'+groups[i]+'"').removeClass('selected');
+		}
+	}
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
 	//when the user clicks the next suggestion button, load the next suggestion
@@ -15,14 +31,15 @@ $(document).ready(function () {
 	});
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
-		// if still searching for open study spaces
-		if ($('#openBtn').hasClass('selected')){
+		// if still searching for tutorial rooms
+		if ($('#shutBtn').hasClass('selected')) {
 			// get a new list of suggestions from the server based on the user's options
+			//TODO: update for tut rooms
 			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
 			$('#nextSuggestionBtn').removeClass('disabled');
 		} else {
 			//TODO: work out what to do
-			location.href = ('/bookable/#close='+$('#nearbyBtn').hasClass('selected')+'&empty='+$('#emptyBtn').hasClass('selected')+'&groups='+getUnselectedGroups().join().replace(/ /g,'%20'));
+			location.href = ('/bookable/#close=' + $('#nearbyBtn').hasClass('selected') + '&empty=' + $('#emptyBtn').hasClass('selected') + '&groups=' + getUnselectedGroups().join().replace(/ /g, '%20'));
 		}
 	});
 });
@@ -33,37 +50,39 @@ $(document).ready(function () {
    nearby (boolean): whether the user is filtering by nearby
    empty (boolean): whether the user is filtering by empty
    group (string): the campus that the user is searching in.
-   One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
+   One of: â€˜Centralâ€™,â€˜ECAâ€™,'Accommodation Servicesâ€™, 'Holyrood and High School Yardsâ€™,â€˜KB Labsâ€™
 */
+//TODO: update
 function getSuggestions(nearby, empty, groups) {
 	//send the get request
 	$.get('http://127.0.0.1:8000/open/filter', {
-		'nearby': nearby,
-		'empty': empty,
-		'groupsUnselected[]': groups,
-		'latitude': userLatitude,
-		'longitude': userLongitude
-	})
-	.done(function (data) {
-		//if successful, save the data received
-		suggestions = data;
-		//and an index to each of the JSONs
-		for (var i = 0; i < suggestions.length; i++) {
-			suggestions[i].index = i;
-		}
-		//load the first suggestion
-		currentChoice = suggestions[0];
-		loadChoice();
-	});
+			'nearby': nearby,
+			'empty': empty,
+			'groupsUnselected[]': groups,
+			'latitude': userLatitude,
+			'longitude': userLongitude
+		})
+		.done(function (data) {
+			//if successful, save the data received
+			suggestions = data;
+			//and an index to each of the JSONs
+			for (var i = 0; i < suggestions.length; i++) {
+				suggestions[i].index = i;
+			}
+			//load the first suggestion
+			currentChoice = suggestions[0];
+			loadChoice();
+		});
 }
 
 /*
    Populate the website with the suggestion
    Parameters: none
 */
+//TODO: update
 function loadChoice() {
 	//populate the html
-	$('#roomName').html(processRoomName(currentChoice));
+	$('#roomName').html(currentChoice.location);
 	$('#buildingName').html(currentChoice.group);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
@@ -84,16 +103,6 @@ function getUnselectedGroups() {
 		ids.push(this.id);
 	});
 	return ids;
-}
-
-/*
-   Process the name of the building to remove the campus
-   Parameters:
-   suggestion (object): the suggestion being processed
-*/
-function processRoomName(suggestion) {
-	var regex = new RegExp(suggestion.group + '( - )? ?', 'g');
-	return (suggestion.location).replace(regex, '');
 }
 
 /*
@@ -141,6 +150,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
+	//TODO: update
 	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
 }
 
