@@ -51,6 +51,8 @@ class Room_Feed(models.Model):
     whiteboard = models.BooleanField(default=False)
     blackboard = models.BooleanField(default=False)
     projector = models.BooleanField(default=False)
+    printer = models.BooleanField(default=False)
+
     locally_allocated = models.BooleanField(default=False)
     zoneId = models.CharField(max_length=50)
 
@@ -77,6 +79,7 @@ class Bookable_Room(models.Model):
     projector = models.BooleanField(default=False)
     locally_allocated = models.BooleanField(default=False)
     zoneId = models.CharField(max_length=50)
+    printer = models.BooleanField(default=False)
     # building attributes
     building_name = models.CharField(max_length=100)
     longitude = models.FloatField()

@@ -32,12 +32,15 @@ def update_room_table():
             projector = False
             blackboard = False
             locally_allocated = False
+            printer = False
 
             for dict in room['suitabilities']:
                 suit = ""
                 for x in list(dict.values()):
                     suit += str(x)
 
+                if 'Printing' in suit:
+                    printer = True
                 if 'Whiteboard' in suit:
                     whiteboard = True
                 if 'Locally Allocated' in suit:
@@ -59,6 +62,7 @@ def update_room_table():
                         blackboard = blackboard,
                         projector = projector,
                         locally_allocated = locally_allocated,
+                        printer = printer,
                         zoneId = zoneId)
 
             obj.save()
@@ -134,6 +138,7 @@ def merge_room_building():
                             description = results.description,
                             capacity = results.capacity,
                             pc = results.pc,
+                            printer = results.printer,
                             whiteboard = results.whiteboard,
                             blackboard = results.blackboard,
                             projector = results.projector,
