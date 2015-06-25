@@ -89,7 +89,22 @@ class Bookable_Room(models.Model):
     def __str__(self):
         return self.field_building_name + ": " + self.title
 
-    def get_distance(self, usr_longitude, usr_latitude):
-        result = (self.longitude - usr_longitude)**2 + (self.latitude - usr_latitude)**2
-        result = math.sqrt(result)
-        return result
+    # calculate the distance between the current building and the inputted point
+    # parameters: long1 - the longitude of the user
+    #             lat1 - the latitude of the user
+    def get_distance(self, long1, lat1):
+        R = 6371000 # metres
+        # convert all coordinates to radians
+        t1 = self.toRadians(lat1)
+        t2 = self.toRadians(self.latitude)
+        dt = self.toRadians(self.latitude - lat1)
+        dl = self.toRadians(self.longitude - long1)
+        # do some clever maths which the internet told me was correct
+        a = math.sin(dt / 2) * math.sin(dt / 2) + math.cos(t1) * math.cos(t2) * math.sin(dl / 2) * math.sin(dl / 2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+        # return the distance between the points
+        return R * c
+    # converts from degrees to radians
+    # parameters: x - the value in degrees to be converted
+    def toRadians(self, x):
+        return x*math.pi/180
