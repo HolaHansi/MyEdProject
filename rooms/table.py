@@ -4,6 +4,14 @@ from rooms.models import Room_Feed, Building_Feed, Bookable_Room
 def get_names(listOfDicts):
     names = ""
 
+def get_root_campus(zone_id):
+    url = 'http://nightside.is.ed.ac.uk:8080/zone/'+zone_id
+    print(url)
+    parent = requests.get(url)
+    parent = parent.json()
+    if parent['parentZoneId'] is None:
+        return (parent['name'],parent['zoneId'])
+    return get_root_campus(parent['parentZoneId'])
 
 def update_room_table():
     """
@@ -52,6 +60,11 @@ def update_room_table():
                 if 'Blackboard' in suit:
                     blackboard = True
 
+            root_campus = get_root_campus(zoneId)
+
+            campus_name = root_campus[0]
+            campus_id = root_campus[1]
+
             obj = Room_Feed(locationId=locationId,
                         abbreviation = abbreviation,
                         room_name = room_name,
@@ -63,7 +76,9 @@ def update_room_table():
                         projector = projector,
                         locally_allocated = locally_allocated,
                         printer = printer,
-                        zoneId = zoneId)
+                        zoneId = zoneId,
+                        campus_id = campus_id,
+                        campus_name = campus_name)
 
             obj.save()
 
@@ -146,7 +161,9 @@ def merge_room_building():
                             zoneId = results.zoneId,
                             longitude = results.longitude,
                             latitude = results.latitude,
-                            building_name = results.building_name)
+                            building_name = results.building_name,
+                            campus_id = results.campus_id,
+                            campus_name = results.campus_name)
 
         obj.save()
     return 'success'
