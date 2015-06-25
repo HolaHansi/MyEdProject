@@ -1,0 +1,39 @@
+#logo {
+    height: 50px;
+    margin-top: 20px;
+    margin-left: 0px;
+}
+
+#box {
+   width: 100%;
+   padding-bottom: 100%;
+
+}
+#innerContent {
+   position: absolute;
+}
+
+
+/* --------------------------------------------------------------- LEFT SIDE -----
+
+
+#sidebar { position: absolute; left: 15px; top: 110px; border: 0; padding: 0; width: 150px; height: auto; z-index: 3; }*/
+
+#sidebar { width: 50%}
+#sidebar a, #sidebar a:link, #sidebar a:visited, #sidebar a:hover, #sidebar a:active { display: block; outline: none; }
+
+#sidebar.button { position: relative; background: #fff url(../images/line.gif) repeat-y; background-position: right; }
+#sidebar a.button { position: relative; color: #006699; width: auto; height: 100%;
+padding: 7px; outline: none; margin: -1px 0px 0px 0px; border-top: 1px solid #7CB2CC; border-bottom: 1px solid #7CB2CC; }
+#sidebar a.button:link 	{ border-top: 1px solid #7CB2CC; border-bottom: 1px solid #7CB2CC; }
+#sidebar a.button:visited { border-top: 1px solid #7CB2CC; border-bottom: 1px solid #7CB2CC; }
+#sidebar a.button:hover { background: #D6E4EA; border-top: 1px solid #7CB2CC; border-bottom: 1px solid #7CB2CC; }
+#sidebar a.button:active { border-top: 1px solid #7CB2CC; border-bottom: 1px solid #7CB2CC; }
+
+
+/*#main2  { /* narrower main with menu at left & image or menu at right */
+/*position: absolute; left: 25%; top: 110px;
+margin: 0px; padding: 0px; border: 0px;
+padding-bottom: 150px; border-bottom: 50px solid #fff;
+width : 50%; height: auto; display: block;
+z-index: 1; text-align: justify;*/
