@@ -56,6 +56,9 @@ class Room_Feed(models.Model):
     locally_allocated = models.BooleanField(default=False)
     zoneId = models.CharField(max_length=50)
 
+    campus_id = models.CharField(max_length=50)
+    campus_name = models.CharField(max_length=100)
+
 class Building_Feed(models.Model):
     building_name = models.CharField(max_length=100)
     abbreviation = models.CharField(max_length=30, primary_key=True)
@@ -84,6 +87,9 @@ class Bookable_Room(models.Model):
     building_name = models.CharField(max_length=100)
     longitude = models.FloatField()
     latitude = models.FloatField()
+    # campus attributes
+    campus_name = models.CharField(max_length=100)
+    campus_id = models.CharField(max_length=50)
 
 
     def __str__(self):
