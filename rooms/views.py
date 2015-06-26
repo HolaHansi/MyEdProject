@@ -28,19 +28,29 @@ def filter_suggestions(request):
     :return: JSON object
     """
     if request.method == "GET":
-        # don't suggest any locally allocated rooms
-        data = Bookable_Room.objects.exclude(locally_allocated=1)
-        data = data.exclude(description="Theatre Style: Fixed tiered seating")
+        # don't suggest any lecture theatres
+        data = Bookable_Room.objects.exclude(description="Theatre Style: Fixed tiered seating")
 
         # if searching for pc...
+        if request.GET['bookable'] == 'true':
+            data = data.exclude(locally_allocated=1)
+            data=data.filter(pc='true')
         if request.GET['pc'] == 'true':
             data=data.filter(pc='true')
         # if searching for whiteboard...
         if request.GET['whiteboard'] == 'true':
             data=data.filter(whiteboard='true')
+        # if searching for blackboard...
+        if request.GET['blackboard'] == 'true':
+            data=data.filter(blackboard='true')
         # if searching for projector...
         if request.GET['projector'] == 'true':
             data=data.filter(projector='true')
+
+
+        groups = request.GET.getlist('groupsUnselected[]')
+        for group in groups:
+            data = data.exclude(campus_name=group)
 
         # if sorting by location
         if request.GET['nearby'] == 'true':

@@ -7180,6 +7180,11 @@ button.wit .close {
 .wit .glyphicon-whiteboard {
   background-image: url("../images/whiteboardGlyphicon.png");
 }
+.wit .glyphicon-blackboard-custom {
+  background-image: url("../images/whiteboardGlyphicon.png");
+  filter: invert(1);
+  -webkit-filter: invert(1);
+}
 .wit .glyphicon-projector {
   background-image: url("../images/projectorGlyphicon2.png");
 }

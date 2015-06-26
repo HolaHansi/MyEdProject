@@ -10,7 +10,7 @@ def get_root_campus(zone_id):
     parent = requests.get(url)
     parent = parent.json()
     if parent['parentZoneId'] is None:
-        return (parent['name'],parent['zoneId'])
+        return (parent['name'][1:],parent['zoneId'])
     return get_root_campus(parent['parentZoneId'])
 
 def update_room_table():
