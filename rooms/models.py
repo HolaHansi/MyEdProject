@@ -93,7 +93,7 @@ class Bookable_Room(models.Model):
 
 
     def __str__(self):
-        return self.field_building_name + ": " + self.title
+        return self.building_name + ": " + self.room_name
 
     # calculate the distance between the current building and the inputted point
     # parameters: long1 - the longitude of the user

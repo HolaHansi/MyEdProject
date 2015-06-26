@@ -4,6 +4,8 @@ var currentChoice = {}; //the suggestion currently on display
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
+var roomLikedByUser = 'false'; // true if current suggestion is liked by user
+
 
 $(document).ready(function () {
 	//toggle buttons based on any parameters from the url
@@ -29,6 +31,29 @@ $(document).ready(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
+
+	$('#likeBtn').click(function () {
+	var locationId = currentChoice.locationId;
+	$.post('/like/', {
+		'locationId': locationId,
+		'roomLikedByUser': roomLikedByUser
+	})
+	.done(function(){
+		if (roomLikedByUser=='false') {
+			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
+			roomLikedByUser = 'true';
+		} else {
+			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
+			roomLikedByUser = 'false';
+		}
+	});
+
+
+    });
+
+
+
+
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
 		// if still searching for tutorial rooms
@@ -67,7 +92,6 @@ function getSuggestions(nearby, bookable, pc, whiteboard, blackboard, projector,
 			'longitude': userLongitude
 		})
 		.done(function (data) {
-			console.log(data);
 			//if successful, save the data received
 			suggestions = data;
 			//and an index to each of the JSONs
@@ -79,6 +103,31 @@ function getSuggestions(nearby, bookable, pc, whiteboard, blackboard, projector,
 			loadChoice();
 		});
 }
+
+
+/*
+Liked returns true if the current suggestion is liked by the user, and false otherwise.
+ */
+
+function liked(locationId) {
+    $.get('/like/', {
+        'locationId': locationId
+    })
+    .done(function(data) {
+        roomLikedByUser = data;
+		if (roomLikedByUser=='true') {
+			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
+		}else{
+			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
+		}
+    });
+};
+
+
+
+
+
+
 
 /*
    Populate the website with the suggestion
@@ -101,6 +150,9 @@ function loadChoice() {
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
+
+	// check if current choice is liked by user. This updates the variable
+    liked(currentChoice.locationId);
 }
 
 /*

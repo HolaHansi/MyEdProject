@@ -68,8 +68,7 @@ def like(request):
             roomLikedByUser = request.POST['roomLikedByUser']
 
             # get room that was liked
-            room = Bookable_Room.objects.get(locationId=pc_id)
-
+            room = Bookable_Room.objects.get(locationId=locationId)
             # if the room has not been liked before, add it to likes, otherwise, remove it.
             if roomLikedByUser == 'false':
                 userprofile.room_favourites.add(room)
@@ -104,11 +103,13 @@ def like(request):
             # get the room in question
             locationId = request.GET['locationId']
 
+            print('reached')
             #get userprofile
             user = request.user
             userprofile = UserProfile.objects.get(user=user)
 
             # if the room is already liked by user, then assign true to pcLikedByUser
+            print('reached')
             try:
                 userprofile.room_favourites.get(locationId=locationId)
                 roomLikedByUser = 'true'
@@ -123,8 +124,11 @@ def like(request):
 def favourites(request):
     user = request.user
     userprofile = UserProfile.objects.get(user=user)
-    query = userprofile.pc_favourites.all()
-    context = {'list_of_favourites': query,
+    pc_favourites = userprofile.pc_favourites.all()
+    room_favourites = userprofile.room_favourites.all()
+
+    context = {'pc_favourites': pc_favourites,
+               'room_favourites': room_favourites,
                'user': user}
     return render(request, 'users/favourites.html', context)
 
