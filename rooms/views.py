@@ -29,7 +29,8 @@ def filter_suggestions(request):
     """
     if request.method == "GET":
         # don't suggest any lecture theatres
-        data = Bookable_Room.objects.exclude(description="Theatre Style: Fixed tiered seating")
+        data = Bookable_Room.objects.exclude(description__icontains="Theatre Style")
+        data=data.exclude(room_name__icontains="Lecture Theatre")
 
         # if searching for pc...
         if request.GET['bookable'] == 'true':
