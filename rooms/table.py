@@ -4,29 +4,19 @@ from rooms.models import Room_Feed, Building_Feed, Bookable_Room
 def get_names(listOfDicts):
     names = ""
 
-def get_root_campus(zone_id):
-    url = 'http://nightside.is.ed.ac.uk:8080/zone/'+zone_id
-    print(url)
-    parent = requests.get(url)
-    parent = parent.json()
-    if parent['parentZoneId'] is None:
-        return (parent['name'][1:],parent['zoneId'])
-    return get_root_campus(parent['parentZoneId'])
-
 def update_room_table():
     """
-    The function makes a request to the bookablerooms feed and updates the fields in
+    The function makes a request to the bookablerooms feeds and updates the fields in
     the Room_Feed table.
     :return: void
     """
-    # url = "http://www-test.bookablerooms.is.ed.ac.uk/json_feed" #larger bookables
 
-    url = "http://nightside.is.ed.ac.uk:8080/locations"
-
-    rooms = requests.get(url)
-
-    for room in rooms.json():
+    rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
+    zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
+    # save each bookable room:
+    for room in rooms:
         if 'locationId' in room.keys():
+            # save the basic details
             locationId = room['locationId']
             abbreviation = room['host_key'][:4]
             room_name = room['name']
@@ -34,14 +24,14 @@ def update_room_table():
             capacity = int(room['capacity'])
             zoneId = room['zoneId']
 
-            #suitabilities values must be refreshed
+            # initialize suitability values
             whiteboard = False
             pc = False
             projector = False
             blackboard = False
             locally_allocated = False
             printer = False
-
+            # save the suitabilities
             for dict in room['suitabilities']:
                 suit = ""
                 for x in list(dict.values()):
@@ -60,11 +50,25 @@ def update_room_table():
                 if 'Blackboard' in suit:
                     blackboard = True
 
-            root_campus = get_root_campus(zoneId)
+            # look up what campus the room is on:
+            #initialize variables
+            campus_id=''
+            campus_name=''
+            zoneSearchId=zoneId
+            # search through all the zones until you find the root
+            while campus_id=='':
+                for zone in zones:
+                    # if this is the zone you're searching for
+                    if zone['zoneId'] == zoneSearchId :
+                        # if this zone is a campus, not just a building, save this as the room's campus
+                        if zone['parentZoneId'] is None:
+                            campus_id=zone['zoneId']
+                            campus_name=zone['name'][1:]
+                        else:
+                        # if this zone is the parent but not a campus, find out which campus the parent is on
+                            zoneSearchId=zone['parentZoneId']
 
-            campus_name = root_campus[0]
-            campus_id = root_campus[1]
-
+            # save the object
             obj = Room_Feed(locationId=locationId,
                         abbreviation = abbreviation,
                         room_name = room_name,
