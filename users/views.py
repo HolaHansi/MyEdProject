@@ -5,6 +5,7 @@ from .forms import EntryForm, UserForm, UserProfileForm
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile
 from pc.models import PC_Space
+from rooms.models import Bookable_Room
 from rest_framework.renderers import JSONRenderer
 
 
@@ -29,46 +30,92 @@ def index(request):
 
 def like(request):
     if request.method == 'POST':
-        # get the id of liked pc space
-        pc_id = request.POST['pc_id']
-        #get the user from session
-        user = request.user
-
-        # get pcLikedByUser variable
-        pcLikedByUser = request.POST['pcLikedByUser']
-
-
-        userprofile = UserProfile.objects.get(user=user)
-
-        # get PC that was liked
-        pc = PC_Space.objects.get(id=pc_id)
-
-
-        if pcLikedByUser == 'false':
-            # add this pc to the favourites list
-            userprofile.pc_favourites.add(pc)
-        else:
-            userprofile.pc_favourites.remove(pc)
-
-        return HttpResponse(status=200)
-
-    if request.method == 'GET':
-        print('so far so good')
-        pc_id = request.GET['pc_id']
-
-        user = request.user
-
-        print('user received')
-        userprofile = UserProfile.objects.get(user=user)
-        print('userprofile received')
-
+        # check if the like request pertains to a pc:
         try:
-            userprofile.pc_favourites.get(id=pc_id)
-            pcLikedByUser = 'true'
+            # get the id of liked pc space
+            pc_id = request.POST['pc_id']
+            # get the user from session
+            user = request.user
+
+            # get user profile given the user from the session
+            userprofile = UserProfile.objects.get(user=user)
+
+
+            # get pcLikedByUser variable
+            pcLikedByUser = request.POST['pcLikedByUser']
+
+
+            # get PC that was liked
+            pc = PC_Space.objects.get(id=pc_id)
+
+            # if the pc has not been liked before, add it to likes, otherwise, remove it.
+            if pcLikedByUser == 'false':
+                userprofile.pc_favourites.add(pc)
+            else:
+                userprofile.pc_favourites.remove(pc)
+
+            return HttpResponse(status=200)
         except:
-            pcLikedByUser = 'false'
-        print('survived exceptions!!')
-        return JSONResponse(pcLikedByUser)
+            locationId = request.POST['locationId']
+
+            # get the user from session
+            user = request.user
+
+            # get user profile given the user from the session
+            userprofile = UserProfile.objects.get(user=user)
+
+            # get pcLikedByUser variable
+            roomLikedByUser = request.POST['roomLikedByUser']
+
+            # get room that was liked
+            room = Bookable_Room.objects.get(locationId=pc_id)
+
+            # if the room has not been liked before, add it to likes, otherwise, remove it.
+            if roomLikedByUser == 'false':
+                userprofile.room_favourites.add(room)
+            else:
+                userprofile.room_favourites.remove(room)
+
+            return HttpResponse(status=200)
+
+
+    # the GET branch is for obtaining the likedByUser variable for a particular room or pc.
+    if request.method == 'GET':
+        # for PC request try:
+        try:
+            # get the pc in question
+            pc_id = request.GET['pc_id']
+
+            #get userprofile
+            user = request.user
+            userprofile = UserProfile.objects.get(user=user)
+
+            # if the pc is already liked by user, then assign true to pcLikedByUser
+            try:
+                userprofile.pc_favourites.get(id=pc_id)
+                pcLikedByUser = 'true'
+            except:
+                pcLikedByUser = 'false'
+
+            return JSONResponse(pcLikedByUser)
+
+        # for Room requests
+        except:
+            # get the room in question
+            locationId = request.GET['locationId']
+
+            #get userprofile
+            user = request.user
+            userprofile = UserProfile.objects.get(user=user)
+
+            # if the room is already liked by user, then assign true to pcLikedByUser
+            try:
+                userprofile.room_favourites.get(locationId=locationId)
+                roomLikedByUser = 'true'
+            except:
+                roomLikedByUser = 'false'
+
+            return JSONResponse(roomLikedByUser)
 
 
 
