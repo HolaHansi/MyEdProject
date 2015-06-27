@@ -43,7 +43,7 @@ def update_room_table():
                     whiteboard = True
                 if 'Locally Allocated' in suit:
                     locally_allocated = True
-                if 'PC' in suit:
+                if 'PC' in suit or 'Computer Lab' in description:
                     pc = True
                 if 'Projector' in suit:
                     projector = True

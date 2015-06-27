@@ -43,7 +43,6 @@ $(document).ready(function () {
 		if ($('#openBtn').hasClass('selected')){
 			// get a new list of suggestions from the server based on the user's options
 			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
-			$('#nextSuggestionBtn').removeClass('disabled');
 		} else {
 			//TODO: work out what to do
 			location.href = ('/bookable/#close='+$('#nearbyBtn').hasClass('selected')+'&empty='+$('#emptyBtn').hasClass('selected')+'&groups='+getUnselectedGroups().join().replace(/ /g,'%20'));
@@ -83,7 +82,6 @@ function liked(pc_id) {
 */
 function getSuggestions(nearby, empty, groups) {
 	//send the get request
-    console.log(groups);
 	$.get('/open/filter', {
 		'nearby': nearby,
 		'empty': empty,
@@ -94,14 +92,25 @@ function getSuggestions(nearby, empty, groups) {
 	.done(function (data) {
 		//if successful, save the data received
 		suggestions = data;
-        console.log(data);
-		//and an index to each of the JSONs
-		for (var i = 0; i < suggestions.length; i++) {
-			suggestions[i].index = i;
+		//if at least one room fits the criteria
+		if(suggestions.length>0){
+			$('#nextSuggestionBtn').removeClass('disabled');
+			//and an index to each of the JSONs
+			for (var i = 0; i < suggestions.length; i++) {
+				suggestions[i].index = i;
+			}
+			
+			//load the first suggestion
+			currentChoice = suggestions[0];
+			loadChoice();
+		}else{
+			$('#optionsTriangle').click();
+			$('#roomName').html('n/a');
+			$('#buildingName').html('');
+			$('#nextSuggestionBtn').addClass('disabled');
+			$('#distance').html(': ' + ('0km'));
+			alert('No rooms available fit that criteria.  Try again.  ');
 		}
-		//load the first suggestion
-		currentChoice = suggestions[0];
-		loadChoice();
 	});
 }
 

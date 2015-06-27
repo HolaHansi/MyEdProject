@@ -4,6 +4,8 @@ var currentChoice = {}; //the suggestion currently on display
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
+var roomLikedByUser = 'false'; // true if current suggestion is liked by user
+
 
 $(document).ready(function () {
 	//toggle buttons based on any parameters from the url
@@ -29,6 +31,29 @@ $(document).ready(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
 		loadChoice();
 	});
+
+	$('#likeBtn').click(function () {
+	var locationId = currentChoice.locationId;
+	$.post('/like/', {
+		'locationId': locationId,
+		'roomLikedByUser': roomLikedByUser
+	})
+	.done(function(){
+		if (roomLikedByUser=='false') {
+			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
+			roomLikedByUser = 'true';
+		} else {
+			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
+			roomLikedByUser = 'false';
+		}
+	});
+
+
+    });
+
+
+
+
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
 		// if still searching for tutorial rooms
@@ -36,7 +61,6 @@ $(document).ready(function () {
 			// get a new list of suggestions from the server based on the user's options
 			//TODO: update for tut rooms
 			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
-			$('#nextSuggestionBtn').removeClass('disabled');
 		} else {
 			//TODO: work out what to do
 			location.href = ('/bookable/#close=' + $('#nearbyBtn').hasClass('selected') + '&empty=' + $('#emptyBtn').hasClass('selected') + '&groups=' + getUnselectedGroups().join().replace(/ /g, '%20'));
@@ -52,7 +76,6 @@ $(document).ready(function () {
    group (string): the campus that the user is searching in.
    One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
 */
-//TODO: update
 function getSuggestions(nearby, bookable, pc, whiteboard, blackboard, projector, groups) {
 	//send the get request
 	$.get('http://127.0.0.1:8000/bookable/filter', {
@@ -67,18 +90,54 @@ function getSuggestions(nearby, bookable, pc, whiteboard, blackboard, projector,
 			'longitude': userLongitude
 		})
 		.done(function (data) {
-			console.log(data);
 			//if successful, save the data received
 			suggestions = data;
-			//and an index to each of the JSONs
-			for (var i = 0; i < suggestions.length; i++) {
-				suggestions[i].index = i;
+			//if at least one room fits the criteria
+			if(suggestions.length>0){
+				$('#nextSuggestionBtn').removeClass('disabled');
+				//and an index to each of the JSONs
+				for (var i = 0; i < suggestions.length; i++) {
+					suggestions[i].index = i;
+				}
+				
+				//load the first suggestion
+				currentChoice = suggestions[0];
+				loadChoice();
+			}else{
+				$('#optionsTriangle').click();
+				$('#roomName').html('n/a');
+				$('#buildingName').html('');
+				$('#nextSuggestionBtn').addClass('disabled');
+				$('#distance').html(': ' + ('0km'));
+				alert('No rooms available fit that criteria.  Try again.  ');
 			}
-			//load the first suggestion
-			currentChoice = suggestions[0];
-			loadChoice();
 		});
 }
+
+
+/*
+Liked returns true if the current suggestion is liked by the user, and false otherwise.
+ */
+
+function liked(locationId) {
+    $.get('/like/', {
+        'locationId': locationId
+    })
+    .done(function(data) {
+        roomLikedByUser = data;
+		if (roomLikedByUser=='true') {
+			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
+		}else{
+			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
+		}
+    });
+};
+
+
+
+
+
+
 
 /*
    Populate the website with the suggestion
@@ -101,6 +160,9 @@ function loadChoice() {
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
+
+	// check if current choice is liked by user. This updates the variable
+    liked(currentChoice.locationId);
 }
 
 /*
