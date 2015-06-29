@@ -129,9 +129,6 @@ def favourites(request):
     context = {'pc_favourites': pc_favourites,
                'room_favourites': room_favourites,
                'user': user}
-    print(pc_favourites[0].free)
-    print(room_favourites)
-    print(user)
     return render(request, 'users/favourites.html', context)
 
 

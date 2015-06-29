@@ -11,7 +11,7 @@
     <h3>PC favourites:</h3>
     <ul class="list-group">
     {% for fav in pc_favourites %}
-        <li class="list-group-item">{{ fav }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
+        <li class="list-group-item">{{ fav | processPCName:fav.group }} ({{fav.group}}): {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
     {% endfor %}
     </ul>
 
