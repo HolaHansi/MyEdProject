@@ -32,12 +32,15 @@ def filter_suggestions(request):
         data = Bookable_Room.objects.exclude(description__icontains="Theatre Style")
         data=data.exclude(room_name__icontains="Lecture Theatre")
 
-        # if searching for pc...
+        # if searching for bookable spaces...
         if request.GET['bookable'] == 'true':
-            data = data.exclude(locally_allocated=1)
-            data=data.filter(pc='true')
+            data = data.filter(locally_allocated=0)
+        # if searching for pc...
         if request.GET['pc'] == 'true':
             data=data.filter(pc='true')
+        # if searching for printer...
+        if request.GET['printer'] == 'true':
+            data=data.filter(printer='true')
         # if searching for whiteboard...
         if request.GET['whiteboard'] == 'true':
             data=data.filter(whiteboard='true')

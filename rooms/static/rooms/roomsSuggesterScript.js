@@ -60,7 +60,7 @@ $(document).ready(function () {
 		if ($('#shutBtn').hasClass('selected')) {
 			// get a new list of suggestions from the server based on the user's options
 			//TODO: update for tut rooms
-			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 		} else {
 			//TODO: work out what to do
 			location.href = ('/bookable/#close=' + $('#nearbyBtn').hasClass('selected') + '&empty=' + $('#emptyBtn').hasClass('selected') + '&groups=' + getUnselectedGroups().join().replace(/ /g, '%20'));
@@ -76,12 +76,13 @@ $(document).ready(function () {
    group (string): the campus that the user is searching in.
    One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
 */
-function getSuggestions(nearby, bookable, pc, whiteboard, blackboard, projector, groups) {
+function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
 	//send the get request
 	$.get('http://127.0.0.1:8000/bookable/filter', {
 			'nearby': nearby,
 			'pc': pc,
 			'bookable': bookable,
+			'printer': printer,
 			'whiteboard': whiteboard,
 			'blackboard': blackboard,
 			'projector': projector,
@@ -151,7 +152,7 @@ function loadChoice() {
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computerTick').addClass(currentChoice.pc ? "tick" : "cross").removeClass(currentChoice.pc ? "cross" : "tick");
 	$('#bookableTick').addClass(currentChoice.locally_allocated ? "cross" : "tick").removeClass(currentChoice.locally_allocated ? "tick" : "cross");
-	$('#printerTick').addClass(currentChoice.pc ? "tick" : "cross").removeClass(currentChoice.pc ? "cross" : "tick"); //TODO: make printer
+	$('#printerTick').addClass(currentChoice.printer ? "tick" : "cross").removeClass(currentChoice.printer ? "cross" : "tick"); 
 	$('#whiteboardTick').addClass(currentChoice.whiteboard ? "tick" : "cross").removeClass(currentChoice.whiteboard ? "cross" : "tick");
 	$('#blackboardTick').addClass(currentChoice.blackboard ? "tick" : "cross").removeClass(currentChoice.blackboard ? "cross" : "tick");
 	$('#projectorTick').addClass(currentChoice.projector ? "tick" : "cross").removeClass(currentChoice.projector ? "cross" : "tick");
@@ -223,7 +224,7 @@ function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
 	//TODO: update
-	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
