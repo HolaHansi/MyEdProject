@@ -1,25 +1,30 @@
 {% extends 'core/base.html' %}
 
-<div class="container-fluid">
+{% load users_extra_tags %}
+
 {% block content %} <br><br><br>
-<p>hi <strong>{{ user.username }}</strong>, here are your favourites:</p>
+
+<div class="container-fluid">
+    <p>Hi <strong>{{ user.username }}</strong>, here are your favourites:</p>
 
 
     <h3>PC favourites:</h3>
-
+    <ul class="list-group">
     {% for fav in pc_favourites %}
-        <li>{{ fav }}</li>
+        <li class="list-group-item">{{ fav }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
     {% endfor %}
+    </ul>
 
     <br>
     <h3>Room favourites</h3>
 
+    <ul class="list-group">
     {% for fav in room_favourites %}
-        <li>{{ fav }}</li>
+        <li class="list-group-item">{{ fav }}</li>
     {% endfor %}
+    </ul>
 
-
+</div>
 
 {% endblock %}
 
-</div>

@@ -126,10 +126,12 @@ def favourites(request):
     userprofile = UserProfile.objects.get(user=user)
     pc_favourites = userprofile.pc_favourites.all()
     room_favourites = userprofile.room_favourites.all()
-
     context = {'pc_favourites': pc_favourites,
                'room_favourites': room_favourites,
                'user': user}
+    print(pc_favourites[0].free)
+    print(room_favourites)
+    print(user)
     return render(request, 'users/favourites.html', context)
 
 
