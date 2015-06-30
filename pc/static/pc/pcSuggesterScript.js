@@ -18,59 +18,65 @@ $(document).ready(function () {
 		loadChoice();
 	});
 
-    $('#likeBtn').click(function () {
-        var pc_id = currentChoice.id;
-    	$.post('/like/', {
-    		'pc_id': pc_id,
-            'pcLikedByUser': pcLikedByUser
-    	})
-        .done(function(){
-            if (pcLikedByUser=='false') {
-                $('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
-                pcLikedByUser = 'true';
-            } else {
-                $('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
-                pcLikedByUser = 'false';
-            }
-        });
+	//when the user clicks the like button, like or unlike the room as appropriate
+	$('#likeBtn').click(function () {
+		var pc_id = currentChoice.id;
+		$.post('/like/', {
+				'pc_id': pc_id,
+				'pcLikedByUser': pcLikedByUser
+			})
+			.done(function () {
+				if (pcLikedByUser == 'false') {
+					$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({
+						'opacity': 0.5
+					});
+					pcLikedByUser = 'true';
+				} else {
+					$('#likeBtn').html('<i class="fa fa-star"></i> like').css({
+						'opacity': 1
+					});
+					pcLikedByUser = 'false';
+				}
+			});
 
 
-    });
+	});
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
 		// if still searching for open study spaces
-		if ($('#openBtn').hasClass('selected')){
+		if ($('#openBtn').hasClass('selected')) {
 			// get a new list of suggestions from the server based on the user's options
 			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
 		} else {
 			//TODO: work out what to do
-			location.href = ('/bookable/#close='+$('#nearbyBtn').hasClass('selected')+'&empty='+$('#emptyBtn').hasClass('selected')+'&groups='+getUnselectedGroups().join().replace(/ /g,'%20'));
+			location.href = ('/bookable/#close=' + $('#nearbyBtn').hasClass('selected') + '&empty=' + $('#emptyBtn').hasClass('selected') + '&groups=' + getUnselectedGroups().join().replace(/ /g, '%20'));
 		}
 	});
 });
 
 
 /*
-Liked returns true if the current suggestion is liked by the user, and false otherwise.
+	Check if the current suggestion is liked by the user and change the style of the like button as appropriate
+	Parameters: locationId (string) - the id of the suggestion to be checked
  */
-
 function liked(pc_id) {
-    $.get('/like/', {
-        'pc_id': pc_id
-    })
-    .done(function(data) {
-        pcLikedByUser = data;
-        console.log(pcLikedByUser);
-		if (pcLikedByUser=='true') {
-			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
-		}else{
-			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
-		}
-    });
+	$.get('/like/', {
+			'pc_id': pc_id
+		})
+		.done(function (data) {
+			pcLikedByUser = data;
+			if (pcLikedByUser == 'true') {
+				$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({
+					'opacity': 0.5
+				});
+			} else {
+				$('#likeBtn').html('<i class="fa fa-star"></i> like').css({
+					'opacity': 1
+				});
+			}
+		});
 };
-
-
 
 /* 
    Get the list of suggestions from the server
@@ -83,35 +89,35 @@ function liked(pc_id) {
 function getSuggestions(nearby, empty, groups) {
 	//send the get request
 	$.get('/open/filter', {
-		'nearby': nearby,
-		'empty': empty,
-		'groupsUnselected[]': groups,
-		'latitude': userLatitude,
-		'longitude': userLongitude
-	})
-	.done(function (data) {
-		//if successful, save the data received
-		suggestions = data;
-		//if at least one room fits the criteria
-		if(suggestions.length>0){
-			$('#nextSuggestionBtn').removeClass('disabled');
-			//and an index to each of the JSONs
-			for (var i = 0; i < suggestions.length; i++) {
-				suggestions[i].index = i;
+			'nearby': nearby,
+			'empty': empty,
+			'groupsUnselected[]': groups,
+			'latitude': userLatitude,
+			'longitude': userLongitude
+		})
+		.done(function (data) {
+			//if successful, save the data received
+			suggestions = data;
+			//if at least one room fits the criteria
+			if (suggestions.length > 0) {
+				$('#nextSuggestionBtn').removeClass('disabled');
+				//and an index to each of the JSONs
+				for (var i = 0; i < suggestions.length; i++) {
+					suggestions[i].index = i;
+				}
+
+				//load the first suggestion
+				currentChoice = suggestions[0];
+				loadChoice();
+			} else {
+				$('#optionsTriangle').click();
+				$('#roomName').html('n/a');
+				$('#buildingName').html('');
+				$('#nextSuggestionBtn').addClass('disabled');
+				$('#distance').html(': ' + ('0km'));
+				alert('No rooms available fit that criteria.  Try again.  ');
 			}
-			
-			//load the first suggestion
-			currentChoice = suggestions[0];
-			loadChoice();
-		}else{
-			$('#optionsTriangle').click();
-			$('#roomName').html('n/a');
-			$('#buildingName').html('');
-			$('#nextSuggestionBtn').addClass('disabled');
-			$('#distance').html(': ' + ('0km'));
-			alert('No rooms available fit that criteria.  Try again.  ');
-		}
-	});
+		});
 }
 
 /* 
@@ -124,13 +130,13 @@ function loadChoice() {
 	$('#buildingName').html(currentChoice.group);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
-	
+
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
-    // check if current choice is liked by user. This updates the variable
-    liked(currentChoice.id);
+	// check if current choice is liked by user. This updates the variable
+	liked(currentChoice.id);
 }
 
 /* 

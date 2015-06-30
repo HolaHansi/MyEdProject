@@ -32,34 +32,33 @@ $(document).ready(function () {
 		loadChoice();
 	});
 
+	//when the user clicks the like button, like or unlike the room as appropriate
 	$('#likeBtn').click(function () {
-	var locationId = currentChoice.locationId;
-	$.post('/like/', {
-		'locationId': locationId,
-		'roomLikedByUser': roomLikedByUser
-	})
-	.done(function(){
-		if (roomLikedByUser=='false') {
-			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
-			roomLikedByUser = 'true';
-		} else {
-			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
-			roomLikedByUser = 'false';
-		}
+		var locationId = currentChoice.locationId;
+		$.post('/like/', {
+				'locationId': locationId,
+				'roomLikedByUser': roomLikedByUser
+			})
+			.done(function () {
+				if (roomLikedByUser == 'false') {
+					$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({
+						'opacity': 0.5
+					});
+					roomLikedByUser = 'true';
+				} else {
+					$('#likeBtn').html('<i class="fa fa-star"></i> like').css({
+						'opacity': 1
+					});
+					roomLikedByUser = 'false';
+				}
+			});
 	});
-
-
-    });
-
-
-
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
 		// if still searching for tutorial rooms
 		if ($('#shutBtn').hasClass('selected')) {
 			// get a new list of suggestions from the server based on the user's options
-			//TODO: update for tut rooms
 			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 		} else {
 			//TODO: work out what to do
@@ -94,17 +93,17 @@ function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, p
 			//if successful, save the data received
 			suggestions = data;
 			//if at least one room fits the criteria
-			if(suggestions.length>0){
+			if (suggestions.length > 0) {
 				$('#nextSuggestionBtn').removeClass('disabled');
 				//and an index to each of the JSONs
 				for (var i = 0; i < suggestions.length; i++) {
 					suggestions[i].index = i;
 				}
-				
+
 				//load the first suggestion
 				currentChoice = suggestions[0];
 				loadChoice();
-			}else{
+			} else {
 				$('#optionsTriangle').click();
 				$('#roomName').html('n/a');
 				$('#buildingName').html('');
@@ -115,55 +114,63 @@ function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, p
 		});
 }
 
-
 /*
-Liked returns true if the current suggestion is liked by the user, and false otherwise.
+	Check if the current suggestion is liked by the user and change the style of the like button as appropriate
+	Parameters: locationId (string) - the id of the suggestion to be checked
  */
-
 function liked(locationId) {
-    $.get('/like/', {
-        'locationId': locationId
-    })
-    .done(function(data) {
-        roomLikedByUser = data;
-		if (roomLikedByUser=='true') {
-			$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({'opacity':0.5});
-		}else{
-			$('#likeBtn').html('<i class="fa fa-star"></i> like').css({'opacity':1});
-		}
-    });
+	$.get('/like/', {
+			'locationId': locationId
+		})
+		.done(function (data) {
+			roomLikedByUser = data;
+			if (roomLikedByUser == 'true') {
+				$('#likeBtn').html('<i class="fa fa-star"></i> liked').css({
+					'opacity': 0.5
+				});
+			} else {
+				$('#likeBtn').html('<i class="fa fa-star"></i> like').css({
+					'opacity': 1
+				});
+			}
+		});
 };
-
-
-
-
-
-
 
 /*
    Populate the website with the suggestion
    Parameters: none
 */
-//TODO: update
 function loadChoice() {
 	//populate the html
-	$('#roomName').html(currentChoice.room_name);
+	$('#roomName').html(processRoomName(currentChoice.room_name));
 	$('#buildingName').html(currentChoice.building_name);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computerTick').addClass(currentChoice.pc ? "tick" : "cross").removeClass(currentChoice.pc ? "cross" : "tick");
 	$('#bookableTick').addClass(currentChoice.locally_allocated ? "cross" : "tick").removeClass(currentChoice.locally_allocated ? "tick" : "cross");
-	$('#printerTick').addClass(currentChoice.printer ? "tick" : "cross").removeClass(currentChoice.printer ? "cross" : "tick"); 
+	$('#printerTick').addClass(currentChoice.printer ? "tick" : "cross").removeClass(currentChoice.printer ? "cross" : "tick");
 	$('#whiteboardTick').addClass(currentChoice.whiteboard ? "tick" : "cross").removeClass(currentChoice.whiteboard ? "cross" : "tick");
 	$('#blackboardTick').addClass(currentChoice.blackboard ? "tick" : "cross").removeClass(currentChoice.blackboard ? "cross" : "tick");
 	$('#projectorTick').addClass(currentChoice.projector ? "tick" : "cross").removeClass(currentChoice.projector ? "cross" : "tick");
-
+	
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
 
-	// check if current choice is liked by user. This updates the variable
-    liked(currentChoice.locationId);
+	// check if current choice is liked by user. This updates the button.  
+	liked(currentChoice.locationId);
+}
+
+/*
+	Process the room name into a more human readable format
+	Paramters: name (string) - the room name to be processed
+	Output: string - the processed room name
+*/
+function processRoomName(name){
+	if(name.slice(0,2)=='zz'){
+		return name.slice(2,name.length);
+	}
+	return name;
 }
 
 /*
@@ -223,7 +230,6 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	//TODO: update
 	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 }
 
