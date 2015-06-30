@@ -51,7 +51,6 @@ def filter_suggestions(request):
         if request.GET['projector'] == 'true':
             data=data.filter(projector='true')
 
-
         groups = request.GET.getlist('groupsUnselected[]')
         for group in groups:
             data = data.exclude(campus_name=group)
@@ -63,7 +62,25 @@ def filter_suggestions(request):
             usr_latitude = float(request.GET['latitude'])
             # sort the buildings based on distance from user, closest first
             data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
+        # if they're currently searching for a room:
+        if request.GET['type']=='room':
+            serializer = Bookable_Room_Serializer(data, many=True)
+            return JSONResponse(serializer.data)
+        # if they're currently searching for a building
+        buildingDetails={}
+        for room in data:
+            print(room.abbreviation)
+            if not (room.abbreviation in buildingDetails):
+                buildingDetails[room.abbreviation]={
+                    'rooms':1,
+                    'buildingName':room.building_name,
+                    'latitude':room.latitude,
+                    'longitude':room.longitude,
+                    'campus':room.campus_name
+                }
+            else:
+                buildingDetails[room.abbreviation]['rooms']+=1
+        print('3')
+        return JSONResponse(buildingDetails)
 
-        serializer = Bookable_Room_Serializer(data, many=True)
-        return JSONResponse(serializer.data)
 

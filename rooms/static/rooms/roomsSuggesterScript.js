@@ -74,6 +74,7 @@ $(document).ready(function () {
 function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
 	//send the get request
 	$.get('http://127.0.0.1:8000/bookable/filter', {
+			'type': 'room',
 			'nearby': nearby,
 			'pc': pc,
 			'bookable': bookable,
@@ -86,6 +87,7 @@ function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, p
 			'longitude': userLongitude
 		})
 		.done(function (data) {
+			console.log(data);
 			//if successful, save the data received
 			suggestions = data;
 			//if at least one room fits the criteria
