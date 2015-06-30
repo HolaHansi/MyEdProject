@@ -7260,6 +7260,9 @@ button.wit .close {
 .wit .fullOptions #retryBtn {
   margin: 20px 0px;
 }
+.wit .fullOptions #switchBtn {
+  margin: 20px 0px;
+}
 .wit .fullOptions .row {
   padding: 0px 10px;
 }

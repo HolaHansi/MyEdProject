@@ -16,19 +16,6 @@
     <div class='container fullOptions'>
         <div class='row'>
             <div class="col-xs-12">
-                <p1>Type:</p1>
-            </div>
-        </div>
-        <div class='row'>
-            <div class="col-xs-12">
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <a class="btn btn-primary btn-switch selected" role="button" id='openBtn'>Computer Lab</a>
-                    <a class="btn btn-primary btn-switch" role="button" id='shutBtn'>Tutorial Room</a>
-                </div>
-            </div>
-        </div>
-        <div class='row'>
-            <div class="col-xs-12">
                 <p1>Must be:</p1>
             </div>
         </div>
@@ -37,22 +24,7 @@
                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
                     <a class="btn btn-primary btn-toggle selected" role="button" id="nearbyBtn">Nearby</a>
                     <a class="btn btn-primary btn-toggle selected" role="button" id="emptyBtn">Empty</a>
-                    <a class="btn btn-primary btn-toggle selected" role="button">Open late</a>
-                </div>
-            </div>
-        </div>
-        <div class='row'>
-            <div class="col-xs-12">
-                <p1>Must have:</p1>
-            </div>
-        </div>
-        <div class='row'>
-            <div class="col-xs-12">
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                    <a class="btn btn-primary btn-toggle" role="button"><span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span><p class='labelText'>Printer</p></a>
-                    <a class="btn btn-primary btn-toggle selected" role="button"><span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span><p class='labelText'>Computers</p></a>
-                    <a class="btn btn-primary btn-toggle" role="button"><span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span><p class='labelText'>Projector</p></a>
-                    <a class="btn btn-primary btn-toggle" role="button"><span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span><p class='labelText'>Whiteboard</p></a>
+                    <a class="btn btn-primary btn-toggle disabled" role="button">Open late</a>
                 </div>
             </div>
         </div>
@@ -65,17 +37,20 @@
             <div class="col-xs-12">
                 <div class="btn-group btn-group-justified" role="group" id='campusGroup'>
                     <a class="btn btn-primary btn-toggle selected" role="button" id='Central'>Central</a>
-                    <a class="btn btn-primary btn-toggle selected" role="button" id='KB Labs'>Kings <span class='hidden-xs selected'>Buildings</span></a>
                     <a class="btn btn-primary btn-toggle hidden-xs selected" role="button" id='Business School'>Business School</a>
                     <a class="btn btn-primary btn-toggle hidden-xs selected" role="button" id='ECA'>ECA</a>
                     <a class="btn btn-primary btn-toggle hidden-xs selected" role="button" id='Holyrood and High School Yards'>Holyrood and High School Yards</a>
                     <a class="btn btn-primary btn-toggle hidden-xs hidden-sm hidden-md selected" role="button" id='Accommodation Services'>Accommodation Services</a>
+                    <a class="btn btn-primary btn-toggle selected" role="button" id='KB Labs'>King's <span class='hidden-xs selected'>Buildings</span></a>
                 </div>
             </div>
         </div>
         <div class='row'>
-            <div class="col-xs-12">
+            <div class="col-xs-6">
                 <a class='btn btn-primary' id='retryBtn' role='button'>Search again!</a>
+            </div>
+            <div class="col-xs-6">
+                <a class='btn btn-primary' id='switchBtn' role='button'>Find Tutorial Room -></a>
             </div>
         </div>
     </div>
