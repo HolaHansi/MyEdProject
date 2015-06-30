@@ -68,26 +68,6 @@ class Building_Feed(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Searchable_Buildings(models.Model):
-    # main building attributes
-    building_name = models.CharField(max_length=100)
-    abbreviation = models.CharField(max_length=30, primary_key=True)
-    longitude = models.FloatField()
-    latitude = models.FloatField()
-    # at least one room's attributes
-    pc = models.BooleanField(default=False)
-    whiteboard = models.BooleanField(default=False)
-    blackboard = models.BooleanField(default=False)
-    projector = models.BooleanField(default=False)
-    locally_allocated = models.BooleanField(default=False)
-    printer = models.BooleanField(default=False)
-    # campus attributes
-    campus_name = models.CharField(max_length=100)
-    campus_id = models.CharField(max_length=50)
-
-    def __str__(self):
-        return str(self.name)
-
 
 class Bookable_Room(models.Model):
     #room attributes:
