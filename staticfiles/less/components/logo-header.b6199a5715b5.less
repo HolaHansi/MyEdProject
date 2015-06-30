@@ -1,0 +1,29 @@
+/* Header - Logo, Search & Schools link */
+
+#uoe-logo.container {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+
+	img.uoe-logo-img { 
+		width: 85%;
+		max-width:  332px;
+		max-height:  79px;  
+	}
+	
+	@media (max-width: @screen-xs-max) { 
+		img.uoe-logo-img { 
+			width: 65% // drop the size of logo for xs 
+		}
+	 } 
+}
+
+// schools and departments link
+.schools-depts {
+	color: @brand-primary;
+	font-weight: 700;
+	font-size: 115%;
+	
+	a { 
+		color: @brand-primary; 
+	}
+}

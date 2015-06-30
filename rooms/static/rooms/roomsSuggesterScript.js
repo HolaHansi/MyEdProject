@@ -78,7 +78,7 @@ $(document).ready(function () {
 */
 function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
 	//send the get request
-	$.get('http://127.0.0.1:8000/bookable/filter', {
+	$.get('/bookable/filter', {
 			'nearby': nearby,
 			'pc': pc,
 			'bookable': bookable,
