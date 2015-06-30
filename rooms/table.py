@@ -1,5 +1,5 @@
 import requests
-from rooms.models import Room_Feed, Building_Feed, Bookable_Room
+from rooms.models import Room_Feed, Building_Feed, Bookable_Room, Searchable_Buildings
 
 def get_names(listOfDicts):
     names = ""
@@ -241,6 +241,54 @@ def update_building_table():
                                  building_name=building_name)
             obj.save()
     return 'success'
+
+def add_building_attributes():
+    '''
+    Adds all attributes of any rooms inside each building to that building
+    So eg, if building A contains at least one available room with a printer, then A will have printer set to true,
+    even if all other rooms don't have a printer
+    '''
+    buildings={}
+    for room in Bookable_Room.objects.all():
+        # TODO: if room is available...
+        # if you've not come across this building before, initialise it
+        if not (room.abbreviation in buildings):
+            buildings[room.abbreviation]={
+                'pc': False,
+                'whiteboard': False,
+                'blackboard': False,
+                'projector': False,
+                'printer': False,
+                'locally_allocated': True
+            }
+        # add any attributes that this room has to its building
+        buildings[room.abbreviation]={
+            'pc': buildings[room.abbreviation]['pc'] or room.pc,
+            'whiteboard': buildings[room.abbreviation]['whiteboard'] or room.whiteboard,
+            'blackboard': buildings[room.abbreviation]['blackboard'] or room.blackboard,
+            'projector': buildings[room.abbreviation]['projector'] or room.projector,
+            'printer': buildings[room.abbreviation]['printer'] or room.printer,
+            'locally_allocated': buildings[room.abbreviation]['locally_allocated'] and room.locally_allocated,
+            'campus_name':room.campus_name,
+            'campus_id':room.campus_id
+        }
+    for building in Building_Feed.objects.all():
+        # if that building has some rooms in the other database, save the building
+        if building.abbreviation in buildings:
+            obj = Searchable_Buildings(building_name=building.building_name,
+                                       abbreviation=building.abbreviation,
+                                       longitude=building.longitude,
+                                       latitude=building.latitude,
+                                       pc=buildings[building.abbreviation]['pc'],
+                                       whiteboard=buildings[building.abbreviation]['whiteboard'],
+                                       blackboard=buildings[building.abbreviation]['blackboard'],
+                                       projector=buildings[building.abbreviation]['projector'],
+                                       printer=buildings[building.abbreviation]['printer'],
+                                       locally_allocated=buildings[building.abbreviation]['locally_allocated'],
+                                       campus_name=buildings[building.abbreviation]['campus_name'],
+                                       campus_id=buildings[building.abbreviation]['campus_id'],
+                                       )
+            obj.save()
 
 def merge_room_building():
     """
