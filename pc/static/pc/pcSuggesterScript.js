@@ -42,16 +42,13 @@ $(document).ready(function () {
 
 	});
 
-	//when the user starts a search...
+	//when the user starts a new search, get the appropriately filtered list of suggestions from the server
 	$('#retryBtn').click(function () {
-		// if still searching for open study spaces
-		if ($('#openBtn').hasClass('selected')) {
-			// get a new list of suggestions from the server based on the user's options
-			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
-		} else {
-			//TODO: work out what to do
-			location.href = ('/bookable/#close=' + $('#nearbyBtn').hasClass('selected') + '&empty=' + $('#emptyBtn').hasClass('selected') + '&groups=' + getUnselectedGroups().join().replace(/ /g, '%20'));
-		}
+		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
+	});
+	//switch to tutorial rooms when the switch button is pressed
+	$('#switchBtn').click(function () {
+		location.href='/bookable'
 	});
 });
 

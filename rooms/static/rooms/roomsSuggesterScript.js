@@ -56,14 +56,10 @@ $(document).ready(function () {
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
-		// if still searching for tutorial rooms
-		if ($('#shutBtn').hasClass('selected')) {
-			// get a new list of suggestions from the server based on the user's options
-			getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
-		} else {
-			//TODO: work out what to do
-			location.href = ('/bookable/#close=' + $('#nearbyBtn').hasClass('selected') + '&empty=' + $('#emptyBtn').hasClass('selected') + '&groups=' + getUnselectedGroups().join().replace(/ /g, '%20'));
-		}
+		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+	});
+	$('#switchBtn').click(function () {
+		location.href = ('/open');
 	});
 });
 
@@ -151,7 +147,7 @@ function loadChoice() {
 	$('#whiteboardTick').addClass(currentChoice.whiteboard ? "tick" : "cross").removeClass(currentChoice.whiteboard ? "cross" : "tick");
 	$('#blackboardTick').addClass(currentChoice.blackboard ? "tick" : "cross").removeClass(currentChoice.blackboard ? "cross" : "tick");
 	$('#projectorTick').addClass(currentChoice.projector ? "tick" : "cross").removeClass(currentChoice.projector ? "cross" : "tick");
-	
+
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
@@ -166,9 +162,9 @@ function loadChoice() {
 	Paramters: name (string) - the room name to be processed
 	Output: string - the processed room name
 */
-function processRoomName(name){
-	if(name.slice(0,2)=='zz'){
-		return name.slice(2,name.length);
+function processRoomName(name) {
+	if (name.slice(0, 2) == 'zz') {
+		return name.slice(2, name.length);
 	}
 	return name;
 }
