@@ -55,32 +55,37 @@ def filter_suggestions(request):
         for group in groups:
             data = data.exclude(campus_name=group)
 
-        # if sorting by location
-        if request.GET['nearby'] == 'true':
-            # get the user's latitude and longitude
-            usr_longitude = float(request.GET['longitude'])
-            usr_latitude = float(request.GET['latitude'])
-            # sort the buildings based on distance from user, closest first
-            data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
         # if they're currently searching for a room:
         if request.GET['type']=='room':
+            # if sorting by location
+            if request.GET['nearby'] == 'true':
+                # get the user's latitude and longitude
+                usr_longitude = float(request.GET['longitude'])
+                usr_latitude = float(request.GET['latitude'])
+                # sort the buildings based on distance from user, closest first
+                data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
             serializer = Bookable_Room_Serializer(data, many=True)
             return JSONResponse(serializer.data)
+
         # if they're currently searching for a building
+        # work out how many rooms are available in each building
         buildingDetails={}
         for room in data:
-            print(room.abbreviation)
             if not (room.abbreviation in buildingDetails):
                 buildingDetails[room.abbreviation]={
+                    'abbreviation':room.abbreviation,
                     'rooms':1,
-                    'buildingName':room.building_name,
+                    'building_name':room.building_name,
                     'latitude':room.latitude,
                     'longitude':room.longitude,
                     'campus':room.campus_name
                 }
             else:
                 buildingDetails[room.abbreviation]['rooms']+=1
-        print('3')
-        return JSONResponse(buildingDetails)
+        # if sorting by location
+        if request.GET['nearby'] == 'true':
+            ''''''# TODO:sort the list by location
+
+        return JSONResponse(buildingDetails.values())
 
 
