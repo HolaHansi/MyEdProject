@@ -55,37 +55,41 @@ def filter_suggestions(request):
         for group in groups:
             data = data.exclude(campus_name=group)
 
-        # if they're currently searching for a room:
-        if request.GET['type']=='room':
+        # if they're currently searching for a building:
+        if request.GET['building']=='':
+            # work out how many rooms are available in each building
+            buildingDetails={}
+            for room in data:
+                if not (room.abbreviation in buildingDetails):
+                    buildingDetails[room.abbreviation]={
+                        'abbreviation':room.abbreviation,
+                        'rooms':1,
+                        'building_name':room.building_name,
+                        'latitude':room.latitude,
+                        'longitude':room.longitude,
+                        'campus':room.campus_name
+                    }
+                else:
+                    buildingDetails[room.abbreviation]['rooms']+=1
             # if sorting by location
             if request.GET['nearby'] == 'true':
-                # get the user's latitude and longitude
-                usr_longitude = float(request.GET['longitude'])
-                usr_latitude = float(request.GET['latitude'])
-                # sort the buildings based on distance from user, closest first
-                data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
-            serializer = Bookable_Room_Serializer(data, many=True)
-            return JSONResponse(serializer.data)
+                ''''''# TODO:sort the list by location
 
-        # if they're currently searching for a building
-        # work out how many rooms are available in each building
-        buildingDetails={}
-        for room in data:
-            if not (room.abbreviation in buildingDetails):
-                buildingDetails[room.abbreviation]={
-                    'abbreviation':room.abbreviation,
-                    'rooms':1,
-                    'building_name':room.building_name,
-                    'latitude':room.latitude,
-                    'longitude':room.longitude,
-                    'campus':room.campus_name
-                }
-            else:
-                buildingDetails[room.abbreviation]['rooms']+=1
+            return JSONResponse(buildingDetails.values())
+
+        # if they're searching for a room
+        # get only rooms within that building
+        data = data.filter(abbreviation=request.GET['building'])
         # if sorting by location
         if request.GET['nearby'] == 'true':
-            ''''''# TODO:sort the list by location
+            # get the user's latitude and longitude
+            usr_longitude = float(request.GET['longitude'])
+            usr_latitude = float(request.GET['latitude'])
+            # sort the buildings based on distance from user, closest first
+            data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
+        serializer = Bookable_Room_Serializer(data, many=True)
+        return JSONResponse(serializer.data)
 
-        return JSONResponse(buildingDetails.values())
+
 
 

@@ -11,7 +11,6 @@ $(document).ready(function () {
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
 
-
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
@@ -38,8 +37,6 @@ $(document).ready(function () {
 					pcLikedByUser = 'false';
 				}
 			});
-
-
 	});
 
 	//when the user starts a new search, get the appropriately filtered list of suggestions from the server

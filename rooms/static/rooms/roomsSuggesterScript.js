@@ -4,7 +4,7 @@ var currentChoice = {}; //the suggestion currently on display
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
-var buildingSelected = false;
+var buildingSelected = '';
 var roomLikedByUser = 'false'; // true if current suggestion is liked by user
 
 
@@ -30,10 +30,10 @@ $(document).ready(function () {
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
 		currentChoice = suggestions[currentChoice.index + 1];
-		if (buildingSelected) {
-			loadRoomChoice();
-		} else {
+		if (buildingSelected === '') {
 			loadBuildingChoice();
+		} else {
+			loadRoomChoice();
 		}
 	});
 
@@ -61,25 +61,36 @@ $(document).ready(function () {
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
-		getSuggestions(buildingSelected ? 'room' : 'building', $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+		getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 	});
+	//when the user switches to searching for open access labs
 	$('#switchBtn').click(function () {
 		location.href = ('/open');
+	});
+	//when the user chooses a building
+	$('#yesBtn').click(function () {
+		buildingSelected = currentChoice.abbreviation;
+		getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 	});
 });
 
 /*
    Get the list of suggestions from the server
    Parameters:
+   building (string): the building to search within if a building has been chosen or '' if not
    nearby (boolean): whether the user is filtering by nearby
-   empty (boolean): whether the user is filtering by empty
-   group (string): the campus that the user is searching in.
-   One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
+   empty (boolean): whether the user is filtering by bookable
+   pc (boolean): whether the user is filtering by pc
+   printer (boolean): whether the user is filtering by printer
+   whiteboard (boolean): whether the user is filtering by whiteboard
+   blackboard (boolean): whether the user is filtering by blackboard
+   projector (boolean): whether the user is filtering by projector
+   groups (string): the campuses that the user is not including in their search.
 */
-function getSuggestions(type, nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
+function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
 	//send the get request
 	$.get('http://127.0.0.1:8000/bookable/filter', {
-			'type': type,
+			'building': building,
 			'nearby': nearby,
 			'pc': pc,
 			'bookable': bookable,
@@ -105,10 +116,10 @@ function getSuggestions(type, nearby, bookable, pc, printer, whiteboard, blackbo
 
 				//load the first suggestion
 				currentChoice = suggestions[0];
-				if (buildingSelected) {
-					loadRoomChoice();
-				} else {
+				if (buildingSelected === '') {
 					loadBuildingChoice();
+				} else {
+					loadRoomChoice();
 				}
 			} else {
 				//bring the options menu back up and display an error
@@ -255,7 +266,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions(buildingSelected ? 'room' : 'building', $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
