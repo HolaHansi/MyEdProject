@@ -199,7 +199,8 @@ function loadRoomChoice() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
-	}else if (currentChoice.index == 0) {
+	}
+	if (currentChoice.index == 0) {
 		$('#previousSuggestionBtn').addClass('disabled');
 	}
 
@@ -221,7 +222,8 @@ function loadBuildingChoice() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
-	}else if (currentChoice.index == 0) {
+	}
+	if (currentChoice.index == 0) {
 		$('#previousSuggestionBtn').addClass('disabled');
 	}
 }
