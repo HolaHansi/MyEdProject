@@ -75,6 +75,10 @@ $(document).ready(function () {
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
+		$(this).html('Sounds good!');
+		$('#likeBtn').hide();
+		buildingSelected = '';
+		buildingIndexToReturnTo=0;
 		getSuggestionsUsingOptions();
 	});
 	//when the user switches to searching for open access labs
@@ -85,11 +89,15 @@ $(document).ready(function () {
 	$('#yesBtn').click(function () {
 		if (buildingSelected === '') {
 			$(this).html('Change building');
+			$('#likeBtn').css({
+				display: 'inline-block'
+			});
 			buildingSelected = currentChoice.abbreviation;
 			buildingIndexToReturnTo = currentChoice.index;
 			getSuggestionsUsingOptions();
 		} else {
 			$(this).html('Sounds good!');
+			$('#likeBtn').hide();
 			buildingSelected = '';
 			getSuggestionsUsingOptions();
 		}
@@ -216,7 +224,7 @@ function loadBuildingChoice() {
 	$('#buildingName').html(currentChoice.campus);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#numberRooms').html(': ' + currentChoice.rooms);
-	
+
 	toggleNavButtons();
 }
 
