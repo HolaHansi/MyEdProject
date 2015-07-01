@@ -71,11 +71,14 @@ def filter_suggestions(request):
                     }
                 else:
                     buildingDetails[room.abbreviation]['rooms']+=1
+            buildingDetails=list(buildingDetails.values())
             # if sorting by location
             if request.GET['nearby'] == 'true':
                 ''''''# TODO:sort the list by location
+            else:
+                buildingDetails = sorted(buildingDetails, key=lambda x:x['rooms'],reverse=True)
 
-            return JSONResponse(buildingDetails.values())
+            return JSONResponse(buildingDetails)
 
         # if they're searching for a room
         # get only rooms within that building
