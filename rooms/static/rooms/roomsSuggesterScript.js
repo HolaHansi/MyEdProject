@@ -5,6 +5,7 @@ var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
 var buildingSelected = '';
+var buildingIndexToReturnTo = 0;
 var roomLikedByUser = 'false'; // true if current suggestion is liked by user
 
 
@@ -27,7 +28,7 @@ $(document).ready(function () {
 	}
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
-	
+
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
 		$('#previousSuggestionBtn').removeClass('disabled');
@@ -38,7 +39,7 @@ $(document).ready(function () {
 			loadRoomChoice();
 		}
 	});
-	
+
 	//when the user clicks the previous suggestion button, load the previous suggestion
 	$('#previousSuggestionBtn').click(function () {
 		$('#nextSuggestionBtn').removeClass('disabled');
@@ -85,8 +86,9 @@ $(document).ready(function () {
 		if (buildingSelected === '') {
 			$(this).html('Change building');
 			buildingSelected = currentChoice.abbreviation;
+			buildingIndexToReturnTo = currentChoice.index;
 			getSuggestionsUsingOptions();
-		}else{
+		} else {
 			$(this).html('Sounds good!');
 			buildingSelected = '';
 			getSuggestionsUsingOptions();
@@ -94,7 +96,7 @@ $(document).ready(function () {
 	});
 });
 
-function getSuggestionsUsingOptions(){
+function getSuggestionsUsingOptions() {
 	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
 }
 
@@ -132,18 +134,19 @@ function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, bla
 			suggestions = data;
 			//if at least one room fits the criteria
 			if (suggestions.length > 0) {
-				$('#nextSuggestionBtn').addClass('disabled');
 				$('#nextSuggestionBtn').removeClass('disabled');
+				$('#previousSuggestionBtn').removeClass('disabled');
 				//add an index to each of the JSONs
 				for (var i = 0; i < suggestions.length; i++) {
 					suggestions[i].index = i;
 				}
 
 				//load the first suggestion
-				currentChoice = suggestions[0];
 				if (buildingSelected === '') {
+					currentChoice = suggestions[buildingIndexToReturnTo];
 					loadBuildingChoice();
 				} else {
+					currentChoice = suggestions[0];
 					loadRoomChoice();
 				}
 			} else {
@@ -152,6 +155,7 @@ function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, bla
 				$('#roomName').html('n/a');
 				$('#buildingName').html('');
 				$('#nextSuggestionBtn').addClass('disabled');
+				$('#previousSuggestionBtn').addClass('disabled');
 				$('#distance').html(': ' + ('0km'));
 				alert('No rooms available fit that criteria.  Try again.  ');
 			}
@@ -196,13 +200,7 @@ function loadRoomChoice() {
 	$('#blackboardTick').addClass(currentChoice.blackboard ? "tick" : "cross").removeClass(currentChoice.blackboard ? "cross" : "tick");
 	$('#projectorTick').addClass(currentChoice.projector ? "tick" : "cross").removeClass(currentChoice.projector ? "cross" : "tick");
 
-	//if the user has reached the end of the list of suggestions, disable the 'next' button
-	if (currentChoice.index == suggestions.length - 1) {
-		$('#nextSuggestionBtn').addClass('disabled');
-	}
-	if (currentChoice.index == 0) {
-		$('#previousSuggestionBtn').addClass('disabled');
-	}
+	toggleNavButtons();
 
 	// check if current choice is liked by user. This updates the button.  
 	liked(currentChoice.locationId);
@@ -218,11 +216,16 @@ function loadBuildingChoice() {
 	$('#buildingName').html(currentChoice.campus);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#numberRooms').html(': ' + currentChoice.rooms);
+	
+	toggleNavButtons();
+}
 
+function toggleNavButtons() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
+	//if the user is at the start of the list of suggestions, disable the 'previous' button
 	if (currentChoice.index == 0) {
 		$('#previousSuggestionBtn').addClass('disabled');
 	}
