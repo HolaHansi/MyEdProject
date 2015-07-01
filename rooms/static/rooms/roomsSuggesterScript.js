@@ -27,9 +27,22 @@ $(document).ready(function () {
 	}
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
+	
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
+		$('#previousSuggestionBtn').removeClass('disabled');
 		currentChoice = suggestions[currentChoice.index + 1];
+		if (buildingSelected === '') {
+			loadBuildingChoice();
+		} else {
+			loadRoomChoice();
+		}
+	});
+	
+	//when the user clicks the previous suggestion button, load the previous suggestion
+	$('#previousSuggestionBtn').click(function () {
+		$('#nextSuggestionBtn').removeClass('disabled');
+		currentChoice = suggestions[currentChoice.index - 1];
 		if (buildingSelected === '') {
 			loadBuildingChoice();
 		} else {
@@ -61,18 +74,29 @@ $(document).ready(function () {
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
-		getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+		getSuggestionsUsingOptions();
 	});
 	//when the user switches to searching for open access labs
 	$('#switchBtn').click(function () {
 		location.href = ('/open');
 	});
-	//when the user chooses a building
+	//when the user chooses or unchooses a building
 	$('#yesBtn').click(function () {
-		buildingSelected = currentChoice.abbreviation;
-		getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+		if (buildingSelected === '') {
+			$(this).html('Change building');
+			buildingSelected = currentChoice.abbreviation;
+			getSuggestionsUsingOptions();
+		}else{
+			$(this).html('Sounds good!');
+			buildingSelected = '';
+			getSuggestionsUsingOptions();
+		}
 	});
 });
+
+function getSuggestionsUsingOptions(){
+	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+}
 
 /*
    Get the list of suggestions from the server
@@ -108,6 +132,7 @@ function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, bla
 			suggestions = data;
 			//if at least one room fits the criteria
 			if (suggestions.length > 0) {
+				$('#nextSuggestionBtn').addClass('disabled');
 				$('#nextSuggestionBtn').removeClass('disabled');
 				//add an index to each of the JSONs
 				for (var i = 0; i < suggestions.length; i++) {
@@ -174,6 +199,8 @@ function loadRoomChoice() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
+	}else if (currentChoice.index == 0) {
+		$('#previousSuggestionBtn').addClass('disabled');
 	}
 
 	// check if current choice is liked by user. This updates the button.  
@@ -194,6 +221,8 @@ function loadBuildingChoice() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
+	}else if (currentChoice.index == 0) {
+		$('#previousSuggestionBtn').addClass('disabled');
 	}
 }
 
@@ -266,7 +295,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestionsUsingOptions();
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
