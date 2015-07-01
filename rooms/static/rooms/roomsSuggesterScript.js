@@ -75,7 +75,7 @@ $(document).ready(function () {
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
-		$(this).html('Sounds good!');
+		$('#yesBtn').html('Sounds good!');
 		$('#likeBtn').hide();
 		buildingSelected = '';
 		buildingIndexToReturnTo=0;
