@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import math
 from rest_framework.renderers import JSONRenderer
 from .models import Bookable_Room
 from .serializer import Bookable_Room_Serializer
@@ -51,6 +52,7 @@ def filter_suggestions(request):
         if request.GET['projector'] == 'true':
             data=data.filter(projector='true')
 
+        # exclude any campuses they don't want
         groups = request.GET.getlist('groupsUnselected[]')
         for group in groups:
             data = data.exclude(campus_name=group)
@@ -74,25 +76,45 @@ def filter_suggestions(request):
             buildingDetails=list(buildingDetails.values())
             # if sorting by location
             if request.GET['nearby'] == 'true':
-                ''''''# TODO:sort the list by location
+                # get the user's latitude and longitude
+                usr_longitude = float(request.GET['longitude'])
+                usr_latitude = float(request.GET['latitude'])
+                # sort the buildings based on distance from user, closest first
+                buildingDetails = sorted(buildingDetails, key=lambda x: get_distance(x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
+            # if not sorting by location, sort by number of suitable rooms available
             else:
                 buildingDetails = sorted(buildingDetails, key=lambda x:x['rooms'],reverse=True)
 
             return JSONResponse(buildingDetails)
 
-        # if they're searching for a room
+        # if they're searching for a room...
+
         # get only rooms within that building
         data = data.filter(abbreviation=request.GET['building'])
-        # if sorting by location
-        if request.GET['nearby'] == 'true':
-            # get the user's latitude and longitude
-            usr_longitude = float(request.GET['longitude'])
-            usr_latitude = float(request.GET['latitude'])
-            # sort the buildings based on distance from user, closest first
-            data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
+
+        #TODO: sort by number of suitabilities
+        #data = sorted(data, key=lambda x: x.longitude)
         serializer = Bookable_Room_Serializer(data, many=True)
         return JSONResponse(serializer.data)
 
 
+# calculate the distance between the current building and the inputted point
+# parameters: long1 - the longitude of the user
+#             lat1 - the latitude of the user
+def get_distance(buildingLong, buildingLat, long1, lat1):
+    R = 6371000 # metres
+    # convert all coordinates to radians
+    t1 = toRadians(lat1)
+    t2 = toRadians(buildingLat)
+    dt = toRadians(buildingLat - lat1)
+    dl = toRadians(buildingLong - long1)
+    # do some clever maths which the internet told me was correct
+    a = math.sin(dt / 2) * math.sin(dt / 2) + math.cos(t1) * math.cos(t2) * math.sin(dl / 2) * math.sin(dl / 2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    # return the distance between the points
+    return R * c
 
-
+# converts from degrees to radians
+# parameters: x - the value in degrees to be converted
+def toRadians(x):
+    return x*math.pi/180
