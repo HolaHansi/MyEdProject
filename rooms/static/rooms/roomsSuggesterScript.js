@@ -78,7 +78,7 @@ $(document).ready(function () {
 		$('#yesBtn').html('Sounds good!');
 		$('#likeBtn').hide();
 		buildingSelected = '';
-		buildingIndexToReturnTo=0;
+		buildingIndexToReturnTo = 0;
 		getSuggestionsUsingOptions();
 	});
 	//when the user switches to searching for open access labs
@@ -88,16 +88,10 @@ $(document).ready(function () {
 	//when the user chooses or unchooses a building
 	$('#yesBtn').click(function () {
 		if (buildingSelected === '') {
-			$(this).html('Change building');
-			$('#likeBtn').css({
-				display: 'inline-block'
-			});
 			buildingSelected = currentChoice.abbreviation;
 			buildingIndexToReturnTo = currentChoice.index;
 			getSuggestionsUsingOptions();
 		} else {
-			$(this).html('Sounds good!');
-			$('#likeBtn').hide();
 			buildingSelected = '';
 			getSuggestionsUsingOptions();
 		}
@@ -151,9 +145,15 @@ function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, bla
 
 				//load the first suggestion
 				if (buildingSelected === '') {
+					$('#yesBtn').html('Sounds good!');
+					$('#likeBtn').hide();
 					currentChoice = suggestions[buildingIndexToReturnTo];
 					loadBuildingChoice();
 				} else {
+					$('#yesBtn').html('Change building');
+					$('#likeBtn').css({
+						display: 'inline-block'
+					});
 					currentChoice = suggestions[0];
 					loadRoomChoice();
 				}

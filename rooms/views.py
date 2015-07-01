@@ -80,9 +80,7 @@ def filter_suggestions(request):
                 usr_longitude = float(request.GET['longitude'])
                 usr_latitude = float(request.GET['latitude'])
                 # sort the buildings based on distance from user, closest first
-                buildingDetails = sorted(buildingDetails,
-                                         key=lambda x: get_distance(x['longitude'], x['latitude'], long1=usr_longitude,
-                                                                    lat1=usr_latitude))
+                buildingDetails = sorted(buildingDetails, key=lambda x: get_distance(x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
             # if not sorting by location, sort by number of suitable rooms available
             else:
                 buildingDetails = sorted(buildingDetails, key=lambda x: x['rooms'], reverse=True)
@@ -126,7 +124,7 @@ def toRadians(x):
 
 
 # calculates how desirable a room is for a user
-# the more features the room has, the sooner it'll be suggested
+# the more features the room has, the more desirable it iss
 def calculateHeuristic(room):
     value = 0
     if room.locally_allocated:
