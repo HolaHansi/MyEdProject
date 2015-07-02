@@ -22,5 +22,5 @@ DATABASES = {
         }
 }
 
-STATIC_ROOT = '/home/wwwbook/public_html/staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, '../public_html/staticfiles')
 
