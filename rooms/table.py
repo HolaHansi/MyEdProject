@@ -179,6 +179,8 @@ def update_building_table():
                 # Rename any buildings called strange things in the lat/long database
                 if (building['name'])=='George Square (2-15)':
                     building_name='7 George Square'
+                elif (building['name'])=='Main University Library':
+                    building_name='Main Library'
                 elif (building['name'])=='George Square (1)':
                     building_name='1 George Square'
                 elif (building['name'])=='George Square (1)':

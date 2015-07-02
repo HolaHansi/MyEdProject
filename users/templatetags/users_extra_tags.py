@@ -1,5 +1,6 @@
 from django import template
 from django.template.defaultfilters import stringfilter
+from django.utils.safestring import mark_safe
 import re
 
 register = template.Library()
@@ -19,3 +20,29 @@ def processPCName(name,campus):
     regex = re.compile(campus + '( - )? ?', re.IGNORECASE)
     return re.sub(regex,'',name)
 
+
+@register.filter
+@stringfilter
+def processRoomName(name):
+    '''Processes the name of the tutorial room to make it more human readable'''
+    if name[0:2]=='zz':
+        return name[2:]
+    return name
+
+@register.filter
+def facilities(room):
+    '''Returns an HTML list of all the facilities the room has'''
+    toReturn=''
+    if room.pc:
+        toReturn+='<span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> '
+    if room.printer:
+        toReturn+='<span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span> '
+    if room.projector:
+        toReturn+='<span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span> '
+    if room.blackboard:
+        toReturn+='<span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span> '
+    if room.whiteboard:
+        toReturn+='<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> '
+    if toReturn=='':
+        toReturn="<div id='blackboardTick' class='tickOrCross cross'></div>"
+    return mark_safe(toReturn)
