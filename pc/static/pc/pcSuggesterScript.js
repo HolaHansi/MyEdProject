@@ -160,7 +160,7 @@ function processRoomName(suggestion) {
 
 /* 
    Takes a pair of coordinates and calculates the distance between them, taking into account the curvature of the earth
-   A little overkill maybe, but you never know, someone might be using InternProject from back home in Australia!
+   A little overkill maybe, but you never know, someone might be using core from back home in Australia!
    Parameters:
    lat1 (float): the latitude of the first point
    long1 (float): the longitude of the first point

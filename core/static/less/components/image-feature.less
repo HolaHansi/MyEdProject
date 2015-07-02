@@ -1,0 +1,49 @@
+// custom jumbotron image-feature with background image - requires .jumbotron class as well
+
+.image-feature { 
+	background-size: 100% auto!important;
+	background-color: #fff!important;
+	padding: 30px 0 48px;
+	
+	@media (max-width: @screen-xs-max) { padding-bottom: 0; margin-bottom: 0; }
+	
+	.image-feature-search {
+		background: rgba(255, 255, 255, 0.7);
+		padding: 1em;
+		border-radius: 4px;	
+		h2  { 
+			margin-top: 0px; 
+			/*color: @brand-primary; */
+		}
+		
+		.input-group { margin-left: -15px; }
+		.btn-default, .form-control { border-color: @brand-primary; }
+		.btn-default { border-right: none }
+	}
+		
+	
+	.form-control-inline {
+	    min-width:150px;
+	    display: inline;
+	}
+	
+	@media (min-width: @screen-lg-min) { 
+		.form-control-inline { width: auto } 
+	}
+
+	
+	.image-feature-text h2 { 			
+		@media (min-width: @screen-md-min) { 
+			margin-top: 0px; 
+		}
+	}
+	
+	// white text w/ black transparent 
+	.text-bg-blk {
+		background: rgba(0, 0, 0, 0.6);
+		box-shadow: 10px 0 0 rgba(0, 0, 0, 0.6), -10px 0 0 rgba(0, 0, 0, 0.6);
+		box-decoration-break: clone; /*for firefox*/
+		color: #fff;		
+	}	
+}
+

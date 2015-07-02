@@ -1207,7 +1207,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		assert(function( div ) {
 			// Select is set to empty string on purpose
 			// This is to test IE's treatment of not explicitly
-			// setting a boolean content attribute,
+			// settings a boolean content attribute,
 			// since its presence should be enough
 			// http://bugs.jquery.com/ticket/12359
 			docElem.appendChild( div ).innerHTML = "<a id='" + expando + "'></a>" +
@@ -3597,7 +3597,7 @@ jQuery(function() {
 	if ( typeof div.style.zoom !== strundefined ) {
 		// Support: IE<8
 		// Check if natively block-level elements act like inline-block
-		// elements when setting their display to 'inline' and giving
+		// elements when settings their display to 'inline' and giving
 		// them layout
 		div.style.cssText = "display:inline;margin:0;border:0;padding:1px;width:1px;zoom:1";
 
@@ -5486,7 +5486,7 @@ function fixCloneNodeIssues( src, dest ) {
 
 		dest.defaultChecked = dest.checked = src.checked;
 
-		// IE6-7 get confused and end up setting the value of a cloned
+		// IE6-7 get confused and end up settings the value of a cloned
 		// checkbox/radio button to an empty string instead of "on"
 		if ( dest.value !== src.value ) {
 			dest.value = src.value;
@@ -6204,7 +6204,7 @@ if ( window.getComputedStyle ) {
 		computed = computed || getStyles( elem );
 		ret = computed ? computed[ name ] : undefined;
 
-		// Avoid setting ret to empty string here
+		// Avoid settings ret to empty string here
 		// so we don't default to auto
 		if ( ret == null && style && style[ name ] ) {
 			ret = style[ name ];
@@ -6628,7 +6628,7 @@ function getWidthOrHeight( elem, name, extra ) {
 
 jQuery.extend({
 	// Add in style property hooks for overriding the default
-	// behavior of getting and setting a style property
+	// behavior of getting and settings a style property
 	cssHooks: {
 		opacity: {
 			get: function( elem, computed ) {
@@ -6658,7 +6658,7 @@ jQuery.extend({
 	},
 
 	// Add in properties whose names you wish to fix before
-	// setting or getting the value
+	// settings or getting the value
 	cssProps: {
 		// normalize float css property
 		"float": support.cssFloat ? "cssFloat" : "styleFloat"
@@ -6682,7 +6682,7 @@ jQuery.extend({
 		// followed by the unprefixed version
 		hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
 
-		// Check if we're setting a value
+		// Check if we're settings a value
 		if ( value !== undefined ) {
 			type = typeof value;
 
@@ -6810,10 +6810,10 @@ if ( !support.opacity ) {
 				filter = currentStyle && currentStyle.filter || style.filter || "";
 
 			// IE has trouble with opacity if it does not have layout
-			// Force it by setting the zoom level
+			// Force it by settings the zoom level
 			style.zoom = 1;
 
-			// if setting opacity to 1, and no other filters exist - attempt to remove filter attribute #6652
+			// if settings opacity to 1, and no other filters exist - attempt to remove filter attribute #6652
 			// if value === "", then remove inline opacity #12685
 			if ( ( value >= 1 || value === "" ) &&
 					jQuery.trim( filter.replace( ralpha, "" ) ) === "" &&
@@ -6842,7 +6842,7 @@ jQuery.cssHooks.marginRight = addGetHookIf( support.reliableMarginRight,
 	function( elem, computed ) {
 		if ( computed ) {
 			// WebKit Bug 13343 - getComputedStyle returns wrong value for margin-right
-			// Work around by temporarily setting element display to inline-block
+			// Work around by temporarily settings element display to inline-block
 			return jQuery.swap( elem, { "display": "inline-block" },
 				curCSS, [ elem, "marginRight" ] );
 		}
@@ -7006,7 +7006,7 @@ Tween.propHooks = {
 };
 
 // Support: IE <=9
-// Panic based approach to setting things on disconnected nodes
+// Panic based approach to settings things on disconnected nodes
 
 Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
 	set: function( tween ) {
@@ -7480,7 +7480,7 @@ jQuery.speed = function( speed, easing, fn ) {
 jQuery.fn.extend({
 	fadeTo: function( speed, to, easing, callback ) {
 
-		// show any hidden elements after setting opacity to 0
+		// show any hidden elements after settings opacity to 0
 		return this.filter( isHidden ).css( "opacity", 0 ).show()
 
 			// animate to the value specified
@@ -7798,7 +7798,7 @@ jQuery.fn.extend({
 
 			hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
 
-			// If set returns undefined, fall back to normal setting
+			// If set returns undefined, fall back to normal settings
 			if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
 				this.value = val;
 			}
@@ -8005,7 +8005,7 @@ jQuery.extend({
 							elem[ propName ] = false;
 					}
 
-				// See #9699 for explanation of this approach (setting first, then removal)
+				// See #9699 for explanation of this approach (settings first, then removal)
 				} else {
 					jQuery.attr( elem, name, "" );
 				}
@@ -8095,7 +8095,7 @@ if ( !getSetInput || !getSetAttribute ) {
 	};
 }
 
-// IE6/7 do not support getting/setting some attributes with get/setAttribute
+// IE6/7 do not support getting/settings some attributes with get/setAttribute
 if ( !getSetAttribute ) {
 
 	// Use this for any attribute in IE6/7
@@ -8239,7 +8239,7 @@ jQuery.extend({
 		tabIndex: {
 			get: function( elem ) {
 				// elem.tabIndex doesn't always return the correct value when it hasn't been explicitly set
-				// http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
+				// http://fluidproject.org/blog/2008/01/09/getting-settings-and-removing-tabindex-values-with-javascript/
 				// Use proper attribute retrieval(#12072)
 				var tabindex = jQuery.find.attr( elem, "tabindex" );
 
@@ -9643,7 +9643,7 @@ if ( xhrSupported ) {
 					// Set headers
 					for ( i in headers ) {
 						// Support: IE<9
-						// IE's ActiveXObject throws a 'Type Mismatch' exception when setting
+						// IE's ActiveXObject throws a 'Type Mismatch' exception when settings
 						// request header to a null-value.
 						//
 						// To keep consistent with other XHR implementations, cast the value
@@ -10299,7 +10299,7 @@ jQuery.fn.andSelf = jQuery.fn.addBack;
 // to call noConflict to hide this version of jQuery, it will work.
 
 // Note that for maximum portability, libraries that are not jQuery should
-// declare themselves as anonymous modules, and avoid setting a global if an
+// declare themselves as anonymous modules, and avoid settings a global if an
 // AMD loader is present. jQuery is a special case. For more information, see
 // https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
 
