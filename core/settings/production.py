@@ -22,9 +22,5 @@ DATABASES = {
         }
 }
 
+STATIC_ROOT = '/home/wwwbook/public_html/staticfiles'
 
-
-                # 'NAME': 'wwwbook_central',
-                # 'USER': 'wwwbook_hansi',
-                # 'PASSWORD': 'MmMm1234',
-                # 'HOST': 'localhost',
