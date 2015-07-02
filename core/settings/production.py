@@ -4,9 +4,7 @@ from .base import *
 DEBUG = False
 
 # this needs to be specified, when debug is off.
-ALLOWED_HOST = [
-        '*.is.ed.ac.uk'
-]
+ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
 
 
 # USE Mysql in production - configured for a specific db on the chostt.
