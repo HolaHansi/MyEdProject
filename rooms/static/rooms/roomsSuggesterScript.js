@@ -4,6 +4,8 @@ var currentChoice = {}; //the suggestion currently on display
 var userLatitude = 0; //current latitude of user
 var userLongitude = 0; //current longitude of user
 
+var buildingSelected = '';
+var buildingIndexToReturnTo = 0;
 var roomLikedByUser = 'false'; // true if current suggestion is liked by user
 
 
@@ -26,10 +28,27 @@ $(document).ready(function () {
 	}
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
+
 	//when the user clicks the next suggestion button, load the next suggestion
 	$('#nextSuggestionBtn').click(function () {
+		$('#previousSuggestionBtn').removeClass('disabled');
 		currentChoice = suggestions[currentChoice.index + 1];
-		loadChoice();
+		if (buildingSelected === '') {
+			loadBuildingChoice();
+		} else {
+			loadRoomChoice();
+		}
+	});
+
+	//when the user clicks the previous suggestion button, load the previous suggestion
+	$('#previousSuggestionBtn').click(function () {
+		$('#nextSuggestionBtn').removeClass('disabled');
+		currentChoice = suggestions[currentChoice.index - 1];
+		if (buildingSelected === '') {
+			loadBuildingChoice();
+		} else {
+			loadRoomChoice();
+		}
 	});
 
 	//when the user clicks the like button, like or unlike the room as appropriate
@@ -56,24 +75,50 @@ $(document).ready(function () {
 
 	//when the user starts a search...
 	$('#retryBtn').click(function () {
-		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+		$('#yesBtn').html('Sounds good!');
+		$('#likeBtn').hide();
+		buildingSelected = '';
+		buildingIndexToReturnTo = 0;
+		getSuggestionsUsingOptions();
 	});
+	//when the user switches to searching for open access labs
 	$('#switchBtn').click(function () {
 		location.href = ('/open');
 	});
+	//when the user chooses or unchooses a building
+	$('#yesBtn').click(function () {
+		if (buildingSelected === '') {
+			buildingSelected = currentChoice.abbreviation;
+			buildingIndexToReturnTo = currentChoice.index;
+			getSuggestionsUsingOptions();
+		} else {
+			buildingSelected = '';
+			getSuggestionsUsingOptions();
+		}
+	});
 });
+
+function getSuggestionsUsingOptions() {
+	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+}
 
 /*
    Get the list of suggestions from the server
    Parameters:
+   building (string): the building to search within if a building has been chosen or '' if not
    nearby (boolean): whether the user is filtering by nearby
-   empty (boolean): whether the user is filtering by empty
-   group (string): the campus that the user is searching in.
-   One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
+   empty (boolean): whether the user is filtering by bookable
+   pc (boolean): whether the user is filtering by pc
+   printer (boolean): whether the user is filtering by printer
+   whiteboard (boolean): whether the user is filtering by whiteboard
+   blackboard (boolean): whether the user is filtering by blackboard
+   projector (boolean): whether the user is filtering by projector
+   groups (string): the campuses that the user is not including in their search.
 */
-function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
+function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
 	//send the get request
 	$.get('/bookable/filter', {
+			'building': building,
 			'nearby': nearby,
 			'pc': pc,
 			'bookable': bookable,
@@ -86,24 +131,39 @@ function getSuggestions(nearby, bookable, pc, printer, whiteboard, blackboard, p
 			'longitude': userLongitude
 		})
 		.done(function (data) {
+			console.log(data);
 			//if successful, save the data received
 			suggestions = data;
 			//if at least one room fits the criteria
 			if (suggestions.length > 0) {
 				$('#nextSuggestionBtn').removeClass('disabled');
-				//and an index to each of the JSONs
+				$('#previousSuggestionBtn').removeClass('disabled');
+				//add an index to each of the JSONs
 				for (var i = 0; i < suggestions.length; i++) {
 					suggestions[i].index = i;
 				}
 
 				//load the first suggestion
-				currentChoice = suggestions[0];
-				loadChoice();
+				if (buildingSelected === '') {
+					$('#yesBtn').html('Sounds good!');
+					$('#likeBtn').hide();
+					currentChoice = suggestions[buildingIndexToReturnTo];
+					loadBuildingChoice();
+				} else {
+					$('#yesBtn').html('Change building');
+					$('#likeBtn').css({
+						display: 'inline-block'
+					});
+					currentChoice = suggestions[0];
+					loadRoomChoice();
+				}
 			} else {
+				//bring the options menu back up and display an error
 				$('#optionsTriangle').click();
 				$('#roomName').html('n/a');
 				$('#buildingName').html('');
 				$('#nextSuggestionBtn').addClass('disabled');
+				$('#previousSuggestionBtn').addClass('disabled');
 				$('#distance').html(': ' + ('0km'));
 				alert('No rooms available fit that criteria.  Try again.  ');
 			}
@@ -133,10 +193,10 @@ function liked(locationId) {
 };
 
 /*
-   Populate the website with the suggestion
+   Populate the website with the room suggestion
    Parameters: none
 */
-function loadChoice() {
+function loadRoomChoice() {
 	//populate the html
 	$('#roomName').html(processRoomName(currentChoice.room_name));
 	$('#buildingName').html(currentChoice.building_name);
@@ -148,13 +208,35 @@ function loadChoice() {
 	$('#blackboardTick').addClass(currentChoice.blackboard ? "tick" : "cross").removeClass(currentChoice.blackboard ? "cross" : "tick");
 	$('#projectorTick').addClass(currentChoice.projector ? "tick" : "cross").removeClass(currentChoice.projector ? "cross" : "tick");
 
+	toggleNavButtons();
+
+	// check if current choice is liked by user. This updates the button.  
+	liked(currentChoice.locationId);
+}
+
+/*
+   Populate the website with the building suggestion
+   Parameters: none
+*/
+function loadBuildingChoice() {
+	//populate the html
+	$('#roomName').html(currentChoice.building_name);
+	$('#buildingName').html(currentChoice.campus);
+	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
+	$('#numberRooms').html(': ' + currentChoice.rooms);
+
+	toggleNavButtons();
+}
+
+function toggleNavButtons() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('#nextSuggestionBtn').addClass('disabled');
 	}
-
-	// check if current choice is liked by user. This updates the button.  
-	liked(currentChoice.locationId);
+	//if the user is at the start of the list of suggestions, disable the 'previous' button
+	if (currentChoice.index == 0) {
+		$('#previousSuggestionBtn').addClass('disabled');
+	}
 }
 
 /*
@@ -226,7 +308,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestionsUsingOptions();
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
