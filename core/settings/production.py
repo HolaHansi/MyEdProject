@@ -15,10 +15,6 @@ DATABASES = {
                 'OPTIONS': {
                         'read_default_file': os.path.join(BASE_DIR, 'databaseconfig.cnf')
                 }
-                # 'NAME': 'wwwbook_central',
-                # 'USER': 'wwwbook_hansi',
-                # 'PASSWORD': 'MmMm1234',
-                # 'HOST': 'localhost',
         }
 }
 
