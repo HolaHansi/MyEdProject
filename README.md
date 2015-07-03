@@ -2,7 +2,8 @@
 
 ##TODO:
 
-- EASE authentication
+- Get data from EASE authentication
+- Documentation, documentation, documentation
 - Use availability API to filter and display availability
 - Design more mockups
 - Digitalise mockups
