@@ -14,3 +14,7 @@
 - Create logo
 - Get feedback on logo
 - Go to Hive
+
+
+###Stretch goals:
+- Machine learning 'people like you like...'
