@@ -18,3 +18,4 @@
 
 ###Stretch goals:
 - Machine learning 'people like you like...'
+- Add config file to easily change which suitabilities are displayed
