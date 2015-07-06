@@ -126,7 +126,7 @@ def toRadians(x):
 # calculates how desirable a room is for a user
 # the more features the room has, the more desirable it iss
 def calculateHeuristic(room):
-    value = 0
+    value = 2
     if room.locally_allocated:
         value -= 2
     if room.pc:
