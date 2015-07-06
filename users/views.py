@@ -128,6 +128,11 @@ def logout(request):
     if request.user.is_authenticated:
         response = django_logout(request,
                                  next_page=ease_url)
+
+        response.set_cookie('cosign-eucsCosigntest-www-test.book.is.ed.ac.uk',
+                    expires="Thu, 01 Jan 2000 00:00:00 GMT",
+                    path="/")
+
         return response
 
     # django_logout(request)
