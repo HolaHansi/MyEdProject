@@ -8,6 +8,7 @@ from rooms.models import Bookable_Room
 from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
 
+from django.conf import settings
 
 # to display error messages in log-in sessions
 from django.contrib import messages
@@ -127,28 +128,40 @@ def favourites(request):
 
 
 def logout(request):
+    """
+    Function to log-out the current user. In production, this means also resetting the CoSign cookie.
 
-    # to log out requires logging out of EASE as well, hence the redirect.
-    ease_url = "http://www-test.ease.ed.ac.uk/logout.cgi"
-    if request.user.is_authenticated:
-        response = django_logout(request,
-                                 next_page=ease_url)
+    """
+    if request.user.is_authenticated():
 
-        # overwrite the cosign-cookie and set it to an expired date.
-        response.set_cookie('cosign-eucsCosigntest-www-test.book.is.ed.ac.uk',
-                    expires="Thu, 01 Jan 2000 00:00:00 GMT",
-                    path="/")
+        # in production logging requires logging out of EASE as well as the application session.
+        if settings.ENVIRONMENT == 'production':
 
+            ease_url = "http://www-test.ease.ed.ac.uk/logout.cgi"
+            response = django_logout(request,
+                                     next_page=ease_url)
+
+            # overwrite the cosign-cookie and set it to an expired date.
+            response.set_cookie('cosign-eucsCosigntest-www-test.book.is.ed.ac.uk',
+                                expires="Thu, 01 Jan 2000 00:00:00 GMT",
+                                path="/")
+
+            return response
+
+        # in development things are more simple - just logout and redirect to frontpage.
+        elif settings.ENVIRONMENT == 'development':
+            if request.user.is_authenticated():
+            response= django_logout(request,
+                                    next_page='/')
         return response
 
-    # the user was not already logged in.
+
+    # the user was not already logged in. This case is common to both ENVIRONMENTS.
     else:
         messages.add_message(request,
                              messages.ERROR,
                              "Cannot logout when user is not logged in")
         return HttpResponseRedirect('/')
-
-
 
 
 
