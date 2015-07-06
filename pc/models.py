@@ -60,7 +60,7 @@ class PC_Space(models.Model):
         # normalise the building's distance and ratio (normalised mean=0, normalised SD=1)
         normalisedDistance=(self.get_distance(long,lat)-averageDistance)/standardDeviationDistance
         normalisedRatio=(self.get_ratio()-averageRatio)/standardDeviationRatio
-        # we want a small difference and a large ratio
+        # we want a small distance and a large ratio
         return normalisedDistance-normalisedRatio
 
 

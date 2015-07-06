@@ -11,9 +11,11 @@ def get_building_data():
     url = "http://webproxy.is.ed.ac.uk/web-proxy/maps/portal.php" #smaller lat/long
     buildings = requests.get(url)
 
-
+    # for each building in the feed:
     for building in buildings.json()["locations"]:
+        # if it has a name:
         if 'name' in building.keys():
+            # get the useful fields
             longitude = float(building["longitude"])
             latitude = float(building["latitude"])
             name = building["name"]
