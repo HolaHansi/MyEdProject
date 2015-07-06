@@ -83,13 +83,16 @@ REST_FRAMEWORK = {
     ]
 }
 
-#Auth Settings
+# #Auth Settings
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
+    # for testing only: 'django.contrib.auth.backends.ModelBackend',
     'django.contrib.auth.backends.RemoteUserBackend',
 )
+
+AUTH_USER_MODEL = 'users.User'
 
 
 MIDDLEWARE_CLASSES = (

@@ -21,7 +21,6 @@ from rest_framework import routers, serializers, viewsets
 
 urlpatterns = [
     url(r'^$', include('users.urls')),
-    url(r'^entry/$', 'users.views.entry'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),
@@ -30,6 +29,6 @@ urlpatterns = [
     url(r'^favourites/$', 'users.views.favourites'),
     url(r'^like/', 'users.views.like'),
     url(r'^registration/$', 'users.views.register'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^logout/$', 'users.views.logout'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
 ]
