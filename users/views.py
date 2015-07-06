@@ -135,7 +135,7 @@ def logout(request):
     if request.user.is_authenticated():
 
         # in production logging requires logging out of EASE as well as the application session.
-        if settings.ENVIRONMENT == 'production':
+        if settings.ENV_TYPE == 'production':
 
             ease_url = "http://www-test.ease.ed.ac.uk/logout.cgi"
             response = django_logout(request,
@@ -149,7 +149,7 @@ def logout(request):
             return response
 
         # in development things are more simple - just logout and redirect to frontpage.
-        elif settings.ENVIRONMENT == 'development':
+        elif settings.ENV_TYPE == 'development':
             if request.user.is_authenticated():
                 response= django_logout(request,
                                         next_page='/')

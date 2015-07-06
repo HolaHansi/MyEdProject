@@ -6,6 +6,7 @@ DEBUG = True
 # this needs to be specified, when debug is off.
 ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
 
+ENV_TYPE = 'production'
 
 # USE Mysql in production - configured for a specific db on the chostt.
 DATABASES = {
