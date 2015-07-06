@@ -124,7 +124,7 @@ def favourites(request):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponse('https://www-test.ease.ed.ac.uk/logout/logout.cgi')
+    return HttpResponseRedirect('https://www-test.ease.ed.ac.uk/logout/logout.cgi')
 
 
 
