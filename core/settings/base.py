@@ -87,6 +87,9 @@ REST_FRAMEWORK = {
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.RemoteUserBackend',
+)
 
 
 MIDDLEWARE_CLASSES = (
@@ -98,6 +101,10 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+
+    # needed for remote user (EASE)
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
+
 )
 
 ROOT_URLCONF = 'core.urls'
