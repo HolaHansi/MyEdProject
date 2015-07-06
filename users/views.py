@@ -151,8 +151,8 @@ def logout(request):
         # in development things are more simple - just logout and redirect to frontpage.
         elif settings.ENVIRONMENT == 'development':
             if request.user.is_authenticated():
-            response= django_logout(request,
-                                    next_page='/')
+                response= django_logout(request,
+                                        next_page='/')
         return response
 
 
