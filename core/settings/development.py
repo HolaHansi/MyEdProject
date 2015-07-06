@@ -3,6 +3,8 @@ from .base import *
 # debugging should be on in development - NEVER in production!
 DEBUG = True
 
+ENV_TYPE = 'development'
+
 # Database for development - SQLite
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
