@@ -29,6 +29,6 @@ urlpatterns = [
     url(r'^favourites/$', 'users.views.favourites'),
     url(r'^like/', 'users.views.like'),
     url(r'^registration/$', 'users.views.register'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': 'https://www-test.ease.ed.ac.uk/logout/logout.cgi'}),
+    url(r'^logout/$', 'users.views.logout'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
 ]

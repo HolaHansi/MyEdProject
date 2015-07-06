@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from pc.models import PC_Space
 from rooms.models import Bookable_Room
 from rest_framework.renderers import JSONRenderer
-from django.contrib.auth import login, authenticate
+from django.contrib import auth
 
 
 class JSONResponse(HttpResponse):
@@ -121,6 +121,10 @@ def favourites(request):
                'user': user}
     return render(request, 'users/favourites.html', context)
 
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponse('https://www-test.ease.ed.ac.uk/logout/logout.cgi')
 
 
 
