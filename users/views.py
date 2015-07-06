@@ -9,6 +9,10 @@ from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
 
 
+# to display error messages in log-in sessions
+from django.contrib import messages
+
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -124,20 +128,27 @@ def favourites(request):
 
 def logout(request):
 
+    # to log out requires logging out of EASE as well, hence the redirect.
     ease_url = "http://www-test.ease.ed.ac.uk/logout.cgi"
     if request.user.is_authenticated:
         response = django_logout(request,
                                  next_page=ease_url)
 
+        # overwrite the cosign-cookie and set it to an expired date.
         response.set_cookie('cosign-eucsCosigntest-www-test.book.is.ed.ac.uk',
                     expires="Thu, 01 Jan 2000 00:00:00 GMT",
                     path="/")
 
         return response
 
-    # django_logout(request)
-    # return HttpResponseRedirect('https://www-test.ease.ed.ac.uk/logout/logout.cgi')
-    #
+    # the user was not already logged in.
+    else:
+        messages.add_message(request,
+                             messages.ERROR,
+                             "Cannot logout when user is not logged in")
+        return HttpResponseRedirect('/')
+
+
 
 
 
