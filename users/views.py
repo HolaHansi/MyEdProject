@@ -165,7 +165,7 @@ def logout(request):
 
 def register(request):
 
-    if settings.ENV == 'development':
+    if settings.ENV_TYPE == 'development':
 
         # A boolean value for telling the template whether the registration was successful.
         # Set to False initially. Code changes value to True when registration succeeds.
