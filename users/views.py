@@ -124,7 +124,7 @@ def favourites(request):
 
 def logout(request):
 
-    ease_url = "www-test.ease.ed.ac.uk/logout.cgi"
+    ease_url = "http://www-test.ease.ed.ac.uk/logout.cgi"
     if request.user.is_authenticated:
         response = django_logout(request,
                                  next_page=ease_url)
