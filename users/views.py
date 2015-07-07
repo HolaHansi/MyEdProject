@@ -35,7 +35,6 @@ def index(request):
     logger = logging.getLogger(__name__)
 
     logger.debug('logging works!')
-    return HttpResponseRedirect('http://www.google.dk')
     return render(request, 'users/index.html')
 
 
