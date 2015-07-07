@@ -32,9 +32,9 @@ def index(request):
     import logging
 
     # Get an instance of a logger
-    logger = logging.getLogger(__name__)
-
+    logger = logging.getLogger('usefordebug')
     logger.debug('logging works!')
+
     return render(request, 'users/index.html')
 
 

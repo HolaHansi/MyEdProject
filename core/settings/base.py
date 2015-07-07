@@ -169,13 +169,6 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs/debug.log')
-        },
-    },
     'formatters': {
         'verbose': {
             'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
@@ -185,15 +178,25 @@ LOGGING = {
             'format': '%(levelname)s %(message)s'
         },
     },
+
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose'
+            'filename': os.path.join(BASE_DIR, 'logs/debug.log')
+        },
+    },
     'loggers': {
         'django.request': {
             'handlers': ['file'],
             'level': 'DEBUG',
             'propagate': True,
         },
-        'core': {
+        'usefordebug': {
             'handlers': ['file'],
             'level': 'DEBUG',
+            'formatter':
         },
     },
 }
