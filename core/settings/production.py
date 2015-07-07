@@ -10,7 +10,6 @@ ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
 ENV_TYPE = 'production'
 
 
-
 # USE Mysql in production - baseconfig.cnf contains all the configurations of the db on the chostt.
 DATABASES = {
         'default': {
@@ -21,8 +20,6 @@ DATABASES = {
                 }
         }
 }
-
-
 
 #STATIC_ROOT holds the path to where django will put all the collected staticfiles,
 # after runnning the command ./manage.py collectstatic.
