@@ -7,10 +7,6 @@ DEBUG = True
 ENV_TYPE = 'development'
 
 
-# use local backend that uses our models - not ease.
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
 
 
 # Database for development - SQLite

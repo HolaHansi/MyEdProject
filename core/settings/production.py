@@ -10,11 +10,6 @@ ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
 ENV_TYPE = 'production'
 
 
-# This is the backend needed to use EASE for authentication.
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.RemoteUserBackend'
-)
-
 
 # USE Mysql in production - baseconfig.cnf contains all the configurations of the db on the chostt.
 DATABASES = {
