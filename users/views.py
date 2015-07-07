@@ -26,13 +26,6 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-def logtest():
-    import logging
-
-    # Get an instance of a logger
-    logger = logging.getLogger(__name__)
-
-    logger.debug('logging works!')
 
 
 def index(request):
@@ -42,6 +35,7 @@ def index(request):
     logger = logging.getLogger(__name__)
 
     logger.debug('logging works!')
+    return HttpResponseRedirect('http://www.google.dk')
     return render(request, 'users/index.html')
 
 
@@ -265,24 +259,3 @@ def login(request):
         return HttpResponseRedirect('/')
 
 
-
-
-
-
-
-
-
-#
-# @login_required
-# def entry(request):
-#     if request.method == 'POST':
-#         form = EntryForm(request.POST)
-#         if form.is_valid():
-#             entry = form.save(commit=False)
-#             entry.moderator = request.user
-#             print(entry.moderator)
-#             entry.save()
-#             return HttpResponseRedirect('/')
-#     else:
-#         form = EntryForm()
-#     return render(request, 'users/entry.html', {'form': form, 'user': request.user})
