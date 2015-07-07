@@ -5,11 +5,11 @@ from time import clock
 
 def update_room_table():
     """
-    The function makes a request to the bookablerooms feeds and updates the fields in
-    the Room_Feed table.
+    The function makes a request to the bookable rooms feeds and uses that data to populate the Room_Feed table.
     :return: void
     """
 
+    objectsToSave=[]
     rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
     zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
 
@@ -83,9 +83,11 @@ def update_room_table():
                             zoneId=zoneId,
                             campus_id=campus_id,
                             campus_name=campus_name)
-
-            obj.save()
-
+            objectsToSave.append(obj)
+    # clear the database
+    Room_Feed.objects.all().delete()
+    # store all the the rooms in the database
+    Room_Feed.objects.bulk_create(objectsToSave)
     return 'success'
 
 
@@ -95,6 +97,7 @@ def update_building_table():
     :return: void
     """
 
+    objectsToSave=[]
     url = "http://webproxy.is.ed.ac.uk/web-proxy/maps/portal.php"
     buildings = requests.get(url)
 
@@ -120,7 +123,6 @@ def update_building_table():
         # 'Buccleuch Place':'0260', # 30 Buccleuch Place
         'William Rankine Building': '0668',
         'C.H. Waddington Building': '0670',
-        'Psychology Building': '0209',
         'Hospital for Small Animals': '0719',
         "Old Surgeons' Hall": '0313',
         'Old Infirmary (Geography)': '0311',
@@ -153,70 +155,78 @@ def update_building_table():
 
                 # Rename any buildings called strange things in the lat/long database
                 if (building['name']) == 'George Square (2-15)':
-                    building_name = '7 George Square'
+                    building_name = '7 George Square (Psychology Building)'
                 elif (building['name']) == 'Main University Library':
                     building_name = 'Main Library'
                 elif (building['name']) == 'George Square (1)':
                     building_name = '1 George Square'
-                elif (building['name']) == 'George Square (1)':
-                    building_name = '1 George Square'
+                elif (building['name']) == 'Economics, School of':
+                    building_name = '30 Buccleuch Place (School of Economics)'
                 # Two George Square buildings both use the same 'building' name, the lat/long database is kinda rubbish.
                 elif (building['name']) == 'George Square (16-27)':
-                    # create second object and save to database
+                    # save second object
                     obj = Building_Feed(abbreviation='0219',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='21 George Square')
-                    obj.save()
+                    objectsToSave.append(obj)
                     # continue with first object
                     building_name = '16-20 George Square'
                 # Think that's bad?  There's loads of Buccleuch Place ones all using the same lat/long...
                 elif (building['name']) == 'Buccleuch Place':
-                    # create second object and save to database
+                    # save second object
                     obj = Building_Feed(abbreviation='0244',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='14 Buccleuch Place')
-                    obj.save()
-                    # create third object and save to database
+                    objectsToSave.append(obj)
+                    # save third object
                     obj = Building_Feed(abbreviation='0252',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='22 Buccleuch Place')
-                    obj.save()
-                    # create fourth object and save to database
+                    objectsToSave.append(obj)
+                    # save fourth object
                     obj = Building_Feed(abbreviation='0254',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='24 Buccleuch Place')
-                    obj.save()
-                    # create fifth object and save to database
+                    objectsToSave.append(obj)
+                    # save fifth object
                     obj = Building_Feed(abbreviation='0245',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='15 Buccleuch Place')
-                    obj.save()
-                    # create sixth object and save to database
+                    objectsToSave.append(obj)
+                    # save sixth object
                     obj = Building_Feed(abbreviation='0247',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='17 Buccleuch Place')
-                    obj.save()
-                    # create seventh object and save to database
-                    obj = Building_Feed(abbreviation='0260',
-                                        longitude=longitude,
-                                        latitude=latitude,
-                                        building_name='30 Buccleuch Place')
-                    obj.save()
+                    objectsToSave.append(obj)
                     # continue with first object
                     building_name = '31 Buccleuch Place'
 
-            # create object and save to database
+            # save object
             obj = Building_Feed(abbreviation=abbreviation,
                                 longitude=longitude,
                                 latitude=latitude,
                                 building_name=building_name)
-            obj.save()
+            objectsToSave.append(obj)
+
+    # Remove any duplicates from the database, such as the Noreen and Kenneth Murray Library which is in the feed twice
+    # WARNING: O(n^2) efficiency!  For now, the constants are small enough that it's not a problem though.
+    seen=[]
+    for obj in objectsToSave:
+        if obj.abbreviation in seen:
+            objectsToSave.remove(obj)
+        else:
+            seen.append(obj.abbreviation)
+
+    # clear the database
+    Building_Feed.objects.all().delete()
+    # store all the buildings in the database
+    Building_Feed.objects.bulk_create(objectsToSave)
     return 'success'
 
 
@@ -225,7 +235,7 @@ def merge_room_building():
     The function merges the two tables Room_Feed and Building_Feed into a single table: Bookable_Room
     :return: void
     """
-
+    objectsToSave=[]
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
         obj = Bookable_Room(abbreviation=results.abbreviation,
@@ -245,7 +255,12 @@ def merge_room_building():
                             building_name=results.building_name,
                             campus_id=results.campus_id,
                             campus_name=results.campus_name)
-        obj.save()
+        objectsToSave.append(obj)
+
+    # clear the database
+    Bookable_Room.objects.all().delete()
+    # store all the rooms in the database
+    Bookable_Room.objects.bulk_create(objectsToSave)
     return 'success'
 
 ''' For testing:
