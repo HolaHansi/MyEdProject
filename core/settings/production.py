@@ -1,7 +1,7 @@
 from .base import *
 
 # Debug off in production
-DEBUG = True
+DEBUG = False
 
 # this needs to be specified, when debug is off.
 ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
