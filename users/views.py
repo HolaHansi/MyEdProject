@@ -36,6 +36,12 @@ def logtest():
 
 
 def index(request):
+    import logging
+
+    # Get an instance of a logger
+    logger = logging.getLogger(__name__)
+
+    logger.debug('logging works!')
     return render(request, 'users/index.html')
 
 
