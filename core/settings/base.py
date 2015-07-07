@@ -183,7 +183,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
             'filename': os.path.join(BASE_DIR, 'logs/debug.log')
         },
     },
@@ -196,7 +196,6 @@ LOGGING = {
         'usefordebug': {
             'handlers': ['file'],
             'level': 'DEBUG',
-            'formatter':
         },
     },
 }
