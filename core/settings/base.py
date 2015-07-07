@@ -89,6 +89,15 @@ LOGIN_REDIRECT_URL = '/'
 
 
 
+# This is the backend needed to use EASE for authentication.
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.RemoteUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# use local backend that uses our models - not ease.
+
+
 AUTH_USER_MODEL = 'users.User'
 
 
