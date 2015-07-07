@@ -26,6 +26,14 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
+def logtest():
+    import logging
+
+    # Get an instance of a logger
+    logger = logging.getLogger(__name__)
+
+    logger.debug('logging works!')
+
 
 def index(request):
     return render(request, 'users/index.html')
