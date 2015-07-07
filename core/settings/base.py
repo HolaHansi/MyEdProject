@@ -13,9 +13,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-#BASE_DIR refers to the path of the directory above core.
-BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname((__file__)))))
-
+# BASE_DIR refers to the path of the directory above core.
+BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
 # this gets the secrets.json file and extracts the secret key. Secrets.json is kept out of version control for
 # security reasons.
@@ -25,9 +24,10 @@ import json
 from django.core.exceptions import ImproperlyConfigured
 
 with open('secrets.json') as f:
-    secrets = json.load(f)
+    secrets_json = json.load(f)
 
-def get_secret(setting, secrets=secrets):
+
+def get_secret(setting, secrets=secrets_json):
     """
     Get the secret variable or return explicit exception - function is inspired by
     two scoops of django - p. 55 by Greenfeld.
@@ -50,26 +50,26 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #plug-ins
+    # plug-ins
     'rest_framework',
     'djcelery',
     'kombu.transport.django',
 
-    #local apps
+    # local apps
     'rooms',
     'pc',
     'api',
     'users'
 )
 
-#celery:
+# celery:
 import djcelery
 djcelery.setup_loader()
 BROKER_URL = 'django://'
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 
-from core.celery import CELERYBEAT_SCHEDULE
+# from core.celery import CELERYBEAT_SCHEDULE
 CELERY_TIMEZONE = 'Europe/London'
 
 
@@ -86,8 +86,6 @@ REST_FRAMEWORK = {
 # #Auth Settings
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
-
-
 
 # This is the backend needed to use EASE for authentication.
 AUTHENTICATION_BACKENDS = (

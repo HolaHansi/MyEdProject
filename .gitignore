@@ -8,6 +8,5 @@ celerybeat.pid
 rooms/migrations/
 pc/migrations/
 *.pyc
-
 core/wsgi.py
 manage.py

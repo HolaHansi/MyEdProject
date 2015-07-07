@@ -22,7 +22,6 @@ def index(request):
     return render(request, 'core/testerstuff.html', context)
 
 
-
 class PCListView(ListAPIView):
     queryset = PC_Space.objects.all().order_by('ratio').reverse()
     serializer_class = PC_Space_Serializer
@@ -35,12 +34,10 @@ class PCRetrieveView(RetrieveAPIView):
     lookup_field = 'id'
 
 
-
 def test(request):
     if request.method == "GET":
         print('nearby:')
         print(bool(request.GET['nearby']))
-
 
         if bool(request.GET['empty']):
             data = PC_Space.objects.all().order_by('-ratio')
@@ -49,22 +46,11 @@ def test(request):
             longitude = request.GET['longitude']
             latitude = request.GET['latitude']
 
-
-
-            #some code for sorting according to proximity
+            # some code for sorting according to proximity
 
         if request.GET['campus'] != 'nopref':
             data = PC_Space.objects.order_by('-ratio').filter(group=request.GET['campus'])
 
-
-
         serializer = PC_Space_Serializer(data, many=True)
         print(serializer.data[0])
         return JSONResponse(serializer.data)
-
-
-
-        #
-        # print(request.GET['tutRoom'])
-        # print(request.GET['nearby'])
-
