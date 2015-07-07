@@ -28,10 +28,10 @@ def filter_suggestions(request):
     :return: JSON object
     """
     if request.method == "GET":
+        # don't suggest any full or almost full rooms
+        data = PC_Space.objects.exclude(ratio__lt=0.1)
         # remove any groups they didn't select
         groups = request.GET.getlist('groupsUnselected[]')
-        # don't suggest any full rooms either
-        data = PC_Space.objects.exclude(ratio=0)
         for group in groups:
             data = data.exclude(group=group)
 
