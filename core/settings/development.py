@@ -6,6 +6,13 @@ DEBUG = True
 #This variable is used in views to check whether the app is running in development or production.
 ENV_TYPE = 'development'
 
+
+# use local backend that uses our models - not ease.
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
 # Database for development - SQLite
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
