@@ -29,12 +29,6 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
-    import logging
-
-    # Get an instance of a logger
-    logger = logging.getLogger('usefordebug')
-    logger.debug('logging works!')
-
     return render(request, 'users/index.html')
 
 
