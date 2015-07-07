@@ -52,20 +52,22 @@ def filter_suggestions(request):
                 sd_distance = 0
                 sd_ratio = 0
                 i = 0
-                for x in data:
-                    average_distance = average_distance + x.get_distance(long1=usr_longitude, lat1=usr_latitude)
-                    average_ratio = average_ratio + x.get_ratio()
+                for pc_lab in data:
+                    average_distance = average_distance + pc_lab.get_distance(long1=usr_longitude, lat1=usr_latitude)
+                    average_ratio = average_ratio + pc_lab.get_ratio()
                     i += 1
                 if i != 0:
                     average_distance = average_distance / i
                     average_ratio = average_ratio / i
                     # calculate the standard deviation of distance and ratio
-                    for x in data:
-                        sd_distance += (x.get_distance(long1=usr_longitude, lat1=usr_latitude) - average_distance) ** 2
-                        sd_ratio += (x.get_ratio() - average_ratio) ** 2
+                    for pc_lab in data:
+                        sd_distance += (pc_lab.get_distance(long1=usr_longitude,
+                                                            lat1=usr_latitude) - average_distance) ** 2
+                        sd_ratio += (pc_lab.get_ratio() - average_ratio) ** 2
                     sd_distance = (sd_distance / i) ** 0.5
                     sd_ratio = (sd_ratio / i) ** 0.5
-                    # sort the data based on both distance and ratio using a heuristic function of the normalised distance and ratio
+                    # sort the data based on both distance and ratio using a heuristic function
+                    # of the normalised distance and ratio
                     data = sorted(data,
                                   key=lambda x: x.get_heuristic(average_distance, average_ratio, sd_distance, sd_ratio,
                                                                 usr_longitude, usr_latitude))
@@ -77,4 +79,3 @@ def filter_suggestions(request):
 
         serializer = PC_Space_Serializer(data, many=True)
         return JSONResponse(serializer.data)
-

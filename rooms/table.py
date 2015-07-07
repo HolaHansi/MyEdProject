@@ -1,5 +1,6 @@
 import requests
 from rooms.models import Room_Feed, Building_Feed, Bookable_Room
+from time import clock
 
 
 def update_room_table():
@@ -11,6 +12,7 @@ def update_room_table():
 
     rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
     zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
+
     # save each bookable room:
     for room in rooms:
         if 'locationId' in room.keys():
@@ -92,7 +94,8 @@ def update_building_table():
     This function makes a call to the building feed and updates the values of the Building_Feed table.
     :return: void
     """
-    url = "http://webproxy.is.ed.ac.uk/web-proxy/maps/portal.php"  # smaller lat/long
+
+    url = "http://webproxy.is.ed.ac.uk/web-proxy/maps/portal.php"
     buildings = requests.get(url)
 
     # extra keys which aren't in the lat/long database, despite the fact their buildings are
@@ -222,6 +225,7 @@ def merge_room_building():
     The function merges the two tables Room_Feed and Building_Feed into a single table: Bookable_Room
     :return: void
     """
+
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
         obj = Bookable_Room(abbreviation=results.abbreviation,
@@ -241,6 +245,12 @@ def merge_room_building():
                             building_name=results.building_name,
                             campus_id=results.campus_id,
                             campus_name=results.campus_name)
-
         obj.save()
     return 'success'
+
+''' For testing:
+def printTime(message):
+    global timer
+    print(message + ': ' + str(float(int((clock() - timer) * 1000)) / 1000) + 's')
+    timer = clock()
+'''

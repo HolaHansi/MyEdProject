@@ -1,5 +1,3 @@
-__author__ = 'hanschristiangregersen'
-
 from django.conf.urls import url
 
 from rooms import views

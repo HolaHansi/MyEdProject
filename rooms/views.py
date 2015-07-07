@@ -60,10 +60,10 @@ def filter_suggestions(request):
         # if they're currently searching for a building:
         if request.GET['building'] == '':
             # work out how many rooms are available in each building
-            buildingDetails = {}
+            building_details = {}
             for room in data:
-                if not (room.abbreviation in buildingDetails):
-                    buildingDetails[room.abbreviation] = {
+                if not (room.abbreviation in building_details):
+                    building_details[room.abbreviation] = {
                         'abbreviation': room.abbreviation,
                         'rooms': 1,
                         'building_name': room.building_name,
@@ -72,20 +72,21 @@ def filter_suggestions(request):
                         'campus': room.campus_name
                     }
                 else:
-                    buildingDetails[room.abbreviation]['rooms'] += 1
-            buildingDetails = list(buildingDetails.values())
+                    building_details[room.abbreviation]['rooms'] += 1
+            building_details = list(building_details.values())
             # if sorting by location
             if request.GET['nearby'] == 'true':
                 # get the user's latitude and longitude
                 usr_longitude = float(request.GET['longitude'])
                 usr_latitude = float(request.GET['latitude'])
                 # sort the buildings based on distance from user, closest first
-                buildingDetails = sorted(buildingDetails, key=lambda x: get_distance(x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
+                building_details = sorted(building_details, key=lambda x: get_distance(
+                    x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
             # if not sorting by location, sort by number of suitable rooms available
             else:
-                buildingDetails = sorted(buildingDetails, key=lambda x: x['rooms'], reverse=True)
+                building_details = sorted(building_details, key=lambda x: x['rooms'], reverse=True)
 
-            return JSONResponse(buildingDetails)
+            return JSONResponse(building_details)
 
         # if they're searching for a room...
 
@@ -93,9 +94,9 @@ def filter_suggestions(request):
         data = data.filter(abbreviation=request.GET['building'])
 
         # sort the rooms based on a simple heuristic function
-        data = sorted(data, key=lambda x: calculateHeuristic(x), reverse=True)
+        data = sorted(data, key=lambda x: calculate_heuristic(x), reverse=True)
 
-        #return the rooms
+        # return the rooms
         serializer = Bookable_Room_Serializer(data, many=True)
         return JSONResponse(serializer.data)
 
@@ -103,29 +104,29 @@ def filter_suggestions(request):
 # calculate the distance between the current building and the inputted point
 # parameters: long1 - the longitude of the user
 #             lat1 - the latitude of the user
-def get_distance(buildingLong, buildingLat, long1, lat1):
-    R = 6371000  # metres
+def get_distance(building_long, building_lat, long1, lat1):
+    earth_radius = 6371000  # metres
     # convert all coordinates to radians
-    t1 = toRadians(lat1)
-    t2 = toRadians(buildingLat)
-    dt = toRadians(buildingLat - lat1)
-    dl = toRadians(buildingLong - long1)
+    t1 = to_radians(lat1)
+    t2 = to_radians(building_lat)
+    dt = to_radians(building_lat - lat1)
+    dl = to_radians(building_long - long1)
     # do some clever maths which the internet told me was correct
     a = math.sin(dt / 2) * math.sin(dt / 2) + math.cos(t1) * math.cos(t2) * math.sin(dl / 2) * math.sin(dl / 2)
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     # return the distance between the points
-    return R * c
+    return earth_radius * c
 
 
 # converts from degrees to radians
 # parameters: x - the value in degrees to be converted
-def toRadians(x):
+def to_radians(x):
     return x * math.pi / 180
 
 
 # calculates how desirable a room is for a user
 # the more features the room has, the more desirable it iss
-def calculateHeuristic(room):
+def calculate_heuristic(room):
     value = 2
     if room.locally_allocated:
         value -= 2

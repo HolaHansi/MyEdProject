@@ -15,8 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from rest_framework import routers, serializers, viewsets
-
 
 
 urlpatterns = [
@@ -31,5 +29,5 @@ urlpatterns = [
     url(r'^registration/$', 'users.views.register'),
     url(r'^logout/$', 'users.views.logout'),
     url(r'login/$', 'users.views.login')
-    #url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
+    # url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
 ]
