@@ -7,6 +7,7 @@ from pc.models import PC_Space
 from rooms.models import Bookable_Room
 from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
+from django.contrib.auth.views import login as django_login
 
 from django.conf import settings
 
@@ -164,6 +165,10 @@ def logout(request):
 
 
 def register(request):
+    """
+    A view that allow users to register with a username and a password. As we do not
+    allow this service in production, we initially check if the settings environment is development or not.
+    """
 
     if settings.ENV_TYPE == 'development':
 
@@ -222,6 +227,35 @@ def register(request):
                              messages.ERROR,
                              "No registration allowed outside of EASE")
         return HttpResponseRedirect('/')
+
+
+
+def login(request):
+    if settings.ENV_TYPE == 'development':
+        if request.user.is_authenticated():
+            messages.add_message(request,
+                                 messages.ERROR,
+                                 "Can't login more than one user at the same time")
+            return HttpResponseRedirect('/')
+
+        # user is not authenticated and should be logged in
+        else:
+            response = django_login(request, template_name='auth/login.html')
+            return response
+
+    # the view is called in production - this is now allowed!
+    else:
+        messages.add_message(request,
+                             messages.ERROR,
+                             "Not possible to circumvent EASE!")
+        return HttpResponseRedirect('/')
+
+
+
+
+
+
+
 
 
 #

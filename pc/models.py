@@ -64,8 +64,6 @@ class PC_Space(models.Model):
         return normalisedDistance-normalisedRatio
 
 
-
-
 class Building_PC(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
     longitude = models.FloatField()

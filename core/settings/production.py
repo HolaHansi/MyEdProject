@@ -6,9 +6,17 @@ DEBUG = True
 # this needs to be specified, when debug is off.
 ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
 
+#This variable is used in views to check whether the app is running in development or production.
 ENV_TYPE = 'production'
 
-# USE Mysql in production - configured for a specific db on the chostt.
+
+# This is the backend needed to use EASE for authentication.
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.RemoteUserBackend'
+)
+
+
+# USE Mysql in production - baseconfig.cnf contains all the configurations of the db on the chostt.
 DATABASES = {
         'default': {
                 'ENGINE': 'django.db.backends.mysql',
@@ -18,6 +26,11 @@ DATABASES = {
                 }
         }
 }
+
+
+
+#STATIC_ROOT holds the path to where django will put all the collected staticfiles,
+# after runnning the command ./manage.py collectstatic.
 
 STATIC_ROOT = os.path.join(BASE_DIR, '../public_html/staticfiles')
 
