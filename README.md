@@ -2,14 +2,14 @@
 
 ##TODO:
 
-- Get data from EASE authentication
+- Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
 - Documentation, documentation, documentation
 - Use availability API to filter and display availability
 - Design more mockups
 - Digitalise mockups
 - Balsamicasise mockups
 - Get feedback
-- Make actual design
+- Implement chosen design
 - Come up with a new name(?)
 - Get feedback on a new name(?)
 - Create logo
