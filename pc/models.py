@@ -66,14 +66,3 @@ class PC_Space(models.Model):
         normalised_ratio = (self.get_ratio() - average_ratio) / standard_deviation_ratio
         # we want a small distance and a large ratio
         return normalised_distance - normalised_ratio
-
-
-class Building_PC(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
-    longitude = models.FloatField()
-    latitude = models.FloatField()
-
-    def __str__(self):
-        return str(self.name)
-
-# Create your models here.

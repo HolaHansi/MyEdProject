@@ -1,12 +1,12 @@
 from django.db import models
 
-''' Room food attributes:
+''' Room attributes:
     dvd = models.BooleanField()
     induction_loop = models.BooleanField()
     laptop_connectivity = models.BooleanField()
     ohp = models.BooleanField()
     pa = models.BooleanField()
-        prs_system = models.BooleanField()
+    prs_system = models.BooleanField()
     vcr = models.BooleanField()
     visualizer = models.BooleanField()
     pc = models.BooleanField(default=False)

@@ -140,9 +140,9 @@ def update_building_table():
         'Medical Education Centre': '2305',
         "St Leonard's Land": '0564'
     }
-
+    custom_abbreviation_counter=0
     for building in buildings.json()["locations"]:
-        # we're not interested in buildings without an abbreviation
+        # we're most interested in buildings with an abbreviation
         # as this is the only way we can link the tables with Room_Feed.
         if 'abbreviation' in building.keys() or ('name' in building.keys() and building['name'] in extra_keys):
             longitude = float(building["longitude"])
@@ -206,27 +206,30 @@ def update_building_table():
                     objectsToSave.append(obj)
                     # continue with first object
                     building_name = '31 Buccleuch Place'
-
-            # save object
-            obj = Building_Feed(abbreviation=abbreviation,
-                                longitude=longitude,
-                                latitude=latitude,
-                                building_name=building_name)
-            objectsToSave.append(obj)
+        elif 'name' in building.keys() and (len(building['categories'])==0 or not ('Buses' in building['categories'][0] or 'Parking' in building['categories'][0] or 'Information' in building['categories'][0])):
+            abbreviation='z'+str(custom_abbreviation_counter) # give it a custom id, just so it can be in our database, this won't be able to be used to link anything.
+            longitude = float(building["longitude"])
+            latitude = float(building["latitude"])
+            building_name = building["name"]
+            custom_abbreviation_counter+=1
+        # save object
+        obj = Building_Feed(abbreviation=abbreviation,
+                            longitude=longitude,
+                            latitude=latitude,
+                            building_name=building_name)
+        objectsToSave.append(obj)
 
     # Remove any duplicates from the database, such as the Noreen and Kenneth Murray Library which is in the feed twice
     # WARNING: O(n^2) efficiency!  For now, the constants are small enough that it's not a problem though.
-    seen=[]
+    newObjectsToSave=[]
     for obj in objectsToSave:
-        if obj.abbreviation in seen:
-            objectsToSave.remove(obj)
-        else:
-            seen.append(obj.abbreviation)
+        if not obj in newObjectsToSave:
+            newObjectsToSave.append(obj)
 
     # clear the database
     Building_Feed.objects.all().delete()
     # store all the buildings in the database
-    Building_Feed.objects.bulk_create(objectsToSave)
+    Building_Feed.objects.bulk_create(newObjectsToSave)
     return 'success'
 
 
