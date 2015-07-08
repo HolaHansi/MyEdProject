@@ -1,6 +1,5 @@
 import requests
 from rooms.models import Room_Feed, Building_Feed, Bookable_Room
-from time import clock
 
 
 def update_room_table():
@@ -9,7 +8,7 @@ def update_room_table():
     :return: void
     """
 
-    objectsToSave=[]
+    buildings_to_save = []
     rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
     zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
 
@@ -83,26 +82,26 @@ def update_room_table():
                             zoneId=zoneId,
                             campus_id=campus_id,
                             campus_name=campus_name)
-            objectsToSave.append(obj)
+            buildings_to_save.append(obj)
     # clear the database
     Room_Feed.objects.all().delete()
     # store all the the rooms in the database
-    Room_Feed.objects.bulk_create(objectsToSave)
+    Room_Feed.objects.bulk_create(buildings_to_save)
     return 'success'
 
 
 def update_building_table():
     """
-    This function makes a call to the building feed and updates the values of the Building_Feed table.
+    Makes a call to the building feed and populates the Building_Feed table with the relevant data received.
     :return: void
     """
 
-    objectsToSave=[]
+    # get the JSON from the feed
     url = "http://webproxy.is.ed.ac.uk/web-proxy/maps/portal.php"
-    buildings = requests.get(url)
+    buildings = requests.get(url).json()
 
-    # extra keys which aren't in the lat/long database, despite the fact their buildings are
-    # yeah, the database is kind of rubbish
+    # extra keys for some of the buildings which are in the buildings database but don't have their key included
+    # yeah, the buildings database is kind of rubbish
     # I had to look these ones up manually, so it's not a complete list,
     # nor obviously will it update, but it's a wee help at least
     extra_keys = {
@@ -140,17 +139,31 @@ def update_building_table():
         'Medical Education Centre': '2305',
         "St Leonard's Land": '0564'
     }
-    custom_abbreviation_counter=0
-    for building in buildings.json()["locations"]:
-        # we're most interested in buildings with an abbreviation
-        # as this is the only way we can link the tables with Room_Feed.
-        if 'abbreviation' in building.keys() or ('name' in building.keys() and building['name'] in extra_keys):
+
+    # initialize variables
+    custom_abbreviation_counter = 0
+    buildings_to_save = []
+
+    # for each building in the feed,
+    for building in buildings["locations"]:
+        # only save it if it has a name, otherwise it's useless to us
+        # we're also not interested in buses, car parks, or 'information' (whatever that is)
+        if 'name' in building.keys() and (len(building['categories']) == 0 or not
+                                          ('Buses' in building['categories'][0]
+                                          or 'Parking' in building['categories'][0]
+                                          or 'Information' in building['categories'][0])):
+            # get the longitude, latitude and building name
             longitude = float(building["longitude"])
             latitude = float(building["latitude"])
             building_name = building["name"]
+
+            # if it's one of the rare entries that actually includes the building's abbreviation, then use that
             if 'abbreviation' in building.keys():
                 abbreviation = building["abbreviation"][:4]
-            else:
+
+            # if it's one of the entries which doesn't have an abbreviation in the database,
+            # but does in our hard-coded list, then use that
+            elif building['name'] in extra_keys:
                 abbreviation = extra_keys[building['name']]
 
                 # Rename any buildings called strange things in the lat/long database
@@ -162,74 +175,78 @@ def update_building_table():
                     building_name = '1 George Square'
                 elif (building['name']) == 'Economics, School of':
                     building_name = '30 Buccleuch Place (School of Economics)'
-                # Two George Square buildings both use the same 'building' name, the lat/long database is kinda rubbish.
+
+                # Two George Square buildings both use the same building from the buildings feed, so save both of them
+                # (yes, the feed is kind of naff)
                 elif (building['name']) == 'George Square (16-27)':
                     # save second object
                     obj = Building_Feed(abbreviation='0219',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='21 George Square')
-                    objectsToSave.append(obj)
+                    buildings_to_save.append(obj)
                     # continue with first object
                     building_name = '16-20 George Square'
-                # Think that's bad?  There's loads of Buccleuch Place ones all using the same lat/long...
+                # Think that's bad?  There's loads of Buccleuch Place ones all using the same building from the feed...
                 elif (building['name']) == 'Buccleuch Place':
                     # save second object
                     obj = Building_Feed(abbreviation='0244',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='14 Buccleuch Place')
-                    objectsToSave.append(obj)
+                    buildings_to_save.append(obj)
                     # save third object
                     obj = Building_Feed(abbreviation='0252',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='22 Buccleuch Place')
-                    objectsToSave.append(obj)
+                    buildings_to_save.append(obj)
                     # save fourth object
                     obj = Building_Feed(abbreviation='0254',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='24 Buccleuch Place')
-                    objectsToSave.append(obj)
+                    buildings_to_save.append(obj)
                     # save fifth object
                     obj = Building_Feed(abbreviation='0245',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='15 Buccleuch Place')
-                    objectsToSave.append(obj)
+                    buildings_to_save.append(obj)
                     # save sixth object
                     obj = Building_Feed(abbreviation='0247',
                                         longitude=longitude,
                                         latitude=latitude,
                                         building_name='17 Buccleuch Place')
-                    objectsToSave.append(obj)
+                    buildings_to_save.append(obj)
                     # continue with first object
                     building_name = '31 Buccleuch Place'
-        elif 'name' in building.keys() and (len(building['categories'])==0 or not ('Buses' in building['categories'][0] or 'Parking' in building['categories'][0] or 'Information' in building['categories'][0])):
-            abbreviation='z'+str(custom_abbreviation_counter) # give it a custom id, just so it can be in our database, this won't be able to be used to link anything.
-            longitude = float(building["longitude"])
-            latitude = float(building["latitude"])
-            building_name = building["name"]
-            custom_abbreviation_counter+=1
-        # save object
-        obj = Building_Feed(abbreviation=abbreviation,
-                            longitude=longitude,
-                            latitude=latitude,
-                            building_name=building_name)
-        objectsToSave.append(obj)
+
+            # if the building doesn't have an id in either the feed or our hard coded list, just give it a custom id
+            # only so it can be in our database, it won't be able to be used to link anything
+            else:
+                # give it a custom id
+                abbreviation = 'z' + str(custom_abbreviation_counter)
+                custom_abbreviation_counter += 1
+
+            # save the building
+            obj = Building_Feed(abbreviation=abbreviation,
+                                longitude=longitude,
+                                latitude=latitude,
+                                building_name=building_name)
+            buildings_to_save.append(obj)
 
     # Remove any duplicates from the database, such as the Noreen and Kenneth Murray Library which is in the feed twice
     # WARNING: O(n^2) efficiency!  For now, the constants are small enough that it's not a problem though.
-    newObjectsToSave=[]
-    for obj in objectsToSave:
-        if not obj in newObjectsToSave:
-            newObjectsToSave.append(obj)
+    new_buildings_to_save = []
+    for obj in buildings_to_save:
+        if obj not in new_buildings_to_save:
+            new_buildings_to_save.append(obj)
 
     # clear the database
     Building_Feed.objects.all().delete()
     # store all the buildings in the database
-    Building_Feed.objects.bulk_create(newObjectsToSave)
+    Building_Feed.objects.bulk_create(new_buildings_to_save)
     return 'success'
 
 
@@ -238,7 +255,7 @@ def merge_room_building():
     The function merges the two tables Room_Feed and Building_Feed into a single table: Bookable_Room
     :return: void
     """
-    objectsToSave=[]
+    buildings_to_save = []
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
         obj = Bookable_Room(abbreviation=results.abbreviation,
@@ -258,16 +275,18 @@ def merge_room_building():
                             building_name=results.building_name,
                             campus_id=results.campus_id,
                             campus_name=results.campus_name)
-        objectsToSave.append(obj)
+        buildings_to_save.append(obj)
 
     # clear the database
     Bookable_Room.objects.all().delete()
     # store all the rooms in the database
-    Bookable_Room.objects.bulk_create(objectsToSave)
+    Bookable_Room.objects.bulk_create(buildings_to_save)
     return 'success'
+
 
 ''' For testing:
 def printTime(message):
+    from time import clock
     global timer
     print(message + ': ' + str(float(int((clock() - timer) * 1000)) / 1000) + 's')
     timer = clock()
