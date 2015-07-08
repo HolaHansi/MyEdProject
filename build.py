@@ -1,12 +1,18 @@
 import os
 
+# set up the django environment
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.development")
 
 from django.core.management import execute_from_command_line
 from core.tasks import repopulate_all_tables
 
-execute_from_command_line(['manage.py','makemigrations'])
-execute_from_command_line(['manage.py','migrate'])
+# check for changes to the database structure
+execute_from_command_line(['manage.py', 'makemigrations'])
+# change the structure of the database if necessary
+execute_from_command_line(['manage.py', 'migrate'])
 print('Successfully migrated')
+
+# populate the database
 repopulate_all_tables()
+
 print('Database successfully built')
