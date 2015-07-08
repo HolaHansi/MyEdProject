@@ -3,13 +3,7 @@ from .base import *
 # debugging should be on in development - NEVER in production!
 DEBUG = True
 
-<<<<<<< HEAD
-
-
-#This variable is used in views to check whether the app is running in development or production.
-=======
 # This variable is used in views to check whether the app is running in development or production.
->>>>>>> 2a92e244d9605318ee995a0352b255d5568baa9f
 ENV_TYPE = 'development'
 
 # Database for development - SQLite
