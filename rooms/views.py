@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse
 import math
@@ -29,6 +30,7 @@ def filter_suggestions(request):
     :return: JSON object
     """
     if request.method == "GET":
+        data = Tutorial_Room.objects.all()
         # if searching for bookable spaces...
         if request.GET['bookable'] == 'true':
             data = data.filter(locally_allocated=0)
@@ -48,10 +50,21 @@ def filter_suggestions(request):
         if request.GET['projector'] == 'true':
             data = data.filter(projector='true')
 
-        # exclude any campuses they don't want
-        groups = request.GET.getlist('groupsUnselected[]')
-        for group in groups:
-            data = data.exclude(campus_name=group)
+        # remove any campuses they didn't select
+        campuses_to_remove = request.GET.getlist('campusesUnselected[]')
+        # if 'other' needs removed...
+        if 'Other' in campuses_to_remove:
+            query = Q(campus='')
+            # remove anything that isn't one of the four main options,
+            # but also remove any of the four main options if they've been selected to be removed
+            for campus in ['Central', "King's Buildings", "Lauriston", "Holyrood"]:
+                if campus not in campuses_to_remove:
+                    query = query | Q(campus=campus)
+            data = data.filter(query)
+        # otherwise, just remove any campuses they've selected to be removed
+        else:
+            for campus in campuses_to_remove:
+                data = data.exclude(campus=campus)
 
         # if they're currently searching for a building:
         if request.GET['building'] == '':

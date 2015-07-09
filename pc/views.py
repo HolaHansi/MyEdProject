@@ -32,7 +32,7 @@ def filter_suggestions(request):
         # don't suggest any full or almost full rooms
         data = PC_Space.objects.exclude(ratio__lt=0.1)
 
-        # remove any groups they didn't select
+        # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
         # if 'other' needs removed...
         if 'Other' in campuses_to_remove:
