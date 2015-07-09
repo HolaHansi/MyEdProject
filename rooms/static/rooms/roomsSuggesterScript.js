@@ -10,22 +10,6 @@ var roomLikedByUser = 'false'; // true if current suggestion is liked by user
 
 
 $(document).ready(function () {
-	//toggle buttons based on any parameters from the url
-	if (location.href.indexOf('close=f') >= 0) {
-		$('#nearbyBtn').removeClass('selected');
-	}
-	if (location.href.indexOf('empty=f') >= 0) {
-		$('#emptyBtn').removeClass('selected');
-	}
-	if (location.href.indexOf('groups=') >= 0) {
-		//extract the groups from the url
-		groups = (location.href.substring(location.href.indexOf('groups=') + 7, location.href.length)).replace(/%20/g, ' ').split(',');
-		groups[groups.length - 1] = groups[groups.length - 1].substring(0, (groups[groups.length - 1].indexOf('&') >= 0 ? groups[groups.length - 1].indexOf('&') : groups[groups.length - 1].length));
-		//unselect the groups mentioned
-		for (i = 0; i < groups.length; i++) {
-			$('[id="' + groups[i] + '"').removeClass('selected');
-		}
-	}
 	//get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
 
@@ -99,7 +83,7 @@ $(document).ready(function () {
 });
 
 function getSuggestionsUsingOptions() {
-	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestions(buildingSelected, $('#nearbyBtn').hasClass('selected'), $('#bookableBtn').hasClass('selected'), $('#computerBtn').hasClass('selected'), $('#printerBtn').hasClass('selected'), $('#whiteboardBtn').hasClass('selected'), $('#blackboardBtn').hasClass('selected'), $('#projectorBtn').hasClass('selected'), getUnselectedCampuses());
 }
 
 /*
@@ -113,9 +97,9 @@ function getSuggestionsUsingOptions() {
    whiteboard (boolean): whether the user is filtering by whiteboard
    blackboard (boolean): whether the user is filtering by blackboard
    projector (boolean): whether the user is filtering by projector
-   groups (string): the campuses that the user is not including in their search.
+   campuses (string): the campuses that the user is not including in their search.
 */
-function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, blackboard, projector, groups) {
+function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, blackboard, projector, campuses) {
 	//send the get request
 	$.get('/bookable/filter', {
 			'building': building,
@@ -126,7 +110,7 @@ function getSuggestions(building, nearby, bookable, pc, printer, whiteboard, bla
 			'whiteboard': whiteboard,
 			'blackboard': blackboard,
 			'projector': projector,
-			'groupsUnselected[]': groups,
+			'campusesUnselected[]': campuses,
 			'latitude': userLatitude,
 			'longitude': userLongitude
 		})
@@ -255,7 +239,7 @@ function processRoomName(name) {
    Returns a list of all campuses in the options menu which aren't currently selected
    Parameters: none
 */
-function getUnselectedGroups() {
+function getUnselectedCampuses() {
 	ids = [];
 	$('#campusGroup :not(.selected)').each(function () {
 		ids.push(this.id);

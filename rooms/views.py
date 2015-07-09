@@ -54,17 +54,17 @@ def filter_suggestions(request):
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
         # if 'other' needs removed...
         if 'Other' in campuses_to_remove:
-            query = Q(campus='')
+            query = Q(campus_name='')
             # remove anything that isn't one of the four main options,
             # but also remove any of the four main options if they've been selected to be removed
             for campus in ['Central', "King's Buildings", "Lauriston", "Holyrood"]:
                 if campus not in campuses_to_remove:
-                    query = query | Q(campus=campus)
+                    query = query | Q(campus_name=campus)
             data = data.filter(query)
         # otherwise, just remove any campuses they've selected to be removed
         else:
             for campus in campuses_to_remove:
-                data = data.exclude(campus=campus)
+                data = data.exclude(campus_name=campus)
 
         # if they're currently searching for a building:
         if request.GET['building'] == '':
