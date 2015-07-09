@@ -3,6 +3,7 @@
 ##TODO:
 
 - Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
+- Search function for adding favourites
 - Documentation, documentation, documentation
 - Use availability API to filter and display availability
 - Design more mockups
