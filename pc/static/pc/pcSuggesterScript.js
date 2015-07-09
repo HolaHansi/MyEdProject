@@ -41,7 +41,7 @@ $(document).ready(function () {
 
 	//when the user starts a new search, get the appropriately filtered list of suggestions from the server
 	$('#retryBtn').click(function () {
-		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
+		getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedCampuses());
 	});
 	//switch to tutorial rooms when the switch button is pressed
 	$('#switchBtn').click(function () {
@@ -77,15 +77,15 @@ function liked(pc_id) {
    Parameters:
    nearby (boolean): whether the user is filtering by nearby
    empty (boolean): whether the user is filtering by empty
-   group (string): the campus that the user is searching in.  
+   campuses (string): the campuses that the user doesn't want
    One of: ‘Central’,‘ECA’,'Accommodation Services’, 'Holyrood and High School Yards’,‘KB Labs’
 */
-function getSuggestions(nearby, empty, groups) {
+function getSuggestions(nearby, empty, campuses) {
 	//send the get request
 	$.get('/open/filter', {
 			'nearby': nearby,
 			'empty': empty,
-			'groupsUnselected[]': groups,
+			'campusesUnselected[]': campuses,
 			'latitude': userLatitude,
 			'longitude': userLongitude
 		})
@@ -121,7 +121,7 @@ function getSuggestions(nearby, empty, groups) {
 function loadChoice() {
 	//populate the html
 	$('#roomName').html(currentChoice.name);
-	$('#buildingName').html(currentChoice.group);
+	$('#buildingName').html(currentChoice.campus);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
 
@@ -137,7 +137,7 @@ function loadChoice() {
    Returns a list of all campuses in the options menu which aren't currently selected
    Parameters: none
 */
-function getUnselectedGroups() {
+function getUnselectedCampuses() {
 	ids = [];
 	$('#campusGroup :not(.selected)').each(function () {
 		ids.push(this.id);
@@ -191,7 +191,7 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedGroups());
+	getSuggestions($('#nearbyBtn').hasClass('selected'), $('#emptyBtn').hasClass('selected'), getUnselectedCampuses());
 }
 
 //if impossible to get user's current coordinates, display a relevant error message

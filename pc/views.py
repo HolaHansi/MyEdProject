@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
 from .models import PC_Space
 from .serializer import PC_Space_Serializer
+from django.db.models import Q
 
 
 def index(request):
@@ -30,10 +31,22 @@ def filter_suggestions(request):
     if request.method == "GET":
         # don't suggest any full or almost full rooms
         data = PC_Space.objects.exclude(ratio__lt=0.1)
+
         # remove any groups they didn't select
-        groups = request.GET.getlist('groupsUnselected[]')
-        for group in groups:
-            data = data.exclude(group=group)
+        campuses_to_remove = request.GET.getlist('campusesUnselected[]')
+        # if 'other' needs removed...
+        if 'Other' in campuses_to_remove:
+            query = Q(campus='')
+            # remove anything that isn't one of the four main options,
+            # but also remove any of the four main options if they've been selected to be removed
+            for campus in ['Central', "King's Buildings", "Lauriston", "Holyrood"]:
+                if campus not in campuses_to_remove:
+                    query = query | Q(campus=campus)
+            data = data.filter(query)
+        # otherwise, just remove any campuses they've selected to be removed
+        else:
+            for campus in campuses_to_remove:
+                data = data.exclude(campus=campus)
 
         # if sorting by location
         if request.GET['nearby'] == 'true':

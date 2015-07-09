@@ -6,7 +6,7 @@ class PC_Space(models.Model):
     name = models.CharField(max_length=200)
     free = models.IntegerField(default=0)
     seats = models.IntegerField(default=0)
-    group = models.CharField(max_length=200)
+    campus = models.CharField(max_length=200)
     ratio = models.FloatField(default=0)  # the ratio of computers available to computers in use
     # ie computersAvailable/computersInUse
     # so 1 is an empty room, 0 is a full room

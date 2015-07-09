@@ -24,6 +24,18 @@ def get_pc_data():
             longitude = 0.0
             latitude = 0.0
 
+            # convert group to campus:
+            if group=='Business School':
+                campus='Central'
+            elif group=='KB Labs':
+                campus="King's Buildings"
+            elif group=='ECA':
+                campus='Lauriston'
+            elif 'Holyrood' in group:
+                campus='Holyrood'
+            else:
+                campus=group
+
             # for each building,
             for building in Building_Feed.objects.all():
                 # merge the two databases as best we can based on building name
@@ -46,7 +58,7 @@ def get_pc_data():
             obj = PC_Space(name=name,
                            free=free,
                            seats=seats,
-                           group=group,
+                           campus=campus,
                            ratio=ratio,
                            longitude=longitude,
                            latitude=latitude)
