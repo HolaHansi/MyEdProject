@@ -120,7 +120,7 @@ function getSuggestions(nearby, empty, groups) {
 */
 function loadChoice() {
 	//populate the html
-	$('#roomName').html(processRoomName(currentChoice));
+	$('#roomName').html(currentChoice.name);
 	$('#buildingName').html(currentChoice.group);
 	$('#distance').html(': ' + (distanceBetweenCoordinates(userLatitude, userLongitude, currentChoice.latitude, currentChoice.longitude)).toFixed(2) + 'km');
 	$('#computersFree').html(': ' + currentChoice.free + '/' + currentChoice.seats);
@@ -145,15 +145,6 @@ function getUnselectedGroups() {
 	return ids;
 }
 
-/* 
-   Process the name of the building to remove the campus
-   Parameters:
-   suggestion (object): the suggestion being processed
-*/
-function processRoomName(suggestion) {
-	var regex = new RegExp(suggestion.group + '( - )? ?', 'g');
-	return (suggestion.location).replace(regex, '');
-}
 
 /* 
    Takes a pair of coordinates and calculates the distance between them, taking into account the curvature of the earth
