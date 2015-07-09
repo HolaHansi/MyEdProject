@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 import math
 from rest_framework.renderers import JSONRenderer
-from .models import Bookable_Room
+from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
 
 
@@ -29,10 +29,6 @@ def filter_suggestions(request):
     :return: JSON object
     """
     if request.method == "GET":
-        # don't suggest any lecture theatres
-        data = Bookable_Room.objects.exclude(description__icontains="Theatre Style")
-        data = data.exclude(room_name__icontains="Lecture Theatre")
-
         # if searching for bookable spaces...
         if request.GET['bookable'] == 'true':
             data = data.filter(locally_allocated=0)
@@ -73,6 +69,7 @@ def filter_suggestions(request):
                     }
                 else:
                     building_details[room.abbreviation]['rooms'] += 1
+            # convert it from a JSON of JSONs to a list of JSONs
             building_details = list(building_details.values())
             # if sorting by location
             if request.GET['nearby'] == 'true':

@@ -4,7 +4,7 @@ from pc.models import PC_Space
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import PC_Space
-from rooms.models import Bookable_Room
+from rooms.models import Tutorial_Room
 from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
@@ -66,7 +66,7 @@ def like(request):
             roomLikedByUser = request.POST['roomLikedByUser']
 
             # get room that was liked
-            room = Bookable_Room.objects.get(locationId=locationId)
+            room = Tutorial_Room.objects.get(locationId=locationId)
             # if the room has not been liked before, add it to likes, otherwise, remove it.
             if roomLikedByUser == 'false':
                 user.room_favourites.add(room)

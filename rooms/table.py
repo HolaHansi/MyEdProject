@@ -1,5 +1,5 @@
 import requests
-from rooms.models import Room_Feed, Building_Feed, Bookable_Room
+from rooms.models import Room_Feed, Building_Feed, Tutorial_Room
 
 
 def update_room_table():
@@ -9,8 +9,12 @@ def update_room_table():
     """
 
     buildings_to_save = []
-    rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
-    zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
+    # rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
+    # TODO: zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
+    import json
+
+    with open('locations.json') as f:
+        rooms = json.load(f)
 
     # save each bookable room:
     for room in rooms:
@@ -53,7 +57,10 @@ def update_room_table():
             # initialize variables
             campus_id = ''
             campus_name = ''
+            # TODO:
+            '''
             zone_search_id = zoneId
+
             # search through all the zones until you find the root
             while campus_id == '':
                 for zone in zones:
@@ -66,6 +73,7 @@ def update_room_table():
                         else:
                             # if this zone is the parent but not a campus, find out which campus the parent is on
                             zone_search_id = zone['parentZoneId']
+            '''
 
             # save the object
             obj = Room_Feed(locationId=locationId,
@@ -149,9 +157,9 @@ def update_building_table():
         # only save it if it has a name, otherwise it's useless to us
         # we're also not interested in buses, car parks, or 'information' (whatever that is)
         if 'name' in building.keys() and (len(building['categories']) == 0 or not
-                                          ('Buses' in building['categories'][0]
-                                          or 'Parking' in building['categories'][0]
-                                          or 'Information' in building['categories'][0])):
+        ('Buses' in building['categories'][0]
+         or 'Parking' in building['categories'][0]
+         or 'Information' in building['categories'][0])):
             # get the longitude, latitude and building name
             longitude = float(building["longitude"])
             latitude = float(building["latitude"])
@@ -252,35 +260,42 @@ def update_building_table():
 
 def merge_room_building():
     """
-    The function merges the two tables Room_Feed and Building_Feed into a single table: Bookable_Room
+    The function merges the two tables Room_Feed and Building_Feed into a single table: Tutorial_Room
     :return: void
     """
     buildings_to_save = []
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
-        obj = Bookable_Room(abbreviation=results.abbreviation,
-                            locationId=results.locationId,
-                            room_name=results.room_name,
-                            description=results.description,
-                            capacity=results.capacity,
-                            pc=results.pc,
-                            printer=results.printer,
-                            whiteboard=results.whiteboard,
-                            blackboard=results.blackboard,
-                            projector=results.projector,
-                            locally_allocated=results.locally_allocated,
-                            zoneId=results.zoneId,
-                            longitude=results.longitude,
-                            latitude=results.latitude,
-                            building_name=results.building_name,
-                            campus_id=results.campus_id,
-                            campus_name=results.campus_name)
-        buildings_to_save.append(obj)
+        # don't include rooms from the feed which aren't suitable study spaces
+        if not ("Theatre style" in results.description or "Lecture Theatre" in results.room_name
+                or "Gym" in results.description or 'Games Hall' in results.description
+                or 'Gallery' in results.description or 'Function Area' == results.description
+                or 'Exhibition Space' == results.description or 'Dance Studio' == results.description):
+            # TODO: Are these suitable study spaces?
+            # and results.description!="Foyer Area"
+            # and results.description == "Laboratory: Technical"
+            # and "COMPUTER LAB" not in results.description.upper()
+            obj = Tutorial_Room(abbreviation=results.abbreviation,
+                                locationId=results.locationId,
+                                room_name=results.room_name,
+                                pc=results.pc,
+                                printer=results.printer,
+                                whiteboard=results.whiteboard,
+                                blackboard=results.blackboard,
+                                projector=results.projector,
+                                locally_allocated=results.locally_allocated,
+                                zoneId=results.zoneId,
+                                longitude=results.longitude,
+                                latitude=results.latitude,
+                                building_name=results.building_name,
+                                campus_id=results.campus_id,
+                                campus_name=results.campus_name)
+            buildings_to_save.append(obj)
 
     # clear the database
-    Bookable_Room.objects.all().delete()
+    Tutorial_Room.objects.all().delete()
     # store all the rooms in the database
-    Bookable_Room.objects.bulk_create(buildings_to_save)
+    Tutorial_Room.objects.bulk_create(buildings_to_save)
     return 'success'
 
 

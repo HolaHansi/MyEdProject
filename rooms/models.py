@@ -31,7 +31,6 @@ from django.db import models
 
 class Room_Feed(models.Model):
     locationId = models.CharField(max_length=50, primary_key=True)
-    abbreviation = models.CharField(max_length=50)
     room_name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     capacity = models.IntegerField()
@@ -40,10 +39,10 @@ class Room_Feed(models.Model):
     blackboard = models.BooleanField(default=False)
     projector = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
-
     locally_allocated = models.BooleanField(default=False)
-    zoneId = models.CharField(max_length=50)
 
+    abbreviation = models.CharField(max_length=4)
+    zoneId = models.CharField(max_length=50)
     campus_id = models.CharField(max_length=50)
     campus_name = models.CharField(max_length=100)
 
@@ -58,22 +57,22 @@ class Building_Feed(models.Model):
         return str(self.name)
 
 
-class Bookable_Room(models.Model):
+class Tutorial_Room(models.Model):
     # room attributes:
     locationId = models.CharField(max_length=50, primary_key=True)
-    abbreviation = models.CharField(max_length=50)
     room_name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
-    capacity = models.IntegerField()
+    # description = models.CharField(max_length=100) # not used
+    # capacity = models.IntegerField() # not used
     pc = models.BooleanField(default=False)
     whiteboard = models.BooleanField(default=False)
     blackboard = models.BooleanField(default=False)
     projector = models.BooleanField(default=False)
+    printer = models.BooleanField(default=False)
     locally_allocated = models.BooleanField(default=False)
     zoneId = models.CharField(max_length=50)
-    printer = models.BooleanField(default=False)
     # building attributes
     building_name = models.CharField(max_length=100)
+    abbreviation = models.CharField(max_length=4)
     longitude = models.FloatField()
     latitude = models.FloatField()
     # campus attributes
