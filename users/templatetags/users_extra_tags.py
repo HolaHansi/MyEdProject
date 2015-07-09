@@ -15,14 +15,6 @@ def ratioToPercent(free,total):
 
 @register.filter
 @stringfilter
-def processPCName(name,campus):
-    '''Processes the name of the open access study space to make it more human readable'''
-    regex = re.compile(campus + '( - )? ?', re.IGNORECASE)
-    return re.sub(regex,'',name)
-
-
-@register.filter
-@stringfilter
 def processRoomName(name):
     '''Processes the name of the tutorial room to make it more human readable'''
     if name[0:2]=='zz':

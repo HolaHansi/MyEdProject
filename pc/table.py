@@ -6,7 +6,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import json
-
+import re
 
 def get_pc_data():
     r = requests.get(url='http://labmonitor.ucs.ed.ac.uk/myed/index.cfm?fuseaction=XML')
@@ -15,35 +15,35 @@ def get_pc_data():
 
     for child in root:
         if 'location' in child.keys():
-            location = child.attrib['location']
+            name = child.attrib['location']
             free = int(child.attrib['free'])
             seats = int(child.attrib['seats'])
             ratio = round(free / seats, 3)
             group = child.attrib['group']
+            name = process_pc_name(name,group)
             longitude = 0.0
             latitude = 0.0
-            location_name = convert_building_name(location)
 
             # for each building,
             for building in Building_Feed.objects.all():
                 # merge the two databases as best we can based on building name
-                if building.building_name in location_name:
+                if building.building_name in convert_building_name(name):
                     longitude = building.longitude
                     latitude = building.latitude
                     continue
             # if you didn't manage to find a building associated with this room, try what we've hard coded instead
             if latitude == 0.0:
-                if 'Holland House' in location:
+                if 'Holland House' in name:
                     latitude = 55.938027
                     longitude = -3.169087
-                elif 'High School Yards Lab' in location:
+                elif 'High School Yards Lab' in name:
                     latitude = 55.948633
                     longitude = -3.184002
                 else:
-                    print('ERROR: Unable to get coordinates of ' + location)
-                    send_mail(location)
+                    print('ERROR: Unable to get coordinates of ' + name)
+                    send_mail(name)
 
-            obj = PC_Space(location=location,
+            obj = PC_Space(name=name,
                            free=free,
                            seats=seats,
                            group=group,
@@ -83,6 +83,15 @@ def convert_building_name(location):
     if 'Murray' in location:
         return 'Noreen and Kenneth Murray Library'
     return location
+
+
+def process_pc_name(name,campus):
+    '''Processes the name of the open access study space to make it more human readable'''
+    regex = re.compile(campus + '( - )? ?', re.IGNORECASE)
+    toReturn = re.sub(regex,'',name)
+    if campus=='Business School':
+        toReturn = 'Business School - ' + toReturn
+    return toReturn
 
 
 # sends an email alert to bring the error to the attention of the admins so that it can be fixed

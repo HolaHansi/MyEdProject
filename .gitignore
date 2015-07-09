@@ -10,3 +10,4 @@ pc/migrations/
 *.pyc
 core/wsgi.py
 manage.py
+logs/debug.log
