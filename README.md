@@ -2,6 +2,7 @@
 
 ##TODO:
 
+- Fix PC room ID
 - Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
 - Search function for adding favourites
 - Documentation, documentation, documentation
