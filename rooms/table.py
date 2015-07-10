@@ -1,3 +1,4 @@
+import re
 import requests
 from rooms.models import Room_Feed, Building_Feed, Tutorial_Room
 
@@ -270,14 +271,16 @@ def merge_room_building():
         if not ("Theatre style" in results.description or "Lecture Theatre" in results.room_name
                 or "Gym" in results.description or 'Games Hall' in results.description
                 or 'Gallery' in results.description or 'Function Area' == results.description
-                or 'Exhibition Space' == results.description or 'Dance Studio' == results.description):
+                or 'Exhibition Space' == results.description or 'Dance Studio' == results.description
+                or 'unavailable' in results.room_name.lower()):
             # TODO: Are these suitable study spaces?
             # and results.description!="Foyer Area"
             # and results.description == "Laboratory: Technical"
             # and "COMPUTER LAB" not in results.description.upper()
+            room_name = re.sub(r'^z*','',results.room_name)
             obj = Tutorial_Room(abbreviation=results.abbreviation,
                                 locationId=results.locationId,
-                                room_name=results.room_name,
+                                room_name=room_name,
                                 pc=results.pc,
                                 printer=results.printer,
                                 whiteboard=results.whiteboard,
