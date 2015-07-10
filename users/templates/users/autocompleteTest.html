@@ -1,0 +1,83 @@
+{% extends 'core/base.html' %}
+{% load staticfiles %}
+
+{% block head%}
+<script src='{% static "users/jquery.autocomplete.js" %}'></script>
+<script>
+$(function(){
+    $.get('/autocompleteAPI/', function(data){
+        rooms=data['suggestions'];
+        // setup autocomplete function pulling from currencies[] array
+        $('#autocomplete').autocomplete({
+            lookup: rooms,
+            autoSelectFirst:true,
+            onSelect: function (suggestion) {
+                var thehtml = 'Room : ' + suggestion.value + '<br><br> Campus: ' + suggestion.data;
+                $('#outputcontent').html(thehtml);
+            }
+        });
+    })
+})
+</script>
+<style>
+    .autocomplete-suggestions { border: 1px solid #999; background: #fff; cursor: default; overflow: auto;
+    -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+    }
+    .autocomplete-suggestion {
+    padding: 8px 5px;
+    white-space: nowrap;
+    overflow: hidden; }
+    .autocomplete-selected { background: #f0f0f0; }
+    .autocomplete-suggestions strong { font-weight: normal; color: #3399ff; }
+    #searchfield { display: block; width: 100%; text-align: center; margin-bottom: 35px; }
+
+    #searchfield form {
+    display: inline-block;
+    background: #eeefed;
+    padding: 0;
+    margin: 0;
+    padding: 5px;
+    border-radius: 3px;
+    margin: 5px 0 0 0;
+    }
+    #searchfield form .biginput {
+    width: 600px;
+    height: 40px;
+    padding: 0 10px 0 10px;
+    background-color: #fff;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    color: #aeaeae;
+    font-weight:normal;
+    font-size: 1.5em;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+    }
+    #searchfield form .biginput:focus {
+    color: #858585;
+    }
+    #autocomplete{
+    width:50%;
+    }
+</style>
+{% endblock %}
+
+{% block content %} <br><br><br><br>
+<div id="content">
+    <p>Just start typing and results will be supplied from the JavaScript. Check out <a
+            href="https://github.com/devbridge/jQuery-Autocomplete"> jQuery Autocomplete</a> on Github.</p>
+
+    <div id="searchfield">
+        <input type="text" name="currency" class="biginput" id="autocomplete">
+    </div>
+    <!-- @end #searchfield -->
+
+    <div id="outputbox">
+        <p id="outputcontent">Choose a room and the results will display here.</p>
+    </div>
+</div><!-- @end #content -->
+
+{% endblock %}

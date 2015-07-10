@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from pc.models import PC_Space
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import PC_Space
@@ -31,6 +30,26 @@ class JSONResponse(HttpResponse):
 def index(request):
     return render(request, 'users/index.html')
 
+def test(request):
+    return render(request, 'users/autocompleteTest.html')
+
+def autocompleteAPI(request):
+    if request.method == 'GET':
+        data = Tutorial_Room.objects.all()
+        suggestions=[]
+        for room in data:
+            suggestions.append(
+                {'value':room.room_name+', '+room.building_name,
+                 'data':room.campus_name}
+            )
+        data = PC_Space.objects.all()
+        for room in data:
+            suggestions.append(
+                {'value':room.name,
+                 'data':room.campus}
+            )
+
+        return JSONResponse({'suggestions':suggestions})
 
 
 def like(request):

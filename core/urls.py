@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^like/', 'users.views.like'),
     url(r'^registration/$', 'users.views.register'),
     url(r'^logout/$', 'users.views.logout'),
-    url(r'login/$', 'users.views.login')
+    url(r'login/$', 'users.views.login'),
     # url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
+    url(r'test/','users.views.test'),
+    url(r'autocompleteAPI/','users.views.autocompleteAPI')
 ]
