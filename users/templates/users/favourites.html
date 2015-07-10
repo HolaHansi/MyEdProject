@@ -1,6 +1,79 @@
 {% extends 'core/base.html' %}
-
+{% load staticfiles %}
 {% load users_extra_tags %}
+
+{% block head %}
+
+<script src='{% static "users/jquery.autocomplete.js" %}'></script>
+<script src='{% static "users/roomAutocompleteScript.js" %}'></script>
+<style>
+    .autocomplete-suggestions {
+        border: 1px solid #999;
+        background: #fff;
+        cursor: default;
+        overflow: auto;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+    .autocomplete-suggestion {
+        padding: 8px 5px;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: 14px;
+    }
+
+    .autocomplete-selected {
+        background: #f0f0f0;
+    }
+
+    .autocomplete-suggestions strong {
+        font-weight: normal;
+        color: #3399ff;
+    }
+
+    #searchfield {
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    #searchfield form {
+        display: inline-block;
+        background: #eeefed;
+        padding: 0;
+        margin: 0;
+        padding: 5px;
+        border-radius: 3px;
+        margin: 5px 0 0 0;
+    }
+
+    #searchfield form .biginput {
+        width: 600px;
+        height: 40px;
+        padding: 0 10px 0 10px;
+        background-color: #fff;
+        border: 1px solid #c8c8c8;
+        border-radius: 3px;
+        color: #aeaeae;
+        font-weight: normal;
+        font-size: 1.5em;
+        -webkit-transition: all 0.2s linear;
+        -moz-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+    }
+
+    #searchfield form .biginput:focus {
+        color: #858585;
+    }
+
+    .autocompleteForm {
+        width: 50%;
+    }
+</style>
+{% endblock %}
 
 {% block content %} <br><br><br>
 
@@ -10,9 +83,11 @@
 
     <h3>Computer lab favourites:</h3>
     <ul class="list-group">
-    {% for fav in pc_favourites %}
-        <li class="list-group-item">{{ fav | processPCName:fav.group }} ({{fav.group}}): {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
-    {% endfor %}
+        {% for fav in pc_favourites %}
+            <li class="list-group-item">{{ fav.name }} ({{fav.campus}}): {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
+        {% endfor %}
+
+        <li class="list-group-item">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></li>
     </ul>
 
     <br>
@@ -22,6 +97,11 @@
     {% for fav in room_favourites %}
         <li class="list-group-item">{{ fav.room_name | processRoomName }}, {{fav.building_name}} ({{fav.campus_name}}): {{fav | facilities}}</li>
     {% endfor %}
+        {% if not room_favourites %}
+            <li class="list-group-item">No favourites yet!</li>
+        {% endif %}
+
+        <li class="list-group-item">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></li>
     </ul>
 
 </div>

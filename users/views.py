@@ -25,31 +25,44 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-
-
 def index(request):
     return render(request, 'users/index.html')
 
-def test(request):
-    return render(request, 'users/autocompleteTest.html')
 
 def autocompleteAPI(request):
     if request.method == 'GET':
+        # get the user from session
+        user = request.user
+        # create the list of tutorial rooms in the format needed for the autocompleter
         data = Tutorial_Room.objects.all()
-        suggestions=[]
+        rooms = []
+        alreadyFavourited = user.room_favourites.all()
         for room in data:
-            suggestions.append(
-                {'value':room.room_name+', '+room.building_name,
-                 'data':room.campus_name}
-            )
-        data = PC_Space.objects.all()
-        for room in data:
-            suggestions.append(
-                {'value':room.name,
-                 'data':room.campus}
-            )
+            if len(alreadyFavourited.filter(locationId=room.locationId))==0:
+                rooms.append(
+                    {'value': room.room_name + ', ' + room.building_name,
+                     'data': {
+                         'campus': room.campus_name,
+                         'id': room.locationId
+                         }
+                     }
+                )
 
-        return JSONResponse({'suggestions':suggestions})
+        # create the list of computer labs in the format needed for the autocompleter
+        data = PC_Space.objects.all()
+        labs = []
+        alreadyFavourited = user.pc_favourites.all()
+        for lab in data:
+            if len(alreadyFavourited.filter(id=lab.id))==0:
+                labs.append(
+                    {'value': lab.name,
+                     'data': {
+                         'campus': lab.campus,
+                         'id': lab.id
+                         }
+                     }
+                )
+        return JSONResponse({'rooms': rooms,'labs':labs})
 
 
 def like(request):
@@ -102,7 +115,7 @@ def like(request):
             # get the pc in question
             pc_id = request.GET['pc_id']
 
-            #get user
+            # get user
             user = request.user
 
             # if the pc is already liked by user, then assign true to pcLikedByUser
@@ -120,7 +133,7 @@ def like(request):
             locationId = request.GET['locationId']
 
             print('reached')
-            #get userprofile
+            # get userprofile
             user = request.user
 
             # if the room is already liked by user, then assign true to pcLikedByUser
@@ -132,7 +145,6 @@ def like(request):
                 roomLikedByUser = 'false'
 
             return JSONResponse(roomLikedByUser)
-
 
 
 @login_required
@@ -170,8 +182,8 @@ def logout(request):
         # in development things are more simple - just logout and redirect to frontpage.
         elif settings.ENV_TYPE == 'development':
             if request.user.is_authenticated():
-                response= django_logout(request,
-                                        next_page='/')
+                response = django_logout(request,
+                                         next_page='/')
         return response
 
 
@@ -181,7 +193,6 @@ def logout(request):
                              messages.ERROR,
                              "Cannot logout when user is not logged in")
         return HttpResponseRedirect('/')
-
 
 
 def register(request):
@@ -238,16 +249,15 @@ def register(request):
 
         # Render the template depending on the context.
         return render(request,
-                'auth/registration.html',
-                {'user_form': user_form,
-                 'registered': registered} )
+                      'auth/registration.html',
+                      {'user_form': user_form,
+                       'registered': registered})
     # if settings are production settings, then no registration is allowed.
     else:
         messages.add_message(request,
                              messages.ERROR,
                              "No registration allowed outside of EASE")
         return HttpResponseRedirect('/')
-
 
 
 def login(request):
@@ -269,5 +279,3 @@ def login(request):
                              messages.ERROR,
                              "Not possible to circumvent EASE!")
         return HttpResponseRedirect('/')
-
-
