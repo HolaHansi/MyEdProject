@@ -10,10 +10,10 @@ $(function() {
                         'pc_id': suggestion.data.id,
                         'pcLikedByUser': false
                     })
-
+                $(this).autocomplete().clear()
+                $(this).val('')
             }
         });
-        // TODO: clear the form when a place is chosen
         // TODO: display the new favourite when chosen rather than waiting for refresh
         $('#autocompleteRoom').autocomplete({
             lookup: allLocations['rooms'],
@@ -25,6 +25,8 @@ $(function() {
                         'locationId': suggestion.data.id,
                         'roomLikedByUser': false
                     })
+                $(this).autocomplete().clear()
+                $(this).val('')
             }
         });
     });
