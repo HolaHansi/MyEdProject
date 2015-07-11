@@ -36,33 +36,33 @@ def autocompleteAPI(request):
         # create the list of tutorial rooms in the format needed for the autocompleter
         data = Tutorial_Room.objects.all()
         rooms = []
-        alreadyFavourited = user.room_favourites.all()
+        already_favourited = user.room_favourites.all()
         for room in data:
-            if len(alreadyFavourited.filter(locationId=room.locationId))==0:
+            if len(already_favourited.filter(locationId=room.locationId)) == 0:
                 rooms.append(
                     {'value': room.room_name + ', ' + room.building_name,
                      'data': {
                          'campus': room.campus_name,
                          'id': room.locationId
-                         }
+                     }
                      }
                 )
 
         # create the list of computer labs in the format needed for the autocompleter
         data = PC_Space.objects.all()
         labs = []
-        alreadyFavourited = user.pc_favourites.all()
+        already_favourited = user.pc_favourites.all()
         for lab in data:
-            if len(alreadyFavourited.filter(id=lab.id))==0:
+            if len(already_favourited.filter(id=lab.id)) == 0:
                 labs.append(
                     {'value': lab.name,
                      'data': {
                          'campus': lab.campus,
                          'id': lab.id
-                         }
+                     }
                      }
                 )
-        return JSONResponse({'rooms': rooms,'labs':labs})
+        return JSONResponse({'rooms': rooms, 'labs': labs})
 
 
 def like(request):
@@ -73,7 +73,6 @@ def like(request):
             pc_id = request.POST['pc_id']
             # get the user from session
             user = request.user
-
 
             # get pcLikedByUser variable (boolean)
             pcLikedByUser = request.POST['pcLikedByUser']
@@ -106,7 +105,6 @@ def like(request):
                 user.room_favourites.remove(room)
 
             return HttpResponse(status=200)
-
 
     # the GET branch is for obtaining the likedByUser variable for a particular room or pc.
     if request.method == 'GET':
@@ -177,15 +175,16 @@ def logout(request):
                                 expires="Thu, 01 Jan 2000 00:00:00 GMT",
                                 path="/")
 
-            return response
-
         # in development things are more simple - just logout and redirect to frontpage.
         elif settings.ENV_TYPE == 'development':
-            if request.user.is_authenticated():
-                response = django_logout(request,
-                                         next_page='/')
-        return response
+            response = django_logout(request, next_page='/')
 
+        else:
+            messages.add_message(request,
+                                 messages.ERROR,
+                                 "Unknown environment")
+            response = HttpResponseRedirect('/')
+        return response
 
     # the user was not already logged in. This case is common to both ENVIRONMENTS.
     else:
@@ -222,7 +221,6 @@ def register(request):
                 # Once hashed, we can update the user object.
                 user.set_password(user.password)
                 user.save()
-
 
                 # # Now sort out the UserProfile instance.
                 # # Since we need to set the user attribute ourselves, we set commit=False.
