@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UserForm
@@ -7,10 +8,7 @@ from rooms.models import Tutorial_Room
 from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
-
 from django.conf import settings
-
-# to display error messages in log-in sessions
 from django.contrib import messages
 
 
@@ -72,19 +70,19 @@ def autocompleteAPI(request):
                      }
                 )
 
-        return JSONResponse({'labs': labs, 'rooms':rooms})
+        return JSONResponse({'labs': labs, 'rooms': rooms})
 
 
 def like(request):
     if request.method == 'POST':
-        # check if the like request pertains to a pc:
-        try:
-            # get the id of liked pc space
+        # if the user liked a computer lab:
+        if 'pc_id' in request.POST.keys():
+            # get the id of the liked computer lab
             pc_id = request.POST['pc_id']
             # get the user from session
             user = request.user
 
-            # get pcLikedByUser variable (boolean)
+            # get whether the user was liking or unliking the lab
             pcLikedByUser = request.POST['pcLikedByUser']
 
             # get PC that was liked
@@ -97,13 +95,14 @@ def like(request):
                 user.pc_favourites.remove(pc)
 
             return HttpResponse(status=200)
-        except:
+        # if the user liked a tutorial room
+        else:
             locationId = request.POST['locationId']
 
             # get the user from session
             user = request.user
 
-            # get pcLikedByUser variable (boolean)
+            # get whether the user was liking or unliking the room
             roomLikedByUser = request.POST['roomLikedByUser']
 
             # get room that was liked
@@ -119,7 +118,7 @@ def like(request):
     # the GET branch is for obtaining the likedByUser variable for a particular room or pc.
     if request.method == 'GET':
         # for PC request try:
-        try:
+        if 'pc_id' in request.GET.keys():
             # get the pc in question
             pc_id = request.GET['pc_id']
 
@@ -130,26 +129,24 @@ def like(request):
             try:
                 user.pc_favourites.get(id=pc_id)
                 pcLikedByUser = 'true'
-            except:
+            except ObjectDoesNotExist:
                 pcLikedByUser = 'false'
 
             return JSONResponse(pcLikedByUser)
 
         # for Room requests
-        except:
+        else:
             # get the room in question
             locationId = request.GET['locationId']
 
-            print('reached')
             # get userprofile
             user = request.user
 
             # if the room is already liked by user, then assign true to pcLikedByUser
-            print('reached')
             try:
                 user.room_favourites.get(locationId=locationId)
                 roomLikedByUser = 'true'
-            except:
+            except ObjectDoesNotExist:
                 roomLikedByUser = 'false'
 
             return JSONResponse(roomLikedByUser)
