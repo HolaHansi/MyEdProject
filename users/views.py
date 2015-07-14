@@ -33,20 +33,6 @@ def autocompleteAPI(request):
     if request.method == 'GET':
         # get the user from session
         user = request.user
-        # create the list of tutorial rooms in the format needed for the autocompleter
-        data = Tutorial_Room.objects.all()
-        rooms = []
-        alreadyFavourited = user.room_favourites.all()
-        for room in data:
-            if len(alreadyFavourited.filter(locationId=room.locationId))==0:
-                rooms.append(
-                    {'value': room.room_name + ', ' + room.building_name,
-                     'data': {
-                         'campus': room.campus_name,
-                         'id': room.locationId
-                         }
-                     }
-                )
 
         # create the list of computer labs in the format needed for the autocompleter
         data = PC_Space.objects.all()
@@ -57,11 +43,35 @@ def autocompleteAPI(request):
                 labs.append(
                     {'value': lab.name,
                      'data': {
-                         'campus': lab.campus,
-                         'id': lab.id
+                         'id': lab.id,
+                         'free':lab.free,
+                         'seats':lab.seats,
+                         'ratio':lab.ratio
                          }
                      }
                 )
+
+        # create the list of tutorial rooms in the format needed for the autocompleter
+        data = Tutorial_Room.objects.all()
+        rooms = []
+        alreadyFavourited = user.room_favourites.all()
+        for room in data:
+            if len(alreadyFavourited.filter(locationId=room.locationId))==0:
+                rooms.append(
+                    {'value': room.room_name + ', ' + room.building_name,
+                     'data': {
+                         'room_name': room.room_name,
+                         'building_name': room.building_name,
+                         'id': room.locationId,
+                         'pc':room.pc,
+                         'printer':room.printer,
+                         'projector':room.projector,
+                         'whiteboard':room.whiteboard,
+                         'blackboard':room.blackboard
+                         }
+                     }
+                )
+
         return JSONResponse({'rooms': rooms,'labs':labs})
 
 

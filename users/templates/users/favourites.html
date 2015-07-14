@@ -82,28 +82,31 @@
 
 
     <h3>Computer lab favourites:</h3>
-    <ul class="list-group">
+    <ul class="list-group" id="labList">
         {% for fav in pc_favourites %}
-            <li class="list-group-item">{{ fav.name }} ({{fav.campus}}): {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
+            <li class="list-group-item">{{ fav.name }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
         {% endfor %}
+        {% if not pc_favourites %}
+            <li class="list-group-item" id="noLabFavourites">No favourites yet!</li>
+        {% endif %}
 
-        <li class="list-group-item">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></li>
+        <li class="list-group-item" id="autocompleteLabLi">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></li>
     </ul>
 
     <br>
     <h3>Tutorial room favourites</h3>
 
-    <ul class="list-group">
+    <ul class="list-group" id="roomList">
     {% for fav in room_favourites %}
-        <li class="list-group-item">{{ fav.room_name | processRoomName }}, {{fav.building_name}} ({{fav.campus_name}}): {{fav | facilities}}</li>
+        <li class="list-group-item">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}</li>
     {% endfor %}
         {% if not room_favourites %}
-            <li class="list-group-item">No favourites yet!</li>
+            <li class="list-group-item" id="noRoomFavourites">No favourites yet!</li>
         {% endif %}
 
-        <li class="list-group-item">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></li>
+        <li class="list-group-item" id="autocompleteRoomLi">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></li>
     </ul>
-
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 </div>
 
 {% endblock %}
