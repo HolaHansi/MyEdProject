@@ -72,7 +72,7 @@ def autocompleteAPI(request):
                      }
                 )
 
-        return JSONResponse({'rooms': rooms, 'labs': labs})
+        return JSONResponse({'labs': labs, 'rooms':rooms})
 
 
 def like(request):
