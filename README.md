@@ -16,6 +16,9 @@
 - Get feedback on logo
 - Go to Hive
 
+##Possible tweaks:
+
+- Send all rooms liked and toggle liked button locally
 
 ###Stretch goals:
 - Machine learning 'people like you like...'
