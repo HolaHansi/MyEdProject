@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from pc.models import PC_Space
+from pc.models import Computer_Labs
+
 
 class PC_Space_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = PC_Space
+        model = Computer_Labs

@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-from .models import PC_Space
+from .models import Computer_Labs
 from rooms.models import Building_Feed
 import requests
 import smtplib
@@ -16,14 +16,15 @@ def get_pc_data():
     for child in root:
         if 'location' in child.keys():
             name = child.attrib['location']
+            group = child.attrib['group']
+            # remove group from name
+            name = process_pc_name(name,group)
             free = int(child.attrib['free'])
             seats = int(child.attrib['seats'])
+            id = child.attrib['rid']
             ratio = round(free / seats, 3)
-            group = child.attrib['group']
-            name = process_pc_name(name,group)
             longitude = 0.0
             latitude = 0.0
-
             # convert group to campus:
             if group=='Business School':
                 campus='Central'
@@ -55,20 +56,21 @@ def get_pc_data():
                     print('ERROR: Unable to get coordinates of ' + name)
                     send_mail(name)
 
-            obj = PC_Space(name=name,
+            obj = Computer_Labs(name=name,
                            free=free,
                            seats=seats,
                            campus=campus,
                            ratio=ratio,
                            longitude=longitude,
-                           latitude=latitude)
+                           latitude=latitude,
+                           id=id)
 
             objectsToSave.append(obj)
 
     # clear the database
-    PC_Space.objects.all().delete()
+    Computer_Labs.objects.all().delete()
     # store all the rooms in the database
-    PC_Space.objects.bulk_create(objectsToSave)
+    Computer_Labs.objects.bulk_create(objectsToSave)
     return 'successfully updated database'
 
 

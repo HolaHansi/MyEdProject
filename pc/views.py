@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.renderers import JSONRenderer
-from .models import PC_Space
+from .models import Computer_Labs
 from .serializer import PC_Space_Serializer
 from django.db.models import Q
 
@@ -30,7 +30,7 @@ def filter_suggestions(request):
     """
     if request.method == "GET":
         # don't suggest any full or almost full rooms
-        data = PC_Space.objects.exclude(ratio__lt=0.1)
+        data = Computer_Labs.objects.exclude(ratio__lt=0.1)
 
         # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')

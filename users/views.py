@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
-from pc.models import PC_Space
+from pc.models import Computer_Labs
 from rooms.models import Tutorial_Room
 from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
@@ -35,7 +35,7 @@ def autocompleteAPI(request):
         user = request.user
 
         # create the list of computer labs in the format needed for the autocompleter
-        data = PC_Space.objects.all()
+        data = Computer_Labs.objects.all()
         labs = []
         already_favourited = user.pc_favourites.all()
         for lab in data:
@@ -88,7 +88,7 @@ def like(request):
             pcLikedByUser = request.POST['pcLikedByUser']
 
             # get PC that was liked
-            pc = PC_Space.objects.get(id=pc_id)
+            pc = Computer_Labs.objects.get(id=pc_id)
 
             # if the pc has not been liked before, add it to likes, otherwise, remove it.
             if pcLikedByUser == 'false':

@@ -2,18 +2,26 @@ from django.db import models
 import math
 
 
-class PC_Space(models.Model):
+class Computer_Labs(models.Model):
+    # The lab's name
     name = models.CharField(max_length=200)
+    # The number of computers currently free
     free = models.IntegerField(default=0)
+    # The total number of computers in the lab
     seats = models.IntegerField(default=0)
+    # The campus where the lab is located
     campus = models.CharField(max_length=200)
-    ratio = models.FloatField(default=0)  # the ratio of computers available to computers in use
+    # The ratio of computers available to computers in use
     # ie computersAvailable/computersInUse
     # so 1 is an empty room, 0 is a full room
+    ratio = models.FloatField(default=0)
+    # The coordinates of the lab
     longitude = models.FloatField(default=0)
     latitude = models.FloatField(default=0)
-    id = models.AutoField(primary_key=True)
+    # Only used as a primary key, is a different id to the other databases so can't be used to help merge
+    id = models.CharField(max_length=20, primary_key=True)
 
+    # By default, order based on ratio, largest ratio first
     class Meta:
         ordering = ['-ratio']
 
