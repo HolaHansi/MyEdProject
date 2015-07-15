@@ -1,6 +1,7 @@
 import re
 import requests
-from rooms.models import Room_Feed, Building_Feed, Tutorial_Room
+from rooms.models import Room_Feed, Building_Feed, Tutorial_Room, Activity
+import datetime
 
 
 def update_room_table():
@@ -295,6 +296,38 @@ def merge_room_building():
     return 'success'
 
 
+def get_activities():
+    # get the date in a format usable by the API
+    now = datetime.datetime.utcnow()
+    currentDate = str(now)[:-7].replace(' ', 'T') + '%2B0000'
+    tomorrow = str(now + datetime.timedelta(days=1))[:-7].replace(' ', 'T') + '%2B0000'
+
+    # for testing:
+    currentDate = "2015-08-12T08:00:00%2B0000"
+    tomorrow = "2015-08-13T08:00:00%2B0000"
+
+    # get the activities data from the feed
+    activities = requests.get(
+        "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + currentDate + '&end-date-time=' + tomorrow).json()
+
+    activities_to_save=[]
+
+    for activity in activities:
+        activityId = activity['activityId']
+        name = activity['name']
+        startTime = activity['Dates'][0]['activityDateTimeId']['startDateTime']
+        endTime = activity['Dates'][0]['activityDateTimeId']['endDateTime']
+        print(activityId, name, startTime, endTime)
+        obj = Activity(activityId=activityId,
+                       name=name,
+                       startTime=startTime,
+                       endTime=endTime)
+        activities_to_save.append(obj)
+    # clear the database
+    Activity.objects.all().delete()
+    # store all the rooms in the database
+    Activity.objects.bulk_create(activities_to_save)
+    
 ''' For testing:
 def printTime(message):
     from time import clock
