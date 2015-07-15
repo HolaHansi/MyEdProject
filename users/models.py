@@ -12,5 +12,3 @@ class User(AbstractUser):
 
     def __unicode__(self):
         return self.user.username
-
-
