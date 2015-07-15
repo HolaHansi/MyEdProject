@@ -72,6 +72,32 @@
     .autocompleteForm {
         width: 50%;
     }
+
+    .unliker.unclicked{
+        background-color:blue;
+        color: white;
+        padding:7px;
+        border-radius:5px;
+        margin-left:50px;
+        cursor:pointer;
+    }
+    .unliker.clicked{
+        margin-left:50px;
+    }
+    .favRemover{
+        color: white;
+        padding:7px;
+        border-radius:5px;
+        margin-left:5px;
+        margin-right:5px;
+        cursor:pointer;
+    }
+    .confirmRemoval{
+        background-color:green;
+    }
+    .cancelRemoval{
+        background-color: red;
+    }
 </style>
 {% endblock %}
 
@@ -84,7 +110,7 @@
     <h3>Computer lab favourites:</h3>
     <ul class="list-group" id="labList">
         {% for fav in pc_favourites %}
-            <li class="list-group-item">{{ fav.name }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%)</li>
+            <li class="list-group-item" id="pc-{{fav.id}}">{{ fav.name }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%) <span class="unliker unclicked">Unlike</span></li>
         {% endfor %}
         {% if not pc_favourites %}
             <li class="list-group-item" id="noLabFavourites">No favourites yet!</li>
@@ -98,7 +124,7 @@
 
     <ul class="list-group" id="roomList">
     {% for fav in room_favourites %}
-        <li class="list-group-item">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}</li>
+        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}} <span class="unliker unclicked">Unlike</span></li>
     {% endfor %}
         {% if not room_favourites %}
             <li class="list-group-item" id="noRoomFavourites">No favourites yet!</li>

@@ -1,3 +1,37 @@
+$(document).ready(function(){
+    $('.unliker.unclicked').click(toggleLikes);
+})
+function toggleLikes(){
+    $('.cancelRemoval').click();
+    $(this).removeClass('unclicked');
+    $(this).addClass('clicked');
+    $(this).html('Are you sure? ')
+    $('<span class="favRemover confirmRemoval">Yes</span> <span class="favRemover cancelRemoval">No</span>').insertAfter($(this));
+    $(this).unbind('click');
+    that=$(this)
+    $('.confirmRemoval').click(function(){
+        var li=$(this).parent()
+        var thisId=li.attr('id')
+        var idToUnlike = thisId.slice(thisId.indexOf('-')+1);
+        var type=thisId.slice(0,thisId.indexOf('-'));
+        if (type=='pc'){
+            jsonToUnlike={'pc_id': idToUnlike, 'pcLikedByUser': true}
+        }else{
+            jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
+        }
+        $.post('/like/', jsonToUnlike)
+        li.remove();
+    });
+    $('.cancelRemoval').click(function(){
+        that.click(toggleLikes);
+        that.removeClass('clicked');
+        that.addClass('unclicked');
+        that.html('Unlike');
+        $('.confirmRemoval').remove();
+        $('.cancelRemoval').remove();
+    });
+}
+
 $(function() {
     // get the data from the autocomplete API
     $.get('/autocompleteAPI/', function(allLocations) {
@@ -20,8 +54,9 @@ $(function() {
                 $(this).autocomplete().clear()
                 $(this).val('')
                 // add the new favourite to the list
-                var newItem = $('<li class="list-group-item">'+suggestion.value+': '+suggestion.data.free+'/'+suggestion.data.seats+' computers free ('+Math.floor(suggestion.data.ratio*100)+'%)</li>');
+                var newItem = $('<li class="list-group-item" id="pc-'+suggestion.data.id+'">'+suggestion.value+': '+suggestion.data.free+'/'+suggestion.data.seats+' computers free ('+Math.floor(suggestion.data.ratio*100)+'%) <span class="unliker unclicked">Unlike</span></li>');
                 newItem.insertBefore('#autocompleteLabLi');
+                $('.unliker.unclicked').click(toggleLikes);
                 $('#noLabFavourites').remove()
             }
         });
@@ -65,9 +100,10 @@ $(function() {
                     facilities = "<div id='blackboardTick' class='tickOrCross cross'></div>"
                 }
                 // create the other details
-                var newItem = $('<li class="list-group-item">'+suggestion.data.room_name+', '+suggestion.data.building_name+': '+facilities+'</li>');
+                var newItem = $('<li class="list-group-item" id="room-'+suggestion.data.id+'">'+suggestion.data.room_name+', '+suggestion.data.building_name+': '+facilities+' <span class="unliker unclicked">Unlike</span></li>');
                 // insert the new favourite into the dom
                 newItem.insertBefore('#autocompleteRoomLi');
+                $('.unliker.unclicked').click(toggleLikes);
                 $('#noRoomFavourites').remove()
             }
         });
