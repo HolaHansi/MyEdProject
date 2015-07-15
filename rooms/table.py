@@ -10,12 +10,8 @@ def update_room_table():
     """
 
     buildings_to_save = []
-    # rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
-    # TODO: zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
-    import json
-
-    with open('locations.json') as f:
-        rooms = json.load(f)
+    rooms = requests.get("http://nightside.is.ed.ac.uk:8080/locations").json()
+    zones = requests.get('http://nightside.is.ed.ac.uk:8080/zones/').json()
 
     # save each bookable room:
     for room in rooms:
@@ -58,8 +54,6 @@ def update_room_table():
             # initialize variables
             campus_id = ''
             campus_name = ''
-            # TODO:
-            '''
             zone_search_id = zoneId
 
             # search through all the zones until you find the root
@@ -74,7 +68,6 @@ def update_room_table():
                         else:
                             # if this zone is the parent but not a campus, find out which campus the parent is on
                             zone_search_id = zone['parentZoneId']
-            '''
 
             # save the object
             obj = Room_Feed(locationId=locationId,
@@ -277,7 +270,7 @@ def merge_room_building():
             # and results.description!="Foyer Area"
             # and results.description == "Laboratory: Technical"
             # and "COMPUTER LAB" not in results.description.upper()
-            room_name = re.sub(r'^z*','',results.room_name)
+            room_name = re.sub(r'^z*', '', results.room_name)
             obj = Tutorial_Room(abbreviation=results.abbreviation,
                                 locationId=results.locationId,
                                 room_name=room_name,
