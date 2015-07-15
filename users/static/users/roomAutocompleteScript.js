@@ -14,13 +14,18 @@ function toggleLikes(){
         var thisId=li.attr('id')
         var idToUnlike = thisId.slice(thisId.indexOf('-')+1);
         var type=thisId.slice(0,thisId.indexOf('-'));
-        if (type=='pc'){
+        // capitalized type, used in Ids
+        var capsType=type.substr(0, 1).toUpperCase() + type.substr( 1 );
+        if (type=='lab'){
             jsonToUnlike={'pc_id': idToUnlike, 'pcLikedByUser': true}
         }else{
             jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
         }
         $.post('/like/', jsonToUnlike)
         li.remove();
+        if ($('#'+type+'List').children().length == 1){
+            $('<li class="list-group-item" id="no'+capsType+'Favourites">No favourites yet!</li>').insertBefore('#autocomplete'+capsType+'Li');;
+        }
     });
     $('.cancelRemoval').click(function(){
         that.click(toggleLikes);
@@ -54,7 +59,7 @@ $(function() {
                 $(this).autocomplete().clear()
                 $(this).val('')
                 // add the new favourite to the list
-                var newItem = $('<li class="list-group-item" id="pc-'+suggestion.data.id+'">'+suggestion.value+': '+suggestion.data.free+'/'+suggestion.data.seats+' computers free ('+Math.floor(suggestion.data.ratio*100)+'%) <span class="unliker unclicked">Unlike</span></li>');
+                var newItem = $('<li class="list-group-item" id="lab-'+suggestion.data.id+'">'+suggestion.value+': '+suggestion.data.free+'/'+suggestion.data.seats+' computers free ('+Math.floor(suggestion.data.ratio*100)+'%) <span class="unliker unclicked">Unlike</span></li>');
                 newItem.insertBefore('#autocompleteLabLi');
                 $('.unliker.unclicked').click(toggleLikes);
                 $('#noLabFavourites').remove()

@@ -110,7 +110,7 @@
     <h3>Computer lab favourites:</h3>
     <ul class="list-group" id="labList">
         {% for fav in pc_favourites %}
-            <li class="list-group-item" id="pc-{{fav.id}}">{{ fav.name }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%) <span class="unliker unclicked">Unlike</span></li>
+            <li class="list-group-item" id="lab-{{fav.id}}">{{ fav.name }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%) <span class="unliker unclicked">Unlike</span></li>
         {% endfor %}
         {% if not pc_favourites %}
             <li class="list-group-item" id="noLabFavourites">No favourites yet!</li>
