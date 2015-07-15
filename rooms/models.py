@@ -40,6 +40,7 @@ class Room_Feed(models.Model):
     projector = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
     locally_allocated = models.BooleanField(default=False)
+    activities = models.ManyToManyField('Activity')
 
     abbreviation = models.CharField(max_length=4)
     zoneId = models.CharField(max_length=50)
@@ -70,6 +71,7 @@ class Tutorial_Room(models.Model):
     printer = models.BooleanField(default=False)
     locally_allocated = models.BooleanField(default=False)
     zoneId = models.CharField(max_length=50)
+    activities = models.ManyToManyField('Activity')
     # building attributes
     building_name = models.CharField(max_length=100)
     abbreviation = models.CharField(max_length=4)
@@ -81,3 +83,13 @@ class Tutorial_Room(models.Model):
 
     def __str__(self):
         return self.building_name + ": " + self.room_name
+
+
+class Activity(models.Model):
+    activityId = models.CharField(max_length=50, primary_key=True)
+    name = models.CharField(max_length=500)  # probably not needed
+    startTime = models.DateTimeField()
+    endTime = models.DateTimeField()
+
+    def __str__(self):
+        return 'Activity '+ str(self.activityId) + ', '+str(self.startTime)+' until'+str(self.endTime)
