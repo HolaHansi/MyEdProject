@@ -1,4 +1,5 @@
 import re
+from django.core.exceptions import ObjectDoesNotExist
 import requests
 from rooms.models import Room_Feed, Building_Feed, Tutorial_Room, Activity
 import datetime
@@ -305,29 +306,29 @@ def get_activities():
     # for testing:
     currentDate = "2015-08-12T08:00:00%2B0000"
     tomorrow = "2015-08-13T08:00:00%2B0000"
-
     # get the activities data from the feed
     activities = requests.get(
-        "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + currentDate + '&end-date-time=' + tomorrow).json()
-
-    activities_to_save=[]
-
+        "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + currentDate + '&end-date-time=' + tomorrow
+    ).json()
     for activity in activities:
         activityId = activity['activityId']
         name = activity['name']
         startTime = activity['Dates'][0]['activityDateTimeId']['startDateTime']
         endTime = activity['Dates'][0]['activityDateTimeId']['endDateTime']
-        print(activityId, name, startTime, endTime)
         obj = Activity(activityId=activityId,
                        name=name,
                        startTime=startTime,
                        endTime=endTime)
-        activities_to_save.append(obj)
-    # clear the database
-    Activity.objects.all().delete()
-    # store all the rooms in the database
-    Activity.objects.bulk_create(activities_to_save)
-    
+        obj.save()
+        # try to add any tutorial rooms to the database
+        for location in activity['locations']:
+            try:
+                tut_room = Tutorial_Room.objects.get(locationId=location['locationId'])
+                obj.tutorialRooms.add(tut_room)
+            except ObjectDoesNotExist:
+                pass
+
+
 ''' For testing:
 def printTime(message):
     from time import clock
