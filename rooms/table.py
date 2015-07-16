@@ -313,20 +313,29 @@ def get_activities():
     for activity in activities:
         activityId = activity['activityId']
         name = activity['name']
-        startTime = activity['Dates'][0]['activityDateTimeId']['startDateTime']
-        endTime = activity['Dates'][0]['activityDateTimeId']['endDateTime']
-        obj = Activity(activityId=activityId,
-                       name=name,
-                       startTime=startTime,
-                       endTime=endTime)
-        obj.save()
-        # try to add any tutorial rooms to the database
-        for location in activity['locations']:
-            try:
-                tut_room = Tutorial_Room.objects.get(locationId=location['locationId'])
-                obj.tutorialRooms.add(tut_room)
-            except ObjectDoesNotExist:
-                pass
+        i=0
+        for date in activity['Dates']:
+            startTime = date['activityDateTimeId']['startDateTime']
+            endTime = date['activityDateTimeId']['endDateTime']
+            # the feed uses midnight to mean the midnight at the end of the day,
+            # whereas django uses midnight to mean the midnight at the start of the day,
+            # so convert it if necessary
+            if endTime[11:16]=='00:00':
+                endTime = datetime.datetime.strptime(endTime,'%Y-%m-%dT%H:%M:%S%z')
+                endTime = endTime + datetime.timedelta(days=1)
+            obj = Activity(activityId=activityId+'-'+str(i),
+                           name=name,
+                           startTime=startTime,
+                           endTime=endTime)
+            obj.save()
+            i+=1
+            # try to add any tutorial rooms to the database
+            for location in activity['locations']:
+                try:
+                    tut_room = Tutorial_Room.objects.get(locationId=location['locationId'])
+                    obj.tutorialRooms.add(tut_room)
+                except ObjectDoesNotExist:
+                    pass
 
 
 ''' For testing:
