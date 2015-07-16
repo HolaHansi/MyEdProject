@@ -151,3 +151,26 @@ def calculate_heuristic(room):
     if room.printer:
         value += 1
     return value
+
+
+def testing(hr):
+    data = Tutorial_Room.objects.all()
+
+    # filter all rooms which have an activity that starts before x hours time and ends after now
+    busyRooms = data.filter(activity__startTime__lt='2015-08-12 '+str(hr+1)+':00:00+0000', activity__endTime__gt='2015-08-12 '+str(hr)+':00:00+0000')
+    print("Busy rooms:",busyRooms.count())
+    busyRooms = [x.locationId for x in busyRooms]
+    data = data.exclude(locationId__in=busyRooms)
+    '''For testing:
+    print("Inefficiently:",data.count())
+    data = Tutorial_Room.objects.all()
+    data = data.exclude(activity__startTime__lte='2015-08-12 '+str(hr+1)+':00:00+0000', activity__endTime__gte='2015-08-12 '+str(hr)+':00:00+0000')
+    print("Basic exclude:",data.count())
+    data = Tutorial_Room.objects.all()
+    data = data.exclude(activity__startTime__lte='2015-08-12 '+str(hr+1)+':00:00+0000').exclude( activity__endTime__gte='2015-08-12 '+str(hr)+':00:00+0000')
+    print("Double exclude:",data.count())
+    data = Tutorial_Room.objects.exclude(Q(activity__startTime__lt='2015-08-12 '+str(hr+1)+':00:00+0000')|Q(activity__endTime__gt='2015-08-12 '+str(hr)+':00:00+0000'))
+    print("Fancy exclude:",data.count())
+    data = Tutorial_Room.objects.filter(~Q(activity__startTime__lt='2015-08-12 '+str(hr+1)+':00:00+0000')|~Q(activity__endTime__gt='2015-08-12 '+str(hr)+':00:00+0000'))
+    print("Fancy filter:",data.count())
+    '''
