@@ -1,6 +1,12 @@
 import re
 import requests
+import gspread
+import json
+from oauth2client.client import SignedJwtAssertionCredentials
 from rooms.models import Room_Feed, Building_Feed, Tutorial_Room
+
+
+
 
 
 def update_room_table():
@@ -302,3 +308,28 @@ def printTime(message):
     print(message + ': ' + str(float(int((clock() - timer) * 1000)) / 1000) + 's')
     timer = clock()
 '''
+
+def get_building_hours():
+    """
+    This function retrieves the opening hours for every building when available
+    by calling our google-spreadsheet containing this information.
+    :return: a list of dictionaries for each building used to
+    """
+    # first authenticate with google using oAuth2
+    # the credentials are stored in googleCredentialsSecrets.json and are kept out of version control.
+
+    json_key = json.load(open('googleCredentialsSecrets.json'))
+    scope = ['https://spreadsheets.google.com/feeds']
+    credentials = SignedJwtAssertionCredentials(json_key['client_email'], bytes(json_key['private_key'], 'utf-8'), scope)
+    gc = gspread.authorize(credentials)
+
+    # open the google spreadsheet containing opening hours
+    spreadsheet = gc.open_by_key('173BpkRwPyRXR6fWgKQZ53qUgBSkyUlVWCqklT7K701Y')
+
+    # get a worksheet from the spreadsheet.
+    ws = spreadsheet.get_worksheet(0)
+
+    # get all entries (buildings) as python dictionaries
+    records = ws.get_all_records()
+
+    return records
