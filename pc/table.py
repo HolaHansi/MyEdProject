@@ -8,17 +8,17 @@ from email.mime.text import MIMEText
 import json
 import re
 
+
 def get_pc_data():
     r = requests.get(url='http://labmonitor.ucs.ed.ac.uk/myed/index.cfm?fuseaction=XML')
     root = ET.fromstring(r.content)
-    objectsToSave = []
 
     for child in root:
         if 'location' in child.keys():
             name = child.attrib['location']
             group = child.attrib['group']
             # remove group from name
-            name = process_pc_name(name,group)
+            name = process_pc_name(name, group)
             free = int(child.attrib['free'])
             seats = int(child.attrib['seats'])
             id = child.attrib['rid']
@@ -26,16 +26,16 @@ def get_pc_data():
             longitude = 0.0
             latitude = 0.0
             # convert group to campus:
-            if group=='Business School':
-                campus='Central'
-            elif group=='KB Labs':
-                campus="King's Buildings"
-            elif group=='ECA':
-                campus='Lauriston'
+            if group == 'Business School':
+                campus = 'Central'
+            elif group == 'KB Labs':
+                campus = "King's Buildings"
+            elif group == 'ECA':
+                campus = 'Lauriston'
             elif 'Holyrood' in group:
-                campus='Holyrood'
+                campus = 'Holyrood'
             else:
-                campus=group
+                campus = group
 
             # for each building,
             for building in Building_Feed.objects.all():
@@ -57,20 +57,16 @@ def get_pc_data():
                     send_mail(name)
 
             obj = Computer_Labs(name=name,
-                           free=free,
-                           seats=seats,
-                           campus=campus,
-                           ratio=ratio,
-                           longitude=longitude,
-                           latitude=latitude,
-                           id=id)
+                                free=free,
+                                seats=seats,
+                                campus=campus,
+                                ratio=ratio,
+                                longitude=longitude,
+                                latitude=latitude,
+                                id=id)
 
-            objectsToSave.append(obj)
+            obj.save()
 
-    # clear the database
-    Computer_Labs.objects.all().delete()
-    # store all the rooms in the database
-    Computer_Labs.objects.bulk_create(objectsToSave)
     return 'successfully updated database'
 
 
@@ -99,13 +95,13 @@ def convert_building_name(location):
     return location
 
 
-def process_pc_name(name,campus):
-    '''Processes the name of the open access study space to make it more human readable'''
+def process_pc_name(name, campus):
+    # Processes the name of the open access study space to make it more human readable
     regex = re.compile(campus + '( - )? ?', re.IGNORECASE)
-    toReturn = re.sub(regex,'',name)
-    if campus=='Business School':
-        toReturn = 'Business School - ' + toReturn
-    return toReturn
+    to_return = re.sub(regex, '', name)
+    if campus == 'Business School':
+        to_return = 'Business School - ' + to_return
+    return to_return
 
 
 # sends an email alert to bring the error to the attention of the admins so that it can be fixed
