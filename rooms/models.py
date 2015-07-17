@@ -54,7 +54,7 @@ class Building_Feed(models.Model):
     latitude = models.FloatField()
 
     def __str__(self):
-        return str(self.name)
+        return str(self.building_name)
 
 
 class Tutorial_Room(models.Model):
@@ -81,3 +81,11 @@ class Tutorial_Room(models.Model):
 
     def __str__(self):
         return self.building_name + ": " + self.room_name
+
+
+class Open_Hours(models.Model):
+    building = models.OneToOneField(Building_Feed)
+    weekday = models.CharField(max_length=9)
+    saturday = models.CharField(max_length=9)
+    sunday = models.CharField(max_length=9)
+

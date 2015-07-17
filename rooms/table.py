@@ -3,7 +3,7 @@ import requests
 import gspread
 import json
 from oauth2client.client import SignedJwtAssertionCredentials
-from rooms.models import Room_Feed, Building_Feed, Tutorial_Room
+from rooms.models import Room_Feed, Building_Feed, Tutorial_Room, Open_Hours
 
 
 
@@ -313,7 +313,7 @@ def get_building_hours():
     """
     This function retrieves the opening hours for every building when available
     by calling our google-spreadsheet containing this information.
-    :return: a list of dictionaries for each building used to
+    :return: a list of dictionaries for each building containing its opening hours.
     """
     # first authenticate with google using oAuth2
     # the credentials are stored in googleCredentialsSecrets.json and are kept out of version control.
@@ -333,3 +333,36 @@ def get_building_hours():
     records = ws.get_all_records()
 
     return records
+
+def update_building_hours():
+    """
+    updates/populates the open_hours model in the database.
+    :return:
+    """
+    # get all the opening hour records from spreadsheet and save in dict records.
+    records = get_building_hours()
+    # loop through records, if a record has an abbreviation, save it to the database
+    for record in records:
+        abbr = record['Building Abbreviation'].replace('"', '')
+        if abbr != 'n/a':
+            try:
+                print(abbr)
+                # the coresponding building is looked up by abbreviation.
+                building = Building_Feed.objects.get(abbreviation__exact=abbr)
+
+
+                weekday = record['Monday_friday_Open']
+                saturday = record['Saturday_Open']
+                sunday = record['Sunday_Open']
+
+                # make an object for the database.
+                obj = Open_Hours(building = building,
+                                 weekday = weekday,
+                                 saturday = saturday,
+                                 sunday = sunday)
+
+                obj.save()
+            except:
+                continue
+
+    return 'success'
