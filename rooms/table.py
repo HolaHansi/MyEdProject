@@ -279,28 +279,28 @@ def merge_room_building():
             # and results.description == "Laboratory: Technical"
             # and "COMPUTER LAB" not in results.description.upper()
             room_name = re.sub(r'^z*', '', results.room_name)
-            obj = Tutorial_Room(abbreviation= results.abbreviation,
-                                locationId= results.locationId,
-                                room_name= room_name,
-                                pc= results.pc,
-                                printer= results.printer,
-                                whiteboard= results.whiteboard,
-                                blackboard= results.blackboard,
-                                projector= results.projector,
-                                locally_allocated= results.locally_allocated,
-                                zoneId= results.zoneId,
-                                longitude= results.longitude,
-                                latitude= results.latitude,
-                                building_name= results.building_name,
-                                campus_id= results.campus_id,
-                                campus_name= results.campus_name)
-            rooms_to_save[results.locationId]=obj
-    printTime("Made rooms")
+            obj = Tutorial_Room(abbreviation=results.abbreviation,
+                                locationId=results.locationId,
+                                room_name=room_name,
+                                pc=results.pc,
+                                printer=results.printer,
+                                whiteboard=results.whiteboard,
+                                blackboard=results.blackboard,
+                                projector=results.projector,
+                                locally_allocated=results.locally_allocated,
+                                zoneId=results.zoneId,
+                                longitude=results.longitude,
+                                latitude=results.latitude,
+                                building_name=results.building_name,
+                                campus_id=results.campus_id,
+                                campus_name=results.campus_name)
+            rooms_to_save[results.locationId] = obj
+
     # delete all rooms no longer in the data feed
     Tutorial_Room.objects.exclude(locationId__in=rooms_to_save.keys()).delete()
     # if the database has been reset, save all the data in batch
-    data=Tutorial_Room.objects.all()
-    if len(data)==0:
+    data = Tutorial_Room.objects.all()
+    if len(data) == 0:
         Tutorial_Room.objects.bulk_create(rooms_to_save.values())
     else:
         # for each room
@@ -309,40 +309,39 @@ def merge_room_building():
             if room not in data:
                 room.save()
 
-    printTime("Saved rooms")
     return 'success'
 
 
 def get_activities():
     # get the date in a format usable by the API
     now = datetime.datetime.utcnow()
-    currentDate = str(now)[:-7].replace(' ', 'T') + '%2B0000'
+    current_date = str(now)[:-7].replace(' ', 'T') + '%2B0000'
     tomorrow = str(now + datetime.timedelta(days=1))[:-7].replace(' ', 'T') + '%2B0000'
 
     # for testing:
-    currentDate = "2015-08-12T08:00:00%2B0000"
+    current_date = "2015-08-12T08:00:00%2B0000"
     tomorrow = "2015-08-13T08:00:00%2B0000"
     # get the activities data from the feed
     activities = requests.get(
-        "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + currentDate + '&end-date-time=' + tomorrow
+        "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + current_date + '&end-date-time=' + tomorrow
     ).json()
     for activity in activities:
-        activityId = activity['activityId']
+        activity_id = activity['activityId']
         name = activity['name']
         i = 0
         for date in activity['Dates']:
-            startTime = date['activityDateTimeId']['startDateTime']
-            endTime = date['activityDateTimeId']['endDateTime']
+            start_time = date['activityDateTimeId']['startDateTime']
+            end_time = date['activityDateTimeId']['endDateTime']
             # the feed uses midnight to mean the midnight at the end of the day,
             # whereas django uses midnight to mean the midnight at the start of the day,
             # so convert it if necessary
-            if endTime[11:16] == '00:00':
-                endTime = datetime.datetime.strptime(endTime, '%Y-%m-%dT%H:%M:%S%z')
-                endTime = endTime + datetime.timedelta(days=1)
-            obj = Activity(activityId=activityId + '-' + str(i),
+            if end_time[11:16] == '00:00':
+                end_time = datetime.datetime.strptime(end_time, '%Y-%m-%dT%H:%M:%S%z')
+                end_time = end_time + datetime.timedelta(days=1)
+            obj = Activity(activityId=activity_id + '-' + str(i),
                            name=name,
-                           startTime=startTime,
-                           endTime=endTime)
+                           startTime=start_time,
+                           endTime=end_time)
             obj.save()
             i += 1
             # try to add any tutorial rooms to the database
@@ -353,10 +352,11 @@ def get_activities():
                 except ObjectDoesNotExist:
                     pass
 
-
+'''
 def printTime(message):
     from time import clock
 
     global timer
     print(message + ': ' + str(float(int((clock() - timer) * 1000)) / 1000) + 's')
     timer = clock()
+'''
