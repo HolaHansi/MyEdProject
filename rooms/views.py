@@ -68,9 +68,9 @@ def filter_suggestions(request):
 
         hr = 12
         # filter all rooms which have an activity that starts before x hours time and ends after now
+        # currently using test times and dates
         busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
                                  activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
-        print("Busy rooms:", busy_rooms.count())
         busy_rooms = [x.locationId for x in busy_rooms]
         data = data.exclude(locationId__in=busy_rooms)
 

@@ -347,7 +347,7 @@ def get_activities():
                 except ObjectDoesNotExist:
                     pass
 
-'''
+''' For testing:
 def printTime(message):
     from time import clock
 
