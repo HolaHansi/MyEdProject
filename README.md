@@ -16,6 +16,7 @@
 - Send all rooms liked and toggle liked button locally
 
 ###Stretch goals:
+- 'Suggest a study space'
 - Machine learning 'people like you like...'
 - Add config file to easily change which suitabilities are displayed
 - Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
