@@ -36,3 +36,57 @@ Traceback (most recent call last):
   File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/db/backends/sqlite3/base.py", line 318, in execute
     return Database.Cursor.execute(self, query, params)
 django.db.utils.OperationalError: no such table: pc_computer_labs
+[20/Jul/2015 08:55:23] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[20/Jul/2015 08:55:23] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[20/Jul/2015 08:55:24] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[20/Jul/2015 08:55:24] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[20/Jul/2015 08:55:24] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[20/Jul/2015 08:55:24] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
