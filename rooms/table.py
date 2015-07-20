@@ -260,11 +260,6 @@ def merge_room_building():
     :return: void
     """
 
-    from time import clock
-
-    global timer
-    timer = clock()
-
     rooms_to_save = {}
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
