@@ -1,6 +1,7 @@
 from celery import task
 from pc.table import get_pc_data
-from rooms.table import update_room_table, update_building_hours, update_building_table, merge_room_building
+from rooms.table import update_room_table, update_building_hours, update_building_table, merge_room_building, \
+    get_activities
 
 
 @task
@@ -11,6 +12,8 @@ def repopulate_all_tables():
     print('Rooms saved')
     merge_room_building()
     print('Rooms merged')
+    get_activities()
+    print('Activities merged')
     get_pc_data()
     print('PC labs saved')
     update_building_hours()

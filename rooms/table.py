@@ -1,11 +1,13 @@
 import re
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import IntegrityError
 import requests
 import gspread
 import json
 from oauth2client.client import SignedJwtAssertionCredentials
 from rooms.models import Room_Feed, Building_Feed, Tutorial_Room, Activity, Open_Hours
 import datetime
+
 
 def update_room_table():
     """
@@ -349,6 +351,7 @@ def get_activities():
                 except ObjectDoesNotExist:
                     pass
 
+
 ''' For testing:
 def printTime(message):
     from time import clock
@@ -357,6 +360,7 @@ def printTime(message):
     print(message + ': ' + str(float(int((clock() - timer) * 1000)) / 1000) + 's')
     timer = clock()
 '''
+
 
 def get_building_hours():
     """
@@ -369,7 +373,8 @@ def get_building_hours():
 
     json_key = json.load(open('googleCredentialsSecrets.json'))
     scope = ['https://spreadsheets.google.com/feeds']
-    credentials = SignedJwtAssertionCredentials(json_key['client_email'], bytes(json_key['private_key'], 'utf-8'), scope)
+    credentials = SignedJwtAssertionCredentials(json_key['client_email'], bytes(json_key['private_key'], 'utf-8'),
+                                                scope)
     gc = gspread.authorize(credentials)
 
     # open the google spreadsheet containing opening hours
@@ -383,6 +388,7 @@ def get_building_hours():
 
     return records
 
+
 def update_building_hours():
     """
     updates/populates the open_hours model in the database.
@@ -395,23 +401,23 @@ def update_building_hours():
         abbr = record['Building Abbreviation'].replace('"', '')
         if abbr != 'n/a':
             try:
-                print(abbr)
                 # the coresponding building is looked up by abbreviation.
                 building = Building_Feed.objects.get(abbreviation__exact=abbr)
-
 
                 weekday = record['Monday_friday_Open']
                 saturday = record['Saturday_Open']
                 sunday = record['Sunday_Open']
 
                 # make an object for the database.
-                obj = Open_Hours(building = building,
-                                 weekday = weekday,
-                                 saturday = saturday,
-                                 sunday = sunday)
+                obj = Open_Hours(building=building,
+                                 weekday=weekday,
+                                 saturday=saturday,
+                                 sunday=sunday)
 
                 obj.save()
-            except:
+            except ObjectDoesNotExist:
+                continue
+            except IntegrityError:
                 continue
 
     return 'success'

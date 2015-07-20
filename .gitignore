@@ -11,3 +11,4 @@ pc/migrations/
 core/wsgi.py
 manage.py
 logs/debug.log
+googlecredentialssecrets.json
