@@ -82,10 +82,39 @@ class Tutorial_Room(models.Model):
     def __str__(self):
         return self.building_name + ": " + self.room_name
 
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__) and
+                self.locationId == other.locationId and
+                self.room_name == other.room_name and
+                self.pc == other.pc and
+                self.whiteboard == other.whiteboard and
+                self.projector == other.projector and
+                self.printer == other.printer and
+                self.locally_allocated == other.locally_allocated and
+                self.zoneId == other.zoneId and
+                self.building_name == other.building_name and
+                self.abbreviation == other.abbreviation and
+                self.longitude == other.longitude and
+                self.latitude == other.latitude and
+                self.campus_name == other.campus_name and
+                self.campus_id == other.campus_id
+                )
+
+
+class Activity(models.Model):
+    activityId = models.CharField(max_length=50, primary_key=True)
+    name = models.CharField(max_length=500)  # probably not needed
+    startTime = models.DateTimeField()
+    endTime = models.DateTimeField()
+
+    tutorialRooms = models.ManyToManyField(Tutorial_Room)
+
+    def __str__(self):
+        return 'Activity ' + str(self.activityId) + ', ' + str(self.startTime) + ' until' + str(self.endTime)
+
 
 class Open_Hours(models.Model):
     building = models.OneToOneField(Building_Feed)
     weekday = models.CharField(max_length=9)
     saturday = models.CharField(max_length=9)
     sunday = models.CharField(max_length=9)
-
