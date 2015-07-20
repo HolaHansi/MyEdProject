@@ -66,6 +66,14 @@ def filter_suggestions(request):
             for campus in campuses_to_remove:
                 data = data.exclude(campus_name=campus)
 
+        hr = 12
+        # filter all rooms which have an activity that starts before x hours time and ends after now
+        # currently using test times and dates
+        busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
+                                 activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
+        busy_rooms = [x.locationId for x in busy_rooms]
+        data = data.exclude(locationId__in=busy_rooms)
+
         # if they're currently searching for a building:
         if request.GET['building'] == '':
             # work out how many rooms are available in each building
@@ -151,3 +159,30 @@ def calculate_heuristic(room):
     if room.printer:
         value += 1
     return value
+
+
+def testing(hr):
+    data = Tutorial_Room.objects.all()
+
+    # filter all rooms which have an activity that starts before x hours time and ends after now
+    busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
+                             activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
+    print("Busy rooms:", busy_rooms.count())
+    busy_rooms = [x.locationId for x in busy_rooms]
+    data = data.exclude(locationId__in=busy_rooms)
+    print("Inefficiently:", data.count())
+    data = Tutorial_Room.objects.all()
+    data = data.exclude(activity__startTime__lte='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
+                        activity__endTime__gte='2015-08-12 ' + str(hr) + ':00:00+0000')
+    print("Basic exclude:", data.count())
+    data = Tutorial_Room.objects.all()
+    data = data.exclude(activity__startTime__lte='2015-08-12 ' + str(hr + 1) + ':00:00+0000').exclude(
+        activity__endTime__gte='2015-08-12 ' + str(hr) + ':00:00+0000')
+    print("Double exclude:", data.count())
+    data = Tutorial_Room.objects.exclude(Q(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000') | Q(
+        activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000'))
+    print("Fancy exclude:", data.count())
+    data = Tutorial_Room.objects.filter(~Q(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000') | ~Q(
+        activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000'))
+    print("Fancy filter:", data.count())
+    # Only 'Inefficiently' works correctly, all the others don't.  No idea why basic exclude doesn't.
