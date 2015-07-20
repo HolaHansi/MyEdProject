@@ -17,6 +17,7 @@
 
 ###Stretch goals:
 - 'Suggest a study space'
+- 'My location is wrong'
 - Machine learning 'people like you like...'
 - Add config file to easily change which suitabilities are displayed
 - Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
