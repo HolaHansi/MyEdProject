@@ -6,7 +6,7 @@ Because there is a slight difference in how heuristic and ranking functions oper
 most of the functions for pc have been defined in the model for PC_Lab in pc/models.py.
 
 Though get distance is overall the same for both rooms and pc, we've decided against using the same function
-in utilities. Partly, because this is how we initially went about developing the PC app, and a lot of functions
+in utilities. Partly, because this is how we initially went about developing the PC app and a lot of functions
 would break if we moved the functions out of the model and into this module.
 
 We've also kept things this way in recognition of the fact that PCs and rooms are fundamentally different with regards

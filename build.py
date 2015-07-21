@@ -1,3 +1,7 @@
+"""
+Calling this module will set up the django database, apply migrations and populate the tables.
+Should be called like this : python build.py, and on the apache server: python3 build.py
+"""
 import os
 
 # set up the django environment
