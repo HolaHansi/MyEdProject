@@ -1,6 +1,6 @@
 """
 This module contains all the utility functions needed for the views of pc and rooms.
-When defining a new function that should work for more than one app's view, please define it here!
+When defining a new function that should work for more than one view, please define it here!
 
 Because there is a slight difference in how heuristic and ranking functions operate in rooms and pc,
 most of the functions for pc have been defined in the model for PC_Lab in pc/models.py.
@@ -30,11 +30,13 @@ class JSONResponse(HttpResponse):
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
 
+
 def to_radians(x):
     """
     converts to degrees to radians
     """
     return x * math.pi / 180
+
 
 def excludeClosedLocations(data):
     """
@@ -151,6 +153,7 @@ def sortPCLabByDistance(usr_longitude, usr_latitude, data):
     """
     data = sorted(data, key=lambda x: get_distance(usr_longitude, usr_latitude, x.longitude, x.latitude))
     return data
+
 
 def sortPCLabByEmptiness(data):
     """
