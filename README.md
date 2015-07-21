@@ -18,6 +18,7 @@
 - Send all rooms liked and toggle liked button locally
 
 ###Stretch goals:
+- 'Tutorial'
 - 'Suggest a study space'
 - 'My location is wrong'
 - Machine learning 'people like you like...'
