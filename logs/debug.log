@@ -99,3 +99,21 @@ Traceback (most recent call last):
   File "/Users/hanschristiangregersen/PycharmProjects/InternProject/rooms/views.py", line 121, in filter_suggestions
     data = data.filter(abbreviation=request.GET['building'])
 AttributeError: 'list' object has no attribute 'filter'
+[21/Jul/2015 14:01:31] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[21/Jul/2015 14:01:43] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'

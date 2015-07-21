@@ -37,13 +37,34 @@ def get_pc_data():
             else:
                 campus = group
 
+            # the variable openingHoursAvailable is false by default, and is set to true if opening hours are found.
+            openingHoursAvailable = False
+
             # for each building,
             for building in Building_Feed.objects.all():
-                # merge the two databases as best we can based on building name
+                # get building coordinates and opening-hours.
                 if building.building_name in convert_building_name(name):
+
+                    # coordinates:
                     longitude = building.longitude
                     latitude = building.latitude
-                    continue
+
+                    # Opening Hours:
+                    try:
+                        weekdayOpen = building.open_hours.weekdayOpen
+                        weekdayClosed = building.open_hours.weekdayClosed
+                        saturdayOpen = building.open_hours.saturdayOpen
+                        saturdayClosed = building.open_hours.saturdayClosed
+                        sundayOpen = building.open_hours.sundayOpen
+                        sundayClosed = building.open_hours.sundayClosed
+                        openingHoursAvailable = True
+                    except:
+                        openingHoursAvailable = False
+
+                    # a building was matched, hence no need to continue for-loop.
+                    break
+
+
             # if you didn't manage to find a building associated with this room, try what we've hard coded instead
             if latitude == 0.0:
                 if 'Holland House' in name:
@@ -64,6 +85,15 @@ def get_pc_data():
                                 longitude=longitude,
                                 latitude=latitude,
                                 id=id)
+
+            if openingHoursAvailable:
+                obj.weekdayOpen = weekdayOpen
+                obj.weekdayClosed = weekdayClosed
+                obj.saturdayOpen = saturdayOpen
+                obj.saturdayClosed = saturdayClosed
+                obj.sundayOpen = sundayOpen
+                obj.sundayClosed = sundayClosed
+
 
             obj.save()
 

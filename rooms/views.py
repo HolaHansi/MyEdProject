@@ -5,9 +5,13 @@ import math, datetime
 from rest_framework.renderers import JSONRenderer
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
+from core import utilities
 
 
 def index(request):
+    """
+    The view that returns the frontpage of the rooms' suggester app.
+    """
     return render(request, 'rooms/index.html')
 
 
@@ -20,10 +24,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
-
-
-
-
 
 
 def filter_suggestions(request):
@@ -39,29 +39,8 @@ def filter_suggestions(request):
         # get all rooms
         data = Tutorial_Room.objects.all()
 
-        #Exclude all rooms that we KNOW are currently closed.
-
-        # get current time and weekday
-        now = datetime.datetime.now()
-        currentTime = now.time().isoformat()
-        weekday = now.weekday()
-
-        # I'm using exclude instead of filter, so not to filter out all the rooms without opening times.
-        # if it's a day between Mon-Fri, then filter out all closed rooms on these days.
-        if weekday >= 0 and weekday <= 4:
-            data = data.exclude(weekdayOpen__gt=currentTime)
-            data = data.exclude(weekdayClosed__lt=currentTime)
-
-        # the same thing for saturday.
-        if weekday == 5:
-            data = data.exclude(saturdayOpen__gt=currentTime)
-            data = data.exclude(saturdayClosed__lt=currentTime)
-
-        # if it's sunday... etc.
-        if weekday == 6:
-            data = data.exclude(sundayOpen__gt=currentTime)
-            data = data.exclude(sundayClosed__lt=currentTime)
-
+        # Exclude all rooms that we KNOW are currently closed.
+        data = utilities.excludeClosedLocations(data)
 
         # if searching for bookable spaces...
         if request.GET['bookable'] == 'true':
@@ -132,7 +111,7 @@ def filter_suggestions(request):
                 usr_longitude = float(request.GET['longitude'])
                 usr_latitude = float(request.GET['latitude'])
                 # sort the buildings based on distance from user, closest first
-                building_details = sorted(building_details, key=lambda x: get_distance(
+                building_details = sorted(building_details, key=lambda x: utilities.get_distance(
                     x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
             # if not sorting by location, sort by number of suitable rooms available
             else:
@@ -146,7 +125,7 @@ def filter_suggestions(request):
         data = data.filter(abbreviation=request.GET['building'])
 
         # sort the rooms based on a simple heuristic function
-        data = sorted(data, key=lambda x: calculate_heuristic(x), reverse=True)
+        data = sorted(data, key=lambda x: utilities.calculate_heuristic(x), reverse=True)
 
         # return the rooms
         serializer = Bookable_Room_Serializer(data, many=True)
@@ -157,48 +136,7 @@ def filter_suggestions(request):
         return JSONResponse(serializer.data)
 
 
-# calculate the distance between the current building and the inputted point
-# parameters: long1 - the longitude of the user
-#             lat1 - the latitude of the user
-def get_distance(building_long, building_lat, long1, lat1):
-    earth_radius = 6371000  # metres
-    # convert all coordinates to radians
-    t1 = to_radians(lat1)
-    t2 = to_radians(building_lat)
-    dt = to_radians(building_lat - lat1)
-    dl = to_radians(building_long - long1)
-    # do some clever maths which the internet told me was correct
-    a = math.sin(dt / 2) * math.sin(dt / 2) + math.cos(t1) * math.cos(t2) * math.sin(dl / 2) * math.sin(dl / 2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    # return the distance between the points
-    return earth_radius * c
-
-
-# converts from degrees to radians
-# parameters: x - the value in degrees to be converted
-def to_radians(x):
-    return x * math.pi / 180
-
-
-# calculates how desirable a room is for a user
-# the more features the room has, the more desirable it iss
-def calculate_heuristic(room):
-    value = 2
-    if room.locally_allocated:
-        value -= 2
-    if room.pc:
-        value += 2
-    if room.whiteboard:
-        value += 1
-    if room.blackboard:
-        value += 1
-    if room.projector:
-        value += 1
-    if room.printer:
-        value += 1
-    return value
-
-
+# FOR TESTING ONLY!
 def testing(hr):
     data = Tutorial_Room.objects.all()
 

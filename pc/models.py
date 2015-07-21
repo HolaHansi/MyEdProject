@@ -21,6 +21,15 @@ class Computer_Labs(models.Model):
     # Only used as a primary key, is a different id to the other databases so can't be used to help merge
     id = models.CharField(max_length=20, primary_key=True)
 
+    # opening hours
+    weekdayOpen = models.TimeField(null=True)
+    weekdayClosed = models.TimeField(null=True)
+    saturdayOpen = models.TimeField(null=True)
+    saturdayClosed = models.TimeField(null=True)
+    sundayOpen = models.TimeField(null=True)
+    sundayClosed = models.TimeField(null=True)
+
+
     # By default, order based on ratio, largest ratio first
     class Meta:
         ordering = ['-ratio']

@@ -4,6 +4,8 @@ from rest_framework.renderers import JSONRenderer
 from .models import Computer_Labs
 from .serializer import PC_Space_Serializer
 from django.db.models import Q
+from core import utilities
+import datetime
 
 
 def index(request):
@@ -32,6 +34,9 @@ def filter_suggestions(request):
         # don't suggest any full or almost full rooms
         data = Computer_Labs.objects.exclude(ratio__lt=0.1)
 
+        # Exclude all rooms that we KNOW are currently closed. (taken from rooms.views)
+        data = utilities.excludeClosedLocations(data)
+
         # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
         # if 'other' needs removed...
@@ -58,32 +63,10 @@ def filter_suggestions(request):
 
             # if sorting by both location and emptiness
             if request.GET['empty'] == 'true':
-                # perform a weighted ranking based on distance and ratio
-                # calculate the average distance and ratio:
-                average_distance = 0
-                average_ratio = 0
-                sd_distance = 0
-                sd_ratio = 0
-                i = 0
-                for pc_lab in data:
-                    average_distance = average_distance + pc_lab.get_distance(long1=usr_longitude, lat1=usr_latitude)
-                    average_ratio = average_ratio + pc_lab.get_ratio()
-                    i += 1
-                if i != 0:
-                    average_distance = average_distance / i
-                    average_ratio = average_ratio / i
-                    # calculate the standard deviation of distance and ratio
-                    for pc_lab in data:
-                        sd_distance += (pc_lab.get_distance(long1=usr_longitude,
-                                                            lat1=usr_latitude) - average_distance) ** 2
-                        sd_ratio += (pc_lab.get_ratio() - average_ratio) ** 2
-                    sd_distance = (sd_distance / i) ** 0.5
-                    sd_ratio = (sd_ratio / i) ** 0.5
-                    # sort the data based on both distance and ratio using a heuristic function
-                    # of the normalised distance and ratio
-                    data = sorted(data,
-                                  key=lambda x: x.get_heuristic(average_distance, average_ratio, sd_distance, sd_ratio,
-                                                                usr_longitude, usr_latitude))
+                # sort according to both location and emptiness using this core/utilities function.
+                utilities.sortingByLocationAndEmptiness(data=data,
+                                                        usr_longitude=usr_longitude,
+                                                        usr_latitude=usr_latitude)
 
         # if sorting only by emptiness
         elif request.GET['empty'] == 'true':
