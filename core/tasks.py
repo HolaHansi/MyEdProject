@@ -8,6 +8,8 @@ from rooms.table import update_room_table, update_building_hours, update_buildin
 def repopulate_all_tables():
     update_building_table()
     print('Buildings saved')
+    update_building_hours()
+    print('building hours updated')
     update_room_table()
     print('Rooms saved')
     merge_room_building()
@@ -16,8 +18,7 @@ def repopulate_all_tables():
     print('Activities merged')
     get_pc_data()
     print('PC labs saved')
-    update_building_hours()
-    print('building hours updated')
+
 
 
 @task

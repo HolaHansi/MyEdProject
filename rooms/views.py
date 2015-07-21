@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse
-import math
+import math, datetime
 from rest_framework.renderers import JSONRenderer
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
@@ -22,6 +22,10 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
+
+
+
+
 def filter_suggestions(request):
     """
     Takes a GET request and returns a list of suggestions based
@@ -30,7 +34,35 @@ def filter_suggestions(request):
     :return: JSON object
     """
     if request.method == "GET":
+
+
+        # get all rooms
         data = Tutorial_Room.objects.all()
+
+        #Exclude all rooms that we KNOW are currently closed.
+
+        # get current time and weekday
+        now = datetime.datetime.now()
+        currentTime = now.time().isoformat()
+        weekday = now.weekday()
+
+        # I'm using exclude instead of filter, so not to filter out all the rooms without opening times.
+        # if it's a day between Mon-Fri, then filter out all closed rooms on these days.
+        if weekday >= 0 and weekday <= 4:
+            data = data.exclude(weekdayOpen__gt=currentTime)
+            data = data.exclude(weekdayClosed__lt=currentTime)
+
+        # the same thing for saturday.
+        if weekday == 5:
+            data = data.exclude(saturdayOpen__gt=currentTime)
+            data = data.exclude(saturdayClosed__lt=currentTime)
+
+        # if it's sunday... etc.
+        if weekday == 6:
+            data = data.exclude(sundayOpen__gt=currentTime)
+            data = data.exclude(sundayClosed__lt=currentTime)
+
+
         # if searching for bookable spaces...
         if request.GET['bookable'] == 'true':
             data = data.filter(locally_allocated=0)
@@ -49,6 +81,7 @@ def filter_suggestions(request):
         # if searching for projector...
         if request.GET['projector'] == 'true':
             data = data.filter(projector='true')
+
 
         # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
@@ -73,6 +106,7 @@ def filter_suggestions(request):
                                  activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
         busy_rooms = [x.locationId for x in busy_rooms]
         data = data.exclude(locationId__in=busy_rooms)
+
 
         # if they're currently searching for a building:
         if request.GET['building'] == '':
@@ -116,6 +150,10 @@ def filter_suggestions(request):
 
         # return the rooms
         serializer = Bookable_Room_Serializer(data, many=True)
+        #
+        # print('for testing! \n', data)
+
+
         return JSONResponse(serializer.data)
 
 

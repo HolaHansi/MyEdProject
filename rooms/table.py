@@ -98,6 +98,7 @@ def update_room_table():
     return 'success'
 
 
+
 def update_building_table():
     """
     Makes a call to the building feed and populates the Building_Feed table with the relevant data received.
@@ -244,8 +245,11 @@ def update_building_table():
                                 building_name=building_name)
             buildings_to_save.append(obj)
 
+
+
     # Remove any duplicates from the database, such as the Noreen and Kenneth Murray Library which is in the feed twice
     # WARNING: O(n^2) efficiency!  For now, the constants are small enough that it's not a problem though.
+
     new_buildings_to_save = []
     for obj in buildings_to_save:
         if obj not in new_buildings_to_save:
@@ -258,12 +262,86 @@ def update_building_table():
     return 'success'
 
 
+def update_building_hours():
+    """
+    updates/populates the open_hours model in the database.
+    :return:
+    """
+    # get all the opening hour records from spreadsheet and save in dict records.
+    records = get_building_hours()
+    # loop through records, if a record has an abbreviation, save it to the database
+    for record in records:
+        abbreviation = record['Building Abbreviation'].replace('"', '')
+        if abbreviation != 'n/a':
+            try:
+                building = Building_Feed.objects.get(abbreviation__exact = abbreviation)
+                zoneId = record['Zone_ID']
+
+                # get times as strings, and convert to time objects.
+
+                # weekday times:
+                weekdayString = record['Monday_friday_Open']
+
+                # if the place is closed, then set open and closing times to the same value.
+                if weekdayString == "Closed":
+                    weekdayOpen = datetime.time(0)
+                    weekdayClosed = datetime.time(0)
+
+                else:
+                    weekdayOpen = datetime.time(int(weekdayString[0:2]), int(weekdayString[2:4]))
+                    weekdayClosed = datetime.time(int(weekdayString[5:7]), int(weekdayString[7:9]))
+
+                # saturday times - the same approach as before.
+                saturdayString = record['Saturday_Open']
+
+                if saturdayString == "Closed":
+                    saturdayOpen = datetime.time(0)
+                    saturdayClosed = datetime.time(0)
+
+                else:
+                    saturdayOpen = datetime.time(int(weekdayString[0:2]), int(weekdayString[2:4]))
+                    saturdayClosed = datetime.time(int(weekdayString[5:7]), int(weekdayString[7:9]))
+
+                # sunday times - the same approach as before.
+                sundayString = record['Sunday_Open']
+
+                if sundayString == "Closed":
+                    sundayOpen = datetime.time(0)
+                    sundayClosed = datetime.time(0)
+
+                else:
+                    sundayOpen = datetime.time(int(weekdayString[0:2]), int(weekdayString[2:4]))
+                    sundayClosed = datetime.time(int(weekdayString[5:7]), int(weekdayString[7:9]))
+
+                building_name = record['Building Name']
+
+                # make an object for the database.
+                obj = Open_Hours(building = building,
+                                 abbreviation=abbreviation,
+                                 zoneId = zoneId,
+                                 weekdayOpen=weekdayOpen,
+                                 weekdayClosed=weekdayClosed,
+                                 saturdayOpen = saturdayOpen,
+                                 saturdayClosed = saturdayClosed,
+                                 sundayOpen = sundayOpen,
+                                 sundayClosed = sundayClosed,
+                                 building_name=building_name)
+
+                obj.save()
+            except Exception:
+                pass
+
+    return 'success'
+
+
+
+
+
 def merge_room_building():
     """
     The function merges the two tables Room_Feed and Building_Feed into a single table: Tutorial_Room
     :return: void
     """
-
     rooms_to_save = {}
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
@@ -278,6 +356,9 @@ def merge_room_building():
             # and results.description == "Laboratory: Technical"
             # and "COMPUTER LAB" not in results.description.upper()
             room_name = re.sub(r'^z*', '', results.room_name)
+
+
+
             obj = Tutorial_Room(abbreviation=results.abbreviation,
                                 locationId=results.locationId,
                                 room_name=room_name,
@@ -292,7 +373,23 @@ def merge_room_building():
                                 latitude=results.latitude,
                                 building_name=results.building_name,
                                 campus_id=results.campus_id,
-                                campus_name=results.campus_name)
+                                campus_name=results.campus_name,
+                                capacity = results.capacity
+                                )
+
+            # try getting appending opening hours to the room if they exist.
+            try:
+                openHour = Open_Hours.objects.get(abbreviation__exact=results.abbreviation)
+                obj.weekdayOpen = openHour.weekdayOpen
+                obj.weekdayClosed = openHour.weekdayClosed
+                obj.saturdayOpen = openHour.saturdayOpen
+                obj.saturdayClosed = openHour.saturdayClosed
+                obj.sundayOpen = openHour.sundayOpen
+                obj.sundayClosed = openHour.sundayClosed
+
+            except Exception:
+                pass
+
             rooms_to_save[results.locationId] = obj
 
     # delete all rooms no longer in the data feed
@@ -389,35 +486,3 @@ def get_building_hours():
     return records
 
 
-def update_building_hours():
-    """
-    updates/populates the open_hours model in the database.
-    :return:
-    """
-    # get all the opening hour records from spreadsheet and save in dict records.
-    records = get_building_hours()
-    # loop through records, if a record has an abbreviation, save it to the database
-    for record in records:
-        abbr = record['Building Abbreviation'].replace('"', '')
-        if abbr != 'n/a':
-            try:
-                # the coresponding building is looked up by abbreviation.
-                building = Building_Feed.objects.get(abbreviation__exact=abbr)
-
-                weekday = record['Monday_friday_Open']
-                saturday = record['Saturday_Open']
-                sunday = record['Sunday_Open']
-
-                # make an object for the database.
-                obj = Open_Hours(building=building,
-                                 weekday=weekday,
-                                 saturday=saturday,
-                                 sunday=sunday)
-
-                obj.save()
-            except ObjectDoesNotExist:
-                continue
-            except IntegrityError:
-                continue
-
-    return 'success'

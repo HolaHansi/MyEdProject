@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 ''' Room attributes:
     dvd = models.BooleanField()
@@ -30,17 +31,23 @@ from django.db import models
 
 
 class Room_Feed(models.Model):
+    # unique identifiers and essential facts
     locationId = models.CharField(max_length=50, primary_key=True)
     room_name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     capacity = models.IntegerField()
+
+    # suitabilities
     pc = models.BooleanField(default=False)
     whiteboard = models.BooleanField(default=False)
     blackboard = models.BooleanField(default=False)
     projector = models.BooleanField(default=False)
     printer = models.BooleanField(default=False)
+
+    # if true, this means the room can't be booked!
     locally_allocated = models.BooleanField(default=False)
 
+    # relevant building info
     abbreviation = models.CharField(max_length=4)
     zoneId = models.CharField(max_length=50)
     campus_id = models.CharField(max_length=50)
@@ -56,13 +63,31 @@ class Building_Feed(models.Model):
     def __str__(self):
         return str(self.building_name)
 
+class Open_Hours(models.Model):
+    # building info that are not currently used
+    building = models.OneToOneField(Building_Feed)
+    abbreviation = models.CharField(max_length=8, primary_key=True)
+    zoneId = models.CharField(max_length=50)
+    building_name = models.CharField(max_length=100)
+
+    # opening hours
+    weekdayOpen = models.TimeField(null=True)
+    weekdayClosed = models.TimeField(null=True)
+    saturdayOpen = models.TimeField(null=True)
+    saturdayClosed = models.TimeField(null=True)
+    sundayOpen = models.TimeField(null=True)
+    sundayClosed = models.TimeField(null=True)
+
+    def __str__(self):
+        return 'Opening Hours for building: ' + self.building_name
+
 
 class Tutorial_Room(models.Model):
     # room attributes:
     locationId = models.CharField(max_length=50, primary_key=True)
     room_name = models.CharField(max_length=100)
     # description = models.CharField(max_length=100) # not used
-    # capacity = models.IntegerField() # not used
+    capacity = models.IntegerField()
     pc = models.BooleanField(default=False)
     whiteboard = models.BooleanField(default=False)
     blackboard = models.BooleanField(default=False)
@@ -78,6 +103,14 @@ class Tutorial_Room(models.Model):
     # campus attributes
     campus_name = models.CharField(max_length=100)
     campus_id = models.CharField(max_length=50)
+
+    # opening hours
+    weekdayOpen = models.TimeField(null=True)
+    weekdayClosed = models.TimeField(null=True)
+    saturdayOpen = models.TimeField(null=True)
+    saturdayClosed = models.TimeField(null=True)
+    sundayOpen = models.TimeField(null=True)
+    sundayClosed = models.TimeField(null=True)
 
     def __str__(self):
         return self.building_name + ": " + self.room_name
@@ -113,8 +146,3 @@ class Activity(models.Model):
         return 'Activity ' + str(self.activityId) + ', ' + str(self.startTime) + ' until' + str(self.endTime)
 
 
-class Open_Hours(models.Model):
-    building = models.OneToOneField(Building_Feed)
-    weekday = models.CharField(max_length=9)
-    saturday = models.CharField(max_length=9)
-    sunday = models.CharField(max_length=9)
