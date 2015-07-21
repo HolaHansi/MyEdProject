@@ -59,7 +59,8 @@ INSTALLED_APPS = (
     'rooms',
     'pc',
     'api',
-    'users'
+    'users',
+    'new'
 )
 
 # celery:
