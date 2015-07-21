@@ -9,6 +9,8 @@
 - Get feedback on a new name
 - Create logo
 - Get feedback on logo
+- Implement location corrector
+- Remember user preferences (cookies?)
 - Go to Hive
 
 ##Possible tweaks:
