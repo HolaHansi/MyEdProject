@@ -18,7 +18,6 @@ import math
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 
-
 # ======= functions used in both pc/views and rooms/views ======= #
 
 class JSONResponse(HttpResponse):
