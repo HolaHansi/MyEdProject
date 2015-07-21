@@ -1,16 +1,47 @@
+"""
+This module contains all the utility functions needed for the views of pc and rooms.
+When defining a new function that should work for more than one app's view, please define it here!
+
+Because there is a slight difference in how heuristic and ranking functions operate in rooms and pc,
+most of the functions for pc have been defined in the model for PC_Lab in pc/models.py.
+
+Though get distance is overall the same for both rooms and pc, we've decided against using the same function
+in utilities. Partly, because this is how we initially went about developing the PC app, and a lot of functions
+would break if we moved the functions out of the model and into this module.
+
+We've also kept things this way in recognition of the fact that PCs and rooms are fundamentally different with regards
+to how their heuristic functions work, and so keeping their dependencies apart underlines this point to future
+developers.
+"""
 import datetime
 import math
+from rest_framework.renderers import JSONRenderer
+from django.http import HttpResponse
 
-# functions used in both pc/views and rooms/views
+
+# ======= functions used in both pc/views and rooms/views ======= #
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 def to_radians(x):
+    """
+    converts to degrees to radians
+    """
     return x * math.pi / 180
 
 def excludeClosedLocations(data):
     """
     Given a queryset of either rooms or pc-labs, the function returns a queryset without any currently closed rooms.
     :param data:
-    :return:
+    :return: data (without any closed PCs or Rooms)
     """
 
     # get current time and weekday
@@ -51,8 +82,7 @@ def excludeClosedLocations(data):
     return data
 
 
-
-# rooms/views functions
+# ======= rooms/views functions ======= #
 
 def get_distance(building_long, building_lat, long1, lat1):
     """
@@ -94,7 +124,44 @@ def calculate_heuristic(room):
     return value
 
 
-# pc/views functions
+def sortBuildingsByDistance(usr_longitude, usr_latitude, building_details):
+    """
+    Takes user coordinates and a list of buildings, and returns a sorted list of
+    buildings according to distance.
+    :param usr_longitude:
+    :param usr_latitude:
+    :param building_details:
+    :return: list of buildings sorted according to distance.
+    """
+    # sort the buildings based on distance from user, closest first
+    building_details = sorted(building_details, key=lambda x: get_distance(
+        x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
+
+    return building_details
+
+
+# ======= pc/views functions ======= #
+
+def sortPCLabByDistance(usr_longitude, usr_latitude, data):
+    """
+    takes user coordinates and a list of PCs, sorts according to which are closest to the user.
+    :param usr_longitude:
+    :param usr_latitude:
+    :param building_details:
+    :return: sorted data according to proximity
+    """
+    data = sorted(data, key=lambda x: get_distance(usr_longitude, usr_latitude, x.longitude, x.latitude))
+    return data
+
+def sortPCLabByEmptiness(data):
+    """
+    sorts list of PC_labs according to their usage ratio. From empty to full.
+    :param data:
+    :return: sorted data according to emptiness
+    """
+    data = sorted(data, key=lambda x: x.ratio, reverse=True)
+    return data
+
 
 def sortingByLocationAndEmptiness(data, usr_longitude, usr_latitude):
     """

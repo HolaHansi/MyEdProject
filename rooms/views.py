@@ -1,8 +1,5 @@
 from django.db.models import Q
 from django.shortcuts import render
-from django.http import HttpResponse
-import math, datetime
-from rest_framework.renderers import JSONRenderer
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
 from core import utilities
@@ -15,17 +12,6 @@ def index(request):
     return render(request, 'rooms/index.html')
 
 
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into JSON.
-    """
-
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
-
-
 def filter_suggestions(request):
     """
     Takes a GET request and returns a list of suggestions based
@@ -34,8 +20,6 @@ def filter_suggestions(request):
     :return: JSON object
     """
     if request.method == "GET":
-
-
         # get all rooms
         data = Tutorial_Room.objects.all()
 
@@ -110,14 +94,17 @@ def filter_suggestions(request):
                 # get the user's latitude and longitude
                 usr_longitude = float(request.GET['longitude'])
                 usr_latitude = float(request.GET['latitude'])
+
                 # sort the buildings based on distance from user, closest first
-                building_details = sorted(building_details, key=lambda x: utilities.get_distance(
-                    x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
+                building_details = utilities.sortBuildingsByDistance(usr_longitude=usr_longitude,
+                                                                    usr_latitude=usr_latitude,
+                                                                    building_details=building_details)
+
             # if not sorting by location, sort by number of suitable rooms available
             else:
                 building_details = sorted(building_details, key=lambda x: x['rooms'], reverse=True)
 
-            return JSONResponse(building_details)
+            return utilities.JSONResponse(building_details)
 
         # if they're searching for a room...
 
@@ -129,11 +116,12 @@ def filter_suggestions(request):
 
         # return the rooms
         serializer = Bookable_Room_Serializer(data, many=True)
-        #
+
+        # FOR TESTING:
         # print('for testing! \n', data)
 
-
-        return JSONResponse(serializer.data)
+        # return sorted suggestions
+        return utilities.JSONResponse(serializer.data)
 
 
 # FOR TESTING ONLY!

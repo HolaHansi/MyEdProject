@@ -1,26 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework.renderers import JSONRenderer
 from .models import Computer_Labs
 from .serializer import PC_Space_Serializer
 from django.db.models import Q
 from core import utilities
-import datetime
 
 
 def index(request):
     return render(request, 'pc/index.html')
-
-
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into JSON.
-    """
-
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
 
 
 def filter_suggestions(request):
@@ -58,8 +44,11 @@ def filter_suggestions(request):
             # get the user's latitude and longitude
             usr_longitude = float(request.GET['longitude'])
             usr_latitude = float(request.GET['latitude'])
+
             # sort the buildings based on distance from user, closest first
-            data = sorted(data, key=lambda x: x.get_distance(long1=usr_longitude, lat1=usr_latitude))
+            data = utilities.sortPCLabByDistance(usr_longitude=usr_longitude,
+                                                usr_latitude=usr_latitude,
+                                                data=data)
 
             # if sorting by both location and emptiness
             if request.GET['empty'] == 'true':
@@ -71,7 +60,8 @@ def filter_suggestions(request):
         # if sorting only by emptiness
         elif request.GET['empty'] == 'true':
             # sort by ratio, emptiest first
-            data = sorted(data, key=lambda x: x.ratio, reverse=True)
+            data = utilities.sortPCLabByEmptiness(data)
 
+        # Serialize the response to a JSON file.
         serializer = PC_Space_Serializer(data, many=True)
-        return JSONResponse(serializer.data)
+        return utilities.JSONResponse(serializer.data)

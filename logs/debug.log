@@ -117,3 +117,45 @@ Traceback (most recent call last):
   File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
     return func(self._wrapped, *args)
 AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[21/Jul/2015 14:32:56] ERROR [django.request:256] Internal Server Error: /open/filter/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/pc/views.py", line 51, in filter_suggestions
+    building_details=data)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 122, in sortByDistance
+    building_details = sorted(building_details, key=lambda x: get_distance(
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 123, in <lambda>
+    x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
+TypeError: 'Computer_Labs' object is not subscriptable
+[21/Jul/2015 14:44:01] ERROR [django.request:256] Internal Server Error: /open/filter/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/pc/views.py", line 60, in filter_suggestions
+    usr_latitude=usr_latitude)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 156, in sortingByLocationAndEmptiness
+    average_distance = average_distance + pc_lab.get_distance(long1=usr_longitude, lat1=usr_latitude)
+AttributeError: 'Computer_Labs' object has no attribute 'get_distance'
+[21/Jul/2015 14:59:25] ERROR [django.request:256] Internal Server Error: /open/filter/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/pc/views.py", line 60, in filter_suggestions
+    usr_latitude=usr_latitude)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 173, in sortingByLocationAndEmptiness
+    key=lambda x: x.get_heuristic(average_distance, average_ratio, sd_distance, sd_ratio,
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 174, in <lambda>
+    usr_longitude, usr_latitude))
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/pc/models.py", line 82, in get_heuristic
+    normalised_distance = (self.get_distance(long, lat) - average_distance) / standard_deviation_distance
+AttributeError: 'Computer_Labs' object has no attribute 'get_distance'
+[21/Jul/2015 15:00:19] ERROR [django.request:256] Internal Server Error: /open/filter/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/pc/views.py", line 60, in filter_suggestions
+    usr_latitude=usr_latitude)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 173, in sortingByLocationAndEmptiness
+    key=lambda x: x.get_heuristic(average_distance, average_ratio, sd_distance, sd_ratio,
+TypeError: unorderable types: complex() < complex()
