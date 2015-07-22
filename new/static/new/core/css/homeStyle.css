@@ -17,10 +17,14 @@
   margin-right: 15px;
   margin-top: 5px;
 }
+#navbar,
+*[data-target='#navbar'] {
+  display: none !important;
+}
 hr {
   margin: 10px 0px;
 }
 body * {
-  text-transform: capital;
+  text-transform: capitalize;
   font-size: large;
 }
