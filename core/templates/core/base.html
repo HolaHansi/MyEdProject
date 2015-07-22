@@ -1,6 +1,7 @@
 {% load staticfiles %}
 
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,9 +25,9 @@
     <link href="{% static 'core/css/globalCSS.css' %}" rel="stylesheet">
     <title>book.ed testing</title>
 
-    {% block head %}
-    {% endblock %}
+    {% block head %} {% endblock %}
 </head>
+
 <body>
 
     {% include 'core/navbar.html' %}
@@ -35,16 +36,15 @@
     <hr>
 
     <div id="contentContainer" class='container'>
-        {% block content %}
-        {% endblock %}
+        {% block content %} {% endblock %}
     </div>
 
-    {% block outside %}
-    {% endblock %}
+    {% block outside %} {% endblock %}
 
     <!--grey divider line-->
     <hr>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="{% static 'core/js/bootstrap.min.js' %}"></script>
 </body>
+
 </html>
