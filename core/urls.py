@@ -19,8 +19,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', 'users.views.index', name='home'),
-    url(r'^labs/', include('pc.urls')),
-    url(r'^rooms/', include('rooms.urls')),
+    url(r'^labs/', include('pc.urls'), name='labs'),
+    url(r'^rooms/', include('rooms.urls'), name='rooms'),
     url(r'^favourites/$', 'users.views.favourites', name='favourites'),
     url(r'^history/$', 'users.views.history', name='history'),
 
