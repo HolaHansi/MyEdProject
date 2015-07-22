@@ -5,7 +5,7 @@ Should be called like this : python build.py, and on the apache server: python3 
 import os
 
 # set up the django environment
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.development")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.production")
 
 from django.core.management import execute_from_command_line
 from core.tasks import repopulate_all_tables
