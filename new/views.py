@@ -23,3 +23,14 @@ def users_favourites(request):
                'room_favourites': room_favourites,
                'user': user}
     return render(request, 'new/users/favourites.html', context)
+
+
+@login_required
+def users_history(request):
+    user = request.user
+    pc_history = user.pc_history.all()
+    room_history = user.room_history.all()
+    context = {'pc_favourites': pc_history,
+               'room_favourites': room_history,
+               'user': user}
+    return render(request, 'new/users/history.html', context)

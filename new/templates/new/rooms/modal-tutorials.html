@@ -1,0 +1,73 @@
+{% load static %}
+
+<style>
+    .modal-body {
+    padding-top: 0px;
+    }
+    .btn-primary:hover {
+    background-color: #337AB7;
+    }
+    .btn-xs {
+    width: 70px;
+    height: 50px;
+    border-radius:0;
+    }
+    .btn-group > .btn:first-child {
+    margin-left: -1px;
+    }
+
+</style>
+
+<div class="container">
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Filter</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4>OPTIONS <a><span class="caret"></span></a></h4>
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off"> <i class="fa fa-map-marker fa-2x"></i>
+        </label>
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off"> <i class="fa fa-laptop fa-2x"></i>
+        </label><label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off"> <i class="fa fa-print fa-2x"></i>
+        </label><label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off"> <i class="fa fa-square-o fa-2x"></i>
+        </label>
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off"> <i class="fa fa-video-camera fa-2x"></i>
+        </label>
+    </div>
+    <h4>CAMPUSES <a><span class="caret"></span></a></h4>
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary btn-xs" style="vertical-align: middle;">
+        <input type="checkbox" autocomplete="off">King's <br>Building
+        </label>
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off">Central
+        </label>
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off">Lauriston
+        </label>
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off">Holyrood
+        </label>
+        <label class="btn btn-primary btn-xs">
+        <input type="checkbox" autocomplete="off">Other
+        </label>
+    </div>
+                <button type="button" class="btn btn-default right" id="filter"> Filter
+                </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
