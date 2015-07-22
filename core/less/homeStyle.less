@@ -1,5 +1,4 @@
-//out: ../../core/css/homeStyle.css
-
+//out: ../static/core/css/homeStyle.css
 .btn-lg {
     border-radius: 0px;
 }
@@ -12,12 +11,26 @@
 .mainMenuOption:last-child {
     border-radius: 0 0 4px 4px;
 }
-
-#navbar, *[data-target='#navbar']{
-    display:none !important;
+#mainHamburgerMenuOptions,
+*[data-target='#mainHamburgerMenuOptions'] {
+    display: none !important;
 }
-
 body * {
     text-transform: capitalize;
     font-size: large;
+}
+// make logo bigger and centered
+.navbar {
+    border: none;
+    #logo {
+        height: 80px
+    }
+    a.navbar-brand {
+        display: inline-block;
+        float: none;
+    }
+    .navbar-header {
+        text-align: center;
+        float:none;
+    }
 }

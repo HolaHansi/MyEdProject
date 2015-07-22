@@ -1,31 +1,33 @@
-{% extends "core/base.html" %}
-{% load staticfiles %}
-
-{% block head %}
-
-{% endblock %}
-
+{% extends "core/base.html" %} {% load staticfiles %} 
+{% block head %} 
+    <link href="{% static 'pc/css/labsStyling.css' %}" rel="stylesheet">
+    <script src="{% static 'pc/js/starringScript.js' %}" type='text/javascript'></script>
+{% endblock %} 
 {% block content %}
 
-<div class="container"> 
-    <p id='roomName'>Appleton Tower</p>
-    <p id='campusName'>Central</p>
-
-    <div class="container">
-        <div class="swiper-container" id="box">
-            <div class="swiper-wrapper" id="innerContent">
-                <!--<div class="swiper-slide">Slide 1</div>-->
-            </div>
-            <!-- Add Arrows -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+<div class='container'>
+    <div class="row" id='roomRow'>
+        <div id='roomNameContainer'>
+            <p id='roomName'>Alison House 2.08</p>
+        </div>
+        <div id='starContainer'>
+            <i class="fa fa-star fa-2x unstarred"></i>
         </div>
     </div>
-
-    <button type="button" class="btn btn-default"> <i class="fa fa-star"></i> Add to favourites</button>
-
+    <div class="row">
+        <div class='col-xs-8'>
+            <p id='computersFreeLabel'>Computers free: </p>
+        </div>
+        <div class='col-xs-4'>
+            <i class="fa fa-circle fa-2x"></i>
+        </div>
+    </div>
+    <div>
+        <img id='currentMap' src=''>
+    </div>
+    <div class='container' id='yesBtnContainer'>
+        <button type="button" class="btn btn-default" id='yesBtn'>Take me there</button>
+    </div>
 </div>
-
-{% include "pc/modal-computers.html" %}
 
 {% endblock %}

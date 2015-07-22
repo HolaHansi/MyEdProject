@@ -11,11 +11,25 @@
 .mainMenuOption:last-child {
   border-radius: 0 0 4px 4px;
 }
-#navbar,
-*[data-target='#navbar'] {
+#mainHamburgerMenuOptions,
+*[data-target='#mainHamburgerMenuOptions'] {
   display: none !important;
 }
 body * {
   text-transform: capitalize;
   font-size: large;
+}
+.navbar {
+  border: none;
+}
+.navbar #logo {
+  height: 80px;
+}
+.navbar a.navbar-brand {
+  display: inline-block;
+  float: none;
+}
+.navbar .navbar-header {
+  text-align: center;
+  float: none;
 }
