@@ -147,6 +147,11 @@ def favourites(request):
     user = request.user
     pc_favourites = user.pc_favourites.all()
     room_favourites = user.room_favourites.all()
+
+
+    #TODO implement variables for room_available, room_not_available, room_unknown_available
+
+
     context = {'pc_favourites': pc_favourites,
                'room_favourites': room_favourites,
                'user': user}
