@@ -11,18 +11,9 @@
 .mainMenuOption:last-child {
   border-radius: 0 0 4px 4px;
 }
-#logo {
-  height: 45px;
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 5px;
-}
 #navbar,
 *[data-target='#navbar'] {
   display: none !important;
-}
-hr {
-  margin: 10px 0px;
 }
 body * {
   text-transform: capitalize;
