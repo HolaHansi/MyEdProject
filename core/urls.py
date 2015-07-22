@@ -22,7 +22,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),
-    url(r'^api/', include('api.urls')),
 
     url(r'^favourites/$', 'users.views.favourites'),
     url(r'^like/', 'users.views.like'),
