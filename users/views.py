@@ -5,22 +5,12 @@ from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
 from rooms.models import Tutorial_Room
-from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.conf import settings
 from django.contrib import messages
+from core import utilities
 
-
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into JSON.
-    """
-
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
 
 
 def index(request):
@@ -70,7 +60,7 @@ def autocompleteAPI(request):
                      }
                 )
 
-        return JSONResponse({'labs': labs, 'rooms': rooms})
+        return utilities.JSONResponse({'labs': labs, 'rooms': rooms})
 
 
 def like(request):
@@ -132,7 +122,7 @@ def like(request):
             except ObjectDoesNotExist:
                 pcLikedByUser = 'false'
 
-            return JSONResponse(pcLikedByUser)
+            return utilities.JSONResponse(pcLikedByUser)
 
         # for Room requests
         else:
@@ -149,7 +139,7 @@ def like(request):
             except ObjectDoesNotExist:
                 roomLikedByUser = 'false'
 
-            return JSONResponse(roomLikedByUser)
+            return utilities.JSONResponse(roomLikedByUser)
 
 
 @login_required
