@@ -4,11 +4,12 @@
 {% block head %}
 
 {% endblock %}
+
 {% block content %}
 
 <div class="container">
-    <p>Appleton Tower</p>
-    <p>Central Campus-</p>
+    <p id='roomName'>Appleton Tower</p>
+    <p id='campusName'>Central</p>
 
     <div class="container">
         <div class="swiper-container" id="box">
@@ -23,7 +24,7 @@
 
     <button type="button" class="btn btn-default"> <i class="fa fa-star"></i> Add to favourites</button>
 
-    </div>
+</div>
 
     {% include "rooms/modal-tutorials.html" %}
 

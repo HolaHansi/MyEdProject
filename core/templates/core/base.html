@@ -23,6 +23,11 @@
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <!-- Our global CSS -->
     <link href="{% static 'core/css/globalCSS.css' %}" rel="stylesheet">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="{% static 'core/js/bootstrap.min.js' %}"></script>
+    
     <title>book.ed testing</title>
 
     {% block head %} {% endblock %}
@@ -32,9 +37,6 @@
 
     {% include 'core/navbar.html' %}
 
-    <!--grey divider line-->
-    <hr>
-
     <div id="contentContainer" class='container'>
         {% block content %} {% endblock %}
     </div>
@@ -43,8 +45,6 @@
 
     <!--grey divider line-->
     <hr>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="{% static 'core/js/bootstrap.min.js' %}"></script>
 </body>
 
 </html>

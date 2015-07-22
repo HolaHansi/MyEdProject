@@ -1,0 +1,75 @@
+//out: ../static/pc/css/labsStyling.css
+
+// Center the 'Take me there!' button
+#yesBtnContainer{
+    text-align: center;
+}
+
+#roomName{
+    margin:0;
+}
+
+//responsive text size for room name
+#roomName{    
+    font-size: 14px;
+    line-height: 14px;
+}
+@media (min-width: 200px) {
+    #roomName{
+        font-size: 14px;
+        line-height: 14px;
+        font-size: 7vw;
+        line-height: 7vw;
+    }
+}
+@media (min-width: 500px) {
+    #roomName{
+        font-size: 35px;
+        line-height: 35px;
+    }
+}
+
+//room row positioning (using flex, unsupported on IE < 9 )
+#roomRow{
+    .display-flex();
+    
+    #roomNameContainer{
+        .flex(3,0);
+        position:relative;
+        min-height:1px;
+        padding-left:15px;
+        margin:auto;
+    }
+
+    #starContainer{
+        .flex(1,0);
+        text-align: center;
+        position: relative;
+        min-height:1px;
+        padding-right: 15px;
+        padding-left:15px;
+        margin:auto;
+    }
+}
+
+
+// shorthand for all versions of display: flex
+.display-flex(){
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+// shorthand for all versions of flex: a b
+.flex(@a, @b){
+    -webkit-box-flex: @a;
+    -moz-box-flex: @a;
+    -webkit-flex: @a;
+    -ms-flex: @a;
+    flex: @a;
+    -webkit-flex-basics: @b;
+    flex-basis: @b;
+    -ms-flex-preferred-size: @b;
+}
