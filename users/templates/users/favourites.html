@@ -1,139 +1,176 @@
-{% extends 'core/base.html' %}
+{% extends "core/base.html" %}
 {% load staticfiles %}
-{% load users_extra_tags %}
 
 {% block head %}
 
-<script src='{% static "users/jquery.autocomplete.js" %}'></script>
-<script src='{% static "users/roomAutocompleteScript.js" %}'></script>
-<style>
-    .autocomplete-suggestions {
-        border: 1px solid #999;
-        background: #fff;
-        cursor: default;
-        overflow: auto;
-        -webkit-box-sizing: content-box;
-        -moz-box-sizing: content-box;
-        box-sizing: content-box;
-    }
+<link href="{% static 'users/css/favouritesStyle.css' %}" rel="stylesheet">
 
-    .autocomplete-suggestion {
-        padding: 8px 5px;
-        white-space: nowrap;
-        overflow: hidden;
-        font-size: 14px;
-    }
+<!-- amCharts javascript sources -->
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
+<script type="text/javascript" src="http://www.amcharts.com/lib/3/pie.js"></script>
+<script type="text/javascript" src="{% static 'js/makepie.js' %}"></script>
 
-    .autocomplete-selected {
-        background: #f0f0f0;
-    }
-
-    .autocomplete-suggestions strong {
-        font-weight: normal;
-        color: #3399ff;
-    }
-
-    #searchfield {
-        display: block;
-        width: 100%;
-        text-align: center;
-        margin-bottom: 35px;
-    }
-
-    #searchfield form {
-        display: inline-block;
-        background: #eeefed;
-        padding: 0;
-        margin: 0;
-        padding: 5px;
-        border-radius: 3px;
-        margin: 5px 0 0 0;
-    }
-
-    #searchfield form .biginput {
-        width: 600px;
-        height: 40px;
-        padding: 0 10px 0 10px;
-        background-color: #fff;
-        border: 1px solid #c8c8c8;
-        border-radius: 3px;
-        color: #aeaeae;
-        font-weight: normal;
-        font-size: 1.5em;
-        -webkit-transition: all 0.2s linear;
-        -moz-transition: all 0.2s linear;
-        transition: all 0.2s linear;
-    }
-
-    #searchfield form .biginput:focus {
-        color: #858585;
-    }
-
-    .autocompleteForm {
-        width: 50%;
-    }
-
-    .unliker.unclicked{
-        background-color:blue;
-        color: white;
-        padding:7px;
-        border-radius:5px;
-        margin-left:50px;
-        cursor:pointer;
-    }
-    .unliker.clicked{
-        margin-left:50px;
-    }
-    .favRemover{
-        color: white;
-        padding:7px;
-        border-radius:5px;
-        margin-left:5px;
-        margin-right:5px;
-        cursor:pointer;
-    }
-    .confirmRemoval{
-        background-color:green;
-    }
-    .cancelRemoval{
-        background-color: red;
-    }
-</style>
 {% endblock %}
 
-{% block content %} <br><br><br>
+{% block content %}
+<!--to make the default inner margins smaller-->
+<ul class="nav nav-pills">
+    <!--Computers-->
+    <li class="active"><a data-toggle="tab" href="#home">Computers</a></li>
+    <li><a data-toggle="tab" href="#menu1">Rooms</a></li>
+</ul>
+<!--id #chartdiv needed to make piechart-->
+<div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+        <div class="panel-group" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseOne">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <span class="badge">75</span> Library Cafe <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span>Free:<span class="badge free">75</span><br></span>
+                                In-Use: <span class="badge inuse">25</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <div id="chartdiv" style="width: 50px; height: 50px; background-color: #FFFFFF;" ></div>
+                            </div>
+                            <div class="col-xs-2"> <a href="labs" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                        <span class="badge">18</span> Appleton <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span>Free:<span class="badge free">18</span><br></span>
+                                In-Use: <span class="badge inuse">20</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <div id="chartdiv2" style="width: 50px; height: 50px; background-color: #FFFFFF;" ></div>
+                            </div>
+                            <div class="col-xs-2"> <a href="labs" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                        <span class="badge">2</span> Hugh Robson <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span>Free:<span class="badge free">2</span><br></span>
+                                In-Use: <span class="badge inuse">15</span>
+                            </div>
+                            <div class="col-xs-4">
+                                <div id="chartdiv3" style="width: 50px; height: 50px; background-color: #FFFFFF;" ></div>
+                            </div>
+                            <div class="col-xs-2"> <a href="computerlabs" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div class="container-fluid">
-    <p>Hi <strong>{{ user.username }}</strong>, here are your favourites:</p>
-
-
-    <h3>Computer lab favourites:</h3>
-    <ul class="list-group" id="labList">
-        {% for fav in pc_favourites %}
-            <li class="list-group-item" id="lab-{{fav.id}}">{{ fav.name }}: {{fav.free}}/{{fav.seats}} computers free ({{fav.free|ratioToPercent:fav.seats}}%) <span class="unliker unclicked">Unlike</span></li>
-        {% endfor %}
-        {% if not pc_favourites %}
-            <li class="list-group-item" id="noLabFavourites">No favourites yet!</li>
-        {% endif %}
-
-        <li class="list-group-item" id="autocompleteLabLi">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></li>
-    </ul>
-
-    <br>
-    <h3>Tutorial room favourites</h3>
-
-    <ul class="list-group" id="roomList">
-    {% for fav in room_favourites %}
-        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}} <span class="unliker unclicked">Unlike</span></li>
-    {% endfor %}
-        {% if not room_favourites %}
-            <li class="list-group-item" id="noRoomFavourites">No favourites yet!</li>
-        {% endif %}
-
-        <li class="list-group-item" id="autocompleteRoomLi">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></li>
-    </ul>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <!--Rooms-->
+    <div id="menu1" class="tab-pane fade">
+        <div class="panel-group" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-target="#collapseFour" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                        <span class="badge check"><i class="fa fa-check avail"></i></span>Library Cafe <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="labs" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="/" class="btn btn-default booknow" role="button">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseFive">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-target="#collapseFive" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                        <span class="badge times"><i class="fa fa-times avail"></i></span>Appleton <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                             <div class="col-xs-4">
+                                <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="/labs" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="/" class="btn btn-default disabled booknow" role="button">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                        <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseSix">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-target="#collapseSix" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                        <span class="badge minus"><i class="fa fa-minus avail"></i></span>Hugh Robson <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="/labs" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}
-

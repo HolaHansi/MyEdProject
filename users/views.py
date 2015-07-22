@@ -24,7 +24,7 @@ class JSONResponse(HttpResponse):
 
 
 def index(request):
-    return render(request, 'users/index.html')
+    return render(request, 'core/index.html')
 
 
 def autocompleteAPI(request):
@@ -161,6 +161,17 @@ def favourites(request):
                'room_favourites': room_favourites,
                'user': user}
     return render(request, 'users/favourites.html', context)
+
+
+@login_required
+def history(request):
+    user = request.user
+    pc_history = user.pc_history.all()
+    room_history = user.room_history.all()
+    context = {'pc_favourites': pc_history,
+               'room_favourites': room_history,
+               'user': user}
+    return render(request, 'users/history.html', context)
 
 
 def logout(request):

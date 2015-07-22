@@ -18,13 +18,14 @@ from django.contrib import admin
 
 
 urlpatterns = [
-    url(r'^$', include('users.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'users.views.index', name='index'),
     url(r'^open/', include('pc.urls')),
     url(r'^bookable/', include('rooms.urls')),
-    url(r'^api/', include('api.urls')),
+    url(r'^favourites/$', 'users.views.favourites', name='favourites'),
+    url(r'^history/$', 'users.views.history', name='history'),
 
-    url(r'^favourites/$', 'users.views.favourites'),
+    url(r'^admin/', include(admin.site.urls)),
+
     url(r'^like/', 'users.views.like'),
     url(r'^registration/$', 'users.views.register'),
     url(r'^logout/$', 'users.views.logout'),
@@ -32,5 +33,5 @@ urlpatterns = [
     # url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
     url(r'autocompleteAPI/','users.views.autocompleteAPI'),
 
-    url(r'new/',include('new.urls'))
+    url(r'',include('new.urls'))
 ]

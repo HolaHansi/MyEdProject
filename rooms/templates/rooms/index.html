@@ -1,17 +1,31 @@
-{% extends 'core/base.html' %}
-
+{% extends "core/base.html" %}
 {% load staticfiles %}
 
-
 {% block head %}
-    <script src='{% static "rooms/roomsSuggesterScript.js" %}'></script>
-    <script src='{% static "js/styling.js" %}'></script>
+
 {% endblock %}
-
-
 {% block content %}
 
-    {% include 'rooms/body.html' %}
-    {% include 'rooms/options.html' %}
+<div class="container">
+    <p>Appleton Tower</p>
+    <p>Central Campus-</p>
+
+    <div class="container">
+        <div class="swiper-container" id="box">
+            <div class="swiper-wrapper" id="innerContent">
+                <!--<div class="swiper-slide">Slide 1</div>-->
+            </div>
+            <!-- Add Arrows -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-default"> <i class="fa fa-star"></i> Add to favourites</button>
+
+    </div>
+
+    {% include "rooms/modal-tutorials.html" %}
 
 {% endblock %}
+

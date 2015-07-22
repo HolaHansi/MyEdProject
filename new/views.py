@@ -3,15 +3,15 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'new/core/index.html')
+    return render(request, 'core/index.html')
 
 
 def pc_index(request):
-    return render(request, 'new/pc/index.html')
+    return render(request, 'pc/index.html')
 
 
 def rooms_index(request):
-    return render(request, 'new/rooms/index.html')
+    return render(request, 'rooms/index.html')
 
 
 @login_required
@@ -22,7 +22,7 @@ def users_favourites(request):
     context = {'pc_favourites': pc_favourites,
                'room_favourites': room_favourites,
                'user': user}
-    return render(request, 'new/users/favourites.html', context)
+    return render(request, 'users/favourites.html', context)
 
 
 @login_required
@@ -33,4 +33,4 @@ def users_history(request):
     context = {'pc_favourites': pc_history,
                'room_favourites': room_history,
                'user': user}
-    return render(request, 'new/users/history.html', context)
+    return render(request, 'users/history.html', context)
