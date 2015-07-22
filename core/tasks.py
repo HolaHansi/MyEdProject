@@ -20,8 +20,9 @@ def repopulate_all_tables():
     print('PC labs saved')
 
 
-
 @task
 def refresh_availability():
     get_pc_data()
     print('PC availability refreshed')
+    get_activities()
+    print('Activities merged')
