@@ -5,11 +5,18 @@
 .btn-block + .btn-block {
     margin-top: 0px;
 }
-.mainMenuOption:first-child {
-    border-radius: 4px 4px 0 0;
+#mainMenu{
+    padding: 0 5px;
 }
-.mainMenuOption:last-child {
-    border-radius: 0 0 4px 4px;
+// rounding corners appropriately
+#mainMenu div{
+    padding:0px;
+    &:first-child .mainMenuOption {
+      border-radius: 4px 4px 0 0;
+    }
+    &:last-child .mainMenuOption {
+      border-radius: 0 0 4px 4px;
+    }
 }
 #mainHamburgerMenuOptions,
 *[data-target='#mainHamburgerMenuOptions'] {
@@ -32,5 +39,47 @@ body * {
     .navbar-header {
         text-align: center;
         float:none;
+    }
+}
+
+
+//for bigger screens, switch to a larger 2x2 grid
+@media (min-width: 992px) {
+    #mainMenu{ 
+        width:70%;
+        margin:auto;
+        div{
+            &:first-child .mainMenuOption {
+              border-radius: 4px 0 0 0;
+            }
+            &:nth-child(2) .mainMenuOption {
+              border-radius: 0 4px 0 0;
+            }
+            &:nth-child(3) .mainMenuOption {
+              border-radius: 0 0 0 4px;
+            }
+            &:last-child .mainMenuOption {
+              border-radius: 0 0 4px 0;
+            }
+            a{
+                padding:40px 0;
+                .fa-3x{
+                    font-size:3.5em;
+                }
+                div{
+                    font-size:20px;
+                }
+            }
+        }
+    }
+    .navbar #logo{
+        height:100px;
+        margin-bottom:20px;
+    }
+    
+}
+@media (min-width: 1200px){
+    .container {
+        width: 970;
     }
 }

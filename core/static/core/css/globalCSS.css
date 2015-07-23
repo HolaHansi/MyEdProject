@@ -32,14 +32,15 @@ body * {
 .navbar .navbar-collapse {
   border: 0;
 }
-hr {
+hr,
+p {
   margin: 0px 0px 0px 0px;
 }
 #contentContainer {
-  padding-right: 5px;
-  padding-left: 5px;
+  padding: 0px;
 }
-.fa-star {
+.fa-star.unstarred,
+.fa-star.starred {
   padding: 5px;
   cursor: pointer;
 }

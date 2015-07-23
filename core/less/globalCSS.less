@@ -40,20 +40,21 @@ body * {
     }
 }
 
-// less margins on hrs
-hr{
+// no margins on hrs and ps
+hr, p{
     margin:0px 0px 0px 0px;
 }
 
 // less padding on main container
 #contentContainer{
-    padding-right:5px;
-    padding-left:5px;
+    padding:0px;
 }
 
 .fa-star{
-    padding:5px;
-    cursor:pointer;
+    &.unstarred, &.starred{
+        padding:5px;
+        cursor:pointer;
+    }
     &.unstarred{
         color:#dddddd
     }
