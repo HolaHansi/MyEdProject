@@ -18,15 +18,16 @@ def facilities(room):
     # Returns an HTML list of all the facilities the room has
     to_return = ''
     if room.pc:
-        to_return += '<span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> '
+        to_return += 'PC-glyph <span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> '
     if room.printer:
-        to_return += '<span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span> '
+        to_return += 'Print-glyph <span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span> '
     if room.projector:
-        to_return += '<span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span> '
+        to_return += 'Project-glyph <span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span> '
     if room.blackboard:
-        to_return += '<span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span> '
+        to_return += 'blackboard-glyph <span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span>'
+
     if room.whiteboard:
-        to_return += '<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> '
+        to_return += 'WhiteBoard-glyph<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> '
     if to_return == '':
         to_return = "<div id='blackboardTick' class='tickOrCross cross'></div>"
     return mark_safe(to_return)

@@ -10,8 +10,6 @@ import datetime
 from django.utils import timezone
 from core import utilities
 from rooms.views import filter_suggestions
-# Create your tests here.
-
 
 
 class ActivityTestCase(TestCase):

@@ -1,0 +1,51 @@
+body * {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.navbar {
+  background: none;
+  border: none;
+  margin-bottom: 5px;
+  min-height: 0px;
+  border-bottom: #dddddd 1px solid;
+}
+.navbar #logo {
+  height: 34px;
+  margin: 5px 15px;
+}
+.navbar .navbar-brand {
+  padding: 0;
+  height: auto;
+}
+.navbar .navbar-nav > li > a {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.navbar .navbar-toggle {
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+.navbar .navbar-toggle .icon-bar {
+  background-color: #d4d4d4;
+}
+.navbar .navbar-collapse {
+  border: 0;
+}
+hr,
+p {
+  margin: 0px 0px 0px 0px;
+}
+#contentContainer {
+  padding: 0px;
+}
+.fa-star.unstarred,
+.fa-star.starred {
+  padding: 5px;
+  cursor: pointer;
+}
+.fa-star.unstarred {
+  color: #dddddd;
+}
+.fa-star.starred {
+  color: gold;
+}

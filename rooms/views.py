@@ -67,11 +67,14 @@ def filter_suggestions(request):
                 data = data.exclude(campus_name=campus)
 
 
+        # REMEMBER TO IMPLEMENT THIS IN THE JSON FEED!!
         # available_for_hours = request.GET['availableForHours']
 
-        # test using 3 for test.
 
-        data = utilities.filter_out_closed_rooms(available_for_hours=3)
+        # THIS IS A DUMMY VARIABLE! Remove after test!
+        available_for_hours = 3
+
+        data = utilities.filter_out_busy_rooms(data, available_for_hours)
 
         #
         # # filter all rooms which have an activity that starts before x hours time and ends after now

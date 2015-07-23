@@ -1,0 +1,76 @@
+.btn-lg {
+  border-radius: 0px;
+}
+.btn-block + .btn-block {
+  margin-top: 0px;
+}
+#mainMenu {
+  padding: 0 5px;
+}
+#mainMenu div {
+  padding: 0px;
+}
+#mainMenu div:first-child .mainMenuOption {
+  border-radius: 4px 4px 0 0;
+}
+#mainMenu div:last-child .mainMenuOption {
+  border-radius: 0 0 4px 4px;
+}
+#mainHamburgerMenuOptions,
+*[data-target='#mainHamburgerMenuOptions'] {
+  display: none !important;
+}
+body * {
+  text-transform: capitalize;
+  font-size: large;
+}
+.navbar {
+  border: none;
+}
+.navbar #logo {
+  height: 80px;
+}
+.navbar a.navbar-brand {
+  display: inline-block;
+  float: none;
+}
+.navbar .navbar-header {
+  text-align: center;
+  float: none;
+}
+@media (min-width: 992px) {
+  #mainMenu {
+    width: 70%;
+    margin: auto;
+  }
+  #mainMenu div:first-child .mainMenuOption {
+    border-radius: 4px 0 0 0;
+  }
+  #mainMenu div:nth-child(2) .mainMenuOption {
+    border-radius: 0 4px 0 0;
+  }
+  #mainMenu div:nth-child(3) .mainMenuOption {
+    border-radius: 0 0 0 4px;
+  }
+  #mainMenu div:last-child .mainMenuOption {
+    border-radius: 0 0 4px 0;
+  }
+  #mainMenu div a {
+    padding: 40px 0;
+  }
+  #mainMenu div a .fa-3x {
+    font-size: 3.5em;
+  }
+  #mainMenu div a div {
+    font-size: 20px;
+  }
+  .navbar #logo {
+    height: 100px;
+    margin-bottom: 20px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 970;
+  }
+}

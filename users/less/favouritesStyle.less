@@ -1,0 +1,47 @@
+@availableGreen: #5cb85c;
+@minusGrey: #777;
+@unavailableRed: #d9534f;
+
+
+.btn-lg {
+    border-radius: 0;
+}
+.nav {
+    margin-bottom: 6px;
+}
+.map-btn {
+    margin-top: 5px;
+    float: right;
+}
+.badge {
+    float: right;
+    font-size: 14px;
+}
+.panel-default > .panel-heading .badge {
+    background-color: #337AB7;
+    /*brand-primary*/
+}
+.avail {
+    float: right;
+    width: 12px;
+}
+.fa-map-marker,
+.fa-calendar {
+    color: #555;
+    /*grey-light*/
+}
+.fa-check {
+    margin-left: -1px;
+}
+.panel-default > .panel-heading .badge.check {
+    background-color: @availableGreen;
+}
+.panel-default > .panel-heading .badge.minus {
+    background-color: @minusGrey;
+}
+.panel-default > .panel-heading .badge.times {
+    background-color: @unavailableRed;
+}
+.booknow {
+    margin-left: -15px;
+}

@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 {% load staticfiles %}
+{% load users_extra_tags %}
 
 {% block head %}
 
@@ -13,6 +14,23 @@
 {% endblock %}
 
 {% block content %}
+
+    <!-- perhaps not needed! -->
+
+
+
+
+
+    <!-- END OF STUFF THAT IS PERHAPS NOT NEED -->
+
+
+
+
+
+
+
+
+
 <!--to make the default inner margins smaller-->
 <ul class="nav nav-pills">
     <!--Computers-->
@@ -23,6 +41,9 @@
 <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
         <div class="panel-group" role="tablist" aria-multiselectable="true">
+
+
+            <!-- favourite -->
             <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseOne">
                     <h4 class="panel-title">
@@ -47,7 +68,9 @@
                     </div>
                 </div>
             </div>
-                        <div class="panel panel-default">
+
+            <!-- favourite -->
+            <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -71,7 +94,9 @@
                     </div>
                 </div>
             </div>
-                        <div class="panel panel-default">
+
+            <!-- favourite -->
+            <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -94,22 +119,47 @@
                         </div>
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
 
+
+
+
+
+
+
+
+
+
+
     <!--Rooms-->
     <div id="menu1" class="tab-pane fade">
         <div class="panel-group" role="tablist" aria-multiselectable="true">
+
+
+
+            <!-- generated favourites -->
+            <h2>Rooms that we think are available</h2>
+
+            {% for fav in rooms_available_now %}
+
+
+
+            <!-- favourite -->
             <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapseFour" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                        <span class="badge check"><i class="fa fa-check avail"></i></span>Library Cafe <span class="caret"></span>
+                        <span class="unliker unclicked">Unlike</span></li>
+                        <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
+                        <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
+                            <span class="caret"></span>
                         </a>
                     </h4>
                 </div>
-                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel">
+                <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-4">
@@ -125,7 +175,76 @@
                     </div>
                 </div>
             </div>
-                        <div class="panel panel-default">
+
+
+
+            {% endfor %}
+
+
+
+
+
+
+
+{##}
+{##}
+{##}
+{#        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}#}
+{#            <span class="unliker unclicked">Unlike</span></li>#}
+
+
+
+
+
+
+            <h2>Rooms that we know are unavailable</h2>
+
+            {% for fav in rooms_booked_now %}
+        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
+            <span class="unliker unclicked">Unlike</span></li>
+
+
+            {% endfor %}
+
+            <h2>Rooms for which we are oblivious with regards to their availability :(</h2>
+
+            {% for fav in rooms_unknown_availability %}
+        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
+            <span class="unliker unclicked">Unlike</span></li>
+
+
+            {% endfor %}
+
+
+{##}
+{#            <!-- favourite -->#}
+{#            <div class="panel panel-default">#}
+{#                <div class="panel-heading" data-toggle="collapse" data-target="#collapseFour">#}
+{#                    <h4 class="panel-title">#}
+{#                        <a role="button" data-toggle="collapse" data-target="#collapseFour" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour">#}
+{#                        <span class="badge check"><i class="fa fa-check avail"></i></span>!Library Cafe! change this<span class="caret"></span>#}
+{#                        </a>#}
+{#                    </h4>#}
+{#                </div>#}
+{#                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel">#}
+{#                    <div class="panel-body">#}
+{#                        <div class="row">#}
+{#                            <div class="col-xs-4">#}
+{#                                <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>#}
+{#                            </div>#}
+{#                            <div class="col-xs-4">#}
+{#                                <a href="{% url 'labs' %}" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>#}
+{#                            </div>#}
+{#                            <div class="col-xs-4">#}
+{#                                <a href="/" class="btn btn-default booknow" role="button">Book Now</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+
+            <!-- favourite -->
+            <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseFive">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseFive" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
@@ -149,7 +268,9 @@
                     </div>
                 </div>
             </div>
-                        <div class="panel panel-default">
+
+            <!-- favourite -->
+            <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseSix">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseSix" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
@@ -170,6 +291,9 @@
                     </div>
                 </div>
             </div>
+
+
+
         </div>
     </div>
 </div>

@@ -144,8 +144,8 @@ def sortBuildingsByDistance(usr_longitude, usr_latitude, building_details):
 
 def filter_out_busy_rooms(data, available_for_hours=1):
     """
-    Exclude all the rooms that are hosting an activity that overlaps the duration from now +
-    till some specified amount of hours.
+    Exclude all the rooms that are hosting an activity that overlaps the duration from now
+    till a time after some specified amount of hours.
     :param available_for_hours:
     :return: data of rooms that are not currently booked
     """
@@ -165,6 +165,25 @@ def filter_out_busy_rooms(data, available_for_hours=1):
 
     return data
 
+# ======= users/views functions ======= #
+
+def filter_out_avail_rooms(data, available_for_hours=1):
+    """
+    Exclude all the rooms that are currently available (opposite of filter_out_busy_rooms).
+    :param available_for_hours:
+    :return: data of rooms that are currently booked
+    """
+    # get the timespan that the user is interested in.
+    current_time = timezone.now()
+    wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
+
+    # if an event starts before end time, and ends after currentTime, then the room is
+    # already booked, and should be added to busy_rooms.
+
+    busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
+                             activity__endTime__gte=current_time)
+
+    return busy_rooms
 
 
 # ======= pc/views functions ======= #

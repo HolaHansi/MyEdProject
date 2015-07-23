@@ -148,12 +148,24 @@ def favourites(request):
     pc_favourites = user.pc_favourites.all()
     room_favourites = user.room_favourites.all()
 
+    # get all rooms that are locally allocated: we don't know the availability of these
+    rooms_unknown_availability = room_favourites.filter(locally_allocated=True)
 
-    #TODO implement variables for room_available, room_not_available, room_unknown_available
+    # queryset for all rooms whose availability is known
+    rooms_known_availability = room_favourites.filter(locally_allocated=False)
+
+    # Rooms that to be of our knowledge are available now:
+    rooms_available_now = utilities.filter_out_busy_rooms(data=rooms_known_availability, available_for_hours=1)
+
+    # Rooms known to be currently booked
+    rooms_booked_now = utilities.filter_out_avail_rooms(data=rooms_known_availability, available_for_hours=1)
+
 
 
     context = {'pc_favourites': pc_favourites,
-               'room_favourites': room_favourites,
+               'rooms_unknown_availability': rooms_unknown_availability,
+               'rooms_available_now': rooms_available_now,
+               'rooms_booked_now': rooms_booked_now,
                'user': user}
     return render(request, 'users/favourites.html', context)
 
