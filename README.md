@@ -6,17 +6,15 @@
 - Use availability API to display availability
 - Get feedback
 - Implement chosen design
-- Get feedback on a new name
-- Create logo
-- Get feedback on logo
-- Implement location corrector
-- Remember user preferences (cookies?)
+- Add location corrector
 - Go to Hive
 - Easter Eggs
 
 ##Possible tweaks:
 
 - Send all rooms liked and toggle liked button locally
+- Remember user preferences (cookies?)
+- Change name + logo ?
 
 ###Stretch goals:
 - 'Tutorial'
