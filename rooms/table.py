@@ -414,9 +414,10 @@ def get_activities():
     current_date = str(now)[:-7].replace(' ', 'T') + '%2B0000'
     tomorrow = str(now + datetime.timedelta(days=1))[:-7].replace(' ', 'T') + '%2B0000'
 
-    # for testing:
+    # for testing - these dates have activities: SHOULD BE COMMENTED OUT!
     current_date = "2015-08-12T08:00:00%2B0000"
     tomorrow = "2015-08-13T08:00:00%2B0000"
+
     # get the activities data from the feed
     activities = requests.get(
         "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + current_date + '&end-date-time=' + tomorrow

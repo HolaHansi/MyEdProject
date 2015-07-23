@@ -14,6 +14,7 @@ to how their heuristic functions work, and so keeping their dependencies apart u
 developers.
 """
 import datetime
+from django.utils import timezone
 import math
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
@@ -139,6 +140,31 @@ def sortBuildingsByDistance(usr_longitude, usr_latitude, building_details):
         x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
 
     return building_details
+
+
+def filter_out_busy_rooms(data, available_for_hours=1):
+    """
+    Exclude all the rooms that are hosting an activity that overlaps the duration from now +
+    till some specified amount of hours.
+    :param available_for_hours:
+    :return: data of rooms that are not currently booked
+    """
+    # get the timespan that the user is interested in.
+    current_time = timezone.now()
+    wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
+
+    # if an event starts before end time, and ends after currentTime, then the room is
+    # already booked, and should be added to busy_rooms.
+
+    busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
+                            activity__endTime__gte=current_time)
+
+    # now exclude all rooms that are busy from the room suggestions (data)
+    busy_rooms = [x.locationId for x in busy_rooms]
+    data = data.exclude(locationId__in=busy_rooms)
+
+    return data
+
 
 
 # ======= pc/views functions ======= #
