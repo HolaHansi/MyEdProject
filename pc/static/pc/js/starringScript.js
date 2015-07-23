@@ -18,7 +18,7 @@ $(document).ready(function () {
     })
 
     //make a pie chart
-    makepie("computersFreeGraph", "130", "12");
+    makepie("computersFreeGraph", "15", "12");
 })
 
 function makepie(id, free, inuse) {
@@ -35,7 +35,7 @@ function makepie(id, free, inuse) {
         "innerRadius": 13, //radius of the 'hole' in the doughnut
         "minRadius": 25, //min radius of the pie chart if resized (currently impossible)
         "radius": 25, //the initial radius of the pie chart
-        "colors": ["#337AB7",'#bbccdd'], //brand-primary
+        "colors": ["#00aa00",'#aa0000'], //brand-primary
         "marginBottom": 0, //chart margins
         "marginTop": 0,    //chart margins
         "outlineAlpha": 1, //outline opacity
@@ -44,12 +44,12 @@ function makepie(id, free, inuse) {
         "valueField": "Number", //name of the field in the dataProvider array
         "dataProvider": [
             {
-                "Type": "In-Use",
-                "Number": inuse
-            },
-            {
                 "Type": "Free",
                 "Number": free
+            },
+            {
+                "Type": "In-Use",
+                "Number": inuse
             }
         ]
     });

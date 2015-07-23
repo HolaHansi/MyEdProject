@@ -32,12 +32,12 @@
 .arrow{
     position:fixed;
     top:45px;
-    .display-inline-flex();
     height:80%;
     width:20px;
     cursor:pointer;
-    justify-content: center;
-    align-items: center;
+    .display-inline-flex();
+    .justify-content(center);
+    .align-items(center);
     &.right-arrow{
         right:0px;
     }
@@ -129,6 +129,8 @@
     position: absolute;
     left: 50%;
     top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%,-50%);
     transform: translate(-50%, -50%);
     font-weight: bold;
 }
@@ -161,4 +163,20 @@
     -webkit-flex-basics: @b;
     flex-basis: @b;
     -ms-flex-preferred-size: @b;
+}
+
+//shorthand for all versions of justify-content: a
+.justify-content(@a){
+    -webkit-box-pack:@a;
+    -webkit-justify-content:@a;
+    -ms-flex-pack:@a;
+    justify-content:@a;
+}
+
+//shorthand for all versions of align-items: a
+.align-items(@a){
+    -webkit-box-align:@a;
+    -webkit-align-items:@a;
+    -ms-flex-align:@a;
+    align-items:@a;
 }
