@@ -12,6 +12,7 @@
 - Implement location corrector
 - Remember user preferences (cookies?)
 - Go to Hive
+- Easter Eggs
 
 ##Possible tweaks:
 
