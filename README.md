@@ -2,6 +2,7 @@
 
 ##TODO:
 
+- Implement swiping
 - Documentation, documentation, documentation
 - Use availability API to display availability
 - Get feedback
