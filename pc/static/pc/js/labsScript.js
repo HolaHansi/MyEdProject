@@ -15,18 +15,12 @@ $(document).ready(function () {
     
 	//when the user clicks the next button, load the next suggestion
 	$('.right-arrow').click(function () {
-        if(currentChoice.index<suggestions.length-1){
-            currentChoice = suggestions[currentChoice.index + 1];
-            loadChoice();
-        }
+        loadNextSuggestion();
 	});
     
 	//when the user clicks the previous button, load the previous suggestion
 	$('.left-arrow').click(function () {
-        if(currentChoice.index>0){
-            currentChoice = suggestions[currentChoice.index - 1];
-            loadChoice();
-        }
+        loadPreviousSuggestion();
 	});
     
     //when the user clicks the like button, like or unlike the room as appropriate
@@ -58,6 +52,20 @@ $(document).ready(function () {
     //Apply the JS styling
     resizeElements();
     
+    //Enable swiping...
+    $("#suggestion").swipe( {
+        // Load the next suggestion if the user swipes left
+        swipeLeft:function(event, direction, distance, duration, fingerCount) {
+            loadNextSuggestion();
+        },
+        // Load the previous suggestion if the user swipes right
+        swipeRight:function(event, direction, distance, duration, fingerCount) {
+            loadPreviousSuggestion();
+        },
+        // Suggestion appears before the user lifts their finger
+        triggerOnTouchEnd:false
+    });
+    
 });
 
 // JS styling
@@ -67,6 +75,18 @@ function resizeElements(){
     $('.arrow').height(Math.max((window.innerHeight - 45),($('body').height()-45)));
 }
 
+function loadPreviousSuggestion(){
+    if(currentChoice.index>0){
+        currentChoice = suggestions[currentChoice.index - 1];
+        loadChoice();
+    }
+}
+function loadNextSuggestion(){
+    if(currentChoice.index<suggestions.length-1){
+        currentChoice = suggestions[currentChoice.index + 1];
+        loadChoice();
+    }
+}
 /*
 	Check if the current suggestion is liked by the user and color the star appropriately
 	Parameters: locationId (string) - the id of the suggestion to be checked

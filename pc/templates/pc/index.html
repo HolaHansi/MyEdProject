@@ -1,46 +1,47 @@
 {% extends "core/base.html" %} {% load staticfiles %} 
 {% block head %} 
-    <link href="{% static 'pc/css/labsStyling.css' %}" rel="stylesheet">
-    <script src="{% static 'core/js/makeGraph.js' %}" type='text/javascript'></script>
-    <script src="{% static 'pc/js/labsScript.js' %}" type='text/javascript'></script>
+    <link rel="stylesheet" href="{% static 'pc/css/labsStyling.css' %}">
+    <script type='text/javascript' src="{% static 'core/js/makeGraph.js' %}"></script>
+    <script type='text/javascript' src="{% static 'pc/js/labsScript.js' %}"></script>
     <!-- Amchart code -->
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/pie.js"></script>
+    <script type="text/javascript" src="{% static 'pc/js/jquery.touchSwipe.min.js' %}"></script>
 {% endblock %} 
 {% block content %}
 
 <div id='mainContainer'>
-<div class='arrow left-arrow'>
-    <i class="fa fa-chevron-left"></i>
-</div>
-<div id='suggestion'>
-    <div class="row" id='roomRow'>
-        <div id='roomNameContainer'>
-            <p id='roomName'>Alison House 2.08</p>
-        </div>
-        <div id='starContainer'>
-            <i class="fa fa-star fa-3x unstarred"></i>
-        </div>
+    <div class='arrow left-arrow'>
+        <i class="fa fa-chevron-left"></i>
     </div>
-    <div class="row" id='computersFreeRow'>
-        <div id='computersFreeLabelContainer'>
-            <p id='computersFreeLabel'>Computers free: </p>
-        </div>
-        <div id='computersFreeGraphContainer'>
-            <div id='computersFreeNumber'>130</div>
-            <div id='computersFreeGraph'>
+    <div id='suggestion'>
+        <div class="row" id='roomRow'>
+            <div id='roomNameContainer'>
+                <p id='roomName'>Alison House 2.08</p>
+            </div>
+            <div id='starContainer'>
+                <i class="fa fa-star fa-3x unstarred"></i>
             </div>
         </div>
+        <div class="row" id='computersFreeRow'>
+            <div id='computersFreeLabelContainer'>
+                <p id='computersFreeLabel'>Computers free: </p>
+            </div>
+            <div id='computersFreeGraphContainer'>
+                <div id='computersFreeNumber'>130</div>
+                <div id='computersFreeGraph'>
+                </div>
+            </div>
+        </div>
+        <div>
+            <img id='currentMap' class='img-responsive' src=''>
+        </div>
+        <div id='yesBtnContainer'>
+            <button type="button" class="btn btn-default" id='yesBtn'>Take me there</button>
+        </div>
     </div>
-    <div>
-        <img id='currentMap' class='img-responsive' src=''>
+    <div class='arrow right-arrow'>
+        <i class="fa fa-chevron-right"></i>
     </div>
-    <div id='yesBtnContainer'>
-        <button type="button" class="btn btn-default" id='yesBtn'>Take me there</button>
-    </div>
-</div>
-<div class='arrow right-arrow'>
-    <i class="fa fa-chevron-right"></i>
-</div>
 </div>
 {% endblock %}
