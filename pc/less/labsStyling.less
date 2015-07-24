@@ -18,41 +18,45 @@
     margin:15px;
 }
 
-#suggestion{
-    margin:0;
-    padding:0 20px;
+.navbar{
+    margin-bottom: 0px;
 }
+
+#suggestion{
+    margin: 5px 0 0 0;
+    padding:0;
+    .flex(1,1,0);
+}
+// add a wee bid of extra padding between the suggestion and the left/right buttons if you can spare the space
 @media (min-width:400px){
     #suggestion{
-        padding:0 25px;
+        padding:0 5px;
     }
 }
 
 //left and right arrow styling and positioning
 .arrow{
-    position:fixed;
-    top:45px;
-    height:80%;
-    width:20px;
+    height:80%; //default value for sites not running JS, otherwise height is set dynamically
     cursor:pointer;
+    
+    //position the arrow using flexbox
+    .flex(20px,0,1);
+    
+    //center align the arrow icon itself using flexbox:
     .display-inline-flex();
     .justify-content(center);
     .align-items(center);
-    &.right-arrow{
-        right:0px;
-    }
-    &.left-arrow{
-        left:0px;
-    }
     &:hover{
         background-color:rgba(200,200,200,0.2);
     }
-    i.fa-chevron-right{
-        margin-right:-13px;
-    }
     &.disabled{
-        display:none;
+        cursor:default;
+        opacity:0;
     }
+}
+
+#mainContainer{
+    .display-inline-flex()
 }
 
 
@@ -101,7 +105,7 @@
     .display-flex();
     
     #roomNameContainer, #computersFreeLabelContainer{
-        .flex(3,0);
+        .flex(3,1,0);
         position:relative;
         min-height:1px;
         padding-left:15px;
@@ -109,7 +113,7 @@
     }
 
     #starContainer, #computersFreeGraphContainer{
-        .flex(1,0);
+        .flex(1,1,0);
         text-align: center;
         position: relative;
         min-height:1px;
@@ -120,8 +124,8 @@
 }
 
 #computersFreeGraph{
-    height:50px;
-    width:50px;
+    height:51px;
+    width:51px;
     margin:auto;
 }
 
@@ -131,8 +135,11 @@
     top: 50%;
     -webkit-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
     transform: translate(-50%, -50%);
     font-weight: bold;
+    color:#00aa00;
 }
 
 // shorthand for all versions of display: flex
@@ -153,16 +160,21 @@
     display: inline-flex;
 }
 
-// shorthand for all versions of flex: a b
-.flex(@a, @b){
-    -webkit-box-flex: @a;
-    -moz-box-flex: @a;
-    -webkit-flex: @a;
-    -ms-flex: @a;
-    flex: @a;
-    -webkit-flex-basics: @b;
-    flex-basis: @b;
-    -ms-flex-preferred-size: @b;
+// shorthand for all versions of flex: a b c
+.flex(@a, @b, @c){
+    -webkit-box-flex: @b;
+    -webkit-flex-grow: @b;
+    -moz-box-flex: @b;
+    -ms-flex-positive: @b;
+    flex-grow: @b;
+
+    -webkit-flex-shrink:@c;
+    -ms-flex-negative:@c;
+    flex-shrink:@c;
+    -webkit-flex-basis: @a;
+    -ms-flex-preferred-size: @a;
+    flex-basis: @a;
+    flex: @a @b @c;
 }
 
 //shorthand for all versions of justify-content: a
@@ -170,6 +182,7 @@
     -webkit-box-pack:@a;
     -webkit-justify-content:@a;
     -ms-flex-pack:@a;
+    -moz-box-pack:@a;
     justify-content:@a;
 }
 
@@ -178,5 +191,6 @@
     -webkit-box-align:@a;
     -webkit-align-items:@a;
     -ms-flex-align:@a;
+    -moz-box-align:@a;
     align-items:@a;
 }
