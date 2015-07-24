@@ -43,6 +43,7 @@ p {
 .fa-star.starred {
   padding: 5px;
   cursor: pointer;
+  text-shadow: 0px 0px 3px grey;
 }
 .fa-star.unstarred {
   color: #dddddd;
