@@ -1,42 +1,75 @@
 .btn-lg {
-    border-radius: 0;
+  border-radius: 0;
 }
 .nav {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 .map-btn {
-    margin-top: 5px;
-    float: right;
+  margin-top: 5px;
+  float: right;
 }
 .badge {
-    float: right;
-    font-size: 14px;
+  float: right;
+  font-size: 14px;
+}
+.badge.free {
+  background-color: #00aa00;
+  margin-bottom: 0px;
+}
+.badge.inuse {
+  background-color: #aa0000;
+}
+.badge-text {
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 0px;
+}
+.badge-text p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.badge-group {
+  padding-top: 4px;
+  margin-left: 0px;
 }
 .panel-default > .panel-heading .badge {
-    background-color: #337AB7;
-    /*brand-primary*/
+  background-color: #337AB7;
+  float: right;
+  font-size: 14px;
+  /*brand-primary*/
+}
+.panel-default > .panel-heading .badge.free {
+  background-color: #00aa00;
+  margin-bottom: 0px;
+}
+.panel-default > .panel-heading .badge.inuse {
+  background-color: #aa0000;
 }
 .avail {
-    float: right;
-    width: 12px;
+  float: right;
+  width: 12px;
 }
 .fa-map-marker,
 .fa-calendar {
-    color: #555;
-    /*grey-light*/
+  color: #555;
+  /*grey-light*/
 }
 .fa-check {
-    margin-left: -1px;
+  margin-left: -1px;
 }
 .panel-default > .panel-heading .badge.check {
-    background-color: #5cb85c;
+  background-color: #00aa00;
 }
 .panel-default > .panel-heading .badge.minus {
-    background-color: #777;
+  background-color: #777777;
 }
 .panel-default > .panel-heading .badge.times {
-    background-color: #d9534f;
+  background-color: #aa0000;
 }
 .booknow {
-    margin-left: -15px;
+  margin-left: -15px;
+}
+#computersFreeGraph {
+  height: 49px;
+  width: 49px;
 }

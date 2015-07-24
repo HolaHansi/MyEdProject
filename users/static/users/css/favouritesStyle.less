@@ -1,7 +1,6 @@
-@availableGreen: #5cb85c;
+@availableGreen: #00AA00;
 @minusGrey: #777;
-@unavailableRed: #d9534f;
-@brand-primary: #337AB7;
+@unavailableRed: #AA0000;
 
 
 
@@ -15,20 +14,43 @@
     margin-top: 5px;
     float: right;
 }
+
+
 .badge {
     float: right;
     font-size: 14px;
     &.free {
-        background-color:@availableGreen;
+        background-color: @availableGreen;
+        margin-bottom: 0px;
     }
-    &.inuse {
+    &.inuse{
         background-color: @unavailableRed;
     }
 }
+
+.badge-text {
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 0px;
+    p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    }
+
+
+}
+
+.badge-group {
+    padding-top: 4px;
+    margin-left: 0px;
+}
+
 .panel-default > .panel-heading .badge {
-    background-color: @brand-primary;
+    background-color: #337AB7;
+    .badge()
     /*brand-primary*/
 }
+
 .avail {
     float: right;
     width: 12px;
@@ -52,4 +74,12 @@
 }
 .booknow {
     margin-left: -15px;
+}
+
+
+#computersFreeGraph{
+    height:49px;
+    width:49px;
+
+
 }

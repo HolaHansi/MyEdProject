@@ -9,7 +9,9 @@
 <!-- amCharts javascript sources -->
 <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
 <script type="text/javascript" src="http://www.amcharts.com/lib/3/pie.js"></script>
-<script type="text/javascript" src="{% static 'js/makepie.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'core/js/makeGraph.js' %}"></script>
+<script type="text/javascript" src="{% static 'users/js/makepie.js' %}"></script>
 
 {% endblock %}
 
@@ -48,21 +50,28 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseOne">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <span class="badge">75</span> Library Cafe <span class="caret"></span>
+                        <span class="badge free">75</span> Library Cafe <span class="caret"></span>
                         </a>
                     </h4>
                 </div>
                 <div id="collapseOne" class="panel-collapse collapse" role="tabpanel">
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-xs-6">
-                                <span>Free:<span class="badge free">75</span><br></span>
-                                In-Use: <span class="badge inuse">25</span>
+                            <div class="col-xs-4 badge-text">
+                                <p id="freeBadgeText">Free:  <span class="badge free">75</span></p>
+                                <p>In-Use:<span class="badge inuse">25</span></p>
                             </div>
-                            <div class="col-xs-4">
-                                <div id="chartdiv" style="width: 50px; height: 50px; background-color: #FFFFFF;" ></div>
+{#                            <div class="col-xs-1 badge-group">#}
+{#                                <div><span class="badge free">75</span></div>#}
+{#                                <div><span class="badge inuse">25</span></div>#}
+{#                            </div>#}
+                            <div class="col-xs-3">
+                                <div id='computersFreeGraphContainer'>
+                                    <div id='computersFreeGraph'></div>
+                                </div>
                             </div>
-                            <div class="col-xs-2"> <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            <div class="col-xs-5">
+                                <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
                     </div>
