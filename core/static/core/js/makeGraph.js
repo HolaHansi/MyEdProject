@@ -1,4 +1,9 @@
-function makepie(id, free, inuse) {
+// Makes a pie chart using AmCharts' libraries
+// Input: id (string): the id of the div which will contain the pie chart
+//        free (number): the number of free computers (the size of the green slice of the pie)
+//        inUse (number): the number of computers in use (the size of the red slice of the pie)
+// Output: none
+function makepie(id, free, inUse) {
 
     AmCharts.makeChart(id, {
         "type": "pie",
@@ -7,12 +12,12 @@ function makepie(id, free, inuse) {
         "panEventsEnabled": false, //disable touch screen scrolling
         "fontSize": 0, //disable AmCharts advert
         "pullOutDuration": 0, //disable pulling out slices 
-        "pullOutRadius":0, //disable pulling out slices
+        "pullOutRadius": 0, //disable pulling out slices
         "startDuration": 0, //disable starting animation
         "innerRadius": 13, //radius of the 'hole' in the doughnut
         "minRadius": 25, //min radius of the pie chart if resized (currently impossible)
         "radius": 25, //the initial radius of the pie chart
-        "colors": ["#00aa00",'#aa0000'], //brand-primary
+        "colors": ["#00aa00", '#aa0000'], //brand-primary
         "marginBottom": 0, //chart margins
         "marginTop": 0,    //chart margins
         "outlineAlpha": 1, //outline opacity
@@ -26,7 +31,7 @@ function makepie(id, free, inuse) {
             },
             {
                 "Type": "In-Use",
-                "Number": inuse
+                "Number": inUse
             }
         ]
     });
