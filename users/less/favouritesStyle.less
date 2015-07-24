@@ -1,6 +1,8 @@
 @availableGreen: #5cb85c;
 @minusGrey: #777;
 @unavailableRed: #d9534f;
+@brand-primary: #337AB7;
+
 
 
 .btn-lg {
@@ -16,9 +18,15 @@
 .badge {
     float: right;
     font-size: 14px;
+    &.free {
+        background-color:@availableGreen;
+    }
+    &.inuse {
+        background-color: @unavailableRed;
+    }
 }
 .panel-default > .panel-heading .badge {
-    background-color: #337AB7;
+    background-color: @brand-primary;
     /*brand-primary*/
 }
 .avail {

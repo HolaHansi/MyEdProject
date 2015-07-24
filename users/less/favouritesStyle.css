@@ -12,8 +12,14 @@
   float: right;
   font-size: 14px;
 }
+.badge.free {
+  background-color: #5cb85c;
+}
+.badge.inuse {
+  background-color: #d9534f;
+}
 .panel-default > .panel-heading .badge {
-  background-color: #337AB7;
+  background-color: #337ab7;
   /*brand-primary*/
 }
 .avail {
