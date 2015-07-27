@@ -109,24 +109,29 @@
 
 
             <!-- generated favourites -->
-            <h2>Rooms that we think are available</h2>
+            <p>Rooms that we think are available</p>
 
             {% for fav in rooms_available_now %}
 
 
 
             <!-- favourite -->
-            <div class="panel panel-default">
+            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                        <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
+                        <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
                     </h4>
                 </div>
                 <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
                     <div class="panel-body">
+                        <div class="row">
+                             <div class="col-xs-6">
+                                 {{ fav | facilities }}
+                             </div>
+                        </div>
                         <div class="row">
                             <div class="col-xs-4">
                                 <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>
