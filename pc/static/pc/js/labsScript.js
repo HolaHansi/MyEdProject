@@ -9,8 +9,10 @@ var pcLikedByUser = false; // whether current suggestion is liked by user
 var map; // the Google Map object
 var mapOptions; // the JSON of options for the map
 var directionOptions; // the JSON of options for getting directions
+var geocodingOptions; // the JSON of options for translating an address to its geolocation (geocoding)
 var directionsService; // the Google directions service object, the bit that calculates the route
-var directionsDisplay;  // the Google directoins renderer object, the bit that displays the route
+var directionsDisplay;  // the Google directions renderer object, the bit that displays the route
+var geocoder; // the Google object for geocoding
 
 //resize the JS styled elements if the window resizes
 $(window).resize(resizeElements);
@@ -51,10 +53,10 @@ $(document).ready(function () {
         $('.fa-star').toggleClass('starred');
 	});
     
-    //Apply the JS styling
+    // Apply the JS styling
     resizeElements();
     
-    //Enable swiping...
+    // Enable swiping...
     $("#suggestion").swipe( {
         // Load the next suggestion if the user swipes left
         swipeLeft:function(event, direction, distance, duration, fingerCount) {
@@ -67,16 +69,40 @@ $(document).ready(function () {
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // Ignore swipes on the map or the button
-        excludedElements:'button, a, #currentMap'
+        excludedElements:'button, a, input, #currentMap'
     });
     
+    // Set up location fixer
+    $('#testGo').click(function(){
+        // get the input from the user
+        var newLocation=$('#testInput').val();
+        // update the geocoding options
+        geocodingOptions.address = newLocation;
+        // get the coordinates from Google
+        geocoder.geocode(geocodingOptions,function(results, status){
+            // if successful, 
+            if (status==google.maps.GeocoderStatus.OK){
+                newCoordinates = results[0].geometry.location;
+                userLatitude = newCoordinates.lat();
+                userLongitude = newCoordinates.lng();
+                getSuggestions(true, true, []);
+            // otherwise, display an appropriate error message
+            }else if (status==google.maps.GeocoderStatus.ZERO_RESULTS || status==google.maps.GeocoderStatus.INVALID_REQUEST){
+                alert("Location not recognised - try again.");
+            }else{
+                alert("Lookup failed: " + status);
+            }
+        });
+    });
     
 });
 
 // JS styling
 function resizeElements(){
     // resize the arrows to take up the whole suggestion
+    // set the height to 0 so the current height of the arrow isn't taken into account when calculating its new height
     $('.arrow').height(0);
+    // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), otherwise make the arrows take up the whole suggestion but no more
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
 }
 
@@ -101,6 +127,8 @@ function makeMap(){
     //initialize Google objects
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer();
+    geocoder = new google.maps.Geocoder();
+    
     // initialise map options, hiding all controls other than a small zoom
     mapOptions = {
         panControl: false, 
@@ -130,6 +158,11 @@ function makeMap(){
       region: 'uk'
     }
     
+    //initialise geocoding options
+    geocodingOptions = {
+        bounds: google.maps.LatLngBounds(google.maps.LatLng(55.913840,-3.243026),google.maps.LatLng(55.970666, -3.150412)),
+        region: 'uk'
+    };
     
     // create the map
     map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
