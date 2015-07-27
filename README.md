@@ -14,6 +14,7 @@
 ##Possible tweaks:
 
 - Send all rooms liked and toggle liked button locally
+- Toggle displaying directions/location
 - Remember user preferences (cookies?)
 - Change name + logo ?
 
