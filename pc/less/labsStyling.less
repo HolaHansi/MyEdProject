@@ -253,10 +253,10 @@
     user-select: @a;
 }
 
-// make only p elements selectable
+// make only p and input elements selectable
 *{
     .selectable(none);
 }
-p{
+p, input{
     .selectable(text);
 }
