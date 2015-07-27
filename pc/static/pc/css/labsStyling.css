@@ -50,11 +50,11 @@
   -ms-flex-preferred-size: 20px;
   flex-basis: 20px;
   flex: 20px 0 1;
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
-  display: -moz-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -184,4 +184,68 @@
   transform: translate(-50%, -50%);
   font-weight: bold;
   color: #00aa00;
+}
+#optionsMenu {
+  width: 100%;
+  cursor: pointer;
+}
+#optionsMenu #optionsTitle {
+  height: 40px;
+  width: 100%;
+  background-color: #dddddd;
+  font-size: 20px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  -moz-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  -moz-box-align: center;
+  align-items: center;
+}
+#optionsMenu #optionsTitle .fa-filter {
+  margin-right: 5px;
+  font-size: 1.2em;
+}
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 40px;
+}
+.triangle {
+  border-width: 10px 6px 0 6px;
+  border-color: white transparent transparent transparent;
+  margin-left: auto;
+  margin-right: auto;
+}
+.triangle {
+  border-width: 0 6px 10px 6px;
+  border-color: transparent transparent #dddddd transparent;
+  margin-left: auto;
+  margin-right: auto;
+}
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+p {
+  -webkit-touch-callout: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
