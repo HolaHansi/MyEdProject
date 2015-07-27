@@ -6,7 +6,10 @@
     <!-- Amchart code -->
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/pie.js"></script>
+    <!-- TouchSwipe code -->
     <script type="text/javascript" src="{% static 'pc/js/jquery.touchSwipe.min.js' %}"></script>
+    <!-- Google Maps code -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcrXTgUVxfXVLj3rh5gIUWyYRpveHMmEs&region=GB"></script>
 {% endblock %} 
 {% block content %}
 
@@ -33,9 +36,7 @@
                 </div>
             </div>
         </div>
-        <div>
-            <img id='currentMap' class='img-responsive' src=''>
-        </div>
+        <div id='currentMap'> </div>
         <div id='yesBtnContainer'>
             <button type="button" class="btn btn-default" id='yesBtn'>Take me there</button>
         </div>
@@ -45,7 +46,7 @@
     </div>
 </div>
 <div id='optionsMenu'>
-    <div class='triangle'></div>
+    <div class='triangle triangle-up'></div>
     <div id='optionsTitle'>
         <i class="fa fa-filter unstarred"></i>Filter
     </div>

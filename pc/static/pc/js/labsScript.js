@@ -6,10 +6,19 @@ var userLongitude = 0; //current longitude of user
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
+var map; // the Google Map object
+var mapOptions; // the JSON of options for the map
+var directionOptions; // the JSON of options for getting directions
+var directionsService; // the Google directions service object, the bit that calculates the route
+var directionsDisplay;  // the Google directoins renderer object, the bit that displays the route
+
 //resize the JS styled elements if the window resizes
 $(window).resize(resizeElements);
 
 $(document).ready(function () {
+    //Create the map
+    makeMap();
+    
     //get the user's location, then send a get request if that's successful and display the initial suggestion
 	getLocation();
     
@@ -42,13 +51,6 @@ $(document).ready(function () {
         $('.fa-star').toggleClass('starred');
 	});
     
-    //For testing only, make the map:
-    $('#currentMap').attr('src', 'https://maps.googleapis.com/maps/api/staticmap?size=' + (window.innerWidth - 60) + 'x300&key=AIzaSyBcrXTgUVxfXVLj3rh5gIUWyYRpveHMmEs&markers=size:medium%7Clabel:A%7C55.9460736605763,-3.20059955120087&markers=size:medium%7Clabel:B%7C55.9427113171065,-3.18914651870728')
-    $('#currentMap').css({
-        'height': '300px',
-        'width': '2000px'
-    })
-    
     //Apply the JS styling
     resizeElements();
     
@@ -63,8 +65,11 @@ $(document).ready(function () {
             loadPreviousSuggestion();
         },
         // Suggestion appears before the user lifts their finger
-        triggerOnTouchEnd:false
+        triggerOnTouchEnd:false,
+        // Ignore swipes on the map or the button
+        excludedElements:'button, a, #currentMap'
     });
+    
     
 });
 
@@ -75,18 +80,83 @@ function resizeElements(){
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
 }
 
+// populate the HTML with the previous suggestion's details
 function loadPreviousSuggestion(){
     if(currentChoice.index>0){
         currentChoice = suggestions[currentChoice.index - 1];
         loadChoice();
     }
 }
+// populate the HTML with the next suggestion's details
 function loadNextSuggestion(){
     if(currentChoice.index<suggestions.length-1){
         currentChoice = suggestions[currentChoice.index + 1];
         loadChoice();
     }
 }
+
+// Initialize Google settings, set fixed object properties and render the map:
+// The JSON {lat:55.943655, lng:-3.188775} is dummy data and is overwritten as soon as the list of suggestions is received from the server
+function makeMap(){
+    //initialize Google objects
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    // initialise map options, hiding all controls other than a small zoom
+    mapOptions = {
+        panControl: false, 
+        zoomControl: true,
+        zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.SMALL
+        },
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        overviewMapControl: false,
+        rotateControl: false,
+    };
+    
+    // initialise direction options
+    directionOptions = {
+      origin: {
+          lat:55.943655,
+          lng:-3.188775
+      },
+      destination: {
+            lat:55.943655,
+            lng:-3.188775
+      },
+      travelMode: google.maps.TravelMode.WALKING,
+      provideRouteAlternatives: false,
+      region: 'uk'
+    }
+    
+    
+    // create the map
+    map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
+    // bind the directions renderer to the map
+    directionsDisplay.setMap(map);
+}
+
+// update the map with the new directions
+function updateMap(){
+    //update direction options
+    directionOptions.origin= {
+          lat:userLatitude,
+          lng:userLongitude
+      }
+    directionOptions.destination= {
+            lat:currentChoice.latitude, 
+            lng:currentChoice.longitude
+      }
+    // calculate and display the route
+    directionsService.route(directionOptions, function(result, status) {
+        // if the route was successfully caluclated, display it
+        if (status == google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(result);
+        }
+    });
+}
+
 /*
 	Check if the current suggestion is liked by the user and color the star appropriately
 	Parameters: locationId (string) - the id of the suggestion to be checked
@@ -174,6 +244,8 @@ function loadChoice() {
     }
 	// check if current choice is liked by user and toggle the star icon appropriately
 	liked(currentChoice.id);
+    // update the map to the new coordinates
+    updateMap();
 }
 
 // Geolocation functions{
