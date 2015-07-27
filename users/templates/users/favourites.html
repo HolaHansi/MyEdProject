@@ -13,6 +13,9 @@
 <script type="text/javascript" src="{% static 'core/js/makeGraph.js' %}"></script>
 <script type="text/javascript" src="{% static 'users/js/makepie.js' %}"></script>
 
+
+<script type="text/javascript" src="{% static 'users/js/roomAutocompleteScript.js' %}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -74,6 +77,13 @@
                                 <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <button class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -83,7 +93,7 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <span class="badge">18</span> Appleton <span class="caret"></span>
+                        <span class="badge free">18</span> Appleton <span class="caret"></span>
                         </a>
                     </h4>
                 </div>
@@ -109,7 +119,7 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                        <span class="badge">2</span> Hugh Robson <span class="caret"></span>
+                        <span class="badge free">2</span> Hugh Robson <span class="caret"></span>
                         </a>
                     </h4>
                 </div>
