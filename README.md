@@ -2,9 +2,7 @@
 
 ##TODO:
 
-- Implement swiping animation
 - Documentation, documentation, documentation
-- Use availability API to display availability
 - Get feedback
 - Implement chosen design
 - Add location corrector
@@ -17,11 +15,11 @@
 - Toggle displaying directions/location
 - Remember user preferences (cookies?)
 - Change name + logo ?
+- Implement swiping animation
 
 ###Stretch goals:
 - 'Tutorial'
 - 'Suggest a study space'
-- 'My location is wrong'
 - Machine learning 'people like you like...'
 - Add config file to easily change which suitabilities are displayed
 - Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
