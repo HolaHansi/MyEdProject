@@ -31,3 +31,14 @@ def facilities(room):
     if to_return == '':
         to_return = "<div id='blackboardTick' class='tickOrCross cross'></div>"
     return mark_safe(to_return)
+
+
+@register.filter
+def inUse(pc):
+    """
+    returns how many PCs are in use
+    :param pc:
+    :return:
+    """
+    used = pc.seats - pc.free
+    return used

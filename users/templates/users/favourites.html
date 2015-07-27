@@ -39,38 +39,41 @@
 <!--to make the default inner margins smaller-->
 <ul class="nav nav-pills">
     <!--Computers-->
-    <li class="active"><a data-toggle="tab" href="#home">Computers</a></li>
-    <li><a data-toggle="tab" href="#menu1">Rooms</a></li>
+    <li class="active"><a data-toggle="tab" href="#PCs">Computers</a></li>
+    <li><a data-toggle="tab" href="#ROOMs">Rooms</a></li>
 </ul>
 <!--id #chartdiv needed to make piechart-->
 <div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
+    <div id="PCs" class="tab-pane fade in active">
         <div class="panel-group" role="tablist" aria-multiselectable="true">
 
+            <!-- PCs -->
+
+            {% for fav in pc_favourites %}
 
             <!-- favourite -->
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapseOne">
+
+            <div id="infoFor-lab-{{ fav.id }}"class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapseOne" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <span class="badge free">75</span> Library Cafe <span class="caret"></span>
+                        <a role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
+                        <span class="badge free">{{ fav.free }}</span> {{ fav.name }} <span class="caret"></span>
                         </a>
                     </h4>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel">
+                <div id="collapse-{{ fav.id }}" class="panel-collapse collapse" role="tabpanel">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-xs-4 badge-text">
-                                <p id="freeBadgeText">Free:  <span class="badge free">75</span></p>
-                                <p>In-Use:<span class="badge inuse">25</span></p>
+                                <p id="freeBadgeText">Free:  <span class="badge free">{{ fav.free }}</span></p>
+                                <p>In-Use:<span class="badge inuse">{{ fav | inUse }}</span></p>
                             </div>
-{#                            <div class="col-xs-1 badge-group">#}
-{#                                <div><span class="badge free">75</span></div>#}
-{#                                <div><span class="badge inuse">25</span></div>#}
-{#                            </div>#}
                             <div class="col-xs-3">
                                 <div id='computersFreeGraphContainer'>
-                                    <div id='computersFreeGraph'></div>
+                                    <script>
+                                        makepie("{{fav.id}}", {{ fav.free }}, {{ fav | inUse }});
+                                    </script>
+                                    <div class="computersFreeGraph" id="{{ fav.id }}"></div>
                                 </div>
                             </div>
                             <div class="col-xs-5">
@@ -79,69 +82,18 @@
                         </div>
                         <div class="row">
                             <div class="col-xs-2">
-                                <button class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- favourite -->
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapseTwo">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <span class="badge free">18</span> Appleton <span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <span>Free:<span class="badge free">18</span><br></span>
-                                In-Use: <span class="badge inuse">20</span>
-                            </div>
-                            <div class="col-xs-4">
-                                <div id="chartdiv2" style="width: 50px; height: 50px; background-color: #FFFFFF;" ></div>
-                            </div>
-                            <div class="col-xs-2"> <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- favourite -->
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapseThree">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapseThree" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                        <span class="badge free">2</span> Hugh Robson <span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <span>Free:<span class="badge free">2</span><br></span>
-                                In-Use: <span class="badge inuse">15</span>
-                            </div>
-                            <div class="col-xs-4">
-                                <div id="chartdiv3" style="width: 50px; height: 50px; background-color: #FFFFFF;" ></div>
-                            </div>
-                            <div class="col-xs-2"> <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        {% endfor %}
+
+    </div>
 
 
-            </div>
-        </div>
     </div>
 
 
@@ -150,12 +102,8 @@
 
 
 
-
-
-
-
     <!--Rooms-->
-    <div id="menu1" class="tab-pane fade">
+    <div id="ROOMs" class="tab-pane fade">
         <div class="panel-group" role="tablist" aria-multiselectable="true">
 
 
@@ -171,7 +119,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
-                        <span class="unliker unclicked">Unlike</span></li>
                         <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
                         <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
                             <span class="caret"></span>
@@ -262,31 +209,7 @@
 {#                </div>#}
 {#            </div>#}
 
-            <!-- favourite -->
-            <div class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapseFive">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapseFive" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                        <span class="badge times"><i class="fa fa-times avail"></i></span>Appleton <span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapseFive" class="panel-collapse collapse" role="tabpanel">
-                    <div class="panel-body">
-                        <div class="row">
-                             <div class="col-xs-4">
-                                <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                            </div>
-                            <div class="col-xs-4">
-                                <a href="{% url 'labs' %}" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                            </div>
-                            <div class="col-xs-4">
-                                <a href="/" class="btn btn-default disabled booknow" role="button">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- favourite -->
             <div class="panel panel-default">
