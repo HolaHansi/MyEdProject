@@ -22,7 +22,6 @@
 .badge-text {
   white-space: nowrap;
   overflow: hidden;
-  margin-right: 0px;
 }
 .badge-text p {
   font-size: 14px;
@@ -70,6 +69,42 @@
   margin-left: -15px;
 }
 #computersFreeGraph {
-  height: 49px;
-  width: 49px;
+  height: 50px;
+  width: 50px;
+}
+.remove-btn {
+  align: left;
+  padding: 0px 4px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+.unliker.unclicked {
+  background-color: blue;
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+.unliker.clicked {
+  margin-left: 50px;
+}
+.favRemover {
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.confirmRemoval {
+  background-color: green;
+}
+.cancelRemoval {
+  background-color: red;
+}
+.fa-check {
+  color: #00aa00;
+}
+.fa-times {
+  color: #aa0000;
 }
