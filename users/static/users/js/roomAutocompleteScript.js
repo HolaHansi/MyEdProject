@@ -1,20 +1,24 @@
 $(document).ready(function(){
 
     isClicked = false;
-    $(".remove-btn").click(removeFavourite);
+    $(".remove-btn").click(removeFavouriteBtn);
 
 });
 
 
 
-function removeFavourite(){
+function removeFavouriteBtn(){
 
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-     if (confirm("Do you wish to remove this space from your list of favourites?")) {
-         $(this).hide();
-     };
-    }
 
+        if (confirm("Do you wish to remove this space from your favourites?")) {
+
+         var thisId = $(this).attr('id');
+         removeFromFavourites(thisId);
+
+        };
+
+    }
     else {
         if (isClicked == false) {
             // button is not clicked yet
@@ -27,22 +31,46 @@ function removeFavourite(){
             });
 
             $('.confirmRemove').click(function () {
-                $(".remove-btn").hide();
-            });
+                //var btn = $(this).parent().parent().parent().parent().parent();
 
-        }
-        ;
+                var btn = $(this).parent();
+                console.log(btn);
+                var thisId = btn.attr('id');
+                console.log(thisId);
+
+                removeFromFavourites(thisId);
+            });
+        // end of coditional
+        };
+
         if (isClicked == true) {
             // the x has been pressed, return to normal button again
             $(".remove-btn").html("<i class='fa fa-star starred'></i>Remove");
             isClicked = false;
         };
-
+    // end of else
     };
+// end of function
+};
 
+function removeFromFavourites(id) {
+    var idToUnlike = id.slice(id.indexOf('-')+1);
+    console.log(idToUnlike);
+    var type = id.slice(0, id.indexOf('-'));
+    console.log(type);
+    if (type=='lab') {
+      jsonToUnlike = {'pc_id': idToUnlike, 'pcLikedByUser': true};
+    }
+    else {
+        jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
+    }
+    console.log(jsonToUnlike);
 
-    };
+    $.post('/like/', jsonToUnlike);
 
+    $('#infoFor-' + id).remove();
+    isClicked = false;
+}
 
 
 //function toggleLikes(){

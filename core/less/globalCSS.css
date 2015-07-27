@@ -36,7 +36,7 @@ p {
   margin: 0px 0px 0px 0px;
 }
 #contentContainer {
-  padding: 0px;
+  padding: 0 0 5px 0;
 }
 .fa-star.unstarred,
 .fa-star.starred {
