@@ -72,10 +72,14 @@ $(document).ready(function () {
         excludedElements:'button, a, input, #currentMap'
     });
     
-    // Set up location fixer
+    // Set up the location fixer
     $('#testGo').click(function(){
         // get the input from the user
         var newLocation=$('#testInput').val();
+        // if the user hasn't narrowed down their search to Edinburgh (or elsewhere, as estimated by their using a comma), do it for them
+        if (newLocation.indexOf('Edinburgh')==-1 && newLocation.indexOf(',')==-1){
+            newLocation+=', Edinburgh';
+        }
         // update the geocoding options
         geocodingOptions.address = newLocation;
         // get the coordinates from Google
