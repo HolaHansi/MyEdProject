@@ -7,15 +7,15 @@
 
 //positioning
 #roomName{
-    margin:0;
+    margin: 0;
 }
 
 #currentMap{
-    margin-top:15px;
+    margin-top: 15px;
 }
 
 #yesBtn{
-    margin:15px;
+    margin: 15px;
 }
 
 .navbar{
@@ -24,34 +24,32 @@
 
 #suggestion{
     margin: 5px 0 0 0;
-    padding:0;
+    padding: 0;
     .flex(1,1,0);
 }
 // add a wee bid of extra padding between the suggestion and the left/right buttons if you can spare the space
-@media (min-width:400px){
+@media (min-width: 400px){
     #suggestion{
-        padding:0 5px;
+        padding: 0 5px;
     }
 }
 
 //left and right arrow styling and positioning
 .arrow{
-    height:0px; // height is set dynamically by JS
-    cursor:pointer;
+    height: 0px; // height is set dynamically by JS
+    cursor: pointer;
     
     //position the arrow using flexbox
     .flex(20px,0,1);
     
-    //center align the arrow icon itself using flexbox:
-    .display-inline-flex();
-    .justify-content(center);
-    .align-items(center);
+    //center align the arrow icon itself using flexbox: 
+    .flex-center();
     &:hover{
-        background-color:rgba(200,200,200,0.2);
+        background-color: rgba(200,200,200,0.2);
     }
     &.disabled{
-        cursor:default;
-        opacity:0;
+        cursor: default;
+        opacity: 0;
     }
 }
 
@@ -80,9 +78,9 @@
     }
 }
 
-//responsive text size for computers free label:
+//responsive text size for computers free label: 
 #computersFreeLabel{
-    font-size:12px;
+    font-size: 12px;
     line-height: 12px;
 }
 @media (min-width: 200px) {
@@ -106,27 +104,27 @@
     
     #roomNameContainer, #computersFreeLabelContainer{
         .flex(3,1,0);
-        position:relative;
-        min-height:1px;
-        padding-left:15px;
-        margin:auto;
+        position: relative;
+        min-height: 1px;
+        padding-left: 15px;
+        margin: auto;
     }
 
     #starContainer, #computersFreeGraphContainer{
         .flex(1,1,0);
         text-align: center;
         position: relative;
-        min-height:1px;
+        min-height: 1px;
         padding-right: 15px;
-        padding-left:15px;
-        margin:auto;
+        padding-left: 15px;
+        margin: auto;
     }
 }
 
 #computersFreeGraph{
-    height:51px;
-    width:51px;
-    margin:auto;
+    height: 51px;
+    width: 51px;
+    margin: auto;
 }
 
 #computersFreeNumber{
@@ -139,7 +137,46 @@
     -o-transform: translate(-50%,-50%);
     transform: translate(-50%, -50%);
     font-weight: bold;
-    color:#00aa00;
+    color: #00aa00;
+}
+
+#optionsMenu{
+    width: 100%;
+    cursor: pointer;
+    #optionsTitle{ 
+        height: 40px;
+        width: 100%;
+        background-color: #dddddd;
+        font-size: 20px;
+        .flex-center();
+        .fa-filter{
+            margin-right: 5px;
+            font-size: 1.2em;
+        }
+    }
+}
+
+.triangle {
+	width: 0;
+	height: 0;
+	border-style: solid;
+    
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 40px;
+}
+.triangle {
+    border-width: 10px 6px 0 6px;
+    border-color: white transparent transparent transparent;
+    margin-left: auto;
+    margin-right: auto;
+}
+.triangle {
+    border-width: 0 6px 10px 6px;
+    border-color: transparent transparent #dddddd transparent;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 // shorthand for all versions of display: flex
@@ -168,9 +205,9 @@
     -ms-flex-positive: @b;
     flex-grow: @b;
 
-    -webkit-flex-shrink:@c;
-    -ms-flex-negative:@c;
-    flex-shrink:@c;
+    -webkit-flex-shrink: @c;
+    -ms-flex-negative: @c;
+    flex-shrink: @c;
     -webkit-flex-basis: @a;
     -ms-flex-preferred-size: @a;
     flex-basis: @a;
@@ -179,18 +216,42 @@
 
 //shorthand for all versions of justify-content: a
 .justify-content(@a){
-    -webkit-box-pack:@a;
-    -webkit-justify-content:@a;
-    -ms-flex-pack:@a;
-    -moz-box-pack:@a;
-    justify-content:@a;
+    -webkit-box-pack: @a;
+    -webkit-justify-content: @a;
+    -ms-flex-pack: @a;
+    -moz-box-pack: @a;
+    justify-content: @a;
 }
 
 //shorthand for all versions of align-items: a
 .align-items(@a){
-    -webkit-box-align:@a;
-    -webkit-align-items:@a;
-    -ms-flex-align:@a;
-    -moz-box-align:@a;
-    align-items:@a;
+    -webkit-box-align: @a;
+    -webkit-align-items: @a;
+    -ms-flex-align: @a;
+    -moz-box-align: @a;
+    align-items: @a;
+}
+
+//center content using flexbox
+.flex-center(){
+    .display-flex();
+    .justify-content(center);
+    .align-items(center);
+}
+
+//set item selectabilitiy
+.selectable(@a) {
+    -webkit-touch-callout: @a;
+    -webkit-user-select: @a;
+    -moz-user-select: @a;
+    -ms-user-select: @a;
+    user-select: @a;
+}
+
+// make only p elements selectable
+*{
+    .selectable(none);
+}
+p{
+    .selectable(text);
 }

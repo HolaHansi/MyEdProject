@@ -32,7 +32,7 @@ $(document).ready(function () {
 				'pcLikedByUser': (''+pcLikedByUser)
 			})
 			.fail(function () {
-                alert('Failed to favourite room');
+                alert('Failed to favourite location');
                 // if the request failed, undo the star change
                 $('.fa-star').toggleClass('unstarred');
                 $('.fa-star').toggleClass('starred');
@@ -70,9 +70,9 @@ $(document).ready(function () {
 
 // JS styling
 function resizeElements(){
-    // resize the arrows to take up the whole screen
+    // resize the arrows to take up the whole suggestion
     $('.arrow').height(0);
-    $('.arrow').height(Math.max((window.innerHeight - 45),($('body').height()-45)));
+    $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
 }
 
 function loadPreviousSuggestion(){
