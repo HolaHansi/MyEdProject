@@ -7,6 +7,7 @@
 }
 #currentMap {
   margin-top: 15px;
+  height: 300px;
 }
 #yesBtn {
   margin: 15px;
@@ -79,6 +80,7 @@
   display: -moz-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
+  width: 100%;
 }
 #roomName {
   font-size: 14px;
@@ -192,7 +194,7 @@
 #optionsMenu #optionsTitle {
   height: 40px;
   width: 100%;
-  background-color: #dddddd;
+  background-color: #eeeeee;
   font-size: 20px;
   display: -webkit-box;
   display: -moz-box;
@@ -212,7 +214,9 @@
 }
 #optionsMenu #optionsTitle .fa-filter {
   margin-right: 5px;
+  color: grey;
   font-size: 1.2em;
+  text-shadow: 0px 0px 1px grey;
 }
 .triangle {
   width: 0;
@@ -221,19 +225,18 @@
   position: absolute;
   right: 0;
   left: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.triangle.triangle-up {
+  border-width: 0 6px 10px 6px;
+  border-color: transparent transparent #eeeeee transparent;
   bottom: 40px;
 }
-.triangle {
+.triangle.triangle-down {
   border-width: 10px 6px 0 6px;
   border-color: white transparent transparent transparent;
-  margin-left: auto;
-  margin-right: auto;
-}
-.triangle {
-  border-width: 0 6px 10px 6px;
-  border-color: transparent transparent #dddddd transparent;
-  margin-left: auto;
-  margin-right: auto;
+  bottom: 30px;
 }
 * {
   -webkit-touch-callout: none;

@@ -1,5 +1,7 @@
 //out: ../static/pc/css/labsStyling.css
 
+@optionsBackground: #eeeeee;
+
 // Center the 'Take me there!' button
 #yesBtnContainer{
     text-align: center;
@@ -12,6 +14,7 @@
 
 #currentMap{
     margin-top: 15px;
+    height:300px;
 }
 
 #yesBtn{
@@ -54,7 +57,8 @@
 }
 
 #mainContainer{
-    .display-inline-flex()
+    .display-inline-flex();
+    width:100%;
 }
 
 
@@ -146,12 +150,14 @@
     #optionsTitle{ 
         height: 40px;
         width: 100%;
-        background-color: #dddddd;
+        background-color: @optionsBackground;
         font-size: 20px;
         .flex-center();
         .fa-filter{
             margin-right: 5px;
+            color:grey;
             font-size: 1.2em;
+            text-shadow: 0px 0px 1px grey;
         }
     }
 }
@@ -160,23 +166,22 @@
 	width: 0;
 	height: 0;
 	border-style: solid;
-    
+    //positioning:
     position: absolute;
     right: 0;
     left: 0;
-    bottom: 40px;
-}
-.triangle {
-    border-width: 10px 6px 0 6px;
-    border-color: white transparent transparent transparent;
     margin-left: auto;
     margin-right: auto;
-}
-.triangle {
-    border-width: 0 6px 10px 6px;
-    border-color: transparent transparent #dddddd transparent;
-    margin-left: auto;
-    margin-right: auto;
+    &.triangle-up {
+        border-width: 0 6px 10px 6px;
+        border-color: transparent transparent @optionsBackground transparent;
+        bottom: 40px;
+    }
+    &.triangle-down {
+        border-width: 10px 6px 0 6px;
+        border-color: white transparent transparent transparent;
+        bottom:30px
+    }
 }
 
 // shorthand for all versions of display: flex
