@@ -56,7 +56,7 @@ def excludeClosedLocations(data):
     if weekday >= 0 and weekday <= 4:
         data = data.exclude(weekdayOpen__gt=currentTime)
         data = data.exclude(weekdayClosed__lt=currentTime,
-                            # to accomodate the case where the building closes after midnight
+                            # to accommodate the case where the building closes after midnight
                             # a building is only excluded if the closing time is ALSO greater than
                             # 9 in the morning, so closing times like 02:30 are not filtered out.
                             weekdayClosed__gt="09:00:00"
@@ -66,7 +66,7 @@ def excludeClosedLocations(data):
     if weekday == 5:
         data = data.exclude(saturdayOpen__gt=currentTime)
         data = data.exclude(saturdayClosed__lt=currentTime,
-                            # to accomodate the case where the building closes after midnight
+                            # to accommodate the case where the building closes after midnight
                             # a building is only excluded if the closing time is ALSO greater than
                             # 9 in the morning, so closing times like 02:30 are not filtered out.
                             saturdayClosed__gt="09:00:00"
@@ -76,7 +76,7 @@ def excludeClosedLocations(data):
     if weekday == 6:
         data = data.exclude(sundayOpen__gt=currentTime)
         data = data.exclude(sundayClosed__lt=currentTime,
-                            # to accomodate the case where the building closes after midnight
+                            # to accommodate the case where the building closes after midnight
                             # a building is only excluded if the closing time is ALSO greater than
                             # 9 in the morning, so closing times like 02:30 are not filtered out.
                             sundayClosed__gt="09:00:00"
