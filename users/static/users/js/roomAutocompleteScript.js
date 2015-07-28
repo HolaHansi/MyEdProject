@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
     // isClicked will change value whenever the remove fav btn is pressed.
-    var isClicked = false;
+    isClicked = false;
     $(".remove-btn").click(removeFavouriteBtn);
 
     // This will make sure that the arrow in each panel changes direction whenever the panel
@@ -16,9 +16,8 @@ $(document).ready(function(){
         $(this).removeClass('dropup');
     });
 
+
 });
-
-
 
 
 function removeFavouriteBtn(){

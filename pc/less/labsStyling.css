@@ -11,11 +11,15 @@
 #yesBtn {
   margin: 15px;
 }
+#yesBtn .fa-external-link {
+  margin-left: 5px;
+  font-size: 13px;
+}
 .navbar {
   margin-bottom: 0px;
 }
 #suggestion {
-  margin: 5px 0 0 0;
+  margin: 5px 0 15px 0;
   padding: 0;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
@@ -211,11 +215,9 @@
   -moz-box-align: center;
   align-items: center;
 }
-#optionsMenu #optionsTitle .fa-filter {
+#optionsMenu #optionsTitle .fa-cog {
   margin-right: 5px;
-  color: grey;
-  font-size: 1.2em;
-  text-shadow: 0px 0px 1px grey;
+  color: #555;
 }
 .triangle {
   width: 0;

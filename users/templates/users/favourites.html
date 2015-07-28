@@ -85,7 +85,7 @@
                             </div>
 
                             <div class="col-xs-2">
-                                <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
                         <div class="row">
@@ -140,14 +140,13 @@
 
                                 <i class="fa fa-clock-o openHoursComp"></i>
 
-
-
                                 <p class="closedOpeningHour">{{ fav | openTime }}</p>
                                 <p class="closedOpeningHour">{{ fav | closingTime }}</p>
+
                             </div>
 
                             <div class="col-xs-2">
-                                <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
                         <div class="row">
@@ -165,7 +164,6 @@
 
 
     </div>
-
 
     </div>
 
