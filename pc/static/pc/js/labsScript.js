@@ -1,8 +1,9 @@
 var suggestions = []; //all suggestions provided by the server
 var currentChoice = {}; //the suggestion currently on display
 
-var userLatitude = 0; //current latitude of user
-var userLongitude = 0; //current longitude of user
+var userLatitude = 55.943655; //current latitude of user
+var userLongitude = -3.188775; //current longitude of user
+// Note this is dummy data, pointed in the middle of George Square, which will be overwritten if the user allows location finding or manually enters their location
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
@@ -34,7 +35,7 @@ $(document).ready(function () {
         loadPreviousSuggestion();
 	});
     
-    //when the user clicks the like button, like or unlike the room as appropriate
+    //when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
 	$('.fa-star').click(function () {
 		var pc_id = currentChoice.id;
         // send the like request to the server
@@ -98,7 +99,6 @@ $(document).ready(function () {
             }
         });
     });
-    
 });
 
 // JS styling
@@ -150,7 +150,11 @@ function makeMap(){
         streetViewControl: false,
         overviewMapControl: false,
         rotateControl: false,
-        draggable: false
+        draggable: false,
+        scrollwheel: false,
+        //styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}], // disable Points of Interest (and therefore their popup menus)
+        maxZoom: 18,
+        backgroundColor: '#ffffff'
     };
     
     // initialise direction options
@@ -178,6 +182,7 @@ function makeMap(){
     map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
     // bind the directions renderer to the map
     directionsDisplay.setMap(map);
+    
 }
 
 // update the map with the new directions
@@ -278,13 +283,13 @@ function loadChoice() {
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('.right-arrow').addClass('disabled');
-	}
+	} else {
+        $('.right-arrow').removeClass('disabled');
+    }
 	//if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == 0) {
 		$('.left-arrow').addClass('disabled');
-	}
-    if (currentChoice.index != suggestions.length - 1 && currentChoice.index != 0) {
-		$('.right-arrow').removeClass('disabled');
+	} else {
 		$('.left-arrow').removeClass('disabled');
     }
 	// check if current choice is liked by user and toggle the star icon appropriately
@@ -309,25 +314,32 @@ function getLocation() {
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
-	getSuggestions(true, true, []);
+    // for some reason, many uni computers think they're in the middle of Arthur's seat.  If we detect this, tell them their location is wrong.  
+    if (userLatitude>55.948367 && userLatitude<55.948368 && userLongitude<-3.158850 && userLongitude>-3.158851){
+        alert("Unable to get accurate location.  Enter your location manually in the options menu to refine your location.");
+    }
+	getSuggestions(false, true, []);
 }
 
 //if impossible to get user's current coordinates, display a relevant error message
 function showError(error) {
 	switch (error.code) {
-	case error.PERMISSION_DENIED:
-		alert("Geolocation required for this app.")
-		break;
-	case error.POSITION_UNAVAILABLE:
-		alert("Location information is unavailable.  Refresh the page or try again later.  ");
-		break;
-	case error.TIMEOUT:
-		alert("The request to get user location timed out.  Refresh the page or try again later.  ");
-		break;
-	case error.UNKNOWN_ERROR:
-		alert("An unknown error occurred when attempting to find your location.  Refresh the page or try again later.  ");
-		break;
+        case error.PERMISSION_DENIED:
+            console.log("Geolocation denied.  Enter your location using the options menu")
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable.  Refresh the page or enter your location manually in the options menu.  ");
+            break;
+        case error.TIMEOUT:
+            alert("The request to get user location timed out.  Refresh the page or enter your location manually in the options menu.  ");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred when attempting to find your location.  Refresh the page or enter your location manually in the options menu.  ");
+            break;
 	}
+    $('.arrow').addClass('disabled');
+    getSuggestions(true,true,[]);
+    //TODO: open options menu and select location fixer
 }
 
 // Geolocation functions}
