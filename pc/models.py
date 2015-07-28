@@ -32,7 +32,7 @@ class Computer_Labs(models.Model):
 
     # By default, order based on number of computers available
     class Meta:
-        ordering = ['free']
+        ordering = ['-free']
 
     def __str__(self):
         return self.name
