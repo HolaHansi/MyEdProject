@@ -8,6 +8,7 @@
 - Add location corrector
 - Go to Hive
 - Easter Eggs
+- Prevent the user from swiping more than 10 times per second to avoid usage limit errors
 
 ##Possible tweaks:
 
