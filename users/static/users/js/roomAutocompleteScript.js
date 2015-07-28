@@ -1,9 +1,24 @@
+
 $(document).ready(function(){
     // isClicked will change value whenever the remove fav btn is pressed.
-    isClicked = false;
+    var isClicked = false;
     $(".remove-btn").click(removeFavouriteBtn);
 
+    // This will make sure that the arrow in each panel changes direction whenever the panel
+    // either collapses or unfolds.
+    $(".panel").on('show.bs.collapse', function(){
+        console.log('hej');
+        $(this).addClass('dropup');
+    });
+
+    $(".panel").on('hide.bs.collapse', function(){
+        console.log('hej');
+        $(this).removeClass('dropup');
+    });
+
 });
+
+
 
 
 function removeFavouriteBtn(){

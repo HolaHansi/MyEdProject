@@ -24,6 +24,9 @@
   background-color: #2ea83d;
   margin-bottom: 0px;
 }
+.badge.free.closed {
+  background-color: #777777;
+}
 .badge.inuse {
   background-color: #d9433b;
 }
@@ -48,6 +51,9 @@
 .panel-default > .panel-heading .badge.free {
   background-color: #2ea83d;
   margin-bottom: 0px;
+}
+.panel-default > .panel-heading .badge.free.closed {
+  background-color: #777777;
 }
 .panel-default > .panel-heading .badge.inuse {
   background-color: #d9433b;
@@ -127,4 +133,11 @@
 .openHourDiv {
   float: left;
   text-align: center;
+}
+.closedStats {
+  background-color: grey;
+  opacity: 0.4;
+}
+.closedOpeningHour {
+  color: #d9433b;
 }

@@ -34,6 +34,9 @@
     &.free {
         background-color: @availableGreen;
         margin-bottom: 0px;
+        &.closed {
+            background-color: @minusGrey;
+        }
     }
     &.inuse{
         background-color: @unavailableRed;
@@ -151,4 +154,13 @@
     float: left;
     text-align: center;
     //border-style: dotted;
+}
+
+.closedStats {
+    background-color: grey;
+    opacity: 0.4;
+}
+
+.closedOpeningHour {
+    color: @unavailableRed;
 }

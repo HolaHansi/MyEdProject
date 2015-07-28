@@ -35,7 +35,29 @@ def facilities(room):
 
 
 @register.filter
-def openHours(place):
+def openTime(place):
+    """
+    returns the current opening time.
+    :param place:
+    :return:
+    """
+    # if no opening hours known, return unkown
+    if not place.weekdayOpen:
+        return 'n/a'
+
+    now = datetime.datetime.now()
+    weekday = now.weekday()
+    result = ''
+    if weekday >= 0 and weekday <= 4:
+        result = str(place.weekdayOpen)[0:5]
+    elif weekday == 5:
+        result = str(place.saturdayOpen)[0:5]
+    elif weekday == 6:
+        result = str(place.sundayOpen)[0:5]
+    return result
+
+@register.filter
+def closingTime(place):
     """
     returns the current opening and closing hours.
     :param place:
@@ -49,14 +71,11 @@ def openHours(place):
     weekday = now.weekday()
     result = ''
     if weekday >= 0 and weekday <= 4:
-        result = str(place.weekdayOpen)[0:-3]
-        result += ' ' + str(place.weekdayClosed)[0:-3]
+        result = str(place.weekdayClosed)[0:5]
     elif weekday == 5:
-        result = str(place.saturdayOpen)
-        result += ' ' + str(place.saturdayClosed)
+        result = str(place.saturdayClosed)[0:5]
     elif weekday == 6:
-        result = str(place.sundayOpen)
-        result += ' ' + str(place.sundayClosed)
+        result = str(place.sundayClosed)[0:5]
     return result
 
 @register.filter

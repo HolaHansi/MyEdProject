@@ -129,7 +129,7 @@ def like(request):
             # get the room in question
             locationId = request.GET['locationId']
 
-            # get userprofile
+            # get user from request
             user = request.user
 
             # if the room is already liked by user, then assign true to pcLikedByUser
@@ -144,27 +144,43 @@ def like(request):
 
 @login_required
 def favourites(request):
+    """
+    The view for the favourites page. It renders a template that displays
+    all the favourites of current user in the following categories:
+    PC: currently open, currently closed
+    Rooms: Known to be free, known to be booked, unknown availability.
+    """
+    # get the user from the request
     user = request.user
-    # get a queryset for both currently open and closed PC-labs.
+
+    # ==== FOR PCs ====
+
+    # get all PCs liked by the user.
     pc_favourites = user.pc_favourites.all()
+    # get all currently open PC-labs and sort according to ratio
     pc_favourites_open = utilities.excludeClosedLocations(pc_favourites)
+    pc_favourites_open = utilities.sortPCLabByEmptiness(pc_favourites_open)
+
+    # get all currently closed PC-labs and sort according to ratio
     pc_favourites_closed = utilities.get_currently_closed_locations(pc_favourites)
+    pc_favourites_closed = utilities.sortPCLabByEmptiness(pc_favourites_closed)
 
+    # ==== FOR ROOMs ====
 
+    # get all rooms liked by the user.
     room_favourites = user.room_favourites.all()
 
-    # get all rooms that are locally allocated: we don't know the availability of these
+    # from users favourites, get all rooms that are locally allocated: we don't know the availability of these.
     rooms_unknown_availability = room_favourites.filter(locally_allocated=True)
 
-    # queryset for all rooms whose availability is known
+    # do the same thing for rooms that we know the availability of.
     rooms_known_availability = room_favourites.filter(locally_allocated=False)
 
-    # Rooms that to be of our knowledge are available now:
+    # get all the favourite rooms that we KNOW are available now
     rooms_available_now = utilities.filter_out_busy_rooms(data=rooms_known_availability, available_for_hours=1)
 
-    # Rooms known to be currently booked
+    # get all favourite rooms KNOWN to be currently booked
     rooms_booked_now = utilities.filter_out_avail_rooms(data=rooms_known_availability, available_for_hours=1)
-
 
 
     context = {'pc_favourites_open': pc_favourites_open,
@@ -173,6 +189,7 @@ def favourites(request):
                'rooms_available_now': rooms_available_now,
                'rooms_booked_now': rooms_booked_now,
                'user': user}
+
     return render(request, 'users/favourites.html', context)
 
 
@@ -190,7 +207,6 @@ def history(request):
 def logout(request):
     """
     Function to log-out the current user. In production, this means also resetting the CoSign cookie.
-
     """
     if request.user.is_authenticated():
 
