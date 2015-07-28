@@ -12,6 +12,8 @@
 ##Possible tweaks:
 
 - Send all rooms liked and toggle liked button locally
+- Custom pan display
+- Custom 'recenter map' option
 - Toggle displaying directions/location
 - Remember user preferences (cookies?)
 - Change name + logo ?
