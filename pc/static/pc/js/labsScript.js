@@ -99,6 +99,7 @@ $(document).ready(function () {
             }
         });
     });
+    
 });
 
 // JS styling
@@ -153,7 +154,7 @@ function makeMap(){
         draggable: false,
         scrollwheel: false,
         //styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}], // disable Points of Interest (and therefore their popup menus)
-        maxZoom: 18,
+        maxZoom: 17,
         backgroundColor: '#ffffff'
     };
     
@@ -296,6 +297,8 @@ function loadChoice() {
 	liked(currentChoice.id);
     // update the map to the new coordinates
     updateMap();
+    // update the 'Take me there' Google Maps deeplink
+    $('#yesBtn').attr('href','https://www.google.com/maps/preview?saddr='+userLatitude+','+userLongitude+'&daddr='+currentChoice.latitude+','+currentChoice.longitude+'&dirflg=w');
 }
 
 // Geolocation functions{
