@@ -145,7 +145,12 @@ def like(request):
 @login_required
 def favourites(request):
     user = request.user
+    # get a queryset for both currently open and closed PC-labs.
     pc_favourites = user.pc_favourites.all()
+    pc_favourites_open = utilities.excludeClosedLocations(pc_favourites)
+    pc_favourites_closed = utilities.get_currently_closed_locations(pc_favourites)
+
+
     room_favourites = user.room_favourites.all()
 
     # get all rooms that are locally allocated: we don't know the availability of these
@@ -162,7 +167,8 @@ def favourites(request):
 
 
 
-    context = {'pc_favourites': pc_favourites,
+    context = {'pc_favourites_open': pc_favourites_open,
+               'pc_favourites_closed': pc_favourites_closed,
                'rooms_unknown_availability': rooms_unknown_availability,
                'rooms_available_now': rooms_available_now,
                'rooms_booked_now': rooms_booked_now,

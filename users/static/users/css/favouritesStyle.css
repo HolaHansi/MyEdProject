@@ -1,3 +1,11 @@
+@media (max-width: 288px) {
+  .openHourDiv {
+    opacity: 0;
+  }
+}
+.body {
+  background-color: #d9433b;
+}
 .btn-lg {
   border-radius: 0;
 }
@@ -13,11 +21,11 @@
   font-size: 14px;
 }
 .badge.free {
-  background-color: #00aa00;
+  background-color: #2ea83d;
   margin-bottom: 0px;
 }
 .badge.inuse {
-  background-color: #aa0000;
+  background-color: #d9433b;
 }
 .badge-text {
   white-space: nowrap;
@@ -38,11 +46,11 @@
   /*brand-primary*/
 }
 .panel-default > .panel-heading .badge.free {
-  background-color: #00aa00;
+  background-color: #2ea83d;
   margin-bottom: 0px;
 }
 .panel-default > .panel-heading .badge.inuse {
-  background-color: #aa0000;
+  background-color: #d9433b;
 }
 .avail {
   float: right;
@@ -57,13 +65,13 @@
   margin-left: -1px;
 }
 .panel-default > .panel-heading .badge.check {
-  background-color: #00aa00;
+  background-color: #2ea83d;
 }
 .panel-default > .panel-heading .badge.minus {
   background-color: #777777;
 }
 .panel-default > .panel-heading .badge.times {
-  background-color: #aa0000;
+  background-color: #d9433b;
 }
 .booknow {
   margin-left: 0px;
@@ -104,11 +112,19 @@
   background-color: red;
 }
 .fa-check.confirmRemove {
-  color: #00aa00;
+  color: #2ea83d;
 }
 .fa-check.confirmRemove .avail {
   color: black;
 }
 .fa-times.cancelRemove {
-  color: #aa0000;
+  color: #d9433b;
+}
+.openHoursComp {
+  margin-left: auto;
+  margin-right: auto;
+}
+.openHourDiv {
+  float: left;
+  text-align: center;
 }

@@ -1,5 +1,6 @@
 from django import template
 from django.utils.safestring import mark_safe
+import datetime
 
 register = template.Library()
 
@@ -31,6 +32,32 @@ def facilities(room):
         to_return = "<div id='blackboardTick' class='tickOrCross cross'></div>"
     return mark_safe(to_return)
 
+
+
+@register.filter
+def openHours(place):
+    """
+    returns the current opening and closing hours.
+    :param place:
+    :return:
+    """
+    # if no opening hours known, return unkown
+    if not place.weekdayOpen:
+        return 'n/a'
+
+    now = datetime.datetime.now()
+    weekday = now.weekday()
+    result = ''
+    if weekday >= 0 and weekday <= 4:
+        result = str(place.weekdayOpen)[0:-3]
+        result += ' ' + str(place.weekdayClosed)[0:-3]
+    elif weekday == 5:
+        result = str(place.saturdayOpen)
+        result += ' ' + str(place.saturdayClosed)
+    elif weekday == 6:
+        result = str(place.sundayOpen)
+        result += ' ' + str(place.sundayClosed)
+    return result
 
 @register.filter
 def inUse(pc):

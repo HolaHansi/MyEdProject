@@ -17,7 +17,8 @@ function makepie(id, free, inUse) {
         "innerRadius": 13, //radius of the 'hole' in the doughnut
         "minRadius": 25, //min radius of the pie chart if resized (currently impossible)
         "radius": 25, //the initial radius of the pie chart
-        "colors": ["#00aa00", '#aa0000'], //brand-primary
+        // REMEMBER TO CHANGE COLOURS HERE IF CHANGES ARE MADE TO COLOURS.LESS !
+        "colors": ["#2EA83D", '#D9433B'], //colors are : availableGreen and unavailableRed.
         "marginBottom": 0, //chart margins
         "marginTop": 0,    //chart margins
         "outlineAlpha": 1, //outline opacity

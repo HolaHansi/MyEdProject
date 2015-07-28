@@ -1,8 +1,20 @@
-@availableGreen: #00AA00;
-@minusGrey: #777;
-@unavailableRed: #AA0000;
+@import "../../../../core/less/colours.less";
+
+//@availableGreen: #00AA00;
+//@minusGrey: #777;
+//@unavailableRed: #AA0000;
 
 
+@media (max-width: 288px) {
+    .openHourDiv{
+        opacity: 0;
+    }
+
+}
+
+.body {
+    background-color: @unavailableRed;
+}
 
 .btn-lg {
     border-radius: 0;
@@ -130,3 +142,13 @@
     color: @unavailableRed;
 }
 
+.openHoursComp {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.openHourDiv {
+    float: left;
+    text-align: center;
+    //border-style: dotted;
+}
