@@ -71,6 +71,7 @@
                             <div class="col-xs-3">
                                 <div id='computersFreeGraphContainer'>
                                     <script>
+{#                                 <!-- makepiechart function takes the id, number of free, number in use -->#}
                                         makepie("{{fav.id}}", {{ fav.free }}, {{ fav | inUse }});
                                     </script>
                                     <div class="computersFreeGraph" id="{{ fav.id }}"></div>
@@ -83,6 +84,9 @@
                         <div class="row">
                             <div class="col-xs-2">
                                 <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                            </div>
+                            <div class="col-xs-offset ">
+                                <span class="glypthicon glyphicon-time" aria-hidden="true"></span>
                             </div>
                         </div>
                     </div>

@@ -221,7 +221,7 @@
   width: 0;
   height: 0;
   border-style: solid;
-  position: absolute;
+  position: relative;
   right: 0;
   left: 0;
   margin-left: auto;
@@ -230,12 +230,14 @@
 .triangle.triangle-up {
   border-width: 0 6px 10px 6px;
   border-color: transparent transparent #eeeeee transparent;
-  bottom: 40px;
+  bottom: 10px;
+  margin-bottom: -10px;
 }
 .triangle.triangle-down {
   border-width: 10px 6px 0 6px;
   border-color: white transparent transparent transparent;
-  bottom: 30px;
+  bottom: 0px;
+  margin-bottom: 0px;
 }
 * {
   -webkit-touch-callout: none;

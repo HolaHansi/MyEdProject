@@ -1,37 +1,43 @@
 $(document).ready(function(){
-
+    // isClicked will change value whenever the remove fav btn is pressed.
     isClicked = false;
     $(".remove-btn").click(removeFavouriteBtn);
 
 });
 
 
-
 function removeFavouriteBtn(){
 
+    // the user is using one of these mobile devices; use comfirm prompt instead of small buttons
+    // when user tries to delete a room from favourites.
     if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 
         if (confirm("Do you wish to remove this space from your favourites?")) {
-
-         var thisId = $(this).attr('id');
-         removeFromFavourites(thisId);
-
+            // this clause is taken, if the user confirmed to above prompt.
+            var thisId = $(this).attr('id');
+            removeFromFavourites(thisId);
         };
-
     }
+
+    // the user is on a desktop computer: use the check and x symbol
     else {
         if (isClicked == false) {
             // button is not clicked yet
+
+            // append x and check symbol to button.
             $(this).html("<i class='fa fa-star unstarred'></i>Remove &nbsp;");
             $("<a href='#' class='fa fa-check confirmRemove'> &nbsp; </a>").appendTo(this);
             $("<a href='#' class='fa fa-times cancelRemove'> &nbsp; </a>").appendTo(this);
 
+            // if x is pressed, then set is clicked to true, so to escape this clause.
             $('.cancelRemove').click(function () {
                 isClicked = true;
             });
 
+            // if the check symbol is pressed, then obtain the id from the parent div, and
+            // call the remove from favourites function.
             $('.confirmRemove').click(function () {
-                //var btn = $(this).parent().parent().parent().parent().parent();
+
 
                 var btn = $(this).parent();
                 console.log(btn);
@@ -54,58 +60,24 @@ function removeFavouriteBtn(){
 };
 
 function removeFromFavourites(id) {
+    // removes the given pc or room from the users favourites.
     var idToUnlike = id.slice(id.indexOf('-')+1);
-    console.log(idToUnlike);
     var type = id.slice(0, id.indexOf('-'));
-    console.log(type);
+    // if the type is lab, then JSON is formatted for a PC.
     if (type=='lab') {
       jsonToUnlike = {'pc_id': idToUnlike, 'pcLikedByUser': true};
     }
     else {
+        // the type is a tutorial room:
         jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
     }
-    console.log(jsonToUnlike);
 
     $.post('/like/', jsonToUnlike);
 
-    $('#infoFor-' + id).remove();
+    $('#infoFor-' + id).fadeOut('slow');
     isClicked = false;
 }
 
-
-//function toggleLikes(){
-//    $('.remove-btn.unclicked').fadeIn('<i class="fa fa-check"></i>')
-//    $(this).removeClass('unclicked');
-//    $(this).addClass('clicked');
-//    $(this).unbind('click');
-//    that=$(this)
-//    $('.confirmRemoval').click(function(){
-//        var li=$(this).parent();
-//        var thisId=li.attr('id');
-//        var idToUnlike = thisId.slice(thisId.indexOf('-')+1);
-//        var type=thisId.slice(0,thisId.indexOf('-'));
-//        // capitalized type, used in Ids
-//        var capsType=type.substr(0, 1).toUpperCase() + type.substr( 1 );
-//        if (type=='lab'){
-//            jsonToUnlike={'pc_id': idToUnlike, 'pcLikedByUser': true}
-//        }else{
-//            jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
-//        }
-//        $.post('/like/', jsonToUnlike)
-//        li.remove();
-//        if ($('#'+type+'List').children().length == 1){
-//            $('<li class="list-group-item" id="no'+capsType+'Favourites">No favourites yet!</li>').insertBefore('#autocomplete'+capsType+'Li');;
-//        }
-//    });
-//    $('.cancelRemoval').click(function(){
-//        that.click(toggleLikes);
-//        that.removeClass('clicked');
-//        that.addClass('unclicked');
-//        that.html('Unlike');
-//        $('.confirmRemoval').remove();
-//        $('.cancelRemoval').remove();
-//    });
-//}
 
 //$(function() {
 //    // get the data from the autocomplete API

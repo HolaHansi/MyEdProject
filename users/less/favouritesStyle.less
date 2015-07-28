@@ -1,8 +1,8 @@
-@availableGreen: #5cb85c;
-@minusGrey: #777;
-@unavailableRed: #d9534f;
-@brand-primary: #337AB7;
+@import "../../core/less/colours.less";
 
+//@availableGreen: #00AA00;
+//@minusGrey: #777;
+//@unavailableRed: #AA0000;
 
 
 .btn-lg {
@@ -15,20 +15,42 @@
     margin-top: 5px;
     float: right;
 }
+
+
 .badge {
     float: right;
     font-size: 14px;
     &.free {
-        background-color:@availableGreen;
+        background-color: @availableGreen;
+        margin-bottom: 0px;
     }
-    &.inuse {
+    &.inuse{
         background-color: @unavailableRed;
     }
 }
+
+.badge-text {
+    white-space: nowrap;
+    overflow: hidden;
+    p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    }
+
+
+}
+
+.badge-group {
+    padding-top: 4px;
+    margin-left: 0px;
+}
+
 .panel-default > .panel-heading .badge {
-    background-color: @brand-primary;
+    background-color: #337AB7;
+    .badge()
     /*brand-primary*/
 }
+
 .avail {
     float: right;
     width: 12px;
@@ -51,5 +73,61 @@
     background-color: @unavailableRed;
 }
 .booknow {
-    margin-left: -15px;
+    margin-left: 0px;
+    padding-bottom: 14px;
 }
+
+
+.computersFreeGraph{
+    height:50px;
+    width:50px;
+
+}
+
+.remove-btn {
+    align: left;
+    padding: 0px 4px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+
+
+.unliker.unclicked{
+    background-color:blue;
+    color: white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:50px;
+    cursor:pointer;
+}
+.unliker.clicked{
+    margin-left:50px;
+}
+.favRemover{
+    color: white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:5px;
+    margin-right:5px;
+    cursor:pointer;
+}
+.confirmRemoval{
+    background-color:green;
+}
+.cancelRemoval{
+    background-color: red;
+}
+
+
+
+.fa-check.confirmRemove {
+    color: @availableGreen;
+    .avail {
+        color: black;
+    }
+}
+
+.fa-times.cancelRemove {
+    color: @unavailableRed;
+}
+

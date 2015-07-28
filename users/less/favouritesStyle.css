@@ -13,14 +13,36 @@
   font-size: 14px;
 }
 .badge.free {
-  background-color: #5cb85c;
+  background-color: #2ea83d;
+  margin-bottom: 0px;
 }
 .badge.inuse {
-  background-color: #d9534f;
+  background-color: #d9433b;
+}
+.badge-text {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.badge-text p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.badge-group {
+  padding-top: 4px;
+  margin-left: 0px;
 }
 .panel-default > .panel-heading .badge {
-  background-color: #337ab7;
+  background-color: #337AB7;
+  float: right;
+  font-size: 14px;
   /*brand-primary*/
+}
+.panel-default > .panel-heading .badge.free {
+  background-color: #2ea83d;
+  margin-bottom: 0px;
+}
+.panel-default > .panel-heading .badge.inuse {
+  background-color: #d9433b;
 }
 .avail {
   float: right;
@@ -35,14 +57,58 @@
   margin-left: -1px;
 }
 .panel-default > .panel-heading .badge.check {
-  background-color: #5cb85c;
+  background-color: #2ea83d;
 }
 .panel-default > .panel-heading .badge.minus {
   background-color: #777777;
 }
 .panel-default > .panel-heading .badge.times {
-  background-color: #d9534f;
+  background-color: #d9433b;
 }
 .booknow {
-  margin-left: -15px;
+  margin-left: 0px;
+  padding-bottom: 14px;
+}
+.computersFreeGraph {
+  height: 50px;
+  width: 50px;
+}
+.remove-btn {
+  align: left;
+  padding: 0px 4px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+.unliker.unclicked {
+  background-color: blue;
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+.unliker.clicked {
+  margin-left: 50px;
+}
+.favRemover {
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.confirmRemoval {
+  background-color: green;
+}
+.cancelRemoval {
+  background-color: red;
+}
+.fa-check.confirmRemove {
+  color: #2ea83d;
+}
+.fa-check.confirmRemove .avail {
+  color: black;
+}
+.fa-times.cancelRemove {
+  color: #d9433b;
 }
