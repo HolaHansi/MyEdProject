@@ -36,7 +36,7 @@ $(document).ready(function () {
 	});
     
     //when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
-	$('.fa-star').click(function () {
+	$('#suggestion .fa-star').click(function () {
 		var pc_id = currentChoice.id;
         // send the like request to the server
 		$.post('/like/', {
@@ -46,12 +46,12 @@ $(document).ready(function () {
 			.fail(function () {
                 alert('Failed to favourite location');
                 // if the request failed, undo the star change
-                $('.fa-star').toggleClass('unstarred');
-                $('.fa-star').toggleClass('starred');
+                $('#suggestion .fa-star').toggleClass('unstarred');
+                $('#suggestion .fa-star').toggleClass('starred');
 			});
         // toggle star colour
-        $('.fa-star').toggleClass('unstarred');
-        $('.fa-star').toggleClass('starred');
+        $('#suggestion .fa-star').toggleClass('unstarred');
+        $('#suggestion .fa-star').toggleClass('starred');
 	});
     
     // Apply the JS styling
@@ -220,11 +220,11 @@ function liked(pc_id) {
 		.done(function (data) {
 			pcLikedByUser = (data==='true');
 			if (pcLikedByUser) {
-                $('.fa-star').removeClass('unstarred');
-                $('.fa-star').addClass('starred');
+                $('#suggestion .fa-star').removeClass('unstarred');
+                $('#suggestion .fa-star').addClass('starred');
 			} else {
-                $('.fa-star').addClass('unstarred');
-                $('.fa-star').removeClass('starred');
+                $('#suggestion .fa-star').addClass('unstarred');
+                $('#suggestion .fa-star').removeClass('starred');
 			}
 		});
 };
