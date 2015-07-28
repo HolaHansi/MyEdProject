@@ -30,9 +30,9 @@ class Computer_Labs(models.Model):
     sundayClosed = models.TimeField(null=True)
 
 
-    # By default, order based on ratio, largest ratio first
+    # By default, order based on number of computers available
     class Meta:
-        ordering = ['-ratio']
+        ordering = ['free']
 
     def __str__(self):
         return self.name

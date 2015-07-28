@@ -69,7 +69,7 @@ $(document).ready(function () {
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // Ignore swipes on the map or the button
-        excludedElements:'button, a, input, #currentMap'
+        excludedElements:'button, a, input'
     });
     
     // Set up the location fixer
@@ -133,18 +133,24 @@ function makeMap(){
     directionsDisplay = new google.maps.DirectionsRenderer();
     geocoder = new google.maps.Geocoder();
     
-    // initialise map options, hiding all controls other than a small zoom
+    // initialise map options, hiding all controls other than a small zoom and pan
     mapOptions = {
-        panControl: false, 
+        disableDefaultUI: true,
+        panControl: true,
+        panControlOptions: {
+            position: google.maps.ControlPosition.TOP_LEFT
+        },
         zoomControl: true,
         zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.SMALL
+            style: google.maps.ZoomControlStyle.SMALL,
+            position: google.maps.ControlPosition.TOP_LEFT
         },
         mapTypeControl: false,
         scaleControl: false,
         streetViewControl: false,
         overviewMapControl: false,
         rotateControl: false,
+        draggable: false
     };
     
     // initialise direction options
@@ -190,6 +196,8 @@ function updateMap(){
         // if the route was successfully caluclated, display it
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(result);
+        }else{
+            alert('Error: '+status);
         }
     });
 }
