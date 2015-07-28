@@ -5,7 +5,6 @@ body * {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-
 //Global navbar styling:
 .navbar {
     
@@ -23,9 +22,20 @@ body * {
         padding: 0;
         height:auto;
     }
-    .navbar-nav > li > a {
-        padding-top: 8px;
-        padding-bottom: 8px;
+    .navbar-nav {
+        margin: 0 -15px;
+        li { 
+            text-align:right;
+            a {
+                padding-top: 4px;
+                padding-bottom: 4px;
+            }
+            i {
+                float: right;
+                margin-left:5px;
+                line-height: 20px;
+            }
+        }
     }
     .navbar-toggle {
         margin-top: 5px;
