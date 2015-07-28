@@ -41,7 +41,8 @@ def to_radians(x):
 
 def excludeClosedLocations(data):
     """
-    Given a queryset of either rooms or pc-labs, the function returns a queryset without any currently closed rooms.
+    Given a queryset of either rooms or pc-labs, the function returns a queryset without any currently closed locations.
+    It does NOT filter out rooms without opening hours!
     :param data:
     :return: data (without any closed PCs or Rooms)
     """
@@ -166,6 +167,21 @@ def filter_out_busy_rooms(data, available_for_hours=1):
     return data
 
 # ======= users/views functions ======= #
+
+
+def get_currently_closed_locations(data, pc=True):
+    """
+    given a queryset of both closed and open locations, returns all the currently closed places.
+    A parameter specifies whether the queryset is for PCs or rooms.
+    """
+    openPlaces = excludeClosedLocations(data)
+    if pc:
+        openPlacesList = [x.id for x in openPlaces]
+        data = data.exclude(id__in=openPlacesList)
+    else:
+        openPlacesList = [x.locationId for x in openPlaces]
+        data = data.exclude(locationId_in=openPlacesList)
+    return data
 
 def filter_out_avail_rooms(data, available_for_hours=1):
     """

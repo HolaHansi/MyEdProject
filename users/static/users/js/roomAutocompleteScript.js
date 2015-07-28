@@ -79,6 +79,8 @@ function removeFromFavourites(id) {
 }
 
 
+
+
 //$(function() {
 //    // get the data from the autocomplete API
 //    $.get('/autocompleteAPI/', function(allLocations) {

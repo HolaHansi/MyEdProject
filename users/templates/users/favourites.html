@@ -49,7 +49,7 @@
 
             <!-- PCs -->
 
-            {% for fav in pc_favourites %}
+            {% for fav in pc_favourites_open %}
 
             <!-- favourite -->
 
@@ -77,16 +77,22 @@
                                     <div class="computersFreeGraph" id="{{ fav.id }}"></div>
                                 </div>
                             </div>
-                            <div class="col-xs-5">
+                            <div class="col-xs-3 openHourDiv">
+
+                                <i class="fa fa-clock-o openHoursComp"></i>
+
+
+
+                                <p>{{ fav | openHours }}</p>
+                            </div>
+
+                            <div class="col-xs-2">
                                 <a href="{% url 'labs' %}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-2">
+                            <div class="col-xs-1">
                                 <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
-                            </div>
-                            <div class="col-xs-offset ">
-                                <span class="glypthicon glyphicon-time" aria-hidden="true"></span>
                             </div>
                         </div>
                     </div>
@@ -94,6 +100,11 @@
             </div>
 
         {% endfor %}
+
+
+
+
+
 
     </div>
 
