@@ -40,16 +40,24 @@
         <div id='yesBtnContainer'>
             <a type="button" class="btn btn-success" id='yesBtn' href=''>Take me there <i class="fa fa-external-link"></i></a>
         </div>
-        <input type='text' id='testInput'><input value='go' type=button id='testGo'>
     </div>
     <div class='arrow right-arrow'>
         <i class="fa fa-chevron-right"></i>
     </div>
 </div>
+<!-- Needed to prevent options menu covering up important content -->
+<div id='padding' style='z-index:-1;height:40px;width:100%;text-align:center;'><i class="fa fa-gamepad"></i></div>
 <div id='optionsMenu'>
     <div class='triangle triangle-up'></div>
     <div id='optionsTitle'>
         <i class="fa fa-cog"></i>Options
+    </div>
+    <div id='optionsContent'>
+        <input type='text' id='testInput'><input value='go' type=button id='testGo'>
+        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
+        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
+        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
+        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
     </div>
 </div>
 {% endblock %}

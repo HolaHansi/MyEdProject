@@ -57,8 +57,8 @@ $(document).ready(function () {
     // Apply the JS styling
     resizeElements();
     
-    // Enable swiping...
-    $("#suggestion").swipe( {
+    // Enable swiping to switch suggestions...
+    $("#mainContainer").swipe( {
         // Load the next suggestion if the user swipes left
         swipeLeft:function(event, direction, distance, duration, fingerCount) {
             loadNextSuggestion();
@@ -69,8 +69,25 @@ $(document).ready(function () {
         },
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
-        // Ignore swipes on the map or the button
+        // Ignore swipes on any buttons
         excludedElements:'button, a, input'
+    });
+    // Enable swiping on the options menu to open and close it...
+    $("body").swipe( {
+        // Open the menu if the user swipes up
+        swipeUp:function(event, direction, distance, duration, fingerCount) {
+            $('#optionsMenu').addClass('opened')
+            resizeElements();
+        },
+        // Close the menu if the user swipes down
+        swipeDown:function(event, direction, distance, duration, fingerCount) {
+            $('#optionsMenu').removeClass('opened')
+            resizeElements();
+        },
+        // Menu appears before the user lifts their finger
+        triggerOnTouchEnd:false,
+        // this only covers the options menu
+        excludedElements:'#navbar, #mainContainer, input, a, button'
     });
     
     // Set up the location fixer
@@ -99,16 +116,86 @@ $(document).ready(function () {
             }
         });
     });
-    
+    $('#optionsTitle, .triangle').click(function(){
+        // toggle the options menu
+        $('#optionsMenu').toggleClass('opened');
+        // apply the JS styling to reposition the options menu
+        resizeElements();
+        if ($('#optionsMenu').hasClass('opened')){
+            $('.arrow').addClass('disabled');
+        } else {
+            $('.arrow').removeClass('disabled');
+        }
+    });
 });
 
 // JS styling
 function resizeElements(){
-    // resize the arrows to take up the whole suggestion
+    
+    // resize the arrows to take up the whole suggestion:
+    
     // set the height to 0 so the current height of the arrow isn't taken into account when calculating its new height
     $('.arrow').height(0);
-    // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), otherwise make the arrows take up the whole suggestion but no more
+    // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), 
+    // otherwise make the arrows take up the whole suggestion but no more
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
+    
+    //reposition the menu:
+    
+    
+    // close the menu
+    // needed even if menu is currently open to ensure all heights used in calculations are correct
+    $('body').css( { 
+        position: 'static',
+        'overflow-y':'auto'
+    });
+    $('#optionsMenu').css({
+        top:window.innerHeight-40,
+        bottom:'auto'
+    });
+    $('#optionsContent').css({
+        height: 'auto',
+        'overflow-x': 'visible',
+        'overflow-y': 'visible'
+    })
+    
+    // if the menu is currently open:
+    if($('#optionsMenu').hasClass('opened')){
+        // prevent scrolling on the body if scrolling was possible
+        if (window.innerHeight < $('body').innerHeight()){
+            $('body').css( { 
+                position: 'fixed',
+                'overflow-y':'scroll'
+            });
+        }
+        
+        // where to position the top of the options in order to get the bottom at the bottom of the body (not viewport)
+        optionsTop = (window.innerHeight - $('#optionsMenu').outerHeight())
+        
+        // if positioning the options there would cause the top to be too high (ie it would overlap the header), 
+        // then move it down so that the top of the options is just below the header
+        // and enable scrolling on the options menu
+        // (only needed on very small viewports)
+        if (optionsTop< $('.navbar').outerHeight() + 5 ){
+            optionsTop = $('.navbar').outerHeight() + 5
+            $('#optionsMenu').css({
+                bottom:'0px', 
+                top:optionsTop+'px'
+            });
+            $('#optionsContent').css({
+                height: ($('#optionsMenu').outerHeight() - $('#optionsTitle').outerHeight()) + 'px',
+                'overflow-y': 'scroll'
+            })
+        
+        // if positioning the options menu there wouldn't be a problem, put it there
+        } else{
+            $('#optionsMenu').css({
+                bottom:'0px', 
+                top:optionsTop+'px'
+            });
+        }
+        
+    }
 }
 
 // populate the HTML with the previous suggestion's details

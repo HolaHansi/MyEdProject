@@ -43,6 +43,11 @@ body * {
 .navbar .navbar-collapse {
   border: 0;
 }
+@media (max-width: 767px) {
+  .nav > li > a {
+    border-top: solid 1px #eee;
+  }
+}
 hr,
 p {
   margin: 0px 0px 0px 0px;
