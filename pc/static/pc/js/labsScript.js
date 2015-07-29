@@ -99,8 +99,8 @@ $(document).ready(function () {
             }
         });
     });
-    $('#optionsMenu').click(function(){
-        $(this).toggleClass('opened');
+    $('#optionsTitle, .triangle').click(function(){
+        $('#optionsMenu').toggleClass('opened');
         
         resizeElements();
     });
@@ -108,35 +108,65 @@ $(document).ready(function () {
 
 // JS styling
 function resizeElements(){
-    // resize the arrows to take up the whole suggestion
+    
+    // resize the arrows to take up the whole suggestion:
+    
     // set the height to 0 so the current height of the arrow isn't taken into account when calculating its new height
     $('.arrow').height(0);
-    // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), otherwise make the arrows take up the whole suggestion but no more
+    // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), 
+    // otherwise make the arrows take up the whole suggestion but no more
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
+    
+    //reposition the menu:
+    
+    
+    // close the menu
+    // needed even if menu is currently open to ensure all heights used in calculations are correct
+    $('body').css( { 
+        position: 'static',
+        'overflow-y':'auto'
+    });
+    $('#optionsMenu').css({
+        top:window.innerHeight-40,
+        'overflow-x': 'visible',
+        'overflow-y': 'visible',
+        bottom:'auto'
+    });
     
     // if the menu is currently open:
     if($('#optionsMenu').hasClass('opened')){
-        $('body, html').css({ 
-            'overflow-x': 'hidden',
-            'overflow-y': 'hidden',
-        });
-        optionsTop = Math.max(5, window.innerHeight - $('#optionsMenu').outerHeight())
-        $('#optionsMenu').css({
-            bottom:'0px', 
-            top:optionsTop+'px',
-            'overflow-y': 'scroll'
-        });
-    }else{
-        $('body, html').css({ 
-            'overflow-x': 'auto',
-            'overflow-y': 'auto'
-        });
-        $('#optionsMenu').css({
-            top:window.innerHeight-40,
-            'overflow-x': 'hidden',
-            'overflow-y': 'hidden',
-            bottom:'auto'
-        });
+      
+        // prevent scrolling on the body if scrolling was possible
+        if (window.innerHeight < $('body').innerHeight()){
+            $('body').css( { 
+                position: 'fixed',
+                'overflow-y':'scroll'
+            });
+        }
+        
+        // where to position the top of the options in order to get the bottom at the bottom of the body (not viewport)
+        optionsTop = (window.innerHeight - $('#optionsMenu').outerHeight())
+        
+        // if positioning the options there would cause the top to be too high (ie it would overlap the header), 
+        // then move it down so that the top of the options is just below the header
+        // and enable scrolling on the options menu
+        // (only needed on very small viewports)
+        if (optionsTop< $('.navbar').outerHeight() + 5 ){
+            optionsTop = $('.navbar').outerHeight() + 5
+            $('#optionsMenu').css({
+                bottom:'0px', 
+                top:optionsTop+'px',
+                'overflow-y': 'scroll'
+            });
+        
+        // if positioning the options menu there wouldn't be a problem, put it there
+        } else{
+            $('#optionsMenu').css({
+                bottom:'0px', 
+                top:optionsTop+'px'
+            });
+        }
+        
     }
 }
 
