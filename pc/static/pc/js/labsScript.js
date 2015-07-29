@@ -57,8 +57,8 @@ $(document).ready(function () {
     // Apply the JS styling
     resizeElements();
     
-    // Enable swiping...
-    $("#suggestion").swipe( {
+    // Enable swiping to switch suggestions...
+    $("#mainContainer").swipe( {
         // Load the next suggestion if the user swipes left
         swipeLeft:function(event, direction, distance, duration, fingerCount) {
             loadNextSuggestion();
@@ -69,8 +69,25 @@ $(document).ready(function () {
         },
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
-        // Ignore swipes on the options menu or any buttons
-        excludedElements:'button, a, input, #optionsMenu'
+        // Ignore swipes on any buttons
+        excludedElements:'button, a, input'
+    });
+    // Enable swiping on the options menu to open and close it...
+    $("body").swipe( {
+        // Open the menu if the user swipes up
+        swipeUp:function(event, direction, distance, duration, fingerCount) {
+            $('#optionsMenu').addClass('opened')
+            resizeElements();
+        },
+        // Close the menu if the user swipes down
+        swipeDown:function(event, direction, distance, duration, fingerCount) {
+            $('#optionsMenu').removeClass('opened')
+            resizeElements();
+        },
+        // Menu appears before the user lifts their finger
+        triggerOnTouchEnd:false,
+        // this only covers the options menu
+        excludedElements:'#navbar, #mainContainer, input, a, button'
     });
     
     // Set up the location fixer
@@ -100,9 +117,15 @@ $(document).ready(function () {
         });
     });
     $('#optionsTitle, .triangle').click(function(){
+        // toggle the options menu
         $('#optionsMenu').toggleClass('opened');
-        
+        // apply the JS styling to reposition the options menu
         resizeElements();
+        if ($('#optionsMenu').hasClass('opened')){
+            $('.arrow').addClass('disabled');
+        } else {
+            $('.arrow').removeClass('disabled');
+        }
     });
 });
 
@@ -128,14 +151,15 @@ function resizeElements(){
     });
     $('#optionsMenu').css({
         top:window.innerHeight-40,
-        'overflow-x': 'visible',
-        'overflow-y': 'visible',
         bottom:'auto'
     });
+    $('#optionsContent').css({
+        'overflow-x': 'visible',
+        'overflow-y': 'visible'
+    })
     
     // if the menu is currently open:
     if($('#optionsMenu').hasClass('opened')){
-      
         // prevent scrolling on the body if scrolling was possible
         if (window.innerHeight < $('body').innerHeight()){
             $('body').css( { 
@@ -155,9 +179,12 @@ function resizeElements(){
             optionsTop = $('.navbar').outerHeight() + 5
             $('#optionsMenu').css({
                 bottom:'0px', 
-                top:optionsTop+'px',
-                'overflow-y': 'scroll'
+                top:optionsTop+'px'
             });
+            $('#optionsContent').css({
+                'overflow-y': 'scroll',
+                height:'100%'
+            })
         
         // if positioning the options menu there wouldn't be a problem, put it there
         } else{
