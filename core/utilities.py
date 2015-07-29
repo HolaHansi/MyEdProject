@@ -48,7 +48,7 @@ def excludeClosedLocations(data):
     """
 
     # get current time and weekday
-    now = datetime.datetime.now()
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
     currentTime = now.time().isoformat()
     weekday = now.weekday()
 
@@ -151,7 +151,7 @@ def filter_out_busy_rooms(data, available_for_hours=1):
     :return: data of rooms that are not currently booked
     """
     # get the timespan that the user is interested in.
-    current_time = timezone.now()
+    current_time = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
     wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
 
     # if an event starts before end time, and ends after currentTime, then the room is
@@ -190,7 +190,7 @@ def filter_out_avail_rooms(data, available_for_hours=1):
     :return: data of rooms that are currently booked
     """
     # get the timespan that the user is interested in.
-    current_time = timezone.now()
+    current_time = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
     wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
 
     # if an event starts before end time, and ends after currentTime, then the room is

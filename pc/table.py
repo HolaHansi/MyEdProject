@@ -52,6 +52,7 @@ def get_pc_data():
                     # Opening Hours:
                     try:
                         weekdayOpen = building.open_hours.weekdayOpen
+                        print(weekdayOpen)
                         weekdayClosed = building.open_hours.weekdayClosed
                         saturdayOpen = building.open_hours.saturdayOpen
                         saturdayClosed = building.open_hours.saturdayClosed
