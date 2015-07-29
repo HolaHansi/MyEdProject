@@ -193,13 +193,30 @@
 }
 #optionsMenu {
   width: 100%;
+  position: fixed;
+  background-color: #eeeeee;
+}
+#optionsMenu .triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
   cursor: pointer;
+  position: relative;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-width: 0 6px 10px 6px;
+  border-color: transparent transparent #eeeeee transparent;
+  bottom: 10px;
+  margin-bottom: -10px;
 }
 #optionsMenu #optionsTitle {
   height: 40px;
   width: 100%;
   background-color: #eeeeee;
   font-size: 20px;
+  cursor: pointer;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -219,28 +236,16 @@
 #optionsMenu #optionsTitle .fa-cog {
   margin-right: 5px;
   color: #555;
+  cursor: pointer;
 }
-.triangle {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  position: relative;
-  right: 0;
-  left: 0;
-  margin-left: auto;
-  margin-right: auto;
+#optionsMenu.opened {
+  position: absolute;
 }
-.triangle.triangle-up {
-  border-width: 0 6px 10px 6px;
-  border-color: transparent transparent #eeeeee transparent;
-  bottom: 10px;
-  margin-bottom: -10px;
-}
-.triangle.triangle-down {
+#optionsMenu.opened .triangle {
   border-width: 10px 6px 0 6px;
   border-color: white transparent transparent transparent;
   bottom: 0px;
-  margin-bottom: 0px;
+  z-index: 1;
 }
 * {
   -webkit-touch-callout: none;

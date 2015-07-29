@@ -69,8 +69,8 @@ $(document).ready(function () {
         },
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
-        // Ignore swipes on the map or the button
-        excludedElements:'button, a, input'
+        // Ignore swipes on the options menu or any buttons
+        excludedElements:'button, a, input, #optionsMenu'
     });
     
     // Set up the location fixer
@@ -99,7 +99,11 @@ $(document).ready(function () {
             }
         });
     });
-    
+    $('#optionsMenu').click(function(){
+        $(this).toggleClass('opened');
+        
+        resizeElements();
+    });
 });
 
 // JS styling
@@ -109,6 +113,14 @@ function resizeElements(){
     $('.arrow').height(0);
     // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), otherwise make the arrows take up the whole suggestion but no more
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
+    
+    // if the menu is currently open:
+    if($('#optionsMenu').hasClass('opened')){
+        optionsBottom = window.innerHeight - ( $('.navbar').outerHeight() + $('#padding').outerHeight() + $('.arrow').height() )
+        $('#optionsMenu').css({bottom:optionsBottom+'px', top:'auto'}); //, top:45+'px'
+    }else{
+        $('#optionsMenu').css({top:window.innerHeight-40});
+    }
 }
 
 // populate the HTML with the previous suggestion's details
