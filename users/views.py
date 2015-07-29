@@ -5,6 +5,8 @@ from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
 from rooms.models import Tutorial_Room
+from django.utils import timezone
+import datetime
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.conf import settings
@@ -26,16 +28,38 @@ def autocompleteAPI(request):
         data = Computer_Labs.objects.all()
         labs = []
         already_favourited = user.pc_favourites.all()
+
+        now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+        currentTime = now.time().isoformat()
+        weekday = now.weekday()
+
+
         for lab in data:
             if len(already_favourited.filter(id=lab.id)) == 0:
+
+                if weekday >= 0 and weekday <= 4:
+                    openHour = lab.weekdayOpen
+                    closingHour = lab.weekdayClosed
+
+                # the same thing for saturday.
+                if weekday == 5:
+                    openHour = lab.saturdayOpen
+                    closingHour = lab.saturdayClosed
+                # if it's sunday... etc.
+                if weekday == 6:
+                    openHour = lab.sundayOpen
+                    closingHour = lab.sundayClosed
+
                 labs.append(
                     {'value': lab.name,
                      'data': {
                          'id': lab.id,
                          'free': lab.free,
                          'seats': lab.seats,
-                         'ratio': lab.ratio
-                     }
+                         'ratio': lab.ratio,
+                         'openHour': openHour,
+                         'closingHour': closingHour
+                        }
                      }
                 )
 

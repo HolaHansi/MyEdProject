@@ -15,7 +15,7 @@
 
 
 <script type="text/javascript" src="{% static 'users/js/roomAutocompleteScript.js' %}"></script>
-
+<script type="text/javascript" src="{% static 'users/js/jquery.autocomplete.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -53,10 +53,10 @@
 
             <!-- favourite -->
 
-            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
+            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default pc open">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
+                        <a class='headingWithName' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
                         <span class="badge free">{{ fav.free }}</span> {{ fav.name }} <span class="caret"></span>
                         </a>
                     </h4>
@@ -98,6 +98,8 @@
             </div>
 
         {% endfor %}
+{#        all the rooms that are open, and added through the autocompleter should be inserted here!#}
+        <div id="insertAfterOpen"></div>
 
 
 
@@ -106,7 +108,7 @@
 
             <!-- favourite -->
 
-            <div id="infoFor-lab-{{ fav.id }}"class="panel panel-default">
+            <div id="infoFor-lab-{{ fav.id }}"class="panel panel-default pc closed">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
@@ -160,10 +162,12 @@
 
         {% endfor %}
 
+        <div id="insertAfterClosed"></div>
 
 
+     <span class="list-group-item" id="autocompleteLabLi">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></span>
 
-    </div>
+        </div>
 
     </div>
 
