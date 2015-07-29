@@ -195,6 +195,7 @@
   width: 100%;
   position: fixed;
   background-color: #eeeeee;
+  transition: top 0.5s;
 }
 #optionsMenu .triangle {
   width: 0;
@@ -243,6 +244,17 @@
   border-color: white transparent transparent transparent;
   bottom: 0px;
   z-index: 1;
+}
+#optionsMenu #optionsContent {
+  margin: 0 10px;
+  text-align: center;
+}
+#optionsMenu #optionsContent #locationLabel {
+  font-weight: normal;
+  margin-bottom: 0px;
+}
+#optionsMenu #optionsContent #testGo {
+  font-family: FontAwesome;
 }
 * {
   -webkit-touch-callout: none;

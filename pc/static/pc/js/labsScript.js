@@ -16,7 +16,16 @@ var directionsDisplay;  // the Google directions renderer object, the bit that d
 var geocoder; // the Google object for geocoding
 
 //resize the JS styled elements if the window resizes
-$(window).resize(resizeElements);
+$(window).resize(function(){
+    // don't slide the menu if repositioning due to viewport resize, just move it instantly
+    $('#optionsMenu').css({transition:'none'});
+    resizeElements();
+    // timeout needed to stop the transition in slower browsers
+    // (yes, it's a bit of an ugly hack, but what to do with web dev isn't?)
+    setTimeout(function(){
+        $('#optionsMenu').css({transition:'top 0.5s'});
+    }, 100);
+});
 
 $(document).ready(function () {
     //Create the map
@@ -116,6 +125,8 @@ $(document).ready(function () {
             }
         });
     });
+    
+    // display or hide the options menu when the options header is clicked
     $('#optionsTitle, .triangle').click(function(){
         // toggle the options menu
         $('#optionsMenu').toggleClass('opened');
@@ -124,7 +135,7 @@ $(document).ready(function () {
         if ($('#optionsMenu').hasClass('opened')){
             $('.arrow').addClass('disabled');
         } else {
-            $('.arrow').removeClass('disabled');
+            getSuggestions(true, true, []);
         }
     });
 });
@@ -177,13 +188,14 @@ function resizeElements(){
         // and enable scrolling on the options menu
         // (only needed on very small viewports)
         if (optionsTop< $('.navbar').outerHeight() + 5 ){
-            optionsTop = $('.navbar').outerHeight() + 5
+            optionsTop = $('.navbar').outerHeight() + 5;
+            contentHeight = (window.innerHeight - optionsTop) - $('#optionsTitle').outerHeight() - 10
             $('#optionsMenu').css({
                 bottom:'0px', 
                 top:optionsTop+'px'
             });
             $('#optionsContent').css({
-                height: ($('#optionsMenu').outerHeight() - $('#optionsTitle').outerHeight()) + 'px',
+                height: contentHeight + 'px',
                 'overflow-y': 'scroll'
             })
         
@@ -200,14 +212,14 @@ function resizeElements(){
 
 // populate the HTML with the previous suggestion's details
 function loadPreviousSuggestion(){
-    if(currentChoice.index>0){
+    if(currentChoice.index>0 && (!($('#optionsMenu').hasClass('opened')))){
         currentChoice = suggestions[currentChoice.index - 1];
         loadChoice();
     }
 }
 // populate the HTML with the next suggestion's details
 function loadNextSuggestion(){
-    if(currentChoice.index<suggestions.length-1){
+    if(currentChoice.index<suggestions.length-1 && (!($('#optionsMenu').hasClass('opened')))){
         currentChoice = suggestions[currentChoice.index + 1];
         loadChoice();
     }

@@ -153,6 +153,7 @@
     width: 100%;
     position:fixed;
     background-color: @optionsBackground;
+    transition:top 0.5s;
     // wee triangle on top of the options menu signifying up or down
     .triangle {
         width: 0;
@@ -191,6 +192,19 @@
             border-color: white transparent transparent transparent;
             bottom:0px;
             z-index: 1;
+        }
+    }
+    #optionsContent{
+        margin: 0 10px;
+        text-align: center;
+        #locationLabel{
+            font-weight:normal;
+            margin-bottom: 0px;
+        }
+        #testInput{
+        }
+        #testGo{
+            font-family: FontAwesome;
         }
     }
 }
