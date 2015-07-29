@@ -154,6 +154,7 @@ function resizeElements(){
         bottom:'auto'
     });
     $('#optionsContent').css({
+        height: 'auto',
         'overflow-x': 'visible',
         'overflow-y': 'visible'
     })
@@ -182,8 +183,8 @@ function resizeElements(){
                 top:optionsTop+'px'
             });
             $('#optionsContent').css({
-                'overflow-y': 'scroll',
-                height:'100%'
+                height: ($('#optionsMenu').outerHeight() - $('#optionsTitle').outerHeight()) + 'px',
+                'overflow-y': 'scroll'
             })
         
         // if positioning the options menu there wouldn't be a problem, put it there
