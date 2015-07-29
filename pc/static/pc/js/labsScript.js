@@ -116,10 +116,27 @@ function resizeElements(){
     
     // if the menu is currently open:
     if($('#optionsMenu').hasClass('opened')){
-        optionsBottom = window.innerHeight - ( $('.navbar').outerHeight() + $('#padding').outerHeight() + $('.arrow').height() )
-        $('#optionsMenu').css({bottom:optionsBottom+'px', top:'auto'}); //, top:45+'px'
+        $('body, html').css({ 
+            'overflow-x': 'hidden',
+            'overflow-y': 'hidden',
+        });
+        optionsTop = Math.max(5, window.innerHeight - $('#optionsMenu').outerHeight())
+        $('#optionsMenu').css({
+            bottom:'0px', 
+            top:optionsTop+'px',
+            'overflow-y': 'scroll'
+        });
     }else{
-        $('#optionsMenu').css({top:window.innerHeight-40});
+        $('body, html').css({ 
+            'overflow-x': 'auto',
+            'overflow-y': 'auto'
+        });
+        $('#optionsMenu').css({
+            top:window.innerHeight-40,
+            'overflow-x': 'hidden',
+            'overflow-y': 'hidden',
+            bottom:'auto'
+        });
     }
 }
 

@@ -238,9 +238,6 @@
   color: #555;
   cursor: pointer;
 }
-#optionsMenu.opened {
-  position: absolute;
-}
 #optionsMenu.opened .triangle {
   border-width: 10px 6px 0 6px;
   border-color: white transparent transparent transparent;
