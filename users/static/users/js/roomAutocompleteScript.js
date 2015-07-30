@@ -13,8 +13,6 @@ $(document).ready(function(){
     $(".panel").on('hide.bs.collapse', function(){
         $(this).removeClass('dropup');
     });
-
-
 });
 
 
@@ -90,19 +88,15 @@ function removeFromFavourites(id) {
     isClicked = false;
 }
 
+
 function isOpenNow(suggestion) {
     var isOpen = true;
     var now = new Date();
-    currentHour = now.getHours();
-    currentMinute = now.getMinutes();
-    console.log("CURRENT HOUR:");
-    console.log(currentHour);
-    console.log("CURRENT MINUTE:");
-    console.log(currentMinute);
+    var currentHour = now.getHours();
+    var currentMinute = now.getMinutes();
 
-
-    openTime = suggestion.data.openHour;
-    closingTime = suggestion.data.closingHour;
+    var openTime = suggestion.data.openHour;
+    var closingTime = suggestion.data.closingHour;
 
     // if there is no opening hours for the given suggestion,
     // then just return true, so it can be added to "green-badges"
@@ -110,15 +104,11 @@ function isOpenNow(suggestion) {
         return true;
     }
 
-    openHour = parseInt(openTime.slice(0, openTime.indexOf(':')));
-    openMinute = parseInt(openTime.slice(openTime.indexOf(':')+1,openTime.indexOf(':')+3));
+    var openHour = parseInt(openTime.slice(0, openTime.indexOf(':')));
+    var openMinute = parseInt(openTime.slice(openTime.indexOf(':')+1,openTime.indexOf(':')+3));
 
-    closingHour = parseInt(closingTime.slice(0, closingTime.indexOf(':')));
-    closingMinute = parseInt(closingTime.slice(closingTime.indexOf(':')+1,closingTime.indexOf(':')+3));
-
-    console.log('here comes closing hour and minute!!!!!!!!!');
-    console.log(closingHour);
-    console.log(closingMinute);
+    var closingHour = parseInt(closingTime.slice(0, closingTime.indexOf(':')));
+    var closingMinute = parseInt(closingTime.slice(closingTime.indexOf(':')+1,closingTime.indexOf(':')+3));
 
 
     // the morning case (the place closes in the morning)
@@ -144,13 +134,12 @@ function isOpenNow(suggestion) {
             isOpen = false;
         };
     };
-    console.log('IS THE PLACE CURRENTLY OPEN???');
-    console.log(isOpen);
+
     return isOpen;
 
 }
 
-$(function() {
+$(document).ready(function() {
     // get the data from the autocomplete API
     $.get('/autocompleteAPI/', function(allLocations) {
         console.log(allLocations);
@@ -198,6 +187,9 @@ $(function() {
                 // clone the template and make is visible by removing the style attribute.
                 var clone = panelPC.clone(true);
                 clone.removeAttr('style');
+
+                // remove the clone's template class
+                clone.removeClass('template');
 
                 // initialize id variables
                 var infoForID = 'infoFor-lab-' + suggestion.data.id;
@@ -288,13 +280,15 @@ $(function() {
                 rmvBtn.attr('id', labID);
 
 
-                // insert the now populate clone at the appropriate spot.
+                // insert the now populated clone at the appropriate spot.
                 clone.insertAfter(placeToInsert);
 
                 // make the pieChart for this favourite.
                 makepie(stringId, suggestion.data.free, inUseVar);
 
+                // not really used at the moment
                 $('#noLabFavourites').remove()
+
             }
         });
 
