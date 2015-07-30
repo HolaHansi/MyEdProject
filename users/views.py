@@ -37,18 +37,24 @@ def autocompleteAPI(request):
         for lab in data:
             if len(already_favourited.filter(id=lab.id)) == 0:
 
-                if weekday >= 0 and weekday <= 4:
-                    openHour = lab.weekdayOpen
-                    closingHour = lab.weekdayClosed
+                if not lab.weekdayOpen:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
 
-                # the same thing for saturday.
-                if weekday == 5:
-                    openHour = lab.saturdayOpen
-                    closingHour = lab.saturdayClosed
-                # if it's sunday... etc.
-                if weekday == 6:
-                    openHour = lab.sundayOpen
-                    closingHour = lab.sundayClosed
+                else:
+                    if weekday >= 0 and weekday <= 4:
+                        openHour = lab.weekdayOpen
+                        closingHour = lab.weekdayClosed
+
+                    # the same thing for saturday.
+                    if weekday == 5:
+                        openHour = lab.saturdayOpen
+                        closingHour = lab.saturdayClosed
+                    # if it's sunday... etc.
+                    if weekday == 6:
+                        openHour = lab.sundayOpen
+                        closingHour = lab.sundayClosed
+
 
                 labs.append(
                     {'value': lab.name,
@@ -58,7 +64,9 @@ def autocompleteAPI(request):
                          'seats': lab.seats,
                          'ratio': lab.ratio,
                          'openHour': openHour,
-                         'closingHour': closingHour
+                         'closingHour': closingHour,
+                         'longitude': lab.longitude,
+                         'latitude': lab.latitude
                         }
                      }
                 )

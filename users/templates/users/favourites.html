@@ -49,6 +49,22 @@
 
             <!-- PCs -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             {% for fav in pc_favourites_open %}
 
             <!-- favourite -->
@@ -56,7 +72,7 @@
             <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default pc open">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
                     <h4 class="panel-title">
-                        <a class='headingWithName' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
                         <span class="badge free">{{ fav.free }}</span> {{ fav.name }} <span class="caret"></span>
                         </a>
                     </h4>
@@ -66,11 +82,11 @@
                         <div class="row">
                             <div class="col-xs-4 badge-text">
                                 <p id="freeBadgeText">Free:  <span class="badge free">{{ fav.free }}</span></p>
-                                <p>In-Use:<span class="badge inuse">{{ fav | inUse }}</span></p>
+                                <p id="useBadgeText">In-Use:<span class="badge inuse">{{ fav | inUse }}</span></p>
                             </div>
                             <div class="col-xs-3">
                                 <div id='computersFreeGraphContainer'>
-                                    <script>
+                                    <script class="makePieScript">
 {#                                 <!-- makepiechart function takes the id, number of free, number in use -->#}
                                         makepie("{{fav.id}}", {{ fav.free }}, {{ fav | inUse }});
                                     </script>
@@ -80,8 +96,8 @@
                             <div class="col-xs-3 openHourDiv">
 
                                 <i class="fa fa-clock-o openHoursComp"></i>
-                                <p>{{ fav | openTime }}</p>
-                                <p>{{ fav | closingTime }}</p>
+                                <p class="openTimeP">{{ fav | openTime }}</p>
+                                <p class="closingTimeP">{{ fav | closingTime }}</p>
                             </div>
 
                             <div class="col-xs-2">
@@ -111,7 +127,7 @@
             <div id="infoFor-lab-{{ fav.id }}"class="panel panel-default pc closed">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
                         <span class="badge times"><i class="fa fa-times"></i></span> {{ fav.name }} <span class="caret"></span>
                         </a>
                     </h4>
@@ -124,11 +140,11 @@
 
                                 <div class="col-xs-4 badge-text">
                                     <p id="freeBadgeText">Free:  <span class="badge free">{{ fav.free }}</span></p>
-                                    <p>In-Use:<span class="badge inuse">{{ fav | inUse }}</span></p>
+                                    <p id="useBadgeText">In-Use:<span class="badge inuse">{{ fav | inUse }}</span></p>
                                 </div>
                                 <div class="col-xs-3">
                                     <div id='computersFreeGraphContainer'>
-                                        <script>
+                                        <script class="makePieScript">
                                         {# // makepiechart function takes the id, number of free, number in use #}
                                             makepie("{{fav.id}}", {{ fav.free }}, {{ fav | inUse }});
                                         </script>
@@ -142,8 +158,9 @@
 
                                 <i class="fa fa-clock-o openHoursComp"></i>
 
-                                <p class="closedOpeningHour">{{ fav | openTime }}</p>
-                                <p class="closedOpeningHour">{{ fav | closingTime }}</p>
+                                <p class="closedOpeningHour openTimeP">{{ fav | openTime }}</p>
+                                <p class="closedOpeningHour closingTimeP">{{ fav | closingTime }}</p>
+
 
                             </div>
 
@@ -166,6 +183,121 @@
 
 
      <span class="list-group-item" id="autocompleteLabLi">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></span>
+
+            <!-- hidden template for PC OPEN -->
+
+        <div id="infoFor-lab-" class="panel panel-default pc open template" style="display:none;">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
+                    <h4 class="panel-title">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-" href="#collapse-" aria-expanded="true" aria-controls="collapse-">
+                        <span class="badge free"></span> <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse-" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-4 badge-text">
+                                <p id="freeBadgeText">Free:  <span class="badge free"></span></p>
+                                <p id="useBadgeText">In-Use:<span class="badge inuse"></span></p>
+                            </div>
+                            <div class="col-xs-3">
+                                <div id='computersFreeGraphContainer'>
+                                    <script class="makePieScript">
+                                    </script>
+                                    <div class="computersFreeGraph" id="someIdForOpen"></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3 openHourDiv">
+
+                                <i class="fa fa-clock-o openHoursComp"></i>
+                                <p class="openTimeP"></p>
+                                <p class="closingTimeP"></p>
+                            </div>
+
+                            <div class="col-xs-2">
+                                <a href="http://maps.google.com/maps?q=" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- END OF HIDDEN TEMPLATE FOR PC OPEN -->
+
+
+
+            <!-- HIDDEN TEMPLATE FOR PC CLOSED -->
+
+                       <!-- favourite -->
+
+            <div id="infoFor-lab-" class="panel panel-default pc closed template" style="display:none;">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-">
+                    <h4 class="panel-title">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-" href="#collapse-" aria-expanded="true" aria-controls="collapse-">
+                        <span class="badge times"><i class="fa fa-times"></i></span>  <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse-" class="panel-collapse collapse" role="tabpanel">
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <div class="closedStats">
+
+                                <div class="col-xs-4 badge-text">
+                                    <p id="freeBadgeText">Free:  <span class="badge free"></span></p>
+                                    <p id="useBadgeText">In-Use:<span class="badge inuse"></span></p>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div id='computersFreeGraphContainer'>
+                                        <script class="makePieScript">
+                                        </script>
+                                        <div class="computersFreeGraph" id="someIdForClosed"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-xs-3 openHourDiv">
+
+                                <i class="fa fa-clock-o openHoursComp"></i>
+
+                                <p class="closedOpeningHour openTimeP"></p>
+                                <p class="closedOpeningHour closingTimeP"></p>
+
+
+                            </div>
+
+                            <div class="col-xs-2">
+                                <a href="http://maps.google.com/maps?q=" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-1">
+                                <button id="lab-" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+            <!-- END OF HIDDEN TEMPLATE FOR PC CLOSED -->
+
+
+
+
+
 
         </div>
 

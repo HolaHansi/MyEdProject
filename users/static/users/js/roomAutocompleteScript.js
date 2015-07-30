@@ -14,7 +14,8 @@ $(document).ready(function(){
         $(this).removeClass('dropup');
     });
 
-
+    // load auto-complete
+    autoCompleteAPI();
 });
 
 
@@ -49,13 +50,10 @@ function removeFavouriteBtn(){
             // if the check symbol is pressed, then obtain the id from the parent div, and
             // call the remove from favourites function.
             $('.confirmRemove').click(function () {
-
-
                 var btn = $(this).parent();
                 console.log(btn);
                 var thisId = btn.attr('id');
                 console.log(thisId);
-
                 removeFromFavourites(thisId);
             });
         // end of coditional
@@ -63,7 +61,7 @@ function removeFavouriteBtn(){
 
         if (isClicked == true) {
             // the x has been pressed, return to normal button again
-            $(".remove-btn").html("<i class='fa fa-star starred'></i>Remove");
+            $(this).html("<i class='fa fa-star starred'></i>Remove");
             isClicked = false;
         };
     // end of else
@@ -86,39 +84,33 @@ function removeFromFavourites(id) {
 
     $.post('/like/', jsonToUnlike);
 
-    $('#infoFor-' + id).fadeOut('slow');
+    $('#infoFor-' + id).fadeOut(function() { $(this).remove(); });
     isClicked = false;
+    // update the autoComplete function.
+    autoCompleteAPI();
 }
+
 
 function isOpenNow(suggestion) {
     var isOpen = true;
     var now = new Date();
-    currentHour = now.getHours();
-    currentMinute = now.getMinutes();
-    console.log("CURRENT HOUR:");
-    console.log(currentHour);
-    console.log("CURRENT MINUTE:");
-    console.log(currentMinute);
+    var currentHour = now.getHours();
+    var currentMinute = now.getMinutes();
 
-
-    openTime = suggestion.data.openHour;
-    closingTime = suggestion.data.closingHour;
+    var openTime = suggestion.data.openHour;
+    var closingTime = suggestion.data.closingHour;
 
     // if there is no opening hours for the given suggestion,
     // then just return true, so it can be added to "green-badges"
-    if (openTime === undefined || openTime === null) {
+    if (openTime == 'n/a') {
         return true;
     }
 
-    openHour = parseInt(openTime.slice(0, openTime.indexOf(':')));
-    openMinute = parseInt(openTime.slice(openTime.indexOf(':')+1,openTime.indexOf(':')+3));
+    var openHour = parseInt(openTime.slice(0, openTime.indexOf(':')));
+    var openMinute = parseInt(openTime.slice(openTime.indexOf(':')+1,openTime.indexOf(':')+3));
 
-    closingHour = parseInt(closingTime.slice(0, closingTime.indexOf(':')));
-    closingMinute = parseInt(closingTime.slice(closingTime.indexOf(':')+1,closingTime.indexOf(':')+3));
-
-    console.log('here comes closing hour and minute!!!!!!!!!');
-    console.log(closingHour);
-    console.log(closingMinute);
+    var closingHour = parseInt(closingTime.slice(0, closingTime.indexOf(':')));
+    var closingMinute = parseInt(closingTime.slice(closingTime.indexOf(':')+1,closingTime.indexOf(':')+3));
 
 
     // the morning case (the place closes in the morning)
@@ -144,16 +136,15 @@ function isOpenNow(suggestion) {
             isOpen = false;
         };
     };
-    console.log('IS THE PLACE CURRENTLY OPEN???');
-    console.log(isOpen);
+
     return isOpen;
 
 }
 
-$(function() {
+function autoCompleteAPI() {
     // get the data from the autocomplete API
     $.get('/autocompleteAPI/', function(allLocations) {
-        console.log(allLocations);
+        allLocations;
 
         // lab autocomplete dropdown code:
         $('#autocompleteLab').autocomplete({
@@ -172,79 +163,134 @@ $(function() {
                 // reset the autocomplete dropdown
                 $(this).autocomplete().clear();
                 $(this).val('');
-                // add the new favourite to the list
+                // add the new favourite list of favourites
 
-                // if the suggestion is currently open, it should be added to the list of open places.
-                if (isOpenNow(suggestion)) {
+                // =========================================
+
+                // check if place is open
+                var isOpen = isOpenNow(suggestion);
+
+                // if the place is open:
+                if (isOpen) {
+                  // determine where to insert the new favourite
                   var placeToInsert = '#insertAfterOpen';
+                  // determine which template to use - the template is currently not visible: css(display:none;)
+                  var panelPC = $(".panel.panel-default.pc.open.template");
+                  // determine the content of theLink which displays the name and badge on the tab for the favourite
+                  var linkHtml = '<span class="badge free">' + suggestion.data.free + '</span>' + suggestion.value + '<span class="caret"></span>';
                 }
-                // if the suggestion is currently closed it should be added to the end of the list.
+                // if the place is closed:
                 else {
                     var placeToInsert = '#insertAfterClosed';
+                    var panelPC = $(".panel.panel-default.pc.closed.template");
+                    var linkHtml = '<span class="badge times"><i class="fa fa-times"></i></span>' + suggestion.value + '<span class="caret"></span>';
                 };
 
-                var panelPC = $(".panel.panel-default.pc.open:first");
+                // clone the template and make is visible by removing the style attribute.
                 var clone = panelPC.clone(true);
+                clone.removeAttr('style');
 
-                // info-for head panel id.
+                // remove the clone's template class
+                clone.removeClass('template');
+
+                // initialize id variables
                 var infoForID = 'infoFor-lab-' + suggestion.data.id;
-
+                var labID = 'lab-'+ suggestion.data.id;
                 var collapseID = '#collapse-' + suggestion.data.id;
+                var collapseIDNoHashtag = 'collapse-' + suggestion.data.id;
 
-                console.log('id original');
-                console.log(clone.attr('id'));
-                console.log('id new');
+                // relevant attributes
+                var freeVar = suggestion.data.free;
+                var inUseVar = (suggestion.data.seats - suggestion.data.free);
+
+                // give panel the id for infoForID.
                 clone.attr('id', infoForID);
-                console.log(clone.attr('id'));
 
-                // child of clone!
-                console.log('child of clone');
-                console.log(clone.children(".panel-heading").attr('data-target'));
+                // get pointers to all the element that must be modified in the clone:
+                var panelHeading = clone.find(".panel-heading");
+                var theLink = clone.find('.theLink');
+                var panelCollapse = clone.find('.panel-collapse.collapse');
 
-                var panelHeading = clone.children(".panel-heading");
+                // the badges for free and inuse
+                var freeBadgeStat = panelCollapse.find("#freeBadgeText");
+                var useBadgeStat = panelCollapse.find("#useBadgeText");
 
+                // the div displaying the pie-chart
+                var computerFreeGraph = panelCollapse.find('.computersFreeGraph');
+
+                // opening hour paragraphs
+                var openTimeP = panelCollapse.find(".openTimeP");
+                var closingTimeP = panelCollapse.find(".closingTimeP");
+
+                // map and remove btn
+                var mapBtn = panelCollapse.find(".btn.btn-default.map-btn");
+                var rmvBtn = panelCollapse.find(".btn.btn-default.remove-btn");
+
+
+                // change date-target for panelHeading
                 panelHeading.attr('data-target', collapseID);
-                console.log(panelHeading.attr('data-target'));
 
 
-                var theLink = panelHeading.children(".panel-title").children('.headingWithName');
+                // change attributes for theLink
                 theLink.attr("data-target", collapseID);
-                console.log('HREF!!!!!!!!!!!!!!!!!!');
-                console.log(theLink.attr("href"));
                 theLink.attr("href", collapseID);
-                console.log(theLink.attr("href"));
+                theLink.attr("aria-controls", collapseIDNoHashtag);
+
+
+                // change the html in theLink - the html value depends on whether place is closed or not.
+                theLink.html(linkHtml);
 
 
 
-                console.log("THIS IS THE COLLAPSE ID WITHOUT A HASHTAG");
-                console.log(collapseID.slice(1,collapseID.length));
-
-                theLink.attr("aria-controls", collapseID.slice(1,collapseID.length));
-
-                console.log("ARIA-CONTROLS TEST");
-                console.log(theLink.attr("aria-controls"));
+                // change id of panelCollapse to match id favourite - slice expression is for getting rid of hashtag
+                panelCollapse.attr('id', collapseIDNoHashtag);
 
 
+                // update inUse and free badge values
+                freeBadgeStat.html('Free:  <span class="badge free">'+ freeVar + '</span>');
+                useBadgeStat.html('Free:  <span class="badge inuse">'+ inUseVar + '</span>');
 
+                // remove the script that normally makes the pie chart.
+                panelCollapse.find('.makePieScript').remove();
 
-                console.log('theLink');
-                console.log(theLink);
+                // change id of computerFreeGraph to match the favourite ID.
+                computerFreeGraph.attr('id', suggestion.data.id);
 
-                console.log('link text');
-                console.log(theLink.attr('innerText'));
-
-                console.log(clone);
-
-                //var badgeFreeFirst = theLink.children("")
+                var stringId = suggestion.data.id.toString();
 
 
 
-                var newItem = $('<li class="list-group-item" id="lab-'+suggestion.data.id+'">'+suggestion.value+': '
-                    +suggestion.data.free+'/'+suggestion.data.seats+' computers free ('
-                    +Math.floor(suggestion.data.ratio*100)+'%) ' +
-                    '<span class="unliker unclicked">Unlike</span></li>');
-                newItem.insertBefore(placeToInsert);
-                $('#noLabFavourites').remove()
+                // get the opening hours
+                if (suggestion.data.openHour == 'n/a') {
+                    var openHourHtml = 'n/a';
+                    var closingHourHtml = 'n/a';
+                }
+                else {
+                    var openHourHtml = suggestion.data.openHour.slice(0, 5);
+                    var closingHourHtml = suggestion.data.closingHour.slice(0,5);
+                }
+                // write the opening hours to the paragraphs in the clone.
+                openTimeP.html(openHourHtml);
+                closingTimeP.html(closingHourHtml);
+
+
+                // get the right longitude, latitude for the googleMaps link.
+                mapBtn.attr('href', "http://maps.google.com/maps?q=" + suggestion.data.latitude + "," + suggestion.data.longitude);
+
+
+                // give rmvBtn the correctID.
+                rmvBtn.attr('id', labID);
+
+
+                // insert the now populated clone at the appropriate spot.
+                clone.insertAfter(placeToInsert);
+
+                // make the pieChart for this favourite.
+                makepie(stringId, suggestion.data.free, inUseVar);
+
+                // relocate the insertAfter div.
+                $(placeToInsert).insertAfter(clone);
+
             }
         });
 
@@ -258,7 +304,7 @@ $(function() {
                 $.post('/like/', {
                         'locationId': suggestion.data.id,
                         'roomLikedByUser': false
-                    })
+                    });
                 // don't bring it up in the autocomplete dropdown again
                 allLocations['rooms'] = allLocations['rooms'].filter(function(room){return room.data.id!=suggestion.data.id})
                 $(this).autocomplete().setOptions({lookup:allLocations['rooms']});
@@ -295,4 +341,4 @@ $(function() {
         });
     });
 
-});
+}
