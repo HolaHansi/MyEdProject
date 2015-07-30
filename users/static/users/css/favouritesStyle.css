@@ -1,3 +1,22 @@
+.containerForAllez {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+.btn-group-rooms {
+  float: right;
+}
+#favourites-page-logo {
+  float: right;
+  padding-right: 8px;
+  padding-top: 2px;
+}
+#favourites-page-logo #favtext {
+  text-align: center;
+  right: 20px;
+}
+#logostar {
+  color: #f0ad4e;
+}
 @media (max-width: 288px) {
   .openHourDiv {
     opacity: 0;
@@ -11,6 +30,10 @@
 }
 .nav {
   margin-bottom: 6px;
+}
+.nav .nav-pills {
+  white-space: nowrap;
+  overflow: hidden;
 }
 .map-btn {
   margin-top: 5px;

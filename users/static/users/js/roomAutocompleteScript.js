@@ -92,20 +92,25 @@ function removeFromFavourites(id) {
 
 
 function isOpenNow(suggestion) {
+    //This function takes a suggestion and returns true if it's currently open, and false otherwise.
+
+    // get current time.
     var isOpen = true;
     var now = new Date();
     var currentHour = now.getHours();
     var currentMinute = now.getMinutes();
 
+    // get the opening and closing times of the suggestion
     var openTime = suggestion.data.openHour;
     var closingTime = suggestion.data.closingHour;
 
     // if there is no opening hours for the given suggestion,
-    // then just return true, so it can be added to "green-badges"
+    // then just return true - so it's not displayed as if it's closed.
     if (openTime == 'n/a') {
         return true;
     }
 
+    // partition times into hours and minutes.
     var openHour = parseInt(openTime.slice(0, openTime.indexOf(':')));
     var openMinute = parseInt(openTime.slice(openTime.indexOf(':')+1,openTime.indexOf(':')+3));
 
@@ -142,11 +147,13 @@ function isOpenNow(suggestion) {
 }
 
 function autoCompleteAPI() {
+    // this is the function that gets the data, and configures the settings for the autoCompleter.
+
     // get the data from the autocomplete API
     $.get('/autocompleteAPI/', function(allLocations) {
         allLocations;
 
-        // lab autocomplete dropdown code:
+        // autocomplete code for PC-LABS:
         $('#autocompleteLab').autocomplete({
             lookup: allLocations['labs'],
             autoSelectFirst: true,
@@ -163,9 +170,9 @@ function autoCompleteAPI() {
                 // reset the autocomplete dropdown
                 $(this).autocomplete().clear();
                 $(this).val('');
-                // add the new favourite list of favourites
 
-                // =========================================
+
+                // ========== add the new favourite to list of favourites using its appropriate template ========== //
 
                 // check if place is open
                 var isOpen = isOpenNow(suggestion);
@@ -291,6 +298,7 @@ function autoCompleteAPI() {
                 // relocate the insertAfter div.
                 $(placeToInsert).insertAfter(clone);
 
+                // done job!
             }
         });
 
