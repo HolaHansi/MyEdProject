@@ -250,12 +250,17 @@
   padding-bottom: 15px;
   text-align: center;
 }
+#optionsMenu #optionsContent .optionsCategory {
+  border-top: solid #ddd 1px;
+  margin-bottom: 5px;
+}
 #optionsMenu #optionsContent .optionsCategory h1 {
   font-size: 20px;
   margin: 5px 0px;
 }
-#optionsMenu #optionsContent .optionsCategory #locationLabel {
+#optionsMenu #optionsContent .optionsCategory label {
   font-weight: normal;
+  font-size: 16px;
   margin-bottom: 0px;
 }
 #optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
