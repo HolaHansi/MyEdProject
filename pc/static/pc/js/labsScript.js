@@ -7,8 +7,6 @@ var userLongitude = -3.188775; // current longitude of user
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
-var oldOptions = {}; //the last state of the options menu, used to check whether the user has changed any options within the options menu
-
 var map; // the Google Map object
 var mapOptions; // the JSON of options for the map
 var directionOptions; // the JSON of options for getting directions
@@ -32,6 +30,27 @@ $(window).resize(function(){
 $(document).ready(function () {
     // Create the map
     makeMap();
+    
+    // if the user has changed their settings this session, use the new settings
+    if (sessionStorage['options']){
+        var options = JSON.parse(sessionStorage['options']);
+        
+        $('#nearbyCheckbox').attr('checked',options.nearby);
+        $('#quietCheckbox').attr('checked',options.quiet);
+        for (i in options.campuses){
+            campus = options.campuses[i]
+            $('#'+campus).attr('checked',false);
+        }
+        
+    } else {
+        // save the current options state
+        var oldOptions = {
+            nearby: $('#nearbyCheckbox').is(':checked'), 
+            quiet: $('#quietCheckbox').is(':checked'), 
+            campuses:getUnselectedCampuses()
+        };
+        sessionStorage['options'] = JSON.stringify(oldOptions)
+    }
     
     // if the user has corrected their location this session, use the corrected coordinates
     if(sessionStorage['customCoordinates']=="true"){
@@ -176,12 +195,6 @@ $(document).ready(function () {
         resizeElements();
         // if the options menu has just opened:
         if ($('#optionsMenu').hasClass('opened')){
-            // save the current options state
-            oldOptions = {
-                nearby: $('#nearbyCheckbox').is(':checked'), 
-                quiet: $('#quietCheckbox').is(':checked'), 
-                campuses:getUnselectedCampuses()
-            };
             $('.arrow').addClass('disabled');
         } else {
             // check if the options have changed
@@ -190,10 +203,12 @@ $(document).ready(function () {
                 quiet: $('#quietCheckbox').is(':checked'), 
                 campuses:getUnselectedCampuses()
             };
+            var oldOptions = JSON.parse(sessionStorage['options']);
             var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
             // if they have, refresh the suggestions
             if (optionsChanged){
                 getSuggestionsUsingOptions();
+                sessionStorage['options'] = JSON.stringify(newOptions)
             // if they haven't, just continue where you left off
             } else {
                 // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
@@ -397,21 +412,30 @@ function liked(pc_id) {
 		});
 };
 
+// get the suggestions from the server using the current options chosen by the user as parameters
 function getSuggestionsUsingOptions(){
-    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), getUnselectedCampuses());
+    // get the list of campuses the user doesn't want
+    var campuses=getUnselectedCampuses();
+    var ids=[]
+    // convert each id from the HTML id to the format needed by the backend, namely one of [‘Central’,‘Lauriston’,"King's Buildings", 'Holyrood', 'Other']
+    for (i in campuses){
+        var id=campuses[i];
+        id = id.charAt(0).toUpperCase() + id.slice(1,id.indexOf('Checkbox'));
+        if (id=='Kings'){
+            id="King's Buildings";
+        }
+        ids.push(id)
+    }
+    // get the suggestions
+    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), ids);
 }
 
+// returns the id of all campuses the user doesn't want included
 function getUnselectedCampuses(){
     ids = [];
 	$('.campusCheckbox').each(function () {
         if(!this.checked){
-            // convert from checkbox id to campus as used in the backend ['Central', "King's Buildings", "Lauriston", "Holyrood", "Other"]
-            var id = this.id
-            id = id.charAt(0).toUpperCase() + id.slice(1,id.indexOf('Checkbox'));
-            if (id=='Kings'){
-                id="King's Buildings";
-            }
-            ids.push(id);
+            ids.push(this.id);
         }
 	});
 	return ids;
