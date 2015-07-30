@@ -229,6 +229,8 @@ $(document).ready(function () {
     $.fn.bootstrapSwitch.defaults.offColor = 'danger';
     $.fn.bootstrapSwitch.defaults.onText = '✓';
     $.fn.bootstrapSwitch.defaults.offText = '☓';
+    $.fn.bootstrapSwitch.defaults.handleWidth = 20;
+    $.fn.bootstrapSwitch.defaults.labelWidth = 20;
     $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
 });
 
@@ -541,6 +543,8 @@ function savePosition(position) {
     // for some reason, many uni computers think they're in the middle of Arthur's seat.  If we detect this, tell them their location is wrong.  
     if (userLatitude>55.948367 && userLatitude<55.948368 && userLongitude<-3.158850 && userLongitude>-3.158851){
         alert("Unable to get accurate location.  Enter your location manually in the options menu to refine your location.");
+        $('#optionsTitle').trigger('click');
+        $('#locationCorrectorText').focus();
     }
 	getSuggestions(false, true, []);
 }

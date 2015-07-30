@@ -301,20 +301,3 @@ body{
     .justify-content(center);
     .align-items(center);
 }
-
-//set item selectabilitiy
-.selectable(@a) {
-    -webkit-touch-callout: @a;
-    -webkit-user-select: @a;
-    -moz-user-select: @a;
-    -ms-user-select: @a;
-    user-select: @a;
-}
-
-// make only p and input elements selectable
-*{
-    .selectable(none);
-}
-p, input{
-    .selectable(text);
-}
