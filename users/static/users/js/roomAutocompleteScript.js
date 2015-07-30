@@ -13,6 +13,9 @@ $(document).ready(function(){
     $(".panel").on('hide.bs.collapse', function(){
         $(this).removeClass('dropup');
     });
+
+    // load auto-complete
+    autoCompleteAPI();
 });
 
 
@@ -47,13 +50,10 @@ function removeFavouriteBtn(){
             // if the check symbol is pressed, then obtain the id from the parent div, and
             // call the remove from favourites function.
             $('.confirmRemove').click(function () {
-
-
                 var btn = $(this).parent();
                 console.log(btn);
                 var thisId = btn.attr('id');
                 console.log(thisId);
-
                 removeFromFavourites(thisId);
             });
         // end of coditional
@@ -61,7 +61,7 @@ function removeFavouriteBtn(){
 
         if (isClicked == true) {
             // the x has been pressed, return to normal button again
-            $(".remove-btn").html("<i class='fa fa-star starred'></i>Remove");
+            $(this).html("<i class='fa fa-star starred'></i>Remove");
             isClicked = false;
         };
     // end of else
@@ -84,8 +84,10 @@ function removeFromFavourites(id) {
 
     $.post('/like/', jsonToUnlike);
 
-    $('#infoFor-' + id).fadeOut('slow');
+    $('#infoFor-' + id).fadeOut(function() { $(this).remove(); });
     isClicked = false;
+    // update the autoComplete function.
+    autoCompleteAPI();
 }
 
 
@@ -139,10 +141,10 @@ function isOpenNow(suggestion) {
 
 }
 
-$(document).ready(function() {
+function autoCompleteAPI() {
     // get the data from the autocomplete API
     $.get('/autocompleteAPI/', function(allLocations) {
-        console.log(allLocations);
+        allLocations;
 
         // lab autocomplete dropdown code:
         $('#autocompleteLab').autocomplete({
@@ -286,8 +288,8 @@ $(document).ready(function() {
                 // make the pieChart for this favourite.
                 makepie(stringId, suggestion.data.free, inUseVar);
 
-                // not really used at the moment
-                $('#noLabFavourites').remove()
+                // relocate the insertAfter div.
+                $(placeToInsert).insertAfter(clone);
 
             }
         });
@@ -339,4 +341,4 @@ $(document).ready(function() {
         });
     });
 
-});
+}
