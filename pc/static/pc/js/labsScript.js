@@ -31,8 +31,17 @@ $(document).ready(function () {
     //Create the map
     makeMap();
     
+    //if the user has corrected their location this session, use the corrected coordinates
+    if(sessionStorage['customCoordinates']=="true"){
+        userLatitude = parseFloat(sessionStorage['userLatitude']);
+        userLongitude = parseFloat(sessionStorage['userLongitude']);
+	    getSuggestions(true, true, []);
+    
+    // otherwise use JS to get their location
+    } else {
     //get the user's location, then send a get request if that's successful and display the initial suggestion
-	getLocation();
+	   getLocation();
+    }
     
 	//when the user clicks the next button, load the next suggestion
 	$('.right-arrow').click(function () {
@@ -100,9 +109,9 @@ $(document).ready(function () {
     });
     
     // Set up the location fixer
-    $('#testGo').click(function(){
+    $('#locationCorrectorGo').click(function(){
         // get the input from the user
-        var newLocation=$('#testInput').val();
+        var newLocation=$('#locationCorrectorText').val();
         // if the user hasn't narrowed down their search to Edinburgh (or elsewhere, as estimated by their using a comma), do it for them
         if (newLocation.indexOf('Edinburgh')==-1 && newLocation.indexOf(',')==-1){
             newLocation+=', Edinburgh';
@@ -113,10 +122,20 @@ $(document).ready(function () {
         geocoder.geocode(geocodingOptions,function(results, status){
             // if successful, 
             if (status==google.maps.GeocoderStatus.OK){
-                newCoordinates = results[0].geometry.location;
+                
+                // save the new coordinates
+                var newCoordinates = results[0].geometry.location;
                 userLatitude = newCoordinates.lat();
                 userLongitude = newCoordinates.lng();
+                
+                // save this to the local session
+                sessionStorage['customCoordinates']=true;
+                sessionStorage['userLatitude']=userLatitude;
+                sessionStorage['userLongitude']=userLongitude;
+                
+                // display the suggestions using the new coordinates
                 getSuggestions(true, true, []);
+                
             // otherwise, display an appropriate error message
             }else if (status==google.maps.GeocoderStatus.ZERO_RESULTS || status==google.maps.GeocoderStatus.INVALID_REQUEST){
                 alert("Location not recognised - try again.");
@@ -124,6 +143,15 @@ $(document).ready(function () {
                 alert("Lookup failed: " + status);
             }
         });
+    });
+    
+    // also correct their location if they press enter while focus is on the location corrector textbox
+    $('#locationCorrectorText').on('keydown', function (e) {
+        if (e.which == 13) {
+            $('#locationCorrectorGo').trigger('click');
+            // unfocus from the textbox
+            $(this).blur()
+         }
     });
     
     // display or hide the options menu when the options header is clicked
@@ -403,7 +431,9 @@ function loadChoice() {
 // Geolocation functions{
 
 function getLocation() {
-	//check that the browser is compatible
+    // save that we're no longer using custom coordinates
+    sessionStorage['customCoordinates']=false;
+	// check that the browser is compatible
 	if (navigator.geolocation) {
 		//get the user's current coordinates or throw an error if that's not possible
 		navigator.geolocation.getCurrentPosition(savePosition, showError);
