@@ -153,6 +153,7 @@
     width: 100%;
     position:fixed;
     background-color: @optionsBackground;
+    transition:top 0.5s;
     // wee triangle on top of the options menu signifying up or down
     .triangle {
         width: 0;
@@ -193,6 +194,25 @@
             z-index: 1;
         }
     }
+    #optionsContent{
+        margin: 0 10px;
+        padding-bottom: 15px;
+        text-align: center;
+        #locationLabel{
+            font-weight:normal;
+            margin-bottom: 0px;
+        }
+        #locationCorrectorText{
+        }
+        #locationCorrectorGo{
+            font-family: FontAwesome;
+        }
+    }
+}
+
+// needed for scroll disabling for some reason
+body{
+    width:100%;
 }
 
 // shorthand for all versions of display: flex

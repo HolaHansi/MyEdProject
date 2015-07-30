@@ -20,7 +20,7 @@
     <div id='suggestion'>
         <div class="row" id='roomRow'>
             <div id='roomNameContainer'>
-                <p id='roomName'>Alison House 2.08</p>
+                <p id='roomName'></p>
             </div>
             <div id='starContainer'>
                 <i class="fa fa-star fa-3x unstarred"></i>
@@ -31,7 +31,7 @@
                 <p id='computersFreeLabel'>Computers free: </p>
             </div>
             <div id='computersFreeGraphContainer'>
-                <div id='computersFreeNumber'>130</div>
+                <div id='computersFreeNumber'></div>
                 <div id='computersFreeGraph'>
                 </div>
             </div>
@@ -47,17 +47,31 @@
 </div>
 <!-- Needed to prevent options menu covering up important content -->
 <div id='padding' style='z-index:-1;height:40px;width:100%;text-align:center;'><i class="fa fa-gamepad"></i></div>
+<!-- Options menu -->
 <div id='optionsMenu'>
     <div class='triangle triangle-up'></div>
     <div id='optionsTitle'>
         <i class="fa fa-cog"></i>Options
     </div>
     <div id='optionsContent'>
-        <input type='text' id='testInput'><input value='go' type=button id='testGo'>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
+        <label id='nearbyLabel' for='nearbyCheckbox'>Nearby: </label>
+        <input type='checkbox' id='nearbyCheckbox' checked>
+        <label id='quietLabel' for='quietCheckbox'>Unbusy: </label>
+        <input type='checkbox' id='quietCheckbox' checked>
+        <br>
+        <label id='centralLabel' for='centralCheckbox'>Central: </label>
+        <input type='checkbox' id='centralCheckbox' class='campusCheckbox' checked>
+        <label id='kingsLabel' for='kingsCheckbox'>King's Buildings: </label>
+        <input type='checkbox' id='kingsCheckbox' class='campusCheckbox' checked>
+        <label id='lauristonLabel' for='lauristonCheckbox'>Lauriston: </label>
+        <input type='checkbox' id='lauristonCheckbox' class='campusCheckbox' checked>
+        <label id='holyroodLabel' for='holyroodCheckbox'>Holyrood: </label>
+        <input type='checkbox' id='holyroodCheckbox' class='campusCheckbox' checked>
+        <label id='otherLabel' for='otherCheckbox'>Other: </label>
+        <input type='checkbox' id='otherCheckbox' class='campusCheckbox' checked>
+        <br>
+        <label id='locationLabel' for='locationCorrectorText'>Fix my location: </label>
+        <input type='text' id='locationCorrectorText'><input value='&#xf002' type='submit' id='locationCorrectorGo'>
     </div>
 </div>
 {% endblock %}
