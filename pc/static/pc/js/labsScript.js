@@ -7,6 +7,8 @@ var userLongitude = -3.188775; // current longitude of user
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
+var oldOptions = {}; //the last state of the options menu, used to check whether the user has changed any options within the options menu
+
 var map; // the Google Map object
 var mapOptions; // the JSON of options for the map
 var directionOptions; // the JSON of options for getting directions
@@ -35,7 +37,7 @@ $(document).ready(function () {
     if(sessionStorage['customCoordinates']=="true"){
         userLatitude = parseFloat(sessionStorage['userLatitude']);
         userLongitude = parseFloat(sessionStorage['userLongitude']);
-	    getSuggestions(true, true, []);
+	    getSuggestionsUsingOptions();
     
     // otherwise use JS to get their location
     } else {
@@ -112,6 +114,9 @@ $(document).ready(function () {
     $('#locationCorrectorGo').click(function(){
         // get the input from the user
         var newLocation=$('#locationCorrectorText').val();
+        if (newLocation===''){
+            return;
+        }
         // if the user hasn't narrowed down their search to Edinburgh (or elsewhere, as estimated by their using a comma), do it for them
         if (newLocation.indexOf('Edinburgh')==-1 && newLocation.indexOf(',')==-1){
             newLocation+=', Edinburgh';
@@ -134,7 +139,7 @@ $(document).ready(function () {
                 sessionStorage['userLongitude']=userLongitude;
                 
                 // display the suggestions using the new coordinates
-                getSuggestions(true, true, []);
+                getSuggestionsUsingOptions();
                 
             // otherwise, display an appropriate error message
             }else if (status==google.maps.GeocoderStatus.ZERO_RESULTS || status==google.maps.GeocoderStatus.INVALID_REQUEST){
@@ -143,6 +148,7 @@ $(document).ready(function () {
                 alert("Lookup failed: " + status);
             }
         });
+        $('#optionsTitle').trigger('click');
     });
     
     // also correct their location if they press enter while focus is on the location corrector textbox
@@ -150,7 +156,7 @@ $(document).ready(function () {
         if (e.which == 13) {
             $('#locationCorrectorGo').trigger('click');
             // unfocus from the textbox
-            $(this).blur()
+            $(this).blur();
          }
     });
     
@@ -160,10 +166,37 @@ $(document).ready(function () {
         $('#optionsMenu').toggleClass('opened');
         // apply the JS styling to reposition the options menu
         resizeElements();
+        // if the options menu has just opened:
         if ($('#optionsMenu').hasClass('opened')){
+            // save the current options state
+            oldOptions = {
+                nearby: $('#nearbyCheckbox').is(':checked'), 
+                quiet: $('#quietCheckbox').is(':checked'), 
+                campuses:getUnselectedCampuses()
+            };
             $('.arrow').addClass('disabled');
         } else {
-            getSuggestions(true, true, []);
+            // check if the options have changed
+            var newOptions = {
+                nearby: $('#nearbyCheckbox').is(':checked'), 
+                quiet: $('#quietCheckbox').is(':checked'), 
+                campuses:getUnselectedCampuses()
+            };
+            var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
+            // if they have, refresh the suggestions
+            if (optionsChanged){
+                getSuggestionsUsingOptions();
+            // if they haven't, just continue where you left off
+            } else {
+                // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
+                if (currentChoice.index != suggestions.length - 1) {
+                    $('.right-arrow').removeClass('disabled');
+                }
+                // if the user isn't at the start of the list of suggestions, re-enable the 'previous' button
+                if (currentChoice.index != 0) {
+                    $('.left-arrow').removeClass('disabled');
+                }
+            }
         }
     });
 });
@@ -356,6 +389,25 @@ function liked(pc_id) {
 		});
 };
 
+function getSuggestionsUsingOptions(){
+    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), getUnselectedCampuses());
+}
+
+function getUnselectedCampuses(){
+    ids = [];
+	$('.campusCheckbox').each(function () {
+        if(!this.checked){
+            // convert from checkbox id to campus as used in the backend ['Central', "King's Buildings", "Lauriston", "Holyrood", "Other"]
+            var id = this.id
+            id = id.charAt(0).toUpperCase() + id.slice(1,id.indexOf('Checkbox'));
+            if (id=='Kings'){
+                id="King's Buildings";
+            }
+            ids.push(id);
+        }
+	});
+	return ids;
+}
 
 /* 
    Get the list of suggestions from the server
@@ -414,7 +466,7 @@ function loadChoice() {
 	} else {
         $('.right-arrow').removeClass('disabled');
     }
-	// if the user has reached the end of the list of suggestions, disable the 'next' button
+	// if the user is at the start of the list of suggestions, disable the 'previous' button
 	if (currentChoice.index == 0) {
 		$('.left-arrow').addClass('disabled');
 	} else {
@@ -477,3 +529,15 @@ function showError(error) {
 }
 
 // Geolocation functions}
+
+// Weak equality for arrays:
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
+    
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}

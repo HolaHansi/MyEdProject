@@ -247,6 +247,7 @@
 }
 #optionsMenu #optionsContent {
   margin: 0 10px;
+  padding-bottom: 15px;
   text-align: center;
 }
 #optionsMenu #optionsContent #locationLabel {
@@ -255,6 +256,9 @@
 }
 #optionsMenu #optionsContent #locationCorrectorGo {
   font-family: FontAwesome;
+}
+body {
+  width: 100%;
 }
 * {
   -webkit-touch-callout: none;

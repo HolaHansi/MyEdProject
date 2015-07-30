@@ -54,12 +54,24 @@
         <i class="fa fa-cog"></i>Options
     </div>
     <div id='optionsContent'>
-        <label id='locationLabel'>Fix my location:</label>
+        <label id='nearbyLabel' for='nearbyCheckbox'>Nearby: </label>
+        <input type='checkbox' id='nearbyCheckbox' checked>
+        <label id='quietLabel' for='quietCheckbox'>Unbusy: </label>
+        <input type='checkbox' id='quietCheckbox' checked>
+        <br>
+        <label id='centralLabel' for='centralCheckbox'>Central: </label>
+        <input type='checkbox' id='centralCheckbox' class='campusCheckbox' checked>
+        <label id='kingsLabel' for='kingsCheckbox'>King's Buildings: </label>
+        <input type='checkbox' id='kingsCheckbox' class='campusCheckbox' checked>
+        <label id='lauristonLabel' for='lauristonCheckbox'>Lauriston: </label>
+        <input type='checkbox' id='lauristonCheckbox' class='campusCheckbox' checked>
+        <label id='holyroodLabel' for='holyroodCheckbox'>Holyrood: </label>
+        <input type='checkbox' id='holyroodCheckbox' class='campusCheckbox' checked>
+        <label id='otherLabel' for='otherCheckbox'>Other: </label>
+        <input type='checkbox' id='otherCheckbox' class='campusCheckbox' checked>
+        <br>
+        <label id='locationLabel' for='locationCorrectorText'>Fix my location: </label>
         <input type='text' id='locationCorrectorText'><input value='&#xf002' type='submit' id='locationCorrectorGo'>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
-        <div style='height:80px;width:80%;background-color:blue; margin:10px'></div>
     </div>
 </div>
 {% endblock %}
