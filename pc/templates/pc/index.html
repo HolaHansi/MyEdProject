@@ -10,6 +10,11 @@
     <script type="text/javascript" src="{% static 'pc/js/jquery.touchSwipe.min.js' %}"></script>
     <!-- Google Maps code -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcrXTgUVxfXVLj3rh5gIUWyYRpveHMmEs&region=GB"></script>
+    <!-- Bootstrap toggle switch css -->
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap-switch.min.css' %}">
+    <!-- Bootstrap toggle switch js -->
+    <script type='text/javascript' src="{% static 'core/js/bootstrap-switch.min.js' %}"></script>
+    
 {% endblock %} 
 {% block content %}
 
@@ -54,24 +59,44 @@
         <i class="fa fa-cog"></i>Options
     </div>
     <div id='optionsContent'>
-        <label id='nearbyLabel' for='nearbyCheckbox'>Nearby: </label>
-        <input type='checkbox' id='nearbyCheckbox' checked>
-        <label id='quietLabel' for='quietCheckbox'>Unbusy: </label>
-        <input type='checkbox' id='quietCheckbox' checked>
-        <br>
-        <label id='centralLabel' for='centralCheckbox'>Central: </label>
-        <input type='checkbox' id='centralCheckbox' class='campusCheckbox' checked>
-        <label id='kingsLabel' for='kingsCheckbox'>King's Buildings: </label>
-        <input type='checkbox' id='kingsCheckbox' class='campusCheckbox' checked>
-        <label id='lauristonLabel' for='lauristonCheckbox'>Lauriston: </label>
-        <input type='checkbox' id='lauristonCheckbox' class='campusCheckbox' checked>
-        <label id='holyroodLabel' for='holyroodCheckbox'>Holyrood: </label>
-        <input type='checkbox' id='holyroodCheckbox' class='campusCheckbox' checked>
-        <label id='otherLabel' for='otherCheckbox'>Other: </label>
-        <input type='checkbox' id='otherCheckbox' class='campusCheckbox' checked>
-        <br>
-        <label id='locationLabel' for='locationCorrectorText'>Fix my location: </label>
-        <input type='text' id='locationCorrectorText'><input value='&#xf002' type='submit' id='locationCorrectorGo'>
+        
+        <div id='sortingOptions' class='optionsCategory'>
+            <h1>Sort by:</h1>
+            <label id='nearbyLabel' for='nearbyCheckbox'>Nearby: </label>
+            <input type='checkbox' id='nearbyCheckbox' checked>
+            <label id='quietLabel' for='quietCheckbox'>Unbusy: </label>
+            <input type='checkbox' id='quietCheckbox' checked>
+        </div>
+        
+        <div id='filteringOptions' class='optionsCategory'>
+            <h1>Filter by:</h1>
+            <label id='centralLabel' for='centralCheckbox'>Central: </label>
+            <input type='checkbox' id='centralCheckbox' class='campusCheckbox' checked>
+            <label id='kingsLabel' for='kingsCheckbox'>King's Buildings: </label>
+            <input type='checkbox' id='kingsCheckbox' class='campusCheckbox' checked>
+            <label id='lauristonLabel' for='lauristonCheckbox'>Lauriston: </label>
+            <input type='checkbox' id='lauristonCheckbox' class='campusCheckbox' checked>
+            <label id='holyroodLabel' for='holyroodCheckbox'>Holyrood: </label>
+            <input type='checkbox' id='holyroodCheckbox' class='campusCheckbox' checked>
+            <label id='otherLabel' for='otherCheckbox'>Other: </label>
+            <input type='checkbox' id='otherCheckbox' class='campusCheckbox' checked>
+        </div>
+        
+        <div id='locationFixer' class='optionsCategory'>
+            <h1>Fix location:</h1>
+            
+            <!-- location fixer -->
+            <div class='input-group'>
+                <input type='text' class='form-control' id='locationCorrectorText'>
+                <span class='input-group-btn'>
+                    <button class='btn btn-default' type='button' id='locationCorrectorGo'><i class='fa fa-search'></i></button>
+                </span>
+            </div>
+            
+        </div>
+        <div id='searchWithNewOptions' class='optionsCategory'>
+            <button id='searchWithNewOptionsBtn' class='btn btn-default'>Search with new options</button>
+        </div>
     </div>
 </div>
 {% endblock %}

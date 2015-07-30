@@ -222,6 +222,14 @@ $(document).ready(function () {
             }
         }
     });
+    
+    // initialize bootstrap switches
+    $.fn.bootstrapSwitch.defaults.size = 'mini';
+    $.fn.bootstrapSwitch.defaults.onColor = 'success';
+    $.fn.bootstrapSwitch.defaults.offColor = 'danger';
+    $.fn.bootstrapSwitch.defaults.onText = '✓';
+    $.fn.bootstrapSwitch.defaults.offText = '☓';
+    $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
 });
 
 // JS styling

@@ -250,12 +250,36 @@
   padding-bottom: 15px;
   text-align: center;
 }
-#optionsMenu #optionsContent #locationLabel {
+#optionsMenu #optionsContent .optionsCategory h1 {
+  font-size: 20px;
+  margin: 5px 0px;
+}
+#optionsMenu #optionsContent .optionsCategory #locationLabel {
   font-weight: normal;
   margin-bottom: 0px;
 }
-#optionsMenu #optionsContent #locationCorrectorGo {
-  font-family: FontAwesome;
+#optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
+  line-height: 20px;
+}
+#optionsMenu #optionsContent .optionsCategory #searchWithNewOptionsBtn {
+  font-size: 20px;
+  margin-top: 20px;
+}
+@media (min-width: 350px) {
+  .hidden-350 {
+    display: auto;
+  }
+  .visible-350 {
+    display: none;
+  }
+}
+@media (max-width: 349px) {
+  .visible-350 {
+    display: auto;
+  }
+  .hidden-350 {
+    display: none;
+  }
 }
 body {
   width: 100%;
