@@ -1,8 +1,8 @@
-var suggestions = []; //all suggestions provided by the server
-var currentChoice = {}; //the suggestion currently on display
+var suggestions = []; // all suggestions provided by the server
+var currentChoice = {}; // the suggestion currently on display
 
-var userLatitude = 55.943655; //current latitude of user
-var userLongitude = -3.188775; //current longitude of user
+var userLatitude = 55.943655; // current latitude of user
+var userLongitude = -3.188775; // current longitude of user
 // Note this is dummy data, pointed in the middle of George Square, which will be overwritten if the user allows location finding or manually enters their location
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
@@ -15,7 +15,7 @@ var directionsService; // the Google directions service object, the bit that cal
 var directionsDisplay;  // the Google directions renderer object, the bit that displays the route
 var geocoder; // the Google object for geocoding
 
-//resize the JS styled elements if the window resizes
+// resize the JS styled elements if the window resizes
 $(window).resize(function(){
     // don't slide the menu if repositioning due to viewport resize, just move it instantly
     $('#optionsMenu').css({transition:'none'});
@@ -28,10 +28,10 @@ $(window).resize(function(){
 });
 
 $(document).ready(function () {
-    //Create the map
+    // Create the map
     makeMap();
     
-    //if the user has corrected their location this session, use the corrected coordinates
+    // if the user has corrected their location this session, use the corrected coordinates
     if(sessionStorage['customCoordinates']=="true"){
         userLatitude = parseFloat(sessionStorage['userLatitude']);
         userLongitude = parseFloat(sessionStorage['userLongitude']);
@@ -39,21 +39,21 @@ $(document).ready(function () {
     
     // otherwise use JS to get their location
     } else {
-    //get the user's location, then send a get request if that's successful and display the initial suggestion
+    // get the user's location, then send a get request if that's successful and display the initial suggestion
 	   getLocation();
     }
     
-	//when the user clicks the next button, load the next suggestion
+	// when the user clicks the next button, load the next suggestion
 	$('.right-arrow').click(function () {
         loadNextSuggestion();
 	});
     
-	//when the user clicks the previous button, load the previous suggestion
+	// when the user clicks the previous button, load the previous suggestion
 	$('.left-arrow').click(function () {
         loadPreviousSuggestion();
 	});
     
-    //when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
+    // when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
 	$('#suggestion .fa-star').click(function () {
 		var pc_id = currentChoice.id;
         // send the like request to the server
@@ -179,7 +179,7 @@ function resizeElements(){
     // otherwise make the arrows take up the whole suggestion but no more
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
     
-    //reposition the menu:
+    // reposition the menu:
     
     
     // close the menu
@@ -256,7 +256,7 @@ function loadNextSuggestion(){
 // Initialize Google settings, set fixed object properties and render the map:
 // The JSON {lat:55.943655, lng:-3.188775} is dummy data and is overwritten as soon as the list of suggestions is received from the server
 function makeMap(){
-    //initialize Google objects
+    // initialize Google objects
     directionsService = new google.maps.DirectionsService();
     directionsDisplay = new google.maps.DirectionsRenderer();
     geocoder = new google.maps.Geocoder();
@@ -280,7 +280,7 @@ function makeMap(){
         rotateControl: false,
         draggable: false,
         scrollwheel: false,
-        //styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}], // disable Points of Interest (and therefore their popup menus)
+        // styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}], // disable Points of Interest (and therefore their popup menus)
         maxZoom: 17,
         backgroundColor: '#ffffff'
     };
@@ -300,7 +300,7 @@ function makeMap(){
       region: 'uk'
     }
     
-    //initialise geocoding options
+    // initialise geocoding options
     geocodingOptions = {
         bounds: google.maps.LatLngBounds(google.maps.LatLng(55.913840,-3.243026),google.maps.LatLng(55.970666, -3.150412)),
         region: 'uk'
@@ -315,7 +315,7 @@ function makeMap(){
 
 // update the map with the new directions
 function updateMap(){
-    //update direction options
+    // update direction options
     directionOptions.origin= {
           lat:userLatitude,
           lng:userLongitude
@@ -365,7 +365,7 @@ function liked(pc_id) {
    campuses (array of strings): the campuses that the user doesn't want, a subset of [‘Central’,‘Lauriston’,"King's Buildings", 'Holyrood', 'Other']
 */
 function getSuggestions(nearby, empty, campuses) {
-	//send the get request
+	// send the get request
 	$.get('filter', {
 			'nearby': nearby,
 			'empty': empty,
@@ -374,16 +374,16 @@ function getSuggestions(nearby, empty, campuses) {
 			'longitude': userLongitude
 		})
 		.done(function (data) {
-			//if successful, save the data received
+			// if successful, save the data received
 			suggestions = data;
-			//if at least one room fits the criteria
+			// if at least one room fits the criteria
 			if (suggestions.length > 0) {
-				//and an index to each of the JSONs
+				// and an index to each of the JSONs
 				for (var i = 0; i < suggestions.length; i++) {
 					suggestions[i].index = i;
 				}
 
-				//load the first suggestion
+				// load the first suggestion
 				currentChoice = suggestions[0];
 				loadChoice();
 			} else {
@@ -403,18 +403,18 @@ function getSuggestions(nearby, empty, campuses) {
    Parameters: none
 */
 function loadChoice() {
-	//populate the html
+	// populate the html
 	$('#roomName').html(currentChoice.name);
 	$('#computersFreeNumber').html(currentChoice.free);
     makepie("computersFreeGraph", currentChoice.free, (currentChoice.seats-currentChoice.free));
     
-	//if the user has reached the end of the list of suggestions, disable the 'next' button
+	// if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
 		$('.right-arrow').addClass('disabled');
 	} else {
         $('.right-arrow').removeClass('disabled');
     }
-	//if the user has reached the end of the list of suggestions, disable the 'next' button
+	// if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == 0) {
 		$('.left-arrow').addClass('disabled');
 	} else {
@@ -435,14 +435,14 @@ function getLocation() {
     sessionStorage['customCoordinates']=false;
 	// check that the browser is compatible
 	if (navigator.geolocation) {
-		//get the user's current coordinates or throw an error if that's not possible
+		// get the user's current coordinates or throw an error if that's not possible
 		navigator.geolocation.getCurrentPosition(savePosition, showError);
 	} else {
 		alert('You browser does not support geolocation');
 	}
 }
 
-//save the current positions, then get suggestions from the server
+// save the current positions, then get suggestions from the server
 function savePosition(position) {
 	userLatitude = position.coords.latitude;
 	userLongitude = position.coords.longitude;
@@ -453,7 +453,7 @@ function savePosition(position) {
 	getSuggestions(false, true, []);
 }
 
-//if impossible to get user's current coordinates, display a relevant error message
+// if impossible to get user's current coordinates, display a relevant error message
 function showError(error) {
 	switch (error.code) {
         case error.PERMISSION_DENIED:
@@ -471,7 +471,9 @@ function showError(error) {
 	}
     $('.arrow').addClass('disabled');
     getSuggestions(true,true,[]);
-    //TODO: open options menu and select location fixer
+    // open options menu and select location fixer
+    $('#optionsTitle').trigger('click');
+    $('#locationCorrectorText').focus();
 }
 
 // Geolocation functions}
