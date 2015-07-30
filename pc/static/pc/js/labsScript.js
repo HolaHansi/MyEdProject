@@ -87,6 +87,12 @@ $(document).ready(function () {
         swipeRight:function(event, direction, distance, duration, fingerCount) {
             loadPreviousSuggestion();
         },
+        // Close the options menu if the user swipes down
+        swipeDown:function(event, direction, distance, duration, fingerCount) {
+            if ($('#optionsMenu').hasClass('opened')){
+                $('#optionsTitle').trigger('click');
+            }
+        },
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // Ignore swipes on any buttons
@@ -96,13 +102,15 @@ $(document).ready(function () {
     $("body").swipe( {
         // Open the menu if the user swipes up
         swipeUp:function(event, direction, distance, duration, fingerCount) {
-            $('#optionsMenu').addClass('opened')
-            resizeElements();
+            if (!$('#optionsMenu').hasClass('opened')){
+                $('#optionsTitle').trigger('click');
+            }
         },
         // Close the menu if the user swipes down
         swipeDown:function(event, direction, distance, duration, fingerCount) {
-            $('#optionsMenu').removeClass('opened')
-            resizeElements();
+            if ($('#optionsMenu').hasClass('opened')){
+                $('#optionsTitle').trigger('click');
+            }
         },
         // Menu appears before the user lifts their finger
         triggerOnTouchEnd:false,
@@ -509,7 +517,7 @@ function savePosition(position) {
 function showError(error) {
 	switch (error.code) {
         case error.PERMISSION_DENIED:
-            console.log("Geolocation denied.  Enter your location using the options menu")
+            console.warn("Geolocation denied.  Enter your location using the options menu")
             break;
         case error.POSITION_UNAVAILABLE:
             alert("Location information is unavailable.  Refresh the page or enter your location manually in the options menu.  ");
