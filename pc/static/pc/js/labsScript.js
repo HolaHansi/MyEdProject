@@ -232,6 +232,10 @@ $(document).ready(function () {
     $.fn.bootstrapSwitch.defaults.handleWidth = 20;
     $.fn.bootstrapSwitch.defaults.labelWidth = 20;
     $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
+    
+    $('.campusCheckbox').click(function(){
+        $(this).toggleClass('checked');
+    });
 });
 
 // JS styling
@@ -444,7 +448,7 @@ function getSuggestionsUsingOptions(){
 function getUnselectedCampuses(){
     ids = [];
 	$('.campusCheckbox').each(function () {
-        if(!this.checked){
+        if(!$(this).hasClass('checked')){
             ids.push(this.id);
         }
 	});

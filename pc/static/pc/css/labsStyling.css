@@ -263,6 +263,22 @@
   font-size: 16px;
   margin-bottom: 0px;
 }
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox {
+  color: #fff;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox.checked {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:not(.checked) {
+  background-color: #c9302c;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:hover {
+  z-index: auto;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus {
+  z-index: 3;
+}
 #optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
   line-height: 20px;
 }

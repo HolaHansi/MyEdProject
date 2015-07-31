@@ -80,18 +80,15 @@
             </div>
         </div>
         
-        <div id='filteringOptions' class='optionsCategory'>
-            <h1>Include:</h1>
-            <label id='centralLabel' for='centralCheckbox'>Central: </label>
-            <input type='checkbox' id='centralCheckbox' class='campusCheckbox' checked>
-            <label id='kingsLabel' for='kingsCheckbox'>King's Buildings: </label>
-            <input type='checkbox' id='kingsCheckbox' class='campusCheckbox' checked>
-            <label id='lauristonLabel' for='lauristonCheckbox'>Lauriston: </label>
-            <input type='checkbox' id='lauristonCheckbox' class='campusCheckbox' checked>
-            <label id='holyroodLabel' for='holyroodCheckbox'>Holyrood: </label>
-            <input type='checkbox' id='holyroodCheckbox' class='campusCheckbox' checked>
-            <label id='otherLabel' for='otherCheckbox'>Other: </label>
-            <input type='checkbox' id='otherCheckbox' class='campusCheckbox' checked>
+        <div id='campusOptions' class='optionsCategory'>
+            <h1>Campuses:</h1>
+            <div class='btn-group btn-group-sm'>
+                <button type='checkbox' id='centralCheckbox' class='campusCheckbox btn checked'>Central</button>
+                <button type='checkbox' id='kingsCheckbox' class='campusCheckbox btn checked'>King's<span class='hidden-xs'> Buildings</span></button>
+                <button type='checkbox' id='lauristonCheckbox' class='campusCheckbox btn checked'>Lauriston</button>
+                <button type='checkbox' id='holyroodCheckbox' class='campusCheckbox btn checked'>Holyrood</button>
+                <button type='checkbox' id='otherCheckbox' class='campusCheckbox btn checked'>Other</button>
+            </div>
         </div>
         
         <div id='locationFixer' class='optionsCategory'>

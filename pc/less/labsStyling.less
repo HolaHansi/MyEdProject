@@ -210,6 +210,22 @@
                 font-size:16px;
                 margin-bottom: 0px;
             }
+            .campusCheckbox{
+                    color: #fff;
+                &.checked{
+                    background-color: #5cb85c;
+                    border-color: #4cae4c;
+                }
+                &:not(.checked){
+                    background-color: #c9302c;
+                }
+                &:hover{
+                    z-index:auto;
+                }
+                &:focus{
+                    z-index:3;
+                }
+            }
             #locationCorrectorGo{
                 i{
                     line-height: 20px;
