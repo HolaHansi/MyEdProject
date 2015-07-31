@@ -210,8 +210,13 @@ $(document).ready(function () {
             currentChoice['latitude']=55.949635;
             currentChoice['name']='The Hive';
             currentChoice['index']=0;
+            currentChoice['free']=1337;
+            currentChoice['seats']=9001;
             suggestions=[currentChoice];
             loadChoice();
+            if($('#optionsMenu').hasClass('opened')){
+                toggleOptionsMenu();
+            }
         }
     });
     

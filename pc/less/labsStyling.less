@@ -1,6 +1,7 @@
 //out: ../static/pc/css/labsStyling.css
 
 @optionsBackground: #eeeeee;
+@optionsMenuTransitionTime: 0.5s;
 
 // Center the 'Take me there!' button
 #yesBtnContainer{
@@ -63,7 +64,7 @@
 #mainContainer{
     .display-inline-flex();
     width:100%;
-    transition:opacity 0.5s;
+    .transition(opacity, @optionsMenuTransitionTime);
 }
 
 
@@ -171,7 +172,7 @@
     width: 100%;
     position:fixed;
     background-color: @optionsBackground;
-    transition:top 0.5s;
+    .transition(top, @optionsMenuTransitionTime);
     // wee triangle on top of the options menu signifying up or down
     .triangle {
         width: 0;
@@ -328,6 +329,14 @@ body{
     -ms-flex-align: @a;
     -moz-box-align: @a;
     align-items: @a;
+}
+
+//shorthand for all versions of transition: property time;
+.transition(@property, @time){
+    -webkit-transition: @property @time;
+    -moz-transition: @property @time;
+    -o-transition: @property @time;
+    transition: @property @time;
 }
 
 //center content using flexbox

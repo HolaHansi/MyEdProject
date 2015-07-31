@@ -85,6 +85,9 @@
   display: -ms-inline-flexbox;
   display: inline-flex;
   width: 100%;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
   transition: opacity 0.5s;
 }
 #roomName {
@@ -210,6 +213,9 @@
   width: 100%;
   position: fixed;
   background-color: #eeeeee;
+  -webkit-transition: top 0.5s;
+  -moz-transition: top 0.5s;
+  -o-transition: top 0.5s;
   transition: top 0.5s;
 }
 #optionsMenu .triangle {
