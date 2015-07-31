@@ -312,6 +312,7 @@ function toggleOptionsMenu(){
                 $('.left-arrow').removeClass('disabled');
             }
         }
+        $('#optionsMenu *').blur();
     }
 }
 
@@ -410,7 +411,7 @@ function updateMap(){
         }else if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT){
             $('#busyAnimation').show();
             clearTimeout(refreshTimer)
-            refreshTimer = setTimeout(updateMap, 2000)
+            refreshTimer = setTimeout(updateMap, 1000)
         } else {
             alert('Error: '+status);
         }
