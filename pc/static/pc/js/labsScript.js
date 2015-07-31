@@ -109,7 +109,7 @@ $(document).ready(function () {
         // Close the options menu if the user swipes down
         swipeDown:function(event, direction, distance, duration, fingerCount) {
             if ($('#optionsMenu').hasClass('opened')){
-                $('#optionsTitle').trigger('click');
+                toggleOptionsMenu();
             }
         },
         // Suggestion appears before the user lifts their finger
@@ -122,13 +122,13 @@ $(document).ready(function () {
         // Open the menu if the user swipes up
         swipeUp:function(event, direction, distance, duration, fingerCount) {
             if (!$('#optionsMenu').hasClass('opened')){
-                $('#optionsTitle').trigger('click');
+                toggleOptionsMenu();
             }
         },
         // Close the menu if the user swipes down
         swipeDown:function(event, direction, distance, duration, fingerCount) {
             if ($('#optionsMenu').hasClass('opened')){
-                $('#optionsTitle').trigger('click');
+                toggleOptionsMenu();
             }
         },
         // Menu appears before the user lifts their finger
@@ -175,7 +175,7 @@ $(document).ready(function () {
                 alert("Lookup failed: " + status);
             }
         });
-        $('#optionsTitle').trigger('click');
+        toggleOptionsMenu();
     });
     
     // also correct their location if they press enter while focus is on the location corrector textbox
@@ -188,40 +188,7 @@ $(document).ready(function () {
     });
     
     // display or hide the options menu when the options header is clicked
-    $('#optionsTitle, .triangle').click(function(){
-        // toggle the options menu
-        $('#optionsMenu').toggleClass('opened');
-        // apply the JS styling to reposition the options menu
-        resizeElements();
-        // if the options menu has just opened:
-        if ($('#optionsMenu').hasClass('opened')){
-            $('.arrow').addClass('disabled');
-        } else {
-            // check if the options have changed
-            var newOptions = {
-                nearby: $('#nearbyCheckbox').is(':checked'), 
-                quiet: $('#quietCheckbox').is(':checked'), 
-                campuses:getUnselectedCampuses()
-            };
-            var oldOptions = JSON.parse(sessionStorage['options']);
-            var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
-            // if they have, refresh the suggestions
-            if (optionsChanged){
-                getSuggestionsUsingOptions();
-                sessionStorage['options'] = JSON.stringify(newOptions)
-            // if they haven't, just continue where you left off
-            } else {
-                // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
-                if (currentChoice.index != suggestions.length - 1) {
-                    $('.right-arrow').removeClass('disabled');
-                }
-                // if the user isn't at the start of the list of suggestions, re-enable the 'previous' button
-                if (currentChoice.index != 0) {
-                    $('.left-arrow').removeClass('disabled');
-                }
-            }
-        }
-    });
+    $('#optionsTitle, .triangle, #searchWithNewOptions').click(toggleOptionsMenu);
     
     // initialize bootstrap switches
     $.fn.bootstrapSwitch.defaults.size = 'mini';
@@ -233,9 +200,11 @@ $(document).ready(function () {
     $.fn.bootstrapSwitch.defaults.labelWidth = 20;
     $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
     
+    // intialize campus buttons to act as checkboxes
     $('.campusCheckbox').click(function(){
         $(this).toggleClass('checked');
     });
+    
 });
 
 // JS styling
@@ -305,6 +274,41 @@ function resizeElements(){
             });
         }
         
+    }
+}
+
+// open or close the options menu
+function toggleOptionsMenu(){
+    $('#optionsMenu').toggleClass('opened');
+    // apply the JS styling to reposition the options menu
+    resizeElements();
+    // if the options menu has just opened:
+    if ($('#optionsMenu').hasClass('opened')){
+        $('.arrow').addClass('disabled');
+    } else {
+        // check if the options have changed
+        var newOptions = {
+            nearby: $('#nearbyCheckbox').is(':checked'), 
+            quiet: $('#quietCheckbox').is(':checked'), 
+            campuses:getUnselectedCampuses()
+        };
+        var oldOptions = JSON.parse(sessionStorage['options']);
+        var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
+        // if they have, refresh the suggestions
+        if (optionsChanged){
+            getSuggestionsUsingOptions();
+            sessionStorage['options'] = JSON.stringify(newOptions)
+        // if they haven't, just continue where you left off
+        } else {
+            // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
+            if (currentChoice.index != suggestions.length - 1) {
+                $('.right-arrow').removeClass('disabled');
+            }
+            // if the user isn't at the start of the list of suggestions, re-enable the 'previous' button
+            if (currentChoice.index != 0) {
+                $('.left-arrow').removeClass('disabled');
+            }
+        }
     }
 }
 
@@ -547,7 +551,7 @@ function savePosition(position) {
     // for some reason, many uni computers think they're in the middle of Arthur's seat.  If we detect this, tell them their location is wrong.  
     if (userLatitude>55.948367 && userLatitude<55.948368 && userLongitude<-3.158850 && userLongitude>-3.158851){
         alert("Unable to get accurate location.  Enter your location manually in the options menu to refine your location.");
-        $('#optionsTitle').trigger('click');
+        toggleOptionsMenu();
         $('#locationCorrectorText').focus();
     }
 	getSuggestions(false, true, []);
@@ -572,7 +576,7 @@ function showError(error) {
     $('.arrow').addClass('disabled');
     getSuggestions(true,true,[]);
     // open options menu and select location fixer
-    $('#optionsTitle').trigger('click');
+    toggleOptionsMenu();
     $('#locationCorrectorText').focus();
 }
 
