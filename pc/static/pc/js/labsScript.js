@@ -106,12 +106,14 @@ $(document).ready(function () {
         swipeRight:function(event, direction, distance, duration, fingerCount) {
             loadPreviousSuggestion();
         },
+        /* Removed as it was preventing scrolling up on mobiles
         // Close the options menu if the user swipes down
         swipeDown:function(event, direction, distance, duration, fingerCount) {
             if ($('#optionsMenu').hasClass('opened')){
                 toggleOptionsMenu();
             }
         },
+        */
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // Ignore swipes on any buttons
