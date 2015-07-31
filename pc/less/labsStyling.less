@@ -148,6 +148,23 @@
     color: #00aa00;
 }
 
+@busyAnimationHeight:54px;
+// center the busy animation
+#mapContainer{
+    position:relative;
+    #busyAnimation{
+        display:none;
+        height: @busyAnimationHeight;
+        width: @busyAnimationHeight;
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        right: 50%;
+        margin-top: -@busyAnimationHeight/2;
+        margin-right: -@busyAnimationHeight/2;
+    }
+}
+
 // positioning is set using JS
 #optionsMenu{
     width: 100%;

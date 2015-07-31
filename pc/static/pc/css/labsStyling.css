@@ -191,6 +191,20 @@
   font-weight: bold;
   color: #00aa00;
 }
+#mapContainer {
+  position: relative;
+}
+#mapContainer #busyAnimation {
+  display: none;
+  height: 54px;
+  width: 54px;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 50%;
+  margin-top: -27px;
+  margin-right: -27px;
+}
 #optionsMenu {
   width: 100%;
   position: fixed;

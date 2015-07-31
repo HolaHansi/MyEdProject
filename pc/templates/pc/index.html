@@ -41,7 +41,10 @@
                 </div>
             </div>
         </div>
-        <div id='currentMap'> </div>
+        <div id='mapContainer'>
+            <img src="{% static 'core/images/busyAnimation.gif' %}" id="busyAnimation">
+            <div id='currentMap'> </div>
+        </div>
         <div id='yesBtnContainer'>
             <a type="button" class="btn btn-success" id='yesBtn' href=''>Take me there <i class="fa fa-external-link"></i></a>
         </div>

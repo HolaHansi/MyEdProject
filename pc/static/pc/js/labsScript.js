@@ -7,6 +7,8 @@ var userLongitude = -3.188775; // current longitude of user
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
+var refreshTimer; // the timeout variable
+
 var map; // the Google Map object
 var mapOptions; // the JSON of options for the map
 var directionOptions; // the JSON of options for getting directions
@@ -222,7 +224,6 @@ function resizeElements(){
     
     // reposition the menu:
     
-    
     // close the menu
     // needed even if menu is currently open to ensure all heights used in calculations are correct
     $('body').css( { 
@@ -386,11 +387,11 @@ function makeMap(){
     map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
     // bind the directions renderer to the map
     directionsDisplay.setMap(map);
-    
 }
 
 // update the map with the new directions
 function updateMap(){
+    $('#busyAnimation').hide();
     // update direction options
     directionOptions.origin= {
           lat:userLatitude,
@@ -402,10 +403,15 @@ function updateMap(){
       }
     // calculate and display the route
     directionsService.route(directionOptions, function(result, status) {
-        // if the route was successfully caluclated, display it
+        // if the route was successfully calculated, display it
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(result);
-        }else{
+        // if the user is flicking through choices too quickly, wait before showing the map
+        }else if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT){
+            $('#busyAnimation').show();
+            clearTimeout(refreshTimer)
+            refreshTimer = setTimeout(updateMap, 2000)
+        } else {
             alert('Error: '+status);
         }
     });
