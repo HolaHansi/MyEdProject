@@ -209,6 +209,25 @@ $(document).ready(function () {
         $(this).toggleClass('checked');
     });
     
+    // a wee easter egg for a bit of fun
+    // if the user enters the 'konami code' (up,up,down,down,left,right,left,right,b,a),
+    // display a custom suggestion
+    var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
+    $(document).keydown(function(e) {
+        kkeys.push( e.keyCode );
+        if ( kkeys.toString().indexOf( konami ) >= 0 ) {
+            $(document).unbind('keydown',arguments.callee);
+            // do something awesome
+            currentChoice['campus']='';
+            currentChoice['longitude']=-3.186933;
+            currentChoice['latitude']=55.949635;
+            currentChoice['name']='The Hive';
+            currentChoice['index']=0;
+            suggestions=[currentChoice];
+            loadChoice();
+        }
+    });
+    
 });
 
 // JS styling
@@ -297,8 +316,8 @@ function toggleOptionsMenu(){
         };
         var oldOptions = JSON.parse(sessionStorage['options']);
         var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
-        // if they have, refresh the suggestions
-        if (optionsChanged){
+        // if they have, or the user specifically asked for a refresh, refresh the suggestions
+        if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
             getSuggestionsUsingOptions();
             sessionStorage['options'] = JSON.stringify(newOptions)
         // if they haven't, just continue where you left off
@@ -311,6 +330,7 @@ function toggleOptionsMenu(){
             if (currentChoice.index != 0) {
                 $('.left-arrow').removeClass('disabled');
             }
+            
         }
         $('#optionsMenu *').blur();
     }
