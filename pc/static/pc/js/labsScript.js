@@ -27,11 +27,17 @@ $(window).resize(function(){
     setTimeout(function(){
         $('#optionsMenu').css({transition:'top 0.5s'});
     }, 100);
+    
+    //ensure any hidden campus buttons have the same selection state as the 'other' checkbox
+    matchHiddenCampusesToOther();
 });
 
 $(document).ready(function () {
     // Create the map
     makeMap();
+    
+    $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeElements)
+    $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeElements)
     
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['options']){
@@ -138,7 +144,7 @@ $(document).ready(function () {
         // Menu appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // this only covers the options menu
-        excludedElements:'#navbar, #mainContainer, input, a, button'
+        excludedElements:'#navbar, #mainContainer, #optionsContent, input, a, button'
     });
     
     // Set up the location fixer
@@ -191,6 +197,29 @@ $(document).ready(function () {
          }
     });
     
+    // a wee easter egg just for a bit of fun
+    // if the user enters the 'konami code' (up,up,down,down,left,right,left,right,b,a),
+    // display a custom suggestion
+    var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
+    $(document).keydown(function(e) {
+        kkeys.push( e.keyCode );
+        if ( kkeys.toString().indexOf( konami ) >= 0 ) {
+            $(document).unbind('keydown',arguments.callee);
+            currentChoice['campus']='';
+            currentChoice['longitude']=-3.186933;
+            currentChoice['latitude']=55.949635;
+            currentChoice['name']='The Hive';
+            currentChoice['index']=0;
+            currentChoice['free']=1337;
+            currentChoice['seats']=9001;
+            suggestions=[currentChoice];
+            loadChoice();
+            if($('#optionsMenu').hasClass('opened')){
+                toggleOptionsMenu();
+            }
+        }
+    });
+    
     // display or hide the options menu when the options header is clicked
     $('#optionsTitle, .triangle, #searchWithNewOptions').click(toggleOptionsMenu);
     
@@ -208,7 +237,14 @@ $(document).ready(function () {
     $('.campusCheckbox').click(function(){
         $(this).toggleClass('checked');
     });
-    
+    // when the 'other' checkbox is clicked, toggle all hidden campuses too
+    $('#otherCheckbox').click(function(){
+        $('.campusCheckbox').each(function(){
+            if($(this).css('display')=='none'){
+                $(this).toggleClass('checked');
+            }
+        });
+    });
 });
 
 // JS styling
@@ -280,6 +316,19 @@ function resizeElements(){
     }
 }
 
+// set any hidden campus buttons' selection state to that of the 'other' checkbox
+function matchHiddenCampusesToOther(){
+    $('.campusCheckbox').each(function(){
+        if($(this).css('display')=='none'){
+            if($('#otherCheckbox').hasClass('checked')){
+                $(this).addClass('checked');
+            }else{
+                $(this).removeClass('checked');
+            }
+        }
+    });
+}
+
 // open or close the options menu
 function toggleOptionsMenu(){
     $('#optionsMenu').toggleClass('opened');
@@ -288,7 +337,9 @@ function toggleOptionsMenu(){
     // if the options menu has just opened:
     if ($('#optionsMenu').hasClass('opened')){
         $('.arrow').addClass('disabled');
+        $('#mainContainer').css('opacity',0.3);
     } else {
+        $('#mainContainer').css('opacity',1);
         // check if the options have changed
         var newOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
@@ -297,8 +348,8 @@ function toggleOptionsMenu(){
         };
         var oldOptions = JSON.parse(sessionStorage['options']);
         var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
-        // if they have, refresh the suggestions
-        if (optionsChanged){
+        // if they have, or the user specifically asked for a refresh, refresh the suggestions
+        if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
             getSuggestionsUsingOptions();
             sessionStorage['options'] = JSON.stringify(newOptions)
         // if they haven't, just continue where you left off
@@ -311,7 +362,10 @@ function toggleOptionsMenu(){
             if (currentChoice.index != 0) {
                 $('.left-arrow').removeClass('disabled');
             }
+            
         }
+        // deselect all options
+        $('#optionsMenu *').blur();
     }
 }
 
@@ -410,7 +464,7 @@ function updateMap(){
         }else if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT){
             $('#busyAnimation').show();
             clearTimeout(refreshTimer)
-            refreshTimer = setTimeout(updateMap, 2000)
+            refreshTimer = setTimeout(updateMap, 1000)
         } else {
             alert('Error: '+status);
         }
@@ -459,10 +513,8 @@ function getSuggestionsUsingOptions(){
 // returns the id of all campuses the user doesn't want included
 function getUnselectedCampuses(){
     ids = [];
-	$('.campusCheckbox').each(function () {
-        if(!$(this).hasClass('checked')){
-            ids.push(this.id);
-        }
+	$('.campusCheckbox:not(.checked)').each(function () {
+        ids.push(this.id);
 	});
 	return ids;
 }

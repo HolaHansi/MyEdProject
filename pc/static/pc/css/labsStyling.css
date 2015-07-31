@@ -85,6 +85,10 @@
   display: -ms-inline-flexbox;
   display: inline-flex;
   width: 100%;
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
 }
 #roomName {
   font-size: 14px;
@@ -209,6 +213,9 @@
   width: 100%;
   position: fixed;
   background-color: #eeeeee;
+  -webkit-transition: top 0.5s;
+  -moz-transition: top 0.5s;
+  -o-transition: top 0.5s;
   transition: top 0.5s;
 }
 #optionsMenu .triangle {
@@ -229,7 +236,6 @@
 #optionsMenu #optionsTitle {
   height: 40px;
   width: 100%;
-  background-color: #eeeeee;
   font-size: 20px;
   cursor: pointer;
   display: -webkit-box;
@@ -277,6 +283,9 @@
   font-size: 16px;
   margin-bottom: 0px;
 }
+#optionsMenu #optionsContent .optionsCategory#sortingOptions > .row {
+  margin: 0;
+}
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox {
   color: #fff;
 }
@@ -293,28 +302,25 @@
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus {
   z-index: 3;
 }
+@media (max-width: 320px) {
+  #optionsMenu #optionsContent .optionsCategory #holyroodCheckbox {
+    display: none;
+  }
+}
+@media (max-width: 249px) {
+  #optionsMenu #optionsContent .optionsCategory #lauristonCheckbox {
+    display: none;
+  }
+}
+#optionsMenu #optionsContent .optionsCategory #locationCorrectorText:focus {
+  z-index: 3;
+}
 #optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
   line-height: 20px;
 }
 #optionsMenu #optionsContent .optionsCategory #searchWithNewOptionsBtn {
   font-size: 20px;
   margin-top: 20px;
-}
-@media (min-width: 350px) {
-  .hidden-350 {
-    display: auto;
-  }
-  .visible-350 {
-    display: none;
-  }
-}
-@media (max-width: 349px) {
-  .visible-350 {
-    display: auto;
-  }
-  .hidden-350 {
-    display: none;
-  }
 }
 body {
   width: 100%;

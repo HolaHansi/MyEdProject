@@ -1,6 +1,7 @@
 //out: ../static/pc/css/labsStyling.css
 
 @optionsBackground: #eeeeee;
+@optionsMenuTransitionTime: 0.5s;
 
 // Center the 'Take me there!' button
 #yesBtnContainer{
@@ -63,6 +64,7 @@
 #mainContainer{
     .display-inline-flex();
     width:100%;
+    .transition(opacity, @optionsMenuTransitionTime);
 }
 
 
@@ -170,7 +172,7 @@
     width: 100%;
     position:fixed;
     background-color: @optionsBackground;
-    transition:top 0.5s;
+    .transition(top, @optionsMenuTransitionTime);
     // wee triangle on top of the options menu signifying up or down
     .triangle {
         width: 0;
@@ -192,7 +194,6 @@
     #optionsTitle{
         height: 40px;
         width: 100%;
-        background-color: @optionsBackground;
         font-size: 20px;
         cursor: pointer;
         .flex-center();
@@ -227,8 +228,11 @@
                 font-size:16px;
                 margin-bottom: 0px;
             }
+            &#sortingOptions>.row{
+                margin:0;
+            }
             .campusCheckbox{
-                    color: #fff;
+                color: #fff;
                 &.checked{
                     background-color: #5cb85c;
                     border-color: #4cae4c;
@@ -243,6 +247,19 @@
                     z-index:3;
                 }
             }
+            #holyroodCheckbox{
+                @media (max-width:320px){
+                    display:none;
+                }
+            }
+            #lauristonCheckbox{
+                @media (max-width:249px){
+                    display:none;
+                }
+            }
+            #locationCorrectorText:focus{
+                z-index: 3;
+            }
             #locationCorrectorGo{
                 i{
                     line-height: 20px;
@@ -253,23 +270,6 @@
                 margin-top: 20px;
             }
         }
-    }
-}
-
-@media (min-width: 350px) {
-    .hidden-350{
-        display:auto;
-    }
-    .visible-350{
-        display:none;
-    }
-}
-@media (max-width: 349px) {
-    .visible-350{
-        display:auto;
-    }
-    .hidden-350{
-        display:none;
     }
 }
 
@@ -329,6 +329,14 @@ body{
     -ms-flex-align: @a;
     -moz-box-align: @a;
     align-items: @a;
+}
+
+//shorthand for all versions of transition: property time;
+.transition(@property, @time){
+    -webkit-transition: @property @time;
+    -moz-transition: @property @time;
+    -o-transition: @property @time;
+    transition: @property @time;
 }
 
 //center content using flexbox
