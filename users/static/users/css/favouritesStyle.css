@@ -6,6 +6,16 @@
   padding-left: 0px;
   padding-right: 5px;
   width: auto;
+  float: right;
+}
+.openHourRoom {
+  width: 15px;
+  padding-left: 0px;
+  padding-top: 10px;
+  text-align: center;
+}
+.openHourDivRoom {
+  padding-left: 0px;
 }
 #favourites-page-logo {
   float: right;
@@ -96,7 +106,9 @@
   padding-left: 5px;
 }
 .suitabilityCol {
-  padding: 0;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
 }
 .fa-map-marker,
 .fa-calendar {
