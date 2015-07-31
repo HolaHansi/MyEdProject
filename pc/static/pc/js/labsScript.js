@@ -144,7 +144,7 @@ $(document).ready(function () {
         // Menu appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // this only covers the options menu
-        excludedElements:'#navbar, #mainContainer, input, a, button'
+        excludedElements:'#navbar, #mainContainer, #optionsContent, input, a, button'
     });
     
     // Set up the location fixer
@@ -332,7 +332,9 @@ function toggleOptionsMenu(){
     // if the options menu has just opened:
     if ($('#optionsMenu').hasClass('opened')){
         $('.arrow').addClass('disabled');
+        $('#mainContainer').css('opacity',0.3);
     } else {
+        $('#mainContainer').css('opacity',1);
         // check if the options have changed
         var newOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
@@ -357,6 +359,7 @@ function toggleOptionsMenu(){
             }
             
         }
+        // deselect all options
         $('#optionsMenu *').blur();
     }
 }

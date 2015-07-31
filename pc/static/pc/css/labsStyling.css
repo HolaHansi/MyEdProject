@@ -85,6 +85,7 @@
   display: -ms-inline-flexbox;
   display: inline-flex;
   width: 100%;
+  transition: opacity 0.5s;
 }
 #roomName {
   font-size: 14px;
@@ -304,6 +305,9 @@
   #optionsMenu #optionsContent .optionsCategory #lauristonCheckbox {
     display: none;
   }
+}
+#optionsMenu #optionsContent .optionsCategory #locationCorrectorText:focus {
+  z-index: 3;
 }
 #optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
   line-height: 20px;

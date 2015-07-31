@@ -63,6 +63,7 @@
 #mainContainer{
     .display-inline-flex();
     width:100%;
+    transition:opacity 0.5s;
 }
 
 
@@ -254,6 +255,9 @@
                 @media (max-width:249px){
                     display:none;
                 }
+            }
+            #locationCorrectorText:focus{
+                z-index: 3;
             }
             #locationCorrectorGo{
                 i{
