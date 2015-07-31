@@ -27,6 +27,9 @@ $(window).resize(function(){
     setTimeout(function(){
         $('#optionsMenu').css({transition:'top 0.5s'});
     }, 100);
+    
+    //ensure any hidden campus buttons have the same selection state as the 'other' checkbox
+    matchHiddenCampusesToOther();
 });
 
 $(document).ready(function () {
@@ -191,6 +194,24 @@ $(document).ready(function () {
          }
     });
     
+    // a wee easter egg just for a bit of fun
+    // if the user enters the 'konami code' (up,up,down,down,left,right,left,right,b,a),
+    // display a custom suggestion
+    var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
+    $(document).keydown(function(e) {
+        kkeys.push( e.keyCode );
+        if ( kkeys.toString().indexOf( konami ) >= 0 ) {
+            $(document).unbind('keydown',arguments.callee);
+            currentChoice['campus']='';
+            currentChoice['longitude']=-3.186933;
+            currentChoice['latitude']=55.949635;
+            currentChoice['name']='The Hive';
+            currentChoice['index']=0;
+            suggestions=[currentChoice];
+            loadChoice();
+        }
+    });
+    
     // display or hide the options menu when the options header is clicked
     $('#optionsTitle, .triangle, #searchWithNewOptions').click(toggleOptionsMenu);
     
@@ -208,26 +229,14 @@ $(document).ready(function () {
     $('.campusCheckbox').click(function(){
         $(this).toggleClass('checked');
     });
-    
-    // a wee easter egg for a bit of fun
-    // if the user enters the 'konami code' (up,up,down,down,left,right,left,right,b,a),
-    // display a custom suggestion
-    var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
-    $(document).keydown(function(e) {
-        kkeys.push( e.keyCode );
-        if ( kkeys.toString().indexOf( konami ) >= 0 ) {
-            $(document).unbind('keydown',arguments.callee);
-            // do something awesome
-            currentChoice['campus']='';
-            currentChoice['longitude']=-3.186933;
-            currentChoice['latitude']=55.949635;
-            currentChoice['name']='The Hive';
-            currentChoice['index']=0;
-            suggestions=[currentChoice];
-            loadChoice();
-        }
+    // when the 'other' checkbox is clicked, toggle all hidden campuses too
+    $('#otherCheckbox').click(function(){
+        $('.campusCheckbox').each(function(){
+            if($(this).css('display')=='none'){
+                $(this).toggleClass('checked');
+            }
+        });
     });
-    
 });
 
 // JS styling
@@ -297,6 +306,19 @@ function resizeElements(){
         }
         
     }
+}
+
+// set any hidden campus buttons' selection state to that of the 'other' checkbox
+function matchHiddenCampusesToOther(){
+    $('.campusCheckbox').each(function(){
+        if($(this).css('display')=='none'){
+            if($('#otherCheckbox').hasClass('checked')){
+                $(this).addClass('checked');
+            }else{
+                $(this).removeClass('checked');
+            }
+        }
+    });
 }
 
 // open or close the options menu
@@ -480,10 +502,8 @@ function getSuggestionsUsingOptions(){
 // returns the id of all campuses the user doesn't want included
 function getUnselectedCampuses(){
     ids = [];
-	$('.campusCheckbox').each(function () {
-        if(!$(this).hasClass('checked')){
-            ids.push(this.id);
-        }
+	$('.campusCheckbox:not(.checked)').each(function () {
+        ids.push(this.id);
 	});
 	return ids;
 }

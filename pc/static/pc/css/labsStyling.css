@@ -292,6 +292,16 @@
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus {
   z-index: 3;
 }
+@media (max-width: 320px) {
+  #optionsMenu #optionsContent .optionsCategory #holyroodCheckbox {
+    display: none;
+  }
+}
+@media (max-width: 249px) {
+  #optionsMenu #optionsContent .optionsCategory #lauristonCheckbox {
+    display: none;
+  }
+}
 #optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
   line-height: 20px;
 }

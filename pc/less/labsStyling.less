@@ -227,7 +227,7 @@
                 margin-bottom: 0px;
             }
             .campusCheckbox{
-                    color: #fff;
+                color: #fff;
                 &.checked{
                     background-color: #5cb85c;
                     border-color: #4cae4c;
@@ -240,6 +240,16 @@
                 }
                 &:focus{
                     z-index:3;
+                }
+            }
+            #holyroodCheckbox{
+                @media (max-width:320px){
+                    display:none;
+                }
+            }
+            #lauristonCheckbox{
+                @media (max-width:249px){
+                    display:none;
                 }
             }
             #locationCorrectorGo{
