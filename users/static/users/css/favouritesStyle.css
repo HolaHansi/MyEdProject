@@ -3,7 +3,9 @@
   margin-right: 6px;
 }
 .btn-group-rooms {
-  float: right;
+  padding-left: 0px;
+  padding-right: 5px;
+  width: auto;
 }
 #favourites-page-logo {
   float: right;
@@ -85,6 +87,17 @@
   float: right;
   width: 12px;
 }
+.suitAvail {
+  color: #2ea83d;
+  padding-left: 5px;
+}
+.suitUnAvil {
+  color: #d9433b;
+  padding-left: 5px;
+}
+.suitabilityCol {
+  padding: 0;
+}
 .fa-map-marker,
 .fa-calendar {
   color: #555;
@@ -104,7 +117,11 @@
 }
 .booknow {
   margin-left: 0px;
-  padding-bottom: 14px;
+  padding: 7px 5px 13px 5px;
+  font-size: 14px;
+}
+.btn-group > .btn {
+  margin-right: 0;
 }
 .computersFreeGraph {
   height: 50px;
@@ -112,8 +129,9 @@
 }
 .remove-btn {
   align: left;
-  padding: 0px 4px 0px 0px;
   margin: 0px 0px 0px 0px;
+  padding: 7px 5px 10px 0px;
+  font-size: 14px;
 }
 .unliker.unclicked {
   background-color: blue;
