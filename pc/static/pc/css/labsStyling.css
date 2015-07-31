@@ -276,6 +276,9 @@
   font-size: 16px;
   margin-bottom: 0px;
 }
+#optionsMenu #optionsContent .optionsCategory#sortingOptions > .row {
+  margin: 0;
+}
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox {
   color: #fff;
 }

@@ -36,6 +36,9 @@ $(document).ready(function () {
     // Create the map
     makeMap();
     
+    $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeElements)
+    $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeElements)
+    
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['options']){
         var options = JSON.parse(sessionStorage['options']);
