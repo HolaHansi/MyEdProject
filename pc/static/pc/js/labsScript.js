@@ -7,6 +7,8 @@ var userLongitude = -3.188775; // current longitude of user
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
+var refreshTimer; // the timeout variable
+
 var map; // the Google Map object
 var mapOptions; // the JSON of options for the map
 var directionOptions; // the JSON of options for getting directions
@@ -106,12 +108,14 @@ $(document).ready(function () {
         swipeRight:function(event, direction, distance, duration, fingerCount) {
             loadPreviousSuggestion();
         },
+        /* Removed as it was preventing scrolling up on mobiles
         // Close the options menu if the user swipes down
         swipeDown:function(event, direction, distance, duration, fingerCount) {
             if ($('#optionsMenu').hasClass('opened')){
-                $('#optionsTitle').trigger('click');
+                toggleOptionsMenu();
             }
         },
+        */
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // Ignore swipes on any buttons
@@ -122,13 +126,13 @@ $(document).ready(function () {
         // Open the menu if the user swipes up
         swipeUp:function(event, direction, distance, duration, fingerCount) {
             if (!$('#optionsMenu').hasClass('opened')){
-                $('#optionsTitle').trigger('click');
+                toggleOptionsMenu();
             }
         },
         // Close the menu if the user swipes down
         swipeDown:function(event, direction, distance, duration, fingerCount) {
             if ($('#optionsMenu').hasClass('opened')){
-                $('#optionsTitle').trigger('click');
+                toggleOptionsMenu();
             }
         },
         // Menu appears before the user lifts their finger
@@ -175,7 +179,7 @@ $(document).ready(function () {
                 alert("Lookup failed: " + status);
             }
         });
-        $('#optionsTitle').trigger('click');
+        toggleOptionsMenu();
     });
     
     // also correct their location if they press enter while focus is on the location corrector textbox
@@ -188,40 +192,23 @@ $(document).ready(function () {
     });
     
     // display or hide the options menu when the options header is clicked
-    $('#optionsTitle, .triangle').click(function(){
-        // toggle the options menu
-        $('#optionsMenu').toggleClass('opened');
-        // apply the JS styling to reposition the options menu
-        resizeElements();
-        // if the options menu has just opened:
-        if ($('#optionsMenu').hasClass('opened')){
-            $('.arrow').addClass('disabled');
-        } else {
-            // check if the options have changed
-            var newOptions = {
-                nearby: $('#nearbyCheckbox').is(':checked'), 
-                quiet: $('#quietCheckbox').is(':checked'), 
-                campuses:getUnselectedCampuses()
-            };
-            var oldOptions = JSON.parse(sessionStorage['options']);
-            var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
-            // if they have, refresh the suggestions
-            if (optionsChanged){
-                getSuggestionsUsingOptions();
-                sessionStorage['options'] = JSON.stringify(newOptions)
-            // if they haven't, just continue where you left off
-            } else {
-                // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
-                if (currentChoice.index != suggestions.length - 1) {
-                    $('.right-arrow').removeClass('disabled');
-                }
-                // if the user isn't at the start of the list of suggestions, re-enable the 'previous' button
-                if (currentChoice.index != 0) {
-                    $('.left-arrow').removeClass('disabled');
-                }
-            }
-        }
+    $('#optionsTitle, .triangle, #searchWithNewOptions').click(toggleOptionsMenu);
+    
+    // initialize bootstrap switches
+    $.fn.bootstrapSwitch.defaults.size = 'mini';
+    $.fn.bootstrapSwitch.defaults.onColor = 'success';
+    $.fn.bootstrapSwitch.defaults.offColor = 'danger';
+    $.fn.bootstrapSwitch.defaults.onText = '✓';
+    $.fn.bootstrapSwitch.defaults.offText = '☓';
+    $.fn.bootstrapSwitch.defaults.handleWidth = 20;
+    $.fn.bootstrapSwitch.defaults.labelWidth = 20;
+    $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
+    
+    // intialize campus buttons to act as checkboxes
+    $('.campusCheckbox').click(function(){
+        $(this).toggleClass('checked');
     });
+    
 });
 
 // JS styling
@@ -236,7 +223,6 @@ function resizeElements(){
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
     
     // reposition the menu:
-    
     
     // close the menu
     // needed even if menu is currently open to ensure all heights used in calculations are correct
@@ -291,6 +277,41 @@ function resizeElements(){
             });
         }
         
+    }
+}
+
+// open or close the options menu
+function toggleOptionsMenu(){
+    $('#optionsMenu').toggleClass('opened');
+    // apply the JS styling to reposition the options menu
+    resizeElements();
+    // if the options menu has just opened:
+    if ($('#optionsMenu').hasClass('opened')){
+        $('.arrow').addClass('disabled');
+    } else {
+        // check if the options have changed
+        var newOptions = {
+            nearby: $('#nearbyCheckbox').is(':checked'), 
+            quiet: $('#quietCheckbox').is(':checked'), 
+            campuses:getUnselectedCampuses()
+        };
+        var oldOptions = JSON.parse(sessionStorage['options']);
+        var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
+        // if they have, refresh the suggestions
+        if (optionsChanged){
+            getSuggestionsUsingOptions();
+            sessionStorage['options'] = JSON.stringify(newOptions)
+        // if they haven't, just continue where you left off
+        } else {
+            // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
+            if (currentChoice.index != suggestions.length - 1) {
+                $('.right-arrow').removeClass('disabled');
+            }
+            // if the user isn't at the start of the list of suggestions, re-enable the 'previous' button
+            if (currentChoice.index != 0) {
+                $('.left-arrow').removeClass('disabled');
+            }
+        }
     }
 }
 
@@ -366,11 +387,11 @@ function makeMap(){
     map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
     // bind the directions renderer to the map
     directionsDisplay.setMap(map);
-    
 }
 
 // update the map with the new directions
 function updateMap(){
+    $('#busyAnimation').hide();
     // update direction options
     directionOptions.origin= {
           lat:userLatitude,
@@ -382,10 +403,15 @@ function updateMap(){
       }
     // calculate and display the route
     directionsService.route(directionOptions, function(result, status) {
-        // if the route was successfully caluclated, display it
+        // if the route was successfully calculated, display it
         if (status == google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(result);
-        }else{
+        // if the user is flicking through choices too quickly, wait before showing the map
+        }else if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT){
+            $('#busyAnimation').show();
+            clearTimeout(refreshTimer)
+            refreshTimer = setTimeout(updateMap, 2000)
+        } else {
             alert('Error: '+status);
         }
     });
@@ -434,7 +460,7 @@ function getSuggestionsUsingOptions(){
 function getUnselectedCampuses(){
     ids = [];
 	$('.campusCheckbox').each(function () {
-        if(!this.checked){
+        if(!$(this).hasClass('checked')){
             ids.push(this.id);
         }
 	});
@@ -533,6 +559,8 @@ function savePosition(position) {
     // for some reason, many uni computers think they're in the middle of Arthur's seat.  If we detect this, tell them their location is wrong.  
     if (userLatitude>55.948367 && userLatitude<55.948368 && userLongitude<-3.158850 && userLongitude>-3.158851){
         alert("Unable to get accurate location.  Enter your location manually in the options menu to refine your location.");
+        toggleOptionsMenu();
+        $('#locationCorrectorText').focus();
     }
 	getSuggestions(false, true, []);
 }
@@ -556,7 +584,7 @@ function showError(error) {
     $('.arrow').addClass('disabled');
     getSuggestions(true,true,[]);
     // open options menu and select location fixer
-    $('#optionsTitle').trigger('click');
+    toggleOptionsMenu();
     $('#locationCorrectorText').focus();
 }
 

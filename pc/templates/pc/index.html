@@ -10,6 +10,11 @@
     <script type="text/javascript" src="{% static 'pc/js/jquery.touchSwipe.min.js' %}"></script>
     <!-- Google Maps code -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcrXTgUVxfXVLj3rh5gIUWyYRpveHMmEs&region=GB"></script>
+    <!-- Bootstrap toggle switch css -->
+    <link rel="stylesheet" href="{% static 'core/css/bootstrap-switch.min.css' %}">
+    <!-- Bootstrap toggle switch js -->
+    <script type='text/javascript' src="{% static 'core/js/bootstrap-switch.min.js' %}"></script>
+    
 {% endblock %} 
 {% block content %}
 
@@ -36,7 +41,10 @@
                 </div>
             </div>
         </div>
-        <div id='currentMap'> </div>
+        <div id='mapContainer'>
+            <img src="{% static 'core/images/busyAnimation.gif' %}" id="busyAnimation">
+            <div id='currentMap'> </div>
+        </div>
         <div id='yesBtnContainer'>
             <a type="button" class="btn btn-success" id='yesBtn' href=''>Take me there <i class="fa fa-external-link"></i></a>
         </div>
@@ -54,24 +62,53 @@
         <i class="fa fa-cog"></i>Options
     </div>
     <div id='optionsContent'>
-        <label id='nearbyLabel' for='nearbyCheckbox'>Nearby: </label>
-        <input type='checkbox' id='nearbyCheckbox' checked>
-        <label id='quietLabel' for='quietCheckbox'>Unbusy: </label>
-        <input type='checkbox' id='quietCheckbox' checked>
-        <br>
-        <label id='centralLabel' for='centralCheckbox'>Central: </label>
-        <input type='checkbox' id='centralCheckbox' class='campusCheckbox' checked>
-        <label id='kingsLabel' for='kingsCheckbox'>King's Buildings: </label>
-        <input type='checkbox' id='kingsCheckbox' class='campusCheckbox' checked>
-        <label id='lauristonLabel' for='lauristonCheckbox'>Lauriston: </label>
-        <input type='checkbox' id='lauristonCheckbox' class='campusCheckbox' checked>
-        <label id='holyroodLabel' for='holyroodCheckbox'>Holyrood: </label>
-        <input type='checkbox' id='holyroodCheckbox' class='campusCheckbox' checked>
-        <label id='otherLabel' for='otherCheckbox'>Other: </label>
-        <input type='checkbox' id='otherCheckbox' class='campusCheckbox' checked>
-        <br>
-        <label id='locationLabel' for='locationCorrectorText'>Fix my location: </label>
-        <input type='text' id='locationCorrectorText'><input value='&#xf002' type='submit' id='locationCorrectorGo'>
+        
+        <div id='sortingOptions' class='optionsCategory'>
+            <h1>Sort by:</h1>
+            <div class='row'>
+                <div class='col-xs-6'>
+                    <label id='nearbyLabel' for='nearbyCheckbox'>Distance: </label>
+                </div>
+                <div class='col-xs-6'>
+                    <input type='checkbox' id='nearbyCheckbox' checked>
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-xs-6'>
+                    <label id='quietLabel' for='quietCheckbox'>Emptiness: </label>
+                </div>
+                <div class='col-xs-6'>
+                    <input type='checkbox' id='quietCheckbox' checked>
+                </div>
+            </div>
+        </div>
+        
+        <div id='campusOptions' class='optionsCategory'>
+            <h1>Campuses:</h1>
+            <div class='btn-group btn-group-sm'>
+                <button type='checkbox' id='centralCheckbox' class='campusCheckbox btn checked'>Central</button>
+                <button type='checkbox' id='kingsCheckbox' class='campusCheckbox btn checked'>King's<span class='hidden-xs'> Buildings</span></button>
+                <button type='checkbox' id='lauristonCheckbox' class='campusCheckbox btn checked'>Lauriston</button>
+                <button type='checkbox' id='holyroodCheckbox' class='campusCheckbox btn checked'>Holyrood</button>
+                <button type='checkbox' id='otherCheckbox' class='campusCheckbox btn checked'>Other</button>
+            </div>
+        </div>
+        
+        <div id='locationFixer' class='optionsCategory'>
+            <h1>Fix location:</h1>
+            
+            <!-- location fixer -->
+            <div class='input-group'>
+                <input type='text' class='form-control' id='locationCorrectorText'>
+                <span class='input-group-btn'>
+                    <button class='btn btn-default' type='button' id='locationCorrectorGo'><i class='fa fa-search'></i></button>
+                </span>
+            </div>
+            
+        </div>
+        <div id='searchWithNewOptions' class='optionsCategory'>
+            <button id='searchWithNewOptionsBtn' class='btn btn-default'>Search with new options</button>
+        </div>
     </div>
 </div>
 {% endblock %}

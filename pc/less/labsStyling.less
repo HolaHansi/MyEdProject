@@ -148,6 +148,23 @@
     color: #00aa00;
 }
 
+@busyAnimationHeight:54px;
+// center the busy animation
+#mapContainer{
+    position:relative;
+    #busyAnimation{
+        display:none;
+        height: @busyAnimationHeight;
+        width: @busyAnimationHeight;
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        right: 50%;
+        margin-top: -@busyAnimationHeight/2;
+        margin-right: -@busyAnimationHeight/2;
+    }
+}
+
 // positioning is set using JS
 #optionsMenu{
     width: 100%;
@@ -198,15 +215,61 @@
         margin: 0 10px;
         padding-bottom: 15px;
         text-align: center;
-        #locationLabel{
-            font-weight:normal;
-            margin-bottom: 0px;
+        .optionsCategory{
+            border-top: solid #ddd 1px;
+            margin-bottom: 5px;
+            h1{
+                font-size:20px;
+                margin: 5px 0px;
+            }
+            label{
+                font-weight: normal;
+                font-size:16px;
+                margin-bottom: 0px;
+            }
+            .campusCheckbox{
+                    color: #fff;
+                &.checked{
+                    background-color: #5cb85c;
+                    border-color: #4cae4c;
+                }
+                &:not(.checked){
+                    background-color: #c9302c;
+                }
+                &:hover{
+                    z-index:auto;
+                }
+                &:focus{
+                    z-index:3;
+                }
+            }
+            #locationCorrectorGo{
+                i{
+                    line-height: 20px;
+                }
+            }
+            #searchWithNewOptionsBtn{
+                font-size: 20px;
+                margin-top: 20px;
+            }
         }
-        #locationCorrectorText{
-        }
-        #locationCorrectorGo{
-            font-family: FontAwesome;
-        }
+    }
+}
+
+@media (min-width: 350px) {
+    .hidden-350{
+        display:auto;
+    }
+    .visible-350{
+        display:none;
+    }
+}
+@media (max-width: 349px) {
+    .visible-350{
+        display:auto;
+    }
+    .hidden-350{
+        display:none;
     }
 }
 
@@ -273,21 +336,4 @@ body{
     .display-flex();
     .justify-content(center);
     .align-items(center);
-}
-
-//set item selectabilitiy
-.selectable(@a) {
-    -webkit-touch-callout: @a;
-    -webkit-user-select: @a;
-    -moz-user-select: @a;
-    -ms-user-select: @a;
-    user-select: @a;
-}
-
-// make only p and input elements selectable
-*{
-    .selectable(none);
-}
-p, input{
-    .selectable(text);
 }

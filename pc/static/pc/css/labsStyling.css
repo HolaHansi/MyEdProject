@@ -191,6 +191,20 @@
   font-weight: bold;
   color: #00aa00;
 }
+#mapContainer {
+  position: relative;
+}
+#mapContainer #busyAnimation {
+  display: none;
+  height: 54px;
+  width: 54px;
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 50%;
+  margin-top: -27px;
+  margin-right: -27px;
+}
 #optionsMenu {
   width: 100%;
   position: fixed;
@@ -250,28 +264,58 @@
   padding-bottom: 15px;
   text-align: center;
 }
-#optionsMenu #optionsContent #locationLabel {
+#optionsMenu #optionsContent .optionsCategory {
+  border-top: solid #ddd 1px;
+  margin-bottom: 5px;
+}
+#optionsMenu #optionsContent .optionsCategory h1 {
+  font-size: 20px;
+  margin: 5px 0px;
+}
+#optionsMenu #optionsContent .optionsCategory label {
   font-weight: normal;
+  font-size: 16px;
   margin-bottom: 0px;
 }
-#optionsMenu #optionsContent #locationCorrectorGo {
-  font-family: FontAwesome;
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox {
+  color: #fff;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox.checked {
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:not(.checked) {
+  background-color: #c9302c;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:hover {
+  z-index: auto;
+}
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus {
+  z-index: 3;
+}
+#optionsMenu #optionsContent .optionsCategory #locationCorrectorGo i {
+  line-height: 20px;
+}
+#optionsMenu #optionsContent .optionsCategory #searchWithNewOptionsBtn {
+  font-size: 20px;
+  margin-top: 20px;
+}
+@media (min-width: 350px) {
+  .hidden-350 {
+    display: auto;
+  }
+  .visible-350 {
+    display: none;
+  }
+}
+@media (max-width: 349px) {
+  .visible-350 {
+    display: auto;
+  }
+  .hidden-350 {
+    display: none;
+  }
 }
 body {
   width: 100%;
-}
-* {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-p,
-input {
-  -webkit-touch-callout: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
-  user-select: text;
 }
