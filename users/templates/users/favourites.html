@@ -327,7 +327,6 @@
 
 
             <!-- generated favourites -->
-            <p>Rooms that we think are available</p>
 
             {% for fav in rooms_available_now %}
 
@@ -348,12 +347,29 @@
 
                         <div class="panel-body">
                             <div class="row">
-                                 <div class="col-xs-6" style="text-align: left;">
-                                     <p><i class="fa fa-clock-o"></i> &nbsp; 9:30-20:30</p>
+                                 <div class="col-xs-3" style="text-align: center;">
+                                     <p><i class="fa fa-clock-o"></i></p>
+                                     <div class="descriptionRoom"><p>Opening Hours</p></div>
+                                     <p>{{ fav | openTime }}</p>
+                                     <p>{{ fav | closingTime }}</p>
                                  </div>
-                                 <div class="col-xs-6" style="text-align:right;">
+                                <div class="col-xs-2" style="text-align:center;">
+                                    <p><i class="fa fa-users"></i></p>
+                                    <div class="descriptionRoom"><p>Capacity</p></div>
+                                    <p>{{ fav.capacity }}</p>
+
+
+                                </div>
+                                <div class="col-xs-3" style="text-align: center">
+                                    <p><i class="fa fa-check-circle"></i></p>
+                                    <div class="descriptionRoom"><p>Available for less than</p></div>
+
+                                    <p>2h</p>
+                                </div>
+                                 <div class="col-xs-4" style="text-align:right;">
                                     <p>{{ fav | facilities }}</p>
                                  </div>
+
 
                             </div>
                             <div class="row" style="margin-top: 15px;">
@@ -391,9 +407,7 @@
 
 
 
-            <p>Rooms that we know are unavailable</p>
-
-            {% for fav in rooms_booked_now %}
+            {% for fav in rooms_not_available_now %}
 
 
             <!-- beginning of favourite room-->
@@ -411,15 +425,33 @@
 
                         <div class="panel-body">
                             <div class="row">
-                                 <div class="col-xs-4" style="text-align: left;">
-                                     <p><i class="fa fa-clock-o"></i> &nbsp;</p>
-                                     <p>9:30</p>
-                                     <p>20:30</p>
+                                 <div class="col-xs-3" style="text-align: center;">
+                                     <p><i class="fa fa-clock-o"></i></p>
+                                     <p>{{ fav | openTime }}</p>
+                                     <p>{{ fav | closingTime }}</p>
                                  </div>
-                                <div class="col-xs-4" style="text-align: center">
-                                    <p><i class="fa fa-exclamation-triangle"></i></p>
-                                    <p>Currently Unavailable</p>
+                                <div class="col-xs-2" style="text-align:center;">
+                                    <p><i class="fa fa-users"></i></p>
+                                    <div class="descriptionRoom"><p>Capacity</p></div>
+                                    <p>{{ fav.capacity }}</p>
 
+
+                                </div>
+                                <div class="col-xs-3" style="text-align: center">
+                                    {% if fav.locally_allocated %}
+
+                                    <p><i class="fa fa-exclamation-triangle"></i></p>
+                                        <div class="descriptionRoom"><p>Locally Allocated</p></div>
+                                        <p>n/a</p>
+
+
+                                    {% else %}
+
+                                    <p><i class="fa fa-hourglass"></i></p>
+                                        <div><p></p></div>
+                                    <div class="descriptionRoom"><p>Available in less than</p></div>
+                                        <p>{{ fav | currentStatus }}</p>
+                                    {% endif %}
                                 </div>
                                  <div class="col-xs-4" style="text-align:right;">
                                     <p>{{ fav | facilities }}</p>
@@ -451,11 +483,12 @@
 
             {% endfor %}
 
-            <p>Rooms for which we are oblivious with regards to their availability LOCALLY ALLOCATED :</p>
 
-            {% for fav in rooms_unknown_availability %}
 
-                            <!-- beginning of favourite room-->
+            {% for fav in rooms_open_locally_allocated %}
+
+                <!-- beginning of favourite room-->
+
 
             <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
@@ -471,12 +504,28 @@
 
                         <div class="panel-body">
                             <div class="row">
-                                 <div class="col-xs-6" style="text-align: left;">
-                                     <p><i class="fa fa-clock-o"></i> &nbsp; 9:30-20:30</p>
+                                 <div class="col-xs-3" style="text-align: center;">
+                                     <p><i class="fa fa-clock-o"></i></p>
+                                     <div class="descriptionRoom"><p>Opening Hours</p></div>
+                                     <p>{{ fav | openTime }}</p>
+                                     <p>{{ fav | closingTime }}</p>
                                  </div>
-                                 <div class="col-xs-6" style="text-align:right;">
+                                <div class="col-xs-2" style="text-align:center;">
+                                    <p><i class="fa fa-users"></i></p>
+                                    <div class="descriptionRoom"><p>Capacity</p></div>
+                                    <p>{{ fav.capacity }}</p>
+
+
+                                </div>
+                                <div class="col-xs-3" style="text-align: center">
+                                    <p><i class="fa fa-exclamation-triangle"></i></p>
+                                        <div class="descriptionRoom"><p>Locally Allocated</p></div>
+                                        <p>n/a</p>
+                                </div>
+                                 <div class="col-xs-4" style="text-align:right;">
                                     <p>{{ fav | facilities }}</p>
                                  </div>
+
 
                             </div>
                             <div class="row" style="margin-top: 15px;">

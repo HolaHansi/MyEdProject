@@ -10,6 +10,25 @@ import datetime
 from django.utils import timezone
 from core import utilities
 from rooms.views import filter_suggestions
+import random, string
+
+def makeClosedRoom(name="locallyAllocatedButClosed"):
+    """
+    Will make a currently closed room (in weekdays) and save it to the database
+    :param name:
+    :return: nothing
+    """
+
+    startTime = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    startTime -= datetime.timedelta(hours=2)
+
+    endTime = startTime + datetime.timedelta(hours=1)
+
+    a = Tutorial_Room(locationId=name, room_name=name, capacity=20, longitude=200.3, latitude=20003.3, whiteboard=True, weekdayOpen=startTime, weekdayClosed=endTime, locally_allocated=True)
+
+    a.save()
+
+    return a
 
 
 class ActivityTestCase(TestCase):

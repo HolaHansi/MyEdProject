@@ -33,6 +33,22 @@ def facilities(room):
     return mark_safe(to_return)
 
 
+@register.filter
+def locally_allocated(room):
+    return room.locally_allocated
+
+@register.filter
+def currentStatus(room):
+    """
+    checks if room is locally allocated
+    :param room:
+    :return:
+    """
+    hours_till_available = '2h'
+
+    return mark_safe(hours_till_available)
+
+
 
 @register.filter
 def openTime(place):

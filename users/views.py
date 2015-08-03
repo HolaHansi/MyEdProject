@@ -180,7 +180,8 @@ def favourites(request):
     The view for the favourites page. It renders a template that displays
     all the favourites of current user in the following categories:
     PC: currently open, currently closed
-    Rooms: Known to be free, known to be booked, unknown availability.
+    Rooms: 1) Rooms Available Now (currently open and not booked), 2) Rooms not available (Either closed or currently booked
+    of both locally and globally allocated rooms), 3) locally allocated and currently open.
     """
     # get the user from the request
     user = request.user
@@ -203,23 +204,46 @@ def favourites(request):
     room_favourites = user.room_favourites.all()
 
     # from users favourites, get all rooms that are locally allocated: we don't know the availability of these.
-    rooms_unknown_availability = room_favourites.filter(locally_allocated=True)
+    rooms_locally_allocated = room_favourites.filter(locally_allocated=True)
 
     # do the same thing for rooms that we know the availability of.
-    rooms_known_availability = room_favourites.filter(locally_allocated=False)
+    rooms_globally_allocated = room_favourites.filter(locally_allocated=False)
 
-    # get all the favourite rooms that we KNOW are available now
-    rooms_available_now = utilities.filter_out_busy_rooms(data=rooms_known_availability, available_for_hours=1)
+    # rooms currently closed of both globally and locally allocated rooms.
+    closed_rooms = utilities.get_currently_closed_locations(room_favourites, typeOfSpace='Room')
+
+
+    # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
+
+    # get all the favourite rooms that we KNOW are available
+    # now both in terms of opening hours and activities.
+    rooms_not_currently_booked = utilities.filter_out_busy_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+    # filter out rooms that are also currently closed
+    rooms_available_now = utilities.excludeClosedLocations(rooms_not_currently_booked)
+
+
+    #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
+
 
     # get all favourite rooms KNOWN to be currently booked
-    rooms_booked_now = utilities.filter_out_avail_rooms(data=rooms_known_availability, available_for_hours=1)
+    rooms_currently_booked = utilities.filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+    # if a room is either booked or currently closed, then it is not available:
+    rooms_not_available_now = closed_rooms | rooms_currently_booked
+
+
+    #ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
+
+    rooms_open_locally_allocated = utilities.excludeClosedLocations(rooms_locally_allocated)
+
 
 
     context = {'pc_favourites_open': pc_favourites_open,
                'pc_favourites_closed': pc_favourites_closed,
-               'rooms_unknown_availability': rooms_unknown_availability,
+               'rooms_open_locally_allocated': rooms_open_locally_allocated,
                'rooms_available_now': rooms_available_now,
-               'rooms_booked_now': rooms_booked_now,
+               'rooms_not_available_now': rooms_not_available_now,
                'user': user}
 
     return render(request, 'users/favourites.html', context)

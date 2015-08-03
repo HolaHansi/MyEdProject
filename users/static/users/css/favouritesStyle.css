@@ -34,6 +34,11 @@
     opacity: 0;
   }
 }
+@media (max-width: 648px) {
+  .descriptionRoom {
+    display: none;
+  }
+}
 .body {
   background-color: #d9433b;
 }
