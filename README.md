@@ -16,6 +16,7 @@
 ##Possible tweaks:
 
 - Send all rooms liked and toggle liked button locally
+- Add feedback stuff
 
 ###Stretch goals:
 - 'Tutorial'
