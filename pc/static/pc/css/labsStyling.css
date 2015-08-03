@@ -218,6 +218,12 @@
   -o-transition: top 0.5s;
   transition: top 0.5s;
 }
+#optionsMenu.transitionOff {
+  -webkit-transition: top 0s;
+  -moz-transition: top 0s;
+  -o-transition: top 0s;
+  transition: top 0s;
+}
 #optionsMenu .triangle {
   width: 0;
   height: 0;

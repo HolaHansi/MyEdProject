@@ -20,24 +20,26 @@ var geocoder; // the Google object for geocoding
 // resize the JS styled elements if the window resizes
 $(window).resize(function(){
     // don't slide the menu if repositioning due to viewport resize, just move it instantly
-    $('#optionsMenu').css({transition:'none'});
+    $('#optionsMenu').addClass('transitionOff');
     resizeElements();
     // timeout needed to stop the transition in slower browsers
     // (yes, it's a bit of an ugly hack, but what to do with web dev isn't?)
     setTimeout(function(){
-        $('#optionsMenu').css({transition:'top 0.5s'});
+        $('#optionsMenu').removeClass('transitionOff');
     }, 100);
     
     //ensure any hidden campus buttons have the same selection state as the 'other' checkbox
     matchHiddenCampusesToOther();
 });
 
+// Initialisation
 $(document).ready(function () {
     // Create the map
     makeMap();
     
-    $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeElements)
-    $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeElements)
+    //ensure the hamburger menu is always visible over the options menu
+    $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeOptionsMenu)
+    $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeOptionsMenu)
     
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['options']){
@@ -49,7 +51,8 @@ $(document).ready(function () {
             campus = options.campuses[i]
             $('#'+campus).attr('checked',false);
         }
-        
+    
+    // otherwise, use and save the standard settings
     } else {
         // save the current options state
         var oldOptions = {
@@ -247,19 +250,29 @@ $(document).ready(function () {
     });
 });
 
-// JS styling
+// JS styling {
+
+// refresh all the JS styling
 function resizeElements(){
     
-    // resize the arrows to take up the whole suggestion:
+    // resize the arrows to take up the whole suggestion
+    resizeArrows();
     
+    // reposition the menu:
+    resizeOptionsMenu();
+}
+
+// resize the arrows to take up the whole suggestion
+function resizeArrows(){
     // set the height to 0 so the current height of the arrow isn't taken into account when calculating its new height
     $('.arrow').height(0);
     // if the window is big enough to display the whole page without scrolling, make the arrows take up the whole window (other than the navbar and height), 
     // otherwise make the arrows take up the whole suggestion but no more
     $('.arrow').height(Math.max((window.innerHeight - $('.navbar').outerHeight()-$('#optionsTitle').outerHeight()),($('body').height()-$('.navbar').outerHeight()-$('#optionsTitle').outerHeight())));
-    
-    // reposition the menu:
-    
+}
+
+// reposition the menu:
+function resizeOptionsMenu(){
     // close the menu
     // needed even if menu is currently open to ensure all heights used in calculations are correct
     $('body').css( { 
@@ -278,7 +291,7 @@ function resizeElements(){
     
     // if the menu is currently open:
     if($('#optionsMenu').hasClass('opened')){
-        // prevent scrolling on the body if scrolling was possible
+        // prevent scrolling on the body if scrolling was previously possible
         if (window.innerHeight < $('body').innerHeight()){
             $('body').css( { 
                 position: 'fixed',
@@ -316,18 +329,7 @@ function resizeElements(){
     }
 }
 
-// set any hidden campus buttons' selection state to that of the 'other' checkbox
-function matchHiddenCampusesToOther(){
-    $('.campusCheckbox').each(function(){
-        if($(this).css('display')=='none'){
-            if($('#otherCheckbox').hasClass('checked')){
-                $(this).addClass('checked');
-            }else{
-                $(this).removeClass('checked');
-            }
-        }
-    });
-}
+// JS styling }
 
 // open or close the options menu
 function toggleOptionsMenu(){
@@ -367,6 +369,19 @@ function toggleOptionsMenu(){
         // deselect all options
         $('#optionsMenu *').blur();
     }
+}
+
+// set any hidden campus buttons' selection state to that of the 'other' checkbox
+function matchHiddenCampusesToOther(){
+    $('.campusCheckbox').each(function(){
+        if($(this).css('display')=='none'){
+            if($('#otherCheckbox').hasClass('checked')){
+                $(this).addClass('checked');
+            }else{
+                $(this).removeClass('checked');
+            }
+        }
+    });
 }
 
 // populate the HTML with the previous suggestion's details

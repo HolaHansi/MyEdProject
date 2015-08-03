@@ -173,6 +173,10 @@
     position:fixed;
     background-color: @optionsBackground;
     .transition(top, @optionsMenuTransitionTime);
+    // make the transition toggleable
+    &.transitionOff{
+        .transition(top, 0s);
+    }
     // wee triangle on top of the options menu signifying up or down
     .triangle {
         width: 0;
