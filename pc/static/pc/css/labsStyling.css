@@ -294,6 +294,7 @@
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox {
   color: #fff;
+  padding: 6px 2px;
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox.checked {
   background-color: #5cb85c;
@@ -308,13 +309,13 @@
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus {
   z-index: 3;
 }
-@media (max-width: 320px) {
-  #optionsMenu #optionsContent .optionsCategory #holyroodCheckbox {
+@media (max-width: 374px) {
+  #optionsMenu #optionsContent .optionsCategory #holyroodCheckboxDiv {
     display: none;
   }
 }
-@media (max-width: 249px) {
-  #optionsMenu #optionsContent .optionsCategory #lauristonCheckbox {
+@media (max-width: 290px) {
+  #optionsMenu #optionsContent .optionsCategory #lauristonCheckboxDiv {
     display: none;
   }
 }
