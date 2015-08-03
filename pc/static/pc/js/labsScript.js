@@ -7,7 +7,9 @@ var userLongitude = -3.188775; // current longitude of user
 
 var pcLikedByUser = false; // whether current suggestion is liked by user
 
-var refreshTimer; // the timeout variable
+var refreshTimer; // the maps timeout variable for limiting number of queries per second to avoid limits
+var idleReminder; // the timer variable which reminds the user they can swipe if they don't swipe within the first 5 seconds
+var idleTime=0; // the length of time the user has gone without swiping
 
 var map; // the Google Map object
 var mapOptions; // the JSON of options for the map
@@ -74,6 +76,12 @@ $(document).ready(function () {
     // get the user's location, then send a get request if that's successful and display the initial suggestion
 	   getLocation();
     }
+    
+    // remind the user they can swipe to see more suggestions if they don't do so quickly
+    idleReminder = setTimeout(function(){
+        $('#swipeReminder').css({'opacity':1, 'left':'0px'});
+    }, 5000); // 5 second delay
+
     
 	// when the user clicks the next button, load the next suggestion
 	$('.right-arrow').click(function () {
@@ -224,7 +232,7 @@ $(document).ready(function () {
     });
     
     // display or hide the options menu when the options header is clicked
-    $('#optionsTitle, .triangle, #searchWithNewOptions').click(toggleOptionsMenu);
+    $('#optionsTitle, .triangle, #searchWithNewOptionsBtn').click(toggleOptionsMenu);
     
     // initialize bootstrap switches
     $.fn.bootstrapSwitch.defaults.size = 'mini';
@@ -239,6 +247,10 @@ $(document).ready(function () {
     // intialize campus buttons to act as checkboxes
     $('.campusCheckbox').click(function(){
         $(this).toggleClass('checked');
+        $('input', this).prop('checked', !$('input', this).prop('checked'))
+    });
+    $('.campusCheckbox input').click(function(){
+        $(this).prop('checked', !$(this).prop('checked'))
     });
     // when the 'other' checkbox is clicked, toggle all hidden campuses too
     $('#otherCheckbox').click(function(){
@@ -393,6 +405,9 @@ function loadPreviousSuggestion(){
 }
 // populate the HTML with the next suggestion's details
 function loadNextSuggestion(){
+    // don't remind the user they can swipe
+    clearTimeout(idleReminder);
+    $('#swipeReminder').css({'opacity':0, 'left':'-30px'});
     if(currentChoice.index<suggestions.length-1 && (!($('#optionsMenu').hasClass('opened')))){
         currentChoice = suggestions[currentChoice.index + 1];
         loadChoice();
@@ -521,8 +536,12 @@ function getSuggestionsUsingOptions(){
         }
         ids.push(id)
     }
+    // if all campuses are unselected, return all campuses
+    if (ids.length==5){
+        ids = [];
+    }
     // get the suggestions
-    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), ids);
+    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), ids); //TODO FIX
 }
 
 // returns the id of all campuses the user doesn't want included

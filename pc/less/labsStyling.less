@@ -167,6 +167,24 @@
     }
 }
 
+#swipeReminder{
+    position:relative;
+    left:30px;
+    cursor:default;
+    opacity:0;
+    .transitions(opacity, 0.5s, left, 0.5s);
+    text-align: center;
+    font-size: 18px;
+    width:95%;
+    .fa{
+        vertical-align: bottom;
+        color:#555555;
+    }
+    #swipeReminderText{
+        line-height: 36px;
+    }
+}
+
 // positioning is set using JS
 #optionsMenu{
     width: 100%;
@@ -235,23 +253,25 @@
             &#sortingOptions>.row{
                 margin:0;
             }
+            
             .campusCheckbox{
                 color: #fff;
-                &.checked{
-                    background-color: #5cb85c;
-                    border-color: #4cae4c;
-                }
-                &:not(.checked){
-                    background-color: #c9302c;
-                }
-                &:hover{
-                    z-index:auto;
-                }
-                &:focus{
-                    z-index:3;
-                }
+                background-color: #5cb85c;
+                border-color: #4cae4c;
                 padding: 6px 2px;
+                &:not(.checked) {
+                    background-color: #d9534f;
+                    border-color: #d43f3a;
+                    opacity: 0.5;
+                }
+                &:hover {
+                    z-index: auto;
+                }
+                &:focus {
+                    z-index: 3;
+                }
             }
+            
             #holyroodCheckboxDiv{
                 @media (max-width:374px){
                     display:none;
@@ -342,6 +362,14 @@ body{
     -moz-transition: @property @time;
     -o-transition: @property @time;
     transition: @property @time;
+}
+
+//shorthand for all versions of transition: property time,  property2 time2;
+.transitions(@property, @time, @property2, @time2){
+    -webkit-transition: @property @time, @property2, @time2;
+    -moz-transition: @property @time, @property2, @time2;
+    -o-transition: @property @time, @property2, @time2;
+    transition: @property @time, @property2, @time2;
 }
 
 //center content using flexbox

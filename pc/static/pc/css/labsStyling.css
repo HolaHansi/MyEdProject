@@ -209,6 +209,26 @@
   margin-top: -27px;
   margin-right: -27px;
 }
+#swipeReminder {
+  position: relative;
+  left: 30px;
+  cursor: default;
+  opacity: 0;
+  -webkit-transition: opacity 0.5s, left, 0.5s;
+  -moz-transition: opacity 0.5s, left, 0.5s;
+  -o-transition: opacity 0.5s, left, 0.5s;
+  transition: opacity 0.5s, left, 0.5s;
+  text-align: center;
+  font-size: 18px;
+  width: 95%;
+}
+#swipeReminder .fa {
+  vertical-align: bottom;
+  color: #555555;
+}
+#swipeReminder #swipeReminderText {
+  line-height: 36px;
+}
 #optionsMenu {
   width: 100%;
   position: fixed;
@@ -294,14 +314,14 @@
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox {
   color: #fff;
-  padding: 6px 2px;
-}
-#optionsMenu #optionsContent .optionsCategory .campusCheckbox.checked {
   background-color: #5cb85c;
   border-color: #4cae4c;
+  padding: 6px 2px;
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox:not(.checked) {
-  background-color: #c9302c;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  opacity: 0.5;
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox:hover {
   z-index: auto;
