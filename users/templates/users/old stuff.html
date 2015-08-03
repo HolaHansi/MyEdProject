@@ -332,8 +332,7 @@
             {% for fav in rooms_available_now %}
 
 
-            <!-- beginning of favourite room-->
-
+            <!-- favourite -->
             <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
@@ -348,32 +347,78 @@
 
                         <div class="panel-body">
                             <div class="row">
-                                 <div class="col-xs-6" style="text-align: left;">
-                                     <p><i class="fa fa-clock-o"></i> &nbsp; 9:30-20:30</p>
+                                 <div class="col-xs-2" style="padding-right:0px; text-align: center;">
+                                     <p><i class="fa fa-clock-o"></i> &nbsp; 9:30 20:30</p>
                                  </div>
-                                 <div class="col-xs-6" style="text-align:right;">
-                                    <p>{{ fav | facilities }}</p>
+                                 <div class="col-xs-2 suitabilityCol">
+                                    <p><span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> <i class="fa fa-check suitAvail"></i></p>
                                  </div>
-
+                                 <div class="col-xs-2 suitabilityCol">
+                                     <p><span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span><i class="fa fa-times suitUnAvil"></i></p>
+                                 </div>
+                                 <div class="col-xs-2 suitabilityCol">
+                                    <p><span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span> <i class="fa fa-times suitUnAvil"></i></p>
+                                 </div>
+                                 <div class="col-xs-2 suitabilityCol">
+                                     <p><span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span><i class="fa fa-times suitUnAvil"></i></p>
+                                 </div>
+                                 <div class="col-xs-2 suitabilityCol">
+                                    <p><span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span> <i class="fa fa-times suitUnAvil"></i></p>
+                                 </div>
                             </div>
+
+{#                            <div class="row" style="margin-top: 15px;">#}
+{##}
+{#                                <div class="col-xs-2 col-xs-offset-1 openHourDiv">#}
+{#                                    <div class="row">#}
+{#                                        <div class="col-xs-6 openHourRoom">#}
+{#                                            <i class="fa fa-clock-o openHoursComp"></i>#}
+{#                                        </div>#}
+{#                                        <div class="col-xs-6">#}
+{#                                            <div class="col-xs-1 openHourDivRoom">#}
+{##}
+{#                                                <p class="openOpeningHour openTimeP">9:30</p>#}
+{#                                                <p class="openOpeningHour closingTimeP">20:30</p>#}
+{##}
+{#                                            </div>#}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{##}
+{##}
+{#                                </div>#}
+{##}
+{##}
+{#                            </div>#}
+
+
                             <div class="row" style="margin-top: 15px;">
+
                                 <div class="col-xs-2">
                                     <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
+
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                                     <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
+
+
+
+                                    <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>
+
                             </div>
+
                         <!-- panel-body -->
                         </div>
-                <!-- panel collapse -->
-                </div>
+                    <!-- panel collapse -->
+                    </div>
             <!-- end of this room -->
             </div>
 
-            <!-- end of favourite room -->
+
 
             {% endfor %}
 
@@ -391,112 +436,21 @@
 
 
 
-            <p>Rooms that we know are unavailable</p>
+            <h2>Rooms that we know are unavailable</h2>
 
             {% for fav in rooms_booked_now %}
-
-
-            <!-- beginning of favourite room-->
-
-            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                        <span class="badge times"><i class="fa fa-times"></i></span>{{ fav.room_name }}, {{fav.building_name}}<span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-
-                <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
-
-                        <div class="panel-body">
-                            <div class="row">
-                                 <div class="col-xs-4" style="text-align: left;">
-                                     <p><i class="fa fa-clock-o"></i> &nbsp;</p>
-                                     <p>9:30</p>
-                                     <p>20:30</p>
-                                 </div>
-                                <div class="col-xs-4" style="text-align: center">
-                                    <p><i class="fa fa-exclamation-triangle"></i></p>
-                                    <p>Currently Unavailable</p>
-
-                                </div>
-                                 <div class="col-xs-4" style="text-align:right;">
-                                    <p>{{ fav | facilities }}</p>
-                                 </div>
-
-                            </div>
-                            <div class="row" style="margin-top: 15px;">
-                                <div class="col-xs-2">
-                                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
-                                </div>
-                                <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                                     <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
-                                </div>
-                            </div>
-                        <!-- panel-body -->
-                        </div>
-                <!-- panel collapse -->
-                </div>
-            <!-- end of this room -->
-            </div>
-
-            <!-- end of favourite room -->
-
-
-
+        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
+            <span class="unliker unclicked">Unlike</span></li>
 
 
             {% endfor %}
 
-            <p>Rooms for which we are oblivious with regards to their availability LOCALLY ALLOCATED :</p>
+            <h2>Rooms for which we are oblivious with regards to their availability :(</h2>
 
             {% for fav in rooms_unknown_availability %}
+        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}
+            <span class="unliker unclicked">Unlike</span></li>
 
-                            <!-- beginning of favourite room-->
-
-            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                        <span class="badge minus"><i class="fa fa-minus avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
-                            <span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-
-                <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
-
-                        <div class="panel-body">
-                            <div class="row">
-                                 <div class="col-xs-6" style="text-align: left;">
-                                     <p><i class="fa fa-clock-o"></i> &nbsp; 9:30-20:30</p>
-                                 </div>
-                                 <div class="col-xs-6" style="text-align:right;">
-                                    <p>{{ fav | facilities }}</p>
-                                 </div>
-
-                            </div>
-                            <div class="row" style="margin-top: 15px;">
-                                <div class="col-xs-2">
-                                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
-                                </div>
-                                <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                                     <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
-                                </div>
-                            </div>
-                        <!-- panel-body -->
-                        </div>
-                <!-- panel collapse -->
-                </div>
-            <!-- end of this room -->
-            </div>
-
-            <!-- end of favourite room -->
 
             {% endfor %}
 
