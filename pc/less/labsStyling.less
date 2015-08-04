@@ -128,22 +128,19 @@
 //room and availability row positioning (using flex, unsupported on IE < 10 )
 #roomRow, #computersFreeRow{
     .display-flex();
-    
+    margin: 0;
     #roomNameContainer, #computersFreeLabelContainer{
         .flex(3,1,0);
         position: relative;
         min-height: 1px;
-        padding-left: 15px;
         margin: auto;
     }
 
     #starContainer, #computersFreeGraphContainer{
-        .flex(1,1,0);
+        .flex(51px,0,0);
         text-align: center;
         position: relative;
         min-height: 1px;
-        padding-right: 15px;
-        padding-left: 15px;
         margin: auto;
     }
 }
