@@ -3,31 +3,8 @@
 @optionsBackground: #eeeeee;
 @optionsMenuTransitionTime: 0.5s;
 
-#pageTitle{
-    margin: 0 0 5;
-    padding: 0 0 5;
-    
-    font-size: 28px;
-    @media (min-width: 350px) {
-        font-size: 28px;
-        font-size: 8vw;
-    }
-    @media (min-width: 437px) {
-        font-size: 35px;
-        line-height: 35px;
-    }
-    i{
-        margin-left: 8px;
-    }
-}
-
 #yesBtnContainer{
     text-align: center;
-}
-
-//positioning
-#roomName{
-    margin: 0;
 }
 
 #currentMap{
@@ -85,8 +62,30 @@
 }
 
 
-//responsive text size for room name
-#roomName{    
+#pageTitle{
+    margin: 0 0 5;
+    padding: 0 0 5;
+    
+    //responsive text size
+    font-size: 28px;
+    @media (min-width: 350px) {
+        font-size: 28px;
+        font-size: 8vw;
+    }
+    @media (min-width: 437px) {
+        font-size: 35px;
+        line-height: 35px;
+    }
+    i{
+        margin-left: 8px;
+    }
+}
+
+
+#roomName{   
+    margin: 0; 
+    
+    //responsive text size
     font-size: 14px;
     line-height: 14px;
     @media (min-width: 200px) {
