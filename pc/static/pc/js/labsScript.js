@@ -583,8 +583,11 @@ function getSuggestions(nearby, empty, campuses) {
 				// load the first suggestion
 				currentChoice = suggestions[0];
 				loadChoice();
+                if (suggestions.length==1){
+                    // don't remind the user they can swipe if they can't
+                    clearTimeout(idleReminder);
+                }
 			} else {
-				$('#roomName').html('n/a');
 				$('.right-arrow').addClass('disabled');
 				$('.left-arrow').addClass('disabled');
 				alert('No rooms available fit that criteria.  Try again.  ');

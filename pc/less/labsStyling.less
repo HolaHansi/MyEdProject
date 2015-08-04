@@ -3,7 +3,24 @@
 @optionsBackground: #eeeeee;
 @optionsMenuTransitionTime: 0.5s;
 
-// Center the 'Take me there!' button
+#pageTitle{
+    margin: 0 0 5;
+    padding: 0 0 5;
+    
+    font-size: 28px;
+    @media (min-width: 350px) {
+        font-size: 28px;
+        font-size: 8vw;
+    }
+    @media (min-width: 437px) {
+        font-size: 35px;
+        line-height: 35px;
+    }
+    i{
+        margin-left: 8px;
+    }
+}
+
 #yesBtnContainer{
     text-align: center;
 }
@@ -72,37 +89,38 @@
 #roomName{    
     font-size: 14px;
     line-height: 14px;
-}
-@media (min-width: 200px) {
-    #roomName{
+    @media (min-width: 200px) {
         font-size: 14px;
         line-height: 14px;
         font-size: 7vw;
         line-height: 7vw;
     }
-}
-@media (min-width: 500px) {
-    #roomName{
-        font-size: 35px;
-        line-height: 35px;
+    @media (min-width: 300px) {
+        font-size: 21px;
+        line-height: 21px;
+    }
+    @media (min-width: 400px) {
+        font-size: 5.25vw;
+        line-height: 5.25vw;
+    }
+    @media (min-width: 500px) {
+        font-size: 26.25px;
+        line-height: 26.25px;
     }
 }
+
 
 //responsive text size for computers free label: 
 #computersFreeLabel{
     font-size: 12px;
     line-height: 12px;
-}
-@media (min-width: 200px) {
-    #computersFreeLabel{
+    @media (min-width: 200px) {
         font-size: 12px;
         line-height: 12px;
         font-size: 6vw;
         line-height: 6vw;
     }
-}
-@media (min-width: 300px) {
-    #computersFreeLabel{
+    @media (min-width: 300px) {
         font-size: 18px;
         line-height: 18px;
     }
