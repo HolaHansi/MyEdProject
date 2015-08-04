@@ -360,11 +360,11 @@
 
 
                                 </div>
-                                <div class="col-xs-3" style="text-align: center">
+                                <div class="col-xs-3" style="text-align: center; padding-left:5px; padding-right:5px;">
                                     <p><i class="fa fa-check-circle"></i></p>
                                     <div class="descriptionRoom"><p>Available for less than</p></div>
 
-                                    <p>2h</p>
+                                    <p>{{ fav.availableFor }}</p>
                                 </div>
                                  <div class="col-xs-4" style="text-align:right;">
                                     <p>{{ fav | facilities }}</p>
@@ -450,7 +450,7 @@
                                     <p><i class="fa fa-hourglass"></i></p>
                                         <div><p></p></div>
                                     <div class="descriptionRoom"><p>Available in less than</p></div>
-                                        <p>{{ fav | currentStatus }}</p>
+                                        <p> 2h</p>
                                     {% endif %}
                                 </div>
                                  <div class="col-xs-4" style="text-align:right;">

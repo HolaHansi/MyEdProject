@@ -84,6 +84,10 @@ class Tutorial_Room(models.Model):
     sundayOpen = models.TimeField(null=True)
     sundayClosed = models.TimeField(null=True)
 
+    # available till/for updated in users views
+    availableFor = models.CharField(max_length=15, default='unknown')
+    unavailableTill = models.CharField(max_length=15, default='unknown')
+
     def __str__(self):
         return self.building_name + ": " + self.room_name
 
