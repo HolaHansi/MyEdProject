@@ -39,10 +39,6 @@ $(document).ready(function () {
     // Create the map
     makeMap();
     
-    //ensure the hamburger menu is always visible over the options menu
-    $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeOptionsMenu)
-    $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeOptionsMenu)
-    
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['options']){
         var options = JSON.parse(sessionStorage['options']);
@@ -73,16 +69,31 @@ $(document).ready(function () {
     
     // otherwise use JS to get their location
     } else {
-    // get the user's location, then send a get request if that's successful and display the initial suggestion
+        // get the user's location, then send a get request if that's successful and display the initial suggestion
 	   getLocation();
     }
+    // Apply the JS styling
+    resizeElements();
+    
+    // initialize bootstrap switches
+    $.fn.bootstrapSwitch.defaults.size = 'mini';
+    $.fn.bootstrapSwitch.defaults.onColor = 'success';
+    $.fn.bootstrapSwitch.defaults.offColor = 'danger';
+    $.fn.bootstrapSwitch.defaults.onText = '✓';
+    $.fn.bootstrapSwitch.defaults.offText = '☓';
+    $.fn.bootstrapSwitch.defaults.handleWidth = 20;
+    $.fn.bootstrapSwitch.defaults.labelWidth = 20;
+    $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
+    
+    //ensure the hamburger menu is always visible over the options menu
+    $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeOptionsMenu)
+    $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeOptionsMenu)
     
     // remind the user they can swipe to see more suggestions if they don't do so quickly
     idleReminder = setTimeout(function(){
         $('#swipeReminder').css({'opacity':1, 'left':'0px'});
     }, 5000); // 5 second delay
 
-    
 	// when the user clicks the next button, load the next suggestion
 	$('.right-arrow').click(function () {
         loadNextSuggestion();
@@ -112,10 +123,7 @@ $(document).ready(function () {
         $('#suggestion .fa-star').toggleClass('starred');
 	});
     
-    // Apply the JS styling
-    resizeElements();
-    
-    // Enable swiping to switch suggestions...
+    // Enable swiping to switch suggestions
     $("#mainContainer").swipe( {
         // Load the next suggestion if the user swipes left
         swipeLeft:function(event, direction, distance, duration, fingerCount) {
@@ -125,20 +133,14 @@ $(document).ready(function () {
         swipeRight:function(event, direction, distance, duration, fingerCount) {
             loadPreviousSuggestion();
         },
-        /* Removed as it was preventing scrolling up on mobiles
-        // Close the options menu if the user swipes down
-        swipeDown:function(event, direction, distance, duration, fingerCount) {
-            if ($('#optionsMenu').hasClass('opened')){
-                toggleOptionsMenu();
-            }
-        },
-        */
         // Suggestion appears before the user lifts their finger
         triggerOnTouchEnd:false,
         // Ignore swipes on any buttons
         excludedElements:'button, a, input'
     });
-    // Enable swiping on the options menu to open and close it...
+    // Enable swiping on the options menu to open and close it
+    // (note this is being applied to the body so that the user can swipe up from the options menu onto the body and it'll still be triggered,
+    //  but due to the excludedElements property, it'll only register swipes on the options menu itself)
     $("body").swipe( {
         // Open the menu if the user swipes up
         swipeUp:function(event, direction, distance, duration, fingerCount) {
@@ -163,7 +165,9 @@ $(document).ready(function () {
         // get the input from the user
         var newLocation=$('#locationCorrectorText').val();
         if (newLocation===''){
-            return;
+            // if the user leaves it blank, use their default location
+            getLocation();
+            return '';
         }
         // if the user hasn't narrowed down their search to Edinburgh (or elsewhere, as estimated by their using a comma), do it for them
         if (newLocation.indexOf('Edinburgh')==-1 && newLocation.indexOf(',')==-1){
@@ -188,6 +192,7 @@ $(document).ready(function () {
                 
                 // display the suggestions using the new coordinates
                 getSuggestionsUsingOptions();
+                toggleOptionsMenu();   
                 
             // otherwise, display an appropriate error message
             }else if (status==google.maps.GeocoderStatus.ZERO_RESULTS || status==google.maps.GeocoderStatus.INVALID_REQUEST){
@@ -196,7 +201,6 @@ $(document).ready(function () {
                 alert("Lookup failed: " + status);
             }
         });
-        toggleOptionsMenu();
     });
     
     // also correct their location if they press enter while focus is on the location corrector textbox
@@ -234,15 +238,12 @@ $(document).ready(function () {
     // display or hide the options menu when the options header is clicked
     $('#optionsTitle, .triangle, #searchWithNewOptionsBtn').click(toggleOptionsMenu);
     
-    // initialize bootstrap switches
-    $.fn.bootstrapSwitch.defaults.size = 'mini';
-    $.fn.bootstrapSwitch.defaults.onColor = 'success';
-    $.fn.bootstrapSwitch.defaults.offColor = 'danger';
-    $.fn.bootstrapSwitch.defaults.onText = '✓';
-    $.fn.bootstrapSwitch.defaults.offText = '☓';
-    $.fn.bootstrapSwitch.defaults.handleWidth = 20;
-    $.fn.bootstrapSwitch.defaults.labelWidth = 20;
-    $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
+    // take down the options menu if the user clicks off it
+    $('#mainContainer').click(function(){
+        if ($('#optionsMenu').hasClass('opened')){
+            toggleOptionsMenu();
+        }
+    })
     
     // intialize campus buttons to act as checkboxes
     $('.campusCheckbox').click(function(){
@@ -645,7 +646,10 @@ function savePosition(position) {
     // for some reason, many uni computers think they're in the middle of Arthur's seat.  If we detect this, tell them their location is wrong.  
     if (userLatitude>55.948367 && userLatitude<55.948368 && userLongitude<-3.158850 && userLongitude>-3.158851){
         alert("Unable to get accurate location.  Enter your location manually in the options menu to refine your location.");
-        toggleOptionsMenu();
+        // open the options menu
+        if (!$('#optionsMenu').hasClass('opened')){
+            toggleOptionsMenu();
+        }
         $('#locationCorrectorText').focus();
     }
 	getSuggestions(false, true, []);
@@ -655,7 +659,7 @@ function savePosition(position) {
 function showError(error) {
 	switch (error.code) {
         case error.PERMISSION_DENIED:
-            console.warn("Geolocation denied.  Enter your location using the options menu")
+            alert("Geolocation denied.  Enter your location using the options menu")
             break;
         case error.POSITION_UNAVAILABLE:
             alert("Location information is unavailable.  Refresh the page or enter your location manually in the options menu.  ");
