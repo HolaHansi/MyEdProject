@@ -3,14 +3,8 @@
 @optionsBackground: #eeeeee;
 @optionsMenuTransitionTime: 0.5s;
 
-// Center the 'Take me there!' button
 #yesBtnContainer{
     text-align: center;
-}
-
-//positioning
-#roomName{
-    margin: 0;
 }
 
 #currentMap{
@@ -68,41 +62,64 @@
 }
 
 
-//responsive text size for room name
-#roomName{    
+#pageTitle{
+    margin: 0 0 5;
+    padding: 0 0 5;
+    
+    //responsive text size
+    font-size: 28px;
+    @media (min-width: 350px) {
+        font-size: 28px;
+        font-size: 8vw;
+    }
+    @media (min-width: 437px) {
+        font-size: 35px;
+        line-height: 35px;
+    }
+    i{
+        margin-left: 8px;
+    }
+}
+
+
+#roomName{   
+    margin: 0; 
+    
+    //responsive text size
     font-size: 14px;
     line-height: 14px;
-}
-@media (min-width: 200px) {
-    #roomName{
+    @media (min-width: 200px) {
         font-size: 14px;
         line-height: 14px;
         font-size: 7vw;
         line-height: 7vw;
     }
-}
-@media (min-width: 500px) {
-    #roomName{
-        font-size: 35px;
-        line-height: 35px;
+    @media (min-width: 300px) {
+        font-size: 21px;
+        line-height: 21px;
+    }
+    @media (min-width: 400px) {
+        font-size: 5.25vw;
+        line-height: 5.25vw;
+    }
+    @media (min-width: 500px) {
+        font-size: 26.25px;
+        line-height: 26.25px;
     }
 }
+
 
 //responsive text size for computers free label: 
 #computersFreeLabel{
     font-size: 12px;
     line-height: 12px;
-}
-@media (min-width: 200px) {
-    #computersFreeLabel{
+    @media (min-width: 200px) {
         font-size: 12px;
         line-height: 12px;
         font-size: 6vw;
         line-height: 6vw;
     }
-}
-@media (min-width: 300px) {
-    #computersFreeLabel{
+    @media (min-width: 300px) {
         font-size: 18px;
         line-height: 18px;
     }
@@ -111,22 +128,19 @@
 //room and availability row positioning (using flex, unsupported on IE < 10 )
 #roomRow, #computersFreeRow{
     .display-flex();
-    
+    margin: 0;
     #roomNameContainer, #computersFreeLabelContainer{
         .flex(3,1,0);
         position: relative;
         min-height: 1px;
-        padding-left: 15px;
         margin: auto;
     }
 
     #starContainer, #computersFreeGraphContainer{
-        .flex(1,1,0);
+        .flex(51px,0,0);
         text-align: center;
         position: relative;
         min-height: 1px;
-        padding-right: 15px;
-        padding-left: 15px;
         margin: auto;
     }
 }
