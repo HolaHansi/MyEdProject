@@ -86,7 +86,7 @@ class Tutorial_Room(models.Model):
 
     # available till/for updated in users views
     availableFor = models.CharField(max_length=15, default='unknown')
-    unavailableTill = models.CharField(max_length=15, default='unknown')
+    unavailableFor = models.CharField(max_length=15, default='unknown')
 
     def __str__(self):
         return self.building_name + ": " + self.room_name
@@ -114,7 +114,7 @@ class Activity(models.Model):
     # Unique identifier in the RDB
     activityId = models.CharField(max_length=50, primary_key=True)
     # Essential attributes
-    name = models.CharField(max_length=500)  # probably not needed
+    name = models.CharField(max_length=500)
     startTime = models.DateTimeField()
     endTime = models.DateTimeField()
 

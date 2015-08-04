@@ -234,6 +234,8 @@ def favourites(request):
     # if a room is either booked or currently closed, then it is not available:
     rooms_not_available_now = closed_rooms | rooms_currently_booked
 
+    utilities.unavailable_till_hours(rooms_not_available_now)
+
 
     #ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
 

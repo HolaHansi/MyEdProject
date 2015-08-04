@@ -1,9 +1,6 @@
 #yesBtnContainer {
   text-align: center;
 }
-#roomName {
-  margin: 0;
-}
 #currentMap {
   margin-top: 15px;
   height: 300px;
@@ -89,7 +86,28 @@
   -o-transition: opacity 0.5s;
   transition: opacity 0.5s;
 }
+#pageTitle {
+  margin: 0 0 5;
+  padding: 0 0 5;
+  font-size: 28px;
+}
+@media (min-width: 350px) {
+  #pageTitle {
+    font-size: 28px;
+    font-size: 8vw;
+  }
+}
+@media (min-width: 437px) {
+  #pageTitle {
+    font-size: 35px;
+    line-height: 35px;
+  }
+}
+#pageTitle i {
+  margin-left: 8px;
+}
 #roomName {
+  margin: 0;
   font-size: 14px;
   line-height: 14px;
 }
@@ -101,10 +119,22 @@
     line-height: 7vw;
   }
 }
+@media (min-width: 300px) {
+  #roomName {
+    font-size: 21px;
+    line-height: 21px;
+  }
+}
+@media (min-width: 400px) {
+  #roomName {
+    font-size: 5.25vw;
+    line-height: 5.25vw;
+  }
+}
 @media (min-width: 500px) {
   #roomName {
-    font-size: 35px;
-    line-height: 35px;
+    font-size: 26.25px;
+    line-height: 26.25px;
   }
 }
 #computersFreeLabel {
@@ -132,6 +162,7 @@
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  margin: 0;
 }
 #roomRow #roomNameContainer,
 #computersFreeRow #roomNameContainer,
@@ -151,30 +182,27 @@
   flex: 3 1 0;
   position: relative;
   min-height: 1px;
-  padding-left: 15px;
   margin: auto;
 }
 #roomRow #starContainer,
 #computersFreeRow #starContainer,
 #roomRow #computersFreeGraphContainer,
 #computersFreeRow #computersFreeGraphContainer {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -moz-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -moz-box-flex: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  -webkit-flex-basis: 1;
-  -ms-flex-preferred-size: 1;
-  flex-basis: 1;
-  flex: 1 1 0;
+  -webkit-flex-basis: 51px;
+  -ms-flex-preferred-size: 51px;
+  flex-basis: 51px;
+  flex: 51px 0 0;
   text-align: center;
   position: relative;
   min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
   margin: auto;
 }
 #computersFreeGraph {

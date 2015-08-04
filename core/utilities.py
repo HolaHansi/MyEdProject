@@ -172,10 +172,81 @@ def filter_out_busy_rooms(data, available_for_hours=1):
 
 # ======= users/views functions ======= #
 
-def unavailable_till_hours(unavailable_room):
+def unavailable_till_hours(unavailable_rooms):
+    """
+    given a queryset of rooms, the function will populate the unavailableFor field of every room in the queryset.
+    If there are
+    :param unavailable_room:
+    :return:
+    """
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    weekday = now.weekday()
+
+    for unavailable_room in unavailable_rooms:
+        # get all of the rooms activities ending after now.
+        activities = act.objects.filter(tutorialRooms=unavailable_room,
+                                        endTime__gt=now)
+
+        # get the current opening hours of the room
+        if weekday >= 0 and weekday <= 4:
+           closingHour = unavailable_room.weekdayClosed
+           openHour = unavailable_room.weekdayOpen
+
+        elif weekday == 5:
+            closingHour = unavailable_room.saturdayClosed
+            openHour = unavailable_room.saturdayOpen
+        elif weekday == 6:
+            closingHour = unavailable_room.sundayClosed
+            openHour = unavailable_room.sundayOpen
+
+        # determine if the place is currently open.
+        if openHour < now.time() < closingHour:
+            isOpen = True
+        # this is the second more unusual case where the room is open (e.g. closing hour: 2 am)
+        elif closingHour < openHour <= now.time() or now.time() < closingHour < openHour:
+            isOpen = True
+        else:
+            isOpen = False
+
+        # if the place is open, then we know that the reason the place is unavailable is due
+        # to an activity that is currently taking place.
+        if isOpen:
+            # go through the activities, and get the end time of the first activity whose endTime
+            # is at least an hour prior to the next activity.
+            # first, initialize avail_till
+            avail_till_time = None
+            for i in range(activities.count()-1):
+                if activities[i].endTime <= (activities[i+1].startTime - datetime.timedelta(hours=1)):
+                    avail_till_time = activities[i].endTime
+                    break
+            # if avail_till is undefined, then every activity except the final one has been checked, and
+            # has failed this condition. Hence, take the last activity.endTime as avail_till.
+            if not avail_till_time:
+                avail_till_time = activities[activities.count()-1].endTime
+
+
+            # now get the time from now until avail_till_time.
+            avail_for = avail_till_time - now
+
+            # get the hours and minutes
+            avail_for_hours = avail_for.seconds // 3600
+            avail_for_minutes = (avail_for.seconds // 60) % 60
+
+            # return result as a string
+            unavailForString = "in " + str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
+            unavailable_room.unavailableFor = unavailForString
+            unavailable_room.save()
+            continue
 
 
 
+        # otherwise, if the room is currently Closed, the avail_till.
+        else:
+            unavailable_room.unavailableFor = 'tomorrow'
+            unavailable_room.save()
+            continue
+
+    print('updated unavailableFor')
 
 def available_for_hours(available_rooms):
     """
@@ -190,9 +261,12 @@ def available_for_hours(available_rooms):
     weekday = now.weekday()
 
     for available_room in available_rooms:
-
+        # get all activities for the room beginning after now.
         activities = act.objects.filter(tutorialRooms=available_room,
                                         startTime__gt=now)
+
+        # order from most recent till most distant
+        activities = activities.order_by("startTime")
 
         # true if there is no activities for the room.
         noAct = False
@@ -201,7 +275,6 @@ def available_for_hours(available_rooms):
         actWins = False
 
         # check if there are any activities
-        activities = activities.order_by("startTime")
 
         if activities.count() == 0:
             noAct = True
@@ -210,7 +283,8 @@ def available_for_hours(available_rooms):
             # get the starting_time of this activity (type is datetime.datetime)
             startTime = next_activity.startTime
 
-
+        # initialize closingHour
+        closingHour = None
 
         # get the current closing hour of the room
         if weekday >= 0 and weekday <= 4:
