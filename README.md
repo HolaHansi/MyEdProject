@@ -19,6 +19,7 @@
 - Change name + logo ?
 - Implement swiping animation
 - Add custom error pages for more significant errors
+- Add coloured border to right of current page on collapsed dropdown menu too
 
 ###Stretch goals:
 - 'Suggest a study space'
