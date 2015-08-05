@@ -346,15 +346,16 @@ def merge_room_building():
     for results in Room_Feed.objects.raw("SELECT * FROM rooms_room_feed R,rooms_building_feed B"
                                          " WHERE R.abbreviation=B.abbreviation"):
         # don't include rooms from the feed which aren't suitable study spaces
-        if not ("Theatre style" in results.description or "Lecture Theatre" in results.room_name
-                or "Gym" in results.description or 'Games Hall' in results.description
-                or 'Gallery' in results.description or 'Function Area' == results.description
-                or 'Exhibition Space' == results.description or 'Dance Studio' == results.description
-                or 'unavailable' in results.room_name.lower()):
+        if not ("Theatre" in results.description or "Theatre" in results.room_name
+                or "Lecture" in results.room_name or "Lecture" in results.description
+                or 'Hall' in results.room_name or 'Hall' in results.description
+                or 'Auditorium' in results.room_name or 'Auditorium' in results.description
+                or "Gym" in results.description or 'Gallery' in results.description
+                or 'Function Area' == results.description or 'Exhibition Space' == results.description
+                or 'Dance Studio' == results.description or 'unavailable' in results.room_name.lower()):
             # TODO: Are these suitable study spaces?
-            # and results.description!="Foyer Area"
-            # and results.description == "Laboratory: Technical"
-            # and "COMPUTER LAB" not in results.description.upper()
+            # or results.description == "Laboratory: Technical"
+            # or "COMPUTER LAB" not in results.description.upper()
             room_name = re.sub(r'^z*', '', results.room_name)
 
 

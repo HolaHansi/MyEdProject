@@ -5,7 +5,9 @@ var userLatitude = 55.943655; // current latitude of user
 var userLongitude = -3.188775; // current longitude of user
 // Note this is dummy data, pointed in the middle of George Square, which will be overwritten if the user allows location finding or manually enters their location
 
-var labLikedByUser = false; // whether current suggestion is liked by user
+var roomLikedByUser = false; // whether current suggestion is liked by user
+var searchingForBuildings = true; // whether we're currently searching for buildings (true) or tutorial rooms (false)
+var currentBuildingId = ''; // the id of the building we're currently searching in, or '' if we're searching for a building
 
 var refreshTimer; // the maps timeout variable for limiting number of queries per second to avoid limits
 var idleReminder; // the timer variable which reminds the user they can swipe if they don't swipe within the first 5 seconds
@@ -40,8 +42,8 @@ $(document).ready(function () {
     makeMap();
     
     // if the user has changed their settings this session, use the new settings
-    if (sessionStorage['labOptions']){
-        var options = JSON.parse(sessionStorage['labOptions']);
+    if (sessionStorage['roomOptions']){
+        var options = JSON.parse(sessionStorage['roomOptions']);
         
         $('#nearbyCheckbox').attr('checked',options.nearby);
         $('#quietCheckbox').attr('checked',options.quiet);
@@ -58,7 +60,7 @@ $(document).ready(function () {
             quiet: $('#quietCheckbox').is(':checked'), 
             campuses:getUnselectedCampuses()
         };
-        sessionStorage['labOptions'] = JSON.stringify(oldOptions)
+        sessionStorage['roomOptions'] = JSON.stringify(oldOptions)
     }
     
     // if the user has corrected their location this session, use the corrected coordinates
@@ -94,6 +96,20 @@ $(document).ready(function () {
         $('#swipeReminder').css({'opacity':1, 'left':'0px'});
     }, 5000); // 5 second delay
 
+    $('#switchViewBtn').click(function(){
+        // toggle search mode
+        searchingForBuildings = !searchingForBuildings;
+        // if we're now back to searching for buildings, clear the current building
+        if (searchingForBuildings){
+            currentBuildingId = '';
+        // if we're now searching within a building, save the building we're searching in
+        } else {
+            currentBuildingId = currentChoice.abbreviation;
+        }
+        // get new suggestions from the server
+        getSuggestionsUsingOptions();
+    });
+    
 	// when the user clicks the next button, load the next suggestion
 	$('.right-arrow').click(function () {
         loadNextSuggestion();
@@ -109,8 +125,8 @@ $(document).ready(function () {
 		var pc_id = currentChoice.id;
         // send the like request to the server
 		$.post('/like/', {
-				'pc_id': pc_id,
-				'labLikedByUser': (''+labLikedByUser)
+				'locationId': currentChoice.locationId,
+				'roomLikedByUser': (''+roomLikedByUser)
 			})
 			.fail(function () {
                 alert('Failed to favourite location');
@@ -243,7 +259,7 @@ $(document).ready(function () {
         if ($('#optionsMenu').hasClass('opened')){
             toggleOptionsMenu();
         }
-    })
+    });
     
     // intialize campus buttons to act as checkboxes
     $('.campusCheckbox').click(function(){
@@ -361,12 +377,12 @@ function toggleOptionsMenu(){
             quiet: $('#quietCheckbox').is(':checked'), 
             campuses:getUnselectedCampuses()
         };
-        var oldOptions = JSON.parse(sessionStorage['labOptions']);
+        var oldOptions = JSON.parse(sessionStorage['roomOptions']);
         var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
         // if they have, or the user specifically asked for a refresh, refresh the suggestions
         if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
             getSuggestionsUsingOptions();
-            sessionStorage['labOptions'] = JSON.stringify(newOptions)
+            sessionStorage['roomOptions'] = JSON.stringify(newOptions)
         // if they haven't, just continue where you left off
         } else {
             // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
@@ -512,8 +528,8 @@ function liked(pc_id) {
 			'pc_id': pc_id
 		})
 		.done(function (data) {
-			labLikedByUser = (data==='true');
-			if (labLikedByUser) {
+			roomLikedByUser = (data==='true');
+			if (roomLikedByUser) {
                 $('#suggestion .fa-star').removeClass('unstarred');
                 $('#suggestion .fa-star').addClass('starred');
 			} else {
@@ -541,8 +557,8 @@ function getSuggestionsUsingOptions(){
     if (ids.length==5){
         ids = [];
     }
-    // get the suggestions
-    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), ids); //TODO FIX
+    // get the suggestions 0613//TODO
+    getSuggestions(true, true, false, false, false, false, currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO FIX
 }
 
 // returns the id of all campuses the user doesn't want included
@@ -557,15 +573,27 @@ function getUnselectedCampuses(){
 /* 
    Get the list of suggestions from the server
    Parameters:
+   bookable (boolean): whether the user wants only bookable rooms
+   pc (boolean): whether the user wants only rooms with a pc
+   printer (boolean): whether the user wants only rooms with a printer
+   whiteboard (boolean): whether the user wants only rooms with a whiteboard
+   pcblackboard(boolean): whether the user wants only rooms with a blackboard
+   projector (boolean): whether the user wants only rooms with a projector
+   building (string): the abbreviation of the building the user is searching within if they've chosen one, else ''
    nearby (boolean): whether the user is sorting by distance
-   empty (boolean): whether the user is sorting by emptiness ratio
    campuses (array of strings): the campuses that the user doesn't want, a subset of [‘Central’,‘Lauriston’,"King's Buildings", 'Holyrood', 'Other']
 */
-function getSuggestions(nearby, empty, campuses) {
+function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector, building, nearby, campuses) {
 	// send the get request
 	$.get('filter', {
-			'nearby': nearby,
-			'empty': empty,
+			'bookable': bookable,
+			'pc': pc,
+            'printer': printer,
+            'whiteboard': whiteboard,
+            'blackboard': blackboard,
+            'projector': projector,
+            'building': building,
+            'nearby': nearby,
 			'campusesUnselected[]': campuses,
 			'latitude': userLatitude,
 			'longitude': userLongitude
@@ -602,10 +630,30 @@ function getSuggestions(nearby, empty, campuses) {
    Parameters: none
 */
 function loadChoice() {
-	// populate the html
-	$('#roomName').html(currentChoice.name);
-	$('#computersFreeNumber').html(currentChoice.free);
-    makepie("computersFreeGraph", currentChoice.free, (currentChoice.seats-currentChoice.free));
+    console.log(currentChoice)
+	
+    // change view to the appropriate version
+    switchView();
+    
+    // populate the html
+    
+    if (searchingForBuildings){
+        
+        // populate the html
+        $('#roomName').html(currentChoice.building_name);
+        $('#roomsFreeNumber').html(currentChoice.rooms);
+        // update the map to the new coordinates
+        updateMap();
+        // update the 'Take me there' Google Maps deeplink
+        $('#toMapBtn').attr('href','https://www.google.com/maps/preview?saddr='+userLatitude+','+userLongitude+'&daddr='+currentChoice.latitude+','+currentChoice.longitude+'&dirflg=w');
+    } else{
+        
+        $('#roomName').html(currentChoice.room_name);
+        $('#roomsFreeNumber').html(currentChoice.capacity);
+        $('#starContainer').show();
+        // check if current choice is liked by user and toggle the star icon appropriately
+        liked(currentChoice.locationId);
+    }
     
 	// if the user has reached the end of the list of suggestions, disable the 'next' button
 	if (currentChoice.index == suggestions.length - 1) {
@@ -619,16 +667,47 @@ function loadChoice() {
 	} else {
 		$('.left-arrow').removeClass('disabled');
     }
-	// check if current choice is liked by user and toggle the star icon appropriately
-	liked(currentChoice.id);
-    // update the map to the new coordinates
-    updateMap();
-    // update the 'Take me there' Google Maps deeplink
-    $('#yesBtn').attr('href','https://www.google.com/maps/preview?saddr='+userLatitude+','+userLongitude+'&daddr='+currentChoice.latitude+','+currentChoice.longitude+'&dirflg=w');
+}
+
+// Switch view from searching for rooms to searching for buildings
+function switchView(){
+    // if switching to buildings
+    if (searchingForBuildings){
+        // hide the favourites button
+        $('#starContainer').hide();
+        // change search version button to 'View rooms >>'
+        $('#switchViewBtn .backIcon').hide();
+        $('#switchViewBtn .forwardIcon').show();
+        $('#switchViewBtn .content').html('View rooms');
+        // display the map
+        $('#mapContainer').show();
+        // display the 'Take me there' button
+        $('#toMapBtnContainer').show();
+        // hide the 'book now' button
+        $('#bookBtnContainer').hide();
+        // show the number of rooms free
+        $('#roomsFreeRow').show();
+    } else {
+        // show the favourites button
+        $('#starContainer').show();
+        // change search version button to 'View rooms >>'
+        $('#switchViewBtn .backIcon').show();
+        $('#switchViewBtn .forwardIcon').hide();
+        $('#switchViewBtn .content').html('Back to buildings');
+        // display the map
+        $('#mapContainer').hide();
+        // display the 'Take me there' button
+        $('#toMapBtnContainer').hide();
+        // show the 'book now' button
+        $('#bookBtnContainer').show();
+        // hide the number of rooms free
+        $('#roomsFreeRow').hide();
+    }
 }
 
 // Geolocation functions{
 
+// check for browser compatibility
 function getLocation() {
     // save that we're no longer using custom coordinates
     sessionStorage['customCoordinates']=false;
@@ -637,7 +716,12 @@ function getLocation() {
 		// get the user's current coordinates or throw an error if that's not possible
 		navigator.geolocation.getCurrentPosition(savePosition, showError);
 	} else {
-		alert('You browser does not support geolocation');
+		alert('You browser does not support geolocation.  Enter your location using the options menu');
+        $('.arrow').addClass('disabled');
+        getSuggestionsUsingOptions();
+        // open options menu and select location fixer
+        toggleOptionsMenu();
+        $('#locationCorrectorText').focus();
 	}
 }
 

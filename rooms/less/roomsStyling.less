@@ -1,10 +1,11 @@
-//out: ../static/pc/css/labsStyling.css
+//out: ../static/rooms/css/roomsStyling.css
 
 @import "../../core/less/colours.less";
 
+
 @optionsMenuTransitionTime: 0.5s;
 
-#yesBtnContainer{
+#toMapBtnContainer, #switchViewBtnContainer, #bookBtnContainer{
     text-align: center;
 }
 
@@ -13,11 +14,26 @@
     height:300px;
 }
 
-#yesBtn{
-    margin: 15px;
-    .fa-external-link{
+#toMapBtn, #bookBtn{
+    margin: 0 0 15px;
+    .fa{
         margin-left:5px;
         font-size:13px;
+    }
+}
+
+#bookBtnContainer{
+    display:none;
+}
+
+#switchViewBtn{
+    margin: 15px;
+    .forwardIcon{
+        margin-left:5px;
+    }
+    .backIcon{
+        margin-right:5px;
+        display:none;
     }
 }
 
@@ -76,7 +92,7 @@
 
 
 #roomName{   
-    margin: 0; 
+    margin: 0 0 10; 
     
     //responsive text size
     font-size: 14px;
@@ -103,7 +119,7 @@
 
 
 //responsive text size for computers free label: 
-#computersFreeLabel{
+#roomsFreeLabel{
     font-size: 12px;
     line-height: 12px;
     @media (min-width: 200px) {
@@ -119,17 +135,17 @@
 }
 
 //room and availability row positioning (using flex, unsupported on IE < 10 )
-#roomRow, #computersFreeRow{
+#locationRow, #roomsFreeRow{
     .display-flex();
     margin: 0;
-    #roomNameContainer, #computersFreeLabelContainer{
+    #roomNameContainer{
         .flex(3,1,0);
         position: relative;
         min-height: 1px;
         margin: auto;
     }
 
-    #starContainer, #computersFreeGraphContainer{
+    #starContainer{
         .flex(51px,0,0);
         text-align: center;
         position: relative;
@@ -138,23 +154,11 @@
     }
 }
 
-#computersFreeGraph{
-    height: 51px;
-    width: 51px;
-    margin: auto;
-}
-
-#computersFreeNumber{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%);
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: #00aa00;
+#roomsFreeNumber{
+    margin: 0 0 3px 5px;
+    font-size: 14px;
+    min-width:30px;
+    background-color: @availableGreen;
 }
 
 @busyAnimationHeight:54px;
