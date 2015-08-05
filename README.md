@@ -18,9 +18,9 @@
 - Remember user preferences (cookies?)
 - Change name + logo ?
 - Implement swiping animation
+- Add custom error pages for more significant errors
 
 ###Stretch goals:
-- 'Tutorial'
 - 'Suggest a study space'
 - Machine learning 'people like you like...'
 - Add config file to easily change which suitabilities are displayed
