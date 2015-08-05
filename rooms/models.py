@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Room_Feed(models.Model):
     # unique identifiers and essential facts
     locationId = models.CharField(max_length=50, primary_key=True)
