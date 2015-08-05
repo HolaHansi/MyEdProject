@@ -19,6 +19,7 @@ import math
 from rooms.models import Activity as act
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
+from django.db.models import F
 
 # ======= functions used in both pc/views and rooms/views ======= #
 
@@ -53,36 +54,55 @@ def excludeClosedLocations(data):
     currentTime = now.time().isoformat()
     weekday = now.weekday()
 
+
     # I'm using exclude instead of filter, so not to filter out all the rooms without opening times.
     # if it's a day between Mon-Fri, then filter out all closed rooms on these days.
     if weekday >= 0 and weekday <= 4:
-        data = data.exclude(weekdayOpen__gt=currentTime)
-        data = data.exclude(weekdayClosed__lte=currentTime,
-                            # to accommodate the case where the building closes after midnight
-                            # a building is only excluded if the closing time is ALSO greater than
-                            # 9 in the morning, so closing times like 02:30 are not filtered out.
-                            weekdayClosed__gt="09:00:00"
-                            )
+        # case 1 : now < open < closing
+        data = data.exclude(weekdayOpen__gt=currentTime,
+                            weekdayClosed__gt=currentTime,
+                            weekdayOpen__lt=F('weekdayClosed'))
+        # case 2 : open < close < now
+        data = data.exclude(weekdayOpen__lt=currentTime,
+                            weekdayClosed__lt=currentTime,
+                            weekdayClosed__gt=F('weekdayOpen'))
 
-    # the same thing for saturday.
+        # case 3 : close < now < open
+        data = data.exclude(weekdayOpen__gt=currentTime,
+                            weekdayClosed__lt=currentTime)
+
+
+    # saturday
     if weekday == 5:
-        data = data.exclude(saturdayOpen__gt=currentTime)
-        data = data.exclude(saturdayClosed__lte=currentTime,
-                            # to accommodate the case where the building closes after midnight
-                            # a building is only excluded if the closing time is ALSO greater than
-                            # 9 in the morning, so closing times like 02:30 are not filtered out.
-                            saturdayClosed__gt="09:00:00"
-                            )
+        # case 1 : now < open < closing
+        data = data.exclude(saturdayOpen__gt=currentTime,
+                            saturdayClosed__gt=currentTime,
+                            saturdayOpen__lt=F('saturdayClosed'))
+        # case 2 : open < close < now
+        data = data.exclude(saturdayOpen__lt=currentTime,
+                            saturdayClosed__lt=currentTime,
+                            saturdayClosed__gt=F('saturdayOpen'))
 
-    # if it's sunday... etc.
+        # case 3 : close < now < open
+        data = data.exclude(saturdayOpen__gt=currentTime,
+                            saturdayClosed__lt=currentTime)
+
+    # sunday
     if weekday == 6:
-        data = data.exclude(sundayOpen__gt=currentTime)
-        data = data.exclude(sundayClosed__lte=currentTime,
-                            # to accommodate the case where the building closes after midnight
-                            # a building is only excluded if the closing time is ALSO greater than
-                            # 9 in the morning, so closing times like 02:30 are not filtered out.
-                            sundayClosed__gt="09:00:00"
-                            )
+        # case 1 : now < open < closing
+        data = data.exclude(sundayOpen__gt=currentTime,
+                            sundayClosed__gt=currentTime,
+                            sundayOpen__lt=F('sundayClosed'))
+
+        # case 2 : open < close < now
+        data1 = data.exclude(sundayOpen__lt=currentTime,
+                            sundayClosed__lt=currentTime,
+                            sundayClosed__gt=F('sundayOpen'))
+
+        # case 3 : close < now < open
+        data = data1.exclude(sundayOpen__gt=currentTime,
+                            sundayClosed__lt=currentTime)
+
     return data
 
 
@@ -261,6 +281,11 @@ def unavailable_till_hours(unavailable_rooms):
                     break
             # if avail_till is undefined, then every activity except the final one has been checked, and
             # has failed this condition. Hence, take the last activity.endTime as avail_till.
+
+            print('activity', activities)
+            print('room is ', unavailable_room)
+            print('room is open, ', isOpenVar)
+
             if avail_till_time is None:
                 avail_till_time = activities[activities.count()-1].endTime
 
@@ -468,7 +493,7 @@ def filter_out_avail_rooms(data, available_for_hours=1):
     busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
                              activity__endTime__gte=current_time)
 
-    # rooms that are currently closed should also feature
+    # rooms that are currently closed should also feature in busy_rooms.
 
 
     return busy_rooms

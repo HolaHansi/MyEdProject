@@ -36,25 +36,18 @@ def autocompleteAPI(request):
 
         for lab in data:
             if len(already_favourited.filter(id=lab.id)) == 0:
+                # check if lab is open
+                isOpen = utilities.isOpen(lab)
 
-                if not lab.weekdayOpen:
+                # get opening hours
+                openHours = utilities.getOpenHours(lab)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                # if no opening hours, then set them to 'n/a'
+                if openHour is None:
                     openHour = 'n/a'
                     closingHour = 'n/a'
-
-                else:
-                    if weekday >= 0 and weekday <= 4:
-                        openHour = lab.weekdayOpen
-                        closingHour = lab.weekdayClosed
-
-                    # the same thing for saturday.
-                    if weekday == 5:
-                        openHour = lab.saturdayOpen
-                        closingHour = lab.saturdayClosed
-                    # if it's sunday... etc.
-                    if weekday == 6:
-                        openHour = lab.sundayOpen
-                        closingHour = lab.sundayClosed
-
 
                 labs.append(
                     {'value': lab.name,
@@ -65,6 +58,7 @@ def autocompleteAPI(request):
                          'ratio': lab.ratio,
                          'openHour': openHour,
                          'closingHour': closingHour,
+                         'isOpen': isOpen,
                          'longitude': lab.longitude,
                          'latitude': lab.latitude
                         }
@@ -74,21 +68,137 @@ def autocompleteAPI(request):
         # create the list of tutorial rooms in the format needed for the autocompleter
         data = Tutorial_Room.objects.all()
         rooms = []
+
         already_favourited = user.room_favourites.all()
-        for room in data:
+
+
+        # from users favourites, get all rooms that are locally allocated: we don't know the availability of these.
+        rooms_locally_allocated = data.filter(locally_allocated=True)
+
+        # do the same thing for rooms that we know the availability of.
+        rooms_globally_allocated = data.filter(locally_allocated=False)
+
+        # rooms currently closed of both globally and locally allocated rooms.
+        closed_rooms = utilities.get_currently_closed_locations(data, typeOfSpace='Room')
+
+
+        # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
+
+        # get all the favourite rooms that we KNOW are available
+        # now both in terms of opening hours and activities.
+        rooms_not_currently_booked = utilities.filter_out_busy_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+        # filter out rooms that are also currently closed
+        rooms_available_now = utilities.excludeClosedLocations(rooms_not_currently_booked)
+
+        # Now update the available_for field in each of these rooms:
+        utilities.available_for_hours(rooms_available_now)
+
+
+        #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
+
+        # get all favourite rooms KNOWN to be currently booked
+        rooms_currently_booked = utilities.filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+        # if a room is either booked or currently closed, then it is not available:
+        rooms_not_available_now = closed_rooms | rooms_currently_booked
+
+        utilities.unavailable_till_hours(rooms_not_available_now)
+
+
+        # LOCALLY ALLOCATED OPEN ROOMS:
+        rooms_open_locally_allocated = utilities.excludeClosedLocations(rooms_locally_allocated)
+
+
+
+        for room in rooms_available_now:
             if len(already_favourited.filter(locationId=room.locationId)) == 0:
+
+                # get opening hours
+                openHours = utilities.getOpenHours(lab)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
                 rooms.append(
                     {'value': room.room_name + ', ' + room.building_name,
                      'data': {
                          'room_name': room.room_name,
                          'building_name': room.building_name,
-                         'id': room.locationId,
+                         'locationId': room.locationId,
+                         'capacity': room.capacity,
                          'pc': room.pc,
                          'printer': room.printer,
                          'projector': room.projector,
                          'whiteboard': room.whiteboard,
-                         'blackboard': room.blackboard
+                         'blackboard': room.blackboard,
+                         'isOpen': True,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'locally_allocated': False,
+                         'availability': 'availableNow',
+                         'availableFor': room.availableFor
+                        }
                      }
+                )
+
+        for room in rooms_not_available_now:
+            if len(already_favourited.filter(locationId=room.locationId)) == 0:
+
+                #get isOpen variable
+                isOpen = utilities.isOpen(room)
+
+                # get opening hours
+                openHours = utilities.getOpenHours(lab)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                rooms.append(
+                    {'value': room.room_name + ', ' + room.building_name,
+                     'data': {
+                         'room_name': room.room_name,
+                         'building_name': room.building_name,
+                         'locationId': room.locationId,
+                         'capacity': room.capacity,
+                         'pc': room.pc,
+                         'printer': room.printer,
+                         'projector': room.projector,
+                         'whiteboard': room.whiteboard,
+                         'blackboard': room.blackboard,
+                         'isOpen': isOpen,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'locally_allocated': room.locally_allocated,
+                         'availability': 'notAvailable',
+                         'unavailableFor': room.unavailableFor
+                        }
+                     }
+                )
+
+        for room in rooms_open_locally_allocated:
+            if len(already_favourited.filter(locationId=room.locationId)) == 0:
+
+                # get opening hours
+                openHours = utilities.getOpenHours(lab)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                rooms.append(
+                    {'value': room.room_name + ', ' + room.building_name,
+                     'data': {
+                         'room_name': room.room_name,
+                         'building_name': room.building_name,
+                         'locationId': room.locationId,
+                         'capacity': room.capacity,
+                         'pc': room.pc,
+                         'printer': room.printer,
+                         'projector': room.projector,
+                         'whiteboard': room.whiteboard,
+                         'blackboard': room.blackboard,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'locally_allocated': room.locally_allocated,
+                         'availability': 'localAvailable'
+                        }
                      }
                 )
 
@@ -227,7 +337,6 @@ def favourites(request):
 
     #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
 
-
     # get all favourite rooms KNOWN to be currently booked
     rooms_currently_booked = utilities.filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
 
@@ -240,7 +349,6 @@ def favourites(request):
     #ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
 
     rooms_open_locally_allocated = utilities.excludeClosedLocations(rooms_locally_allocated)
-
 
 
     context = {'pc_favourites_open': pc_favourites_open,

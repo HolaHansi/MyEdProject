@@ -191,6 +191,7 @@
 
      <div class="list-group-item" id="autocompleteLabLi" style="margin-top: 5px;">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></div>
 
+
             <!-- hidden template for PC OPEN -->
 
         <div id="infoFor-lab-" class="panel panel-default pc open template" style="display:none;">
@@ -333,7 +334,7 @@
 
             <!-- beginning of favourite room-->
 
-            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
+            <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
@@ -374,7 +375,7 @@
                             </div>
                             <div class="row" style="margin-top: 15px;">
                                 <div class="col-xs-2">
-                                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                                    <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
@@ -412,7 +413,7 @@
 
             <!-- beginning of favourite room-->
 
-            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
+            <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
@@ -460,7 +461,7 @@
                             </div>
                             <div class="row" style="margin-top: 15px;">
                                 <div class="col-xs-2">
-                                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                                    <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
@@ -490,7 +491,7 @@
                 <!-- beginning of favourite room-->
 
 
-            <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default">
+            <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
@@ -530,7 +531,7 @@
                             </div>
                             <div class="row" style="margin-top: 15px;">
                                 <div class="col-xs-2">
-                                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                                    <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
@@ -602,7 +603,7 @@
                 </div>
             </div>
 
-
+            <div class="list-group-item" id="autocompleteRoomLi">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></div>
 
         </div>
     </div>
