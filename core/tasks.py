@@ -4,6 +4,7 @@ from rooms.table import update_room_table, update_building_hours, update_buildin
     get_activities
 
 
+# rebuild the database, including checking for any new rooms or labs
 @task
 def repopulate_all_tables():
     update_building_table()
@@ -20,8 +21,10 @@ def repopulate_all_tables():
     print('PC labs saved')
 
 
-
+# refresh the availability of all the rooms
 @task
 def refresh_availability():
     get_pc_data()
     print('PC availability refreshed')
+    get_activities()
+    print('Activities merged')
