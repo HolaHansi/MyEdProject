@@ -75,6 +75,9 @@ $(document).ready(function () {
     // Apply the JS styling
     resizeElements();
     
+    // style the labs tab as the current tab
+    $('#mainHamburgerMenuOptions .labsTab').addClass('currentTab');
+    
     // initialize bootstrap switches
     $.fn.bootstrapSwitch.defaults.size = 'mini';
     $.fn.bootstrapSwitch.defaults.onColor = 'success';

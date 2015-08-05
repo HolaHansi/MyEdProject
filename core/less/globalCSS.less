@@ -1,5 +1,7 @@
 //out: ../static/core/css/globalCSS.css
 
+@import "colours.less";
+
 //Default font set to Source Sans Pro
 body * {
     font-family: 'Source Sans Pro', sans-serif;
@@ -24,16 +26,60 @@ body * {
     }
     .navbar-nav {
         margin: 0 -15px;
-        li { 
+        @media (min-width: 768px){
+            margin: 0 -30px;
+            height:44px;
+        }
+        li {
             text-align:right;
             a {
-                padding-top: 4px;
-                padding-bottom: 4px;
+                padding:8px 15px 8px 0px;
+                color: black;
+                font-size:16px;
+                .tabLabel{
+                    display:inline-block;
+                }
             }
             i {
-                float: right;
+                float:right;
                 margin-left:5px;
                 line-height: 20px;
+            }
+            @media (min-width: 768px){
+                height:inherit;
+            }
+            
+            // if expanded
+            @media (min-width: 768px){
+                text-align: center;
+                a{
+                    height:inherit;
+                    border-left: solid 1px #ddd;
+                    padding: 3px 15px;
+                    // give the current tab a coloured bottom border
+                    &.currentTab{
+                        border-bottom: solid 3px;
+                        &.labsTab{
+                            border-bottom-color: @brand-primary;
+                        }
+                        &.roomsTab{
+                            border-bottom-color: @brand-success;
+                        }
+                        &.favouritesTab{
+                            border-bottom-color: @brand-warning;
+                        }
+                        &.historyTab{
+                            border-bottom-color: @brand-info;
+                        }
+                    }
+                    .tabLabel{
+                        display:block;
+                        margin-top:-3px;
+                    }
+                }
+                i{
+                    float:none;
+                }
             }
         }
     }
