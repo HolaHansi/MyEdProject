@@ -222,6 +222,8 @@ def favourites(request):
     # filter out rooms that are also currently closed
     rooms_available_now = utilities.excludeClosedLocations(rooms_not_currently_booked)
 
+    # Now update the available_for field in each of these rooms:
+    utilities.available_for_hours(rooms_available_now)
 
     #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
 
@@ -231,6 +233,8 @@ def favourites(request):
 
     # if a room is either booked or currently closed, then it is not available:
     rooms_not_available_now = closed_rooms | rooms_currently_booked
+
+    utilities.unavailable_till_hours(rooms_not_available_now)
 
 
     #ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
