@@ -12,80 +12,86 @@ body * {
 
 //Global navbar styling:
 .navbar {
-    
+    //standard styling
     background: none;
     border: none;
     margin-bottom: 5px;
     min-height: 0px;
     border-bottom:#dddddd 1px solid;
-
+    
+    // styling the logo
     #logo {
         height: 34px;
-        margin:5px 15px;
+        margin: 5px 15px;
     }
     .navbar-brand {
         padding: 0;
         height:auto;
     }
-    .navbar-nav {
-        margin: 0 -15px;
-        @media (min-width: @navbar-toggle-width){
-            margin: 0 -30px;
-            height:44px;
-        }
-        li {
-            text-align:right;
-            a {
-                padding:8px 15px 8px 0px;
-                color: black;
-                font-size:16px;
-                .tabLabel{
-                    display:inline-block;
+    // styling the navbar tabs
+    .navbar-collapse {
+        border: 0;
+        .navbar-nav {
+            margin: 0 -15px;
+            @media (min-width: @navbar-toggle-width){
+                margin: 0 -30px;
+                height:44px;
+            }
+            li {
+                text-align:right;
+                a {
+                    // if collapsed
+                    @media(max-width:(@navbar-toggle-width - 1)){
+                        border-top: solid 1px #eee;
+                        padding:8px 15px 8px 0px;
+                        .tabLabel{
+                            display:inline-block;
+                        }
+                    }
+                    color: black;
+                    font-size:16px;
                 }
-            }
-            i {
-                float:right;
-                margin-left:5px;
-                line-height: 20px;
-            }
-            @media (min-width: @navbar-toggle-width){
-                height:inherit;
-            }
-            
-            // if expanded
-            @media (min-width: @navbar-toggle-width){
-                text-align: center;
-                a{
+                i {
+                    float:right;
+                    margin-left:5px;
+                    line-height: 20px;
+                }
+                // if expanded
+                @media (min-width: @navbar-toggle-width){
                     height:inherit;
-                    border-left: solid 1px #ddd;
-                    padding: 3px 15px;
-                    // give the current tab a coloured bottom border
-                    &.currentTab{
-                        border-bottom: solid 3px;
-                        &.labsTab{
-                            border-bottom-color: @brand-primary;
+                    text-align: center;
+                    a{
+                        height:inherit;
+                        border-left: solid 1px #ddd;
+                        padding: 3px 15px;
+                        // give the current tab a coloured bottom border
+                        &.currentTab{
+                            border-bottom: solid 3px;
+                            &.labsTab{
+                                border-bottom-color: @brand-primary;
+                            }
+                            &.roomsTab{
+                                border-bottom-color: @brand-success;
+                            }
+                            &.favouritesTab{
+                                border-bottom-color: @brand-warning;
+                            }
+                            &.historyTab{
+                                border-bottom-color: @brand-info;
+                            }
                         }
-                        &.roomsTab{
-                            border-bottom-color: @brand-success;
+                        i{
+                            float:none;
                         }
-                        &.favouritesTab{
-                            border-bottom-color: @brand-warning;
-                        }
-                        &.historyTab{
-                            border-bottom-color: @brand-info;
+                        .tabLabel{
+                            margin-top:-3px;
                         }
                     }
-                    .tabLabel{
-                        display:block;
-                        margin-top:-3px;
-                    }
-                }
-                i{
-                    float:none;
                 }
             }
         }
     }
+    // styling the toggle button (only visible when collapsed)
     .navbar-toggle {
         margin-top: 5px;
         margin-right: 10px;
@@ -94,13 +100,17 @@ body * {
             background-color: #d4d4d4
         }
     }
-    .navbar-collapse {
-        border: 0;
-    }
 }
-@media(max-width:(@navbar-toggle-width - 1)){
-    .nav>li>a {
-        border-top: solid 1px #eee;
+
+//page title styling
+#pageTitle{
+    margin: 0 0 5;
+    padding: 0 0 5;
+    color:#777;
+    font-size: 28px;
+    line-height: 28px;
+    i{
+        margin-left: 8px;
     }
 }
 
@@ -109,6 +119,7 @@ hr, p{
     margin:0px 0px 0px 0px;
 }
 
+// styling the toggleable star icon
 .fa-star{
     &.unstarred, &.starred{
         padding:5px;
@@ -123,6 +134,7 @@ hr, p{
     }
 }
 
+// custom glyphicons:
 .glyphicon-computer {
   background-image: url("../images/computerGlyphicon.png");
 }
@@ -140,7 +152,6 @@ hr, p{
 .glyphicon-projector {
   background-image: url("../images/projectorGlyphicon2.png");
 }
-
 .custom-glyphicon {
 	background-size: 16px;
 	background-repeat: no-repeat;
