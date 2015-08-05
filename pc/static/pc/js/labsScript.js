@@ -5,7 +5,7 @@ var userLatitude = 55.943655; // current latitude of user
 var userLongitude = -3.188775; // current longitude of user
 // Note this is dummy data, pointed in the middle of George Square, which will be overwritten if the user allows location finding or manually enters their location
 
-var pcLikedByUser = false; // whether current suggestion is liked by user
+var labLikedByUser = false; // whether current suggestion is liked by user
 
 var refreshTimer; // the maps timeout variable for limiting number of queries per second to avoid limits
 var idleReminder; // the timer variable which reminds the user they can swipe if they don't swipe within the first 5 seconds
@@ -40,8 +40,8 @@ $(document).ready(function () {
     makeMap();
     
     // if the user has changed their settings this session, use the new settings
-    if (sessionStorage['options']){
-        var options = JSON.parse(sessionStorage['options']);
+    if (sessionStorage['labOptions']){
+        var options = JSON.parse(sessionStorage['labOptions']);
         
         $('#nearbyCheckbox').attr('checked',options.nearby);
         $('#quietCheckbox').attr('checked',options.quiet);
@@ -58,7 +58,7 @@ $(document).ready(function () {
             quiet: $('#quietCheckbox').is(':checked'), 
             campuses:getUnselectedCampuses()
         };
-        sessionStorage['options'] = JSON.stringify(oldOptions)
+        sessionStorage['labOptions'] = JSON.stringify(oldOptions)
     }
     
     // if the user has corrected their location this session, use the corrected coordinates
@@ -110,7 +110,7 @@ $(document).ready(function () {
         // send the like request to the server
 		$.post('/like/', {
 				'pc_id': pc_id,
-				'pcLikedByUser': (''+pcLikedByUser)
+				'labLikedByUser': (''+labLikedByUser)
 			})
 			.fail(function () {
                 alert('Failed to favourite location');
@@ -361,12 +361,12 @@ function toggleOptionsMenu(){
             quiet: $('#quietCheckbox').is(':checked'), 
             campuses:getUnselectedCampuses()
         };
-        var oldOptions = JSON.parse(sessionStorage['options']);
+        var oldOptions = JSON.parse(sessionStorage['labOptions']);
         var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
         // if they have, or the user specifically asked for a refresh, refresh the suggestions
         if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
             getSuggestionsUsingOptions();
-            sessionStorage['options'] = JSON.stringify(newOptions)
+            sessionStorage['labOptions'] = JSON.stringify(newOptions)
         // if they haven't, just continue where you left off
         } else {
             // if the user hasn't reached the end of the list of suggestions, re-enable the 'next' button
@@ -512,8 +512,8 @@ function liked(pc_id) {
 			'pc_id': pc_id
 		})
 		.done(function (data) {
-			pcLikedByUser = (data==='true');
-			if (pcLikedByUser) {
+			labLikedByUser = (data==='true');
+			if (labLikedByUser) {
                 $('#suggestion .fa-star').removeClass('unstarred');
                 $('#suggestion .fa-star').addClass('starred');
 			} else {
@@ -557,8 +557,8 @@ function getUnselectedCampuses(){
 /* 
    Get the list of suggestions from the server
    Parameters:
-   nearby (boolean): whether the user is filtering by nearby
-   empty (boolean): whether the user is filtering by empty
+   nearby (boolean): whether the user is sorting by distance
+   empty (boolean): whether the user is sorting by emptiness ratio
    campuses (array of strings): the campuses that the user doesn't want, a subset of [‘Central’,‘Lauriston’,"King's Buildings", 'Holyrood', 'Other']
 */
 function getSuggestions(nearby, empty, campuses) {
@@ -588,8 +588,7 @@ function getSuggestions(nearby, empty, campuses) {
                     clearTimeout(idleReminder);
                 }
 			} else {
-				$('.right-arrow').addClass('disabled');
-				$('.left-arrow').addClass('disabled');
+				$('.arrow').addClass('disabled');
 				alert('No rooms available fit that criteria.  Try again.  ');
 			}
 		})
@@ -655,7 +654,7 @@ function savePosition(position) {
         }
         $('#locationCorrectorText').focus();
     }
-	getSuggestions(false, true, []);
+	getSuggestionsUsingOptions();
 }
 
 // if impossible to get user's current coordinates, display a relevant error message
@@ -675,7 +674,7 @@ function showError(error) {
             break;
 	}
     $('.arrow').addClass('disabled');
-    getSuggestions(true,true,[]);
+    getSuggestionsUsingOptions();
     // open options menu and select location fixer
     toggleOptionsMenu();
     $('#locationCorrectorText').focus();
