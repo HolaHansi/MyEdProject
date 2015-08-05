@@ -1,6 +1,8 @@
 //out: ../static/rooms/css/roomsStyling.css
 
-@optionsBackground: #eeeeee;
+@import "../../core/less/colours.less";
+
+
 @optionsMenuTransitionTime: 0.5s;
 
 #toMapBtnContainer, #switchViewBtnContainer, #bookBtnContainer{
@@ -13,18 +15,19 @@
 }
 
 #toMapBtn, #bookBtn{
-    margin: 15px;
+    margin: 0 0 15px;
     .fa{
         margin-left:5px;
         font-size:13px;
     }
 }
+
 #bookBtnContainer{
     display:none;
 }
 
 #switchViewBtn{
-    margin-top: 15px;
+    margin: 15px;
     .forwardIcon{
         margin-left:5px;
     }
@@ -132,17 +135,17 @@
 }
 
 //room and availability row positioning (using flex, unsupported on IE < 10 )
-#roomRow, #roomsFreeRow{
+#locationRow, #roomsFreeRow{
     .display-flex();
     margin: 0;
-    #roomNameContainer, #roomsFreeLabelContainer{
+    #roomNameContainer{
         .flex(3,1,0);
         position: relative;
         min-height: 1px;
         margin: auto;
     }
 
-    #starContainer, #roomsFreeContainer{
+    #starContainer{
         .flex(51px,0,0);
         text-align: center;
         position: relative;
@@ -152,15 +155,10 @@
 }
 
 #roomsFreeNumber{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%,-50%);
-    -moz-transform: translate(-50%,-50%);
-    -o-transform: translate(-50%,-50%);
-    transform: translate(-50%, -50%);
-    font-size:18px;
+    margin: 0 0 3px 5px;
+    font-size: 14px;
+    min-width:30px;
+    background-color: @availableGreen;
 }
 
 @busyAnimationHeight:54px;

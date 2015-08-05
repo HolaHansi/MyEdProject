@@ -27,7 +27,7 @@
     </div>
     <div id='suggestion'>
         <h1 id='pageTitle'>Tutorial Rooms<i class='fa fa-home'></i></h1>
-        <div class="row" id='roomRow'>
+        <div class="row" id='locationRow'>
             <div id='roomNameContainer'>
                 <p id='roomName'></p>
             </div>
@@ -36,25 +36,20 @@
             </div>
         </div>
         <div class="row" id='roomsFreeRow'>
-            <div id='roomsFreeLabelContainer'>
-                <p id='roomsFreeLabel'>Rooms available: </p>
-            </div>
-            <div id='roomsFreeContainer'>
-                <div id='roomsFreeNumber'></div>
-            </div>
+                <div id='roomsFreeLabel'>Rooms available: <span id='roomsFreeNumber' class="badge free"></span></div>
         </div>
         <div id='mapContainer'>
             <img src="{% static 'core/images/busyAnimation.gif' %}" id="busyAnimation">
             <div id='currentMap'> </div>
-        </div>
-        <div id='bookBtnContainer'>
-            <a type="button" class="btn btn-success" id='bookBtnBtn' href=''>Take me there <i class="fa fa-external-link"></i></a>
         </div>
         <div id='switchViewBtnContainer'>
             <a type="button" class="btn btn-success" id='switchViewBtn'><i class="backIcon fa fa-angle-double-left"></i><span class='content'> View rooms </span><i class="forwardIcon fa fa-angle-double-right"></i></a>
         </div>
         <div id='toMapBtnContainer'>
             <a type="button" class="btn btn-success" id='toMapBtn' href=''>Take me there <i class="fa fa-external-link"></i></a>
+        </div>
+        <div id='bookBtnContainer'>
+            <a type="button" class="btn btn-success" id='bookBtn' href=''>Book now <i class="fa fa-external-link"></i></a>
         </div>
         <div id='swipeReminder'><i class='fa fa-long-arrow-left fa-2x'></i> <span id='swipeReminderText'> Swipe left to see next suggestion</span></div>
     </div>

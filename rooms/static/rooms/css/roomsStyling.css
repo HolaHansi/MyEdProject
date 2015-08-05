@@ -10,7 +10,7 @@
 }
 #toMapBtn,
 #bookBtn {
-  margin: 15px;
+  margin: 0 0 15px;
 }
 #toMapBtn .fa,
 #bookBtn .fa {
@@ -21,7 +21,7 @@
   display: none;
 }
 #switchViewBtn {
-  margin-top: 15px;
+  margin: 15px;
 }
 #switchViewBtn .forwardIcon {
   margin-left: 5px;
@@ -163,7 +163,7 @@
     line-height: 18px;
   }
 }
-#roomRow,
+#locationRow,
 #roomsFreeRow {
   display: -webkit-box;
   display: -moz-box;
@@ -172,10 +172,8 @@
   display: flex;
   margin: 0;
 }
-#roomRow #roomNameContainer,
-#roomsFreeRow #roomNameContainer,
-#roomRow #roomsFreeLabelContainer,
-#roomsFreeRow #roomsFreeLabelContainer {
+#locationRow #roomNameContainer,
+#roomsFreeRow #roomNameContainer {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   -moz-box-flex: 1;
@@ -192,10 +190,8 @@
   min-height: 1px;
   margin: auto;
 }
-#roomRow #starContainer,
-#roomsFreeRow #starContainer,
-#roomRow #roomsFreeContainer,
-#roomsFreeRow #roomsFreeContainer {
+#locationRow #starContainer,
+#roomsFreeRow #starContainer {
   -webkit-box-flex: 0;
   -webkit-flex-grow: 0;
   -moz-box-flex: 0;
@@ -214,15 +210,10 @@
   margin: auto;
 }
 #roomsFreeNumber {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  font-size: 18px;
+  margin: 0 0 3px 5px;
+  font-size: 14px;
+  min-width: 30px;
+  background-color: #2ea83d;
 }
 #mapContainer {
   position: relative;

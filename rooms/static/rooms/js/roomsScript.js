@@ -631,13 +631,13 @@ function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector
 */
 function loadChoice() {
     console.log(currentChoice)
-	// populate the html
+	
+    // change view to the appropriate version
+    switchView();
+    
+    // populate the html
     
     if (searchingForBuildings){
-        // change the display to the building display
-        $('#starContainer').hide();
-        $('#switchViewBtn .backIcon').hide();
-        $('#switchViewBtn .forwardIcon').show();
         
         // populate the html
         $('#roomName').html(currentChoice.building_name);
@@ -678,13 +678,30 @@ function switchView(){
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').hide();
         $('#switchViewBtn .forwardIcon').show();
-        $('#switchViewsBtn .content').html('View rooms');
+        $('#switchViewBtn .content').html('View rooms');
         // display the map
         $('#mapContainer').show();
         // display the 'Take me there' button
         $('#toMapBtnContainer').show();
         // hide the 'book now' button
         $('#bookBtnContainer').hide();
+        // show the number of rooms free
+        $('#roomsFreeRow').show();
+    } else {
+        // show the favourites button
+        $('#starContainer').show();
+        // change search version button to 'View rooms >>'
+        $('#switchViewBtn .backIcon').show();
+        $('#switchViewBtn .forwardIcon').hide();
+        $('#switchViewBtn .content').html('Back to buildings');
+        // display the map
+        $('#mapContainer').hide();
+        // display the 'Take me there' button
+        $('#toMapBtnContainer').hide();
+        // show the 'book now' button
+        $('#bookBtnContainer').show();
+        // hide the number of rooms free
+        $('#roomsFreeRow').hide();
     }
 }
 
