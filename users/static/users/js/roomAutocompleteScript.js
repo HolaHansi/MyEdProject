@@ -14,6 +14,9 @@ $(document).ready(function(){
         $(this).removeClass('dropup');
     });
 
+    // style the favourites tab as the current tab
+    $('#mainHamburgerMenuOptions .favouritesTab').addClass('currentTab');
+
     // load auto-complete
     autoCompleteAPI();
 });
@@ -91,60 +94,6 @@ function removeFromFavourites(id) {
 }
 
 
-function isOpenNow(suggestion) {
-    //This function takes a suggestion and returns true if it's currently open, and false otherwise.
-
-    // get current time.
-    var isOpen = true;
-    var now = new Date();
-    var currentHour = now.getHours();
-    var currentMinute = now.getMinutes();
-
-    // get the opening and closing times of the suggestion
-    var openTime = suggestion.data.openHour;
-    var closingTime = suggestion.data.closingHour;
-
-    // if there is no opening hours for the given suggestion,
-    // then just return true - so it's not displayed as if it's closed.
-    if (openTime == 'n/a') {
-        return true;
-    }
-
-    // partition times into hours and minutes.
-    var openHour = parseInt(openTime.slice(0, openTime.indexOf(':')));
-    var openMinute = parseInt(openTime.slice(openTime.indexOf(':')+1,openTime.indexOf(':')+3));
-
-    var closingHour = parseInt(closingTime.slice(0, closingTime.indexOf(':')));
-    var closingMinute = parseInt(closingTime.slice(closingTime.indexOf(':')+1,closingTime.indexOf(':')+3));
-
-
-    // the morning case (the place closes in the morning)
-    if (closingHour <= 9) {
-        // if close < ct < open, then closed
-        // first check if greater than closed:
-        if ((currentHour >= closingHour) || (currentHour == closingHour && currentMinute >= closingMinute)) {
-            // we know now that close <= ct
-            // now check if ct < open
-            if ((currentHour < openHour) || (currentHour == openHour && currentMinute < openMinute)) {
-                isOpen = false;
-            };
-        };
-    }
-
-    // evening case (the place closes in the evening/afternoon)
-    else {
-        // if ct < open or ct >= close, then closed
-        if (((currentHour >= closingHour) || (currentHour == closingHour && currentMinute >= closingMinute))
-
-            || ((currentHour < openHour) || (currentHour == openHour && currentMinute < openMinute))) {
-
-            isOpen = false;
-        };
-    };
-
-    return isOpen;
-
-}
 
 function autoCompleteAPI() {
     // this is the function that gets the data, and configures the settings for the autoCompleter.
@@ -174,8 +123,8 @@ function autoCompleteAPI() {
 
                 // ========== add the new favourite to list of favourites using its appropriate template ========== //
 
-                // check if place is open
-                var isOpen = isOpenNow(suggestion);
+
+                var isOpen = suggestion.data.isOpen;
 
                 // if the place is open:
                 if (isOpen) {
@@ -310,7 +259,7 @@ function autoCompleteAPI() {
             onSelect: function(suggestion) {
                 // add it to favourites
                 $.post('/like/', {
-                        'locationId': suggestion.data.id,
+                        'locationId': suggestion.data.locationId,
                         'roomLikedByUser': false
                     });
                 // don't bring it up in the autocomplete dropdown again
@@ -321,6 +270,32 @@ function autoCompleteAPI() {
                 $(this).val('');
                 // add the new favourite to the list:
                 // create all the icons:
+
+                // ========== add the new favourite to list of favourites using its appropriate template ========== //
+
+                // get one of three categories: availableNow, notAvailable or localAvailable
+
+                var availability = suggestion.data.availability;
+
+                // if the room is available
+                if (availability == 'availableNow') {
+                    console.log('its avail!!!!');
+                };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 facilities = '';
                 if (suggestion.data.pc){
                     facilities += '<span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> '
@@ -344,7 +319,6 @@ function autoCompleteAPI() {
                 var newItem = $('<li class="list-group-item" id="room-'+suggestion.data.id+'">'+suggestion.data.room_name+', '+suggestion.data.building_name+': '+facilities+' <span class="unliker unclicked">Unlike</span></li>');
                 // insert the new favourite into the dom
                 newItem.insertBefore('#autocompleteRoomLi');
-                $('#noRoomFavourites').remove()
             }
         });
     });
