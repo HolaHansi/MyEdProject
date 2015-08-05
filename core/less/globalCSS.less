@@ -2,6 +2,9 @@
 
 @import "colours.less";
 
+//note you'll have to change this in the bootstrap source too
+@navbar-toggle-width: 564px;
+
 //Default font set to Source Sans Pro
 body * {
     font-family: 'Source Sans Pro', sans-serif;
@@ -26,7 +29,7 @@ body * {
     }
     .navbar-nav {
         margin: 0 -15px;
-        @media (min-width: 768px){
+        @media (min-width: @navbar-toggle-width){
             margin: 0 -30px;
             height:44px;
         }
@@ -45,12 +48,12 @@ body * {
                 margin-left:5px;
                 line-height: 20px;
             }
-            @media (min-width: 768px){
+            @media (min-width: @navbar-toggle-width){
                 height:inherit;
             }
             
             // if expanded
-            @media (min-width: 768px){
+            @media (min-width: @navbar-toggle-width){
                 text-align: center;
                 a{
                     height:inherit;
@@ -95,7 +98,7 @@ body * {
         border: 0;
     }
 }
-@media(max-width:767px){
+@media(max-width:(@navbar-toggle-width - 1)){
     .nav>li>a {
         border-top: solid 1px #eee;
     }
