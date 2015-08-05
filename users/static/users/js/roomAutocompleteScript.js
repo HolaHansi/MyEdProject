@@ -277,6 +277,7 @@ function autoCompleteAPI() {
 
                 var availability = suggestion.data.availability;
 
+                console.log(availability);
                 // if the room is available
                 if (availability == 'availableNow') {
                     console.log('its avail!!!!');
