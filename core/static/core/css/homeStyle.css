@@ -39,6 +39,9 @@ body * {
   text-align: center;
   float: none;
 }
+#contentContainer {
+  padding: 0 0 5px 0;
+}
 @media (min-width: 992px) {
   #mainMenu {
     width: 70%;
