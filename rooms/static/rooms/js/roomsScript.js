@@ -8,6 +8,7 @@ var userLongitude = -3.188775; // current longitude of user
 var roomLikedByUser = false; // whether current suggestion is liked by user
 var searchingForBuildings = true; // whether we're currently searching for buildings (true) or tutorial rooms (false)
 var currentBuildingId = ''; // the id of the building we're currently searching in, or '' if we're searching for a building
+var buildingIndexToReturnTo = 0; // the index of the building we're searching within
 
 var refreshTimer; // the maps timeout variable for limiting number of queries per second to avoid limits
 var idleReminder; // the timer variable which reminds the user they can swipe if they don't swipe within the first 5 seconds
@@ -108,6 +109,7 @@ $(document).ready(function () {
         // if we're now searching within a building, save the building we're searching in
         } else {
             currentBuildingId = currentChoice.abbreviation;
+            buildingIndexToReturnTo = currentChoice.index;
         }
         // get new suggestions from the server
         getSuggestionsUsingOptions();
@@ -610,9 +612,15 @@ function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector
 				for (var i = 0; i < suggestions.length; i++) {
 					suggestions[i].index = i;
 				}
-
-				// load the first suggestion
-				currentChoice = suggestions[0];
+                
+                // if returning to the building suggester, go back to the building you came from
+                if (searchingForBuildings){
+                    currentChoice=suggestions[buildingIndexToReturnTo]
+                    
+                // otherwise, load the first suggestion
+                } else{
+                    currentChoice = suggestions[0];
+                }
 				loadChoice();
                 if (suggestions.length==1){
                     // don't remind the user they can swipe if they can't
@@ -643,7 +651,7 @@ function loadChoice() {
     if (searchingForBuildings){
         
         // populate the html
-        $('#roomName').html(currentChoice.building_name);
+        $('#buildingName').html(currentChoice.building_name);
         $('#roomsFreeNumber').html(currentChoice.rooms);
         // update the map to the new coordinates
         updateMap();
@@ -676,8 +684,14 @@ function loadChoice() {
 function switchView(){
     // if switching to buildings
     if (searchingForBuildings){
+        // hide the room name and favourites button
+        $('#roomRow').hide();
         // hide the favourites button
         $('#starContainer').hide();
+        //make the building name a title again
+        $('#buildingName').removeClass('subtitle');
+        // show the number of rooms free
+        $('#roomsFreeRow').show();
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').hide();
         $('#switchViewBtn .forwardIcon').show();
@@ -688,11 +702,15 @@ function switchView(){
         $('#toMapBtnContainer').show();
         // hide the 'book now' button
         $('#bookBtnContainer').hide();
-        // show the number of rooms free
-        $('#roomsFreeRow').show();
     } else {
+        // show the room name
+        $('#roomRow').show();
         // show the favourites button
         $('#starContainer').show();
+        //make the building name a subtitle
+        $('#buildingName').addClass('subtitle');
+        // hide the number of rooms free
+        $('#roomsFreeRow').hide();
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').show();
         $('#switchViewBtn .forwardIcon').hide();
@@ -703,8 +721,6 @@ function switchView(){
         $('#toMapBtnContainer').hide();
         // show the 'book now' button
         $('#bookBtnContainer').show();
-        // hide the number of rooms free
-        $('#roomsFreeRow').hide();
     }
 }
 

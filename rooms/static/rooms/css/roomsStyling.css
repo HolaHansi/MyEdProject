@@ -104,13 +104,14 @@
   -o-transition: opacity 0.5s;
   transition: opacity 0.5s;
 }
-#roomName {
-  margin: 0 0 10;
+#roomName,
+#buildingName:not(.subtitle) {
   font-size: 14px;
   line-height: 14px;
 }
 @media (min-width: 200px) {
-  #roomName {
+  #roomName,
+  #buildingName:not(.subtitle) {
     font-size: 14px;
     line-height: 14px;
     font-size: 7vw;
@@ -118,22 +119,42 @@
   }
 }
 @media (min-width: 300px) {
-  #roomName {
+  #roomName,
+  #buildingName:not(.subtitle) {
     font-size: 21px;
     line-height: 21px;
   }
 }
 @media (min-width: 400px) {
-  #roomName {
+  #roomName,
+  #buildingName:not(.subtitle) {
     font-size: 5.25vw;
     line-height: 5.25vw;
   }
 }
 @media (min-width: 500px) {
-  #roomName {
+  #roomName,
+  #buildingName:not(.subtitle) {
     font-size: 26.25px;
     line-height: 26.25px;
   }
+}
+#buildingNameRow {
+  margin: 0 0 10;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+#buildingName.subtitle:before {
+  content: '(';
+}
+#buildingName.subtitle:after {
+  content: ')';
+}
+#starContainer .fa-star {
+  float: right;
 }
 #roomsFreeLabel {
   font-size: 12px;
@@ -153,51 +174,16 @@
     line-height: 18px;
   }
 }
-#locationRow,
 #roomsFreeRow {
+  margin: 0;
+}
+#roomRow {
+  margin: 0 0 5px;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  margin: 0;
-}
-#locationRow #roomNameContainer,
-#roomsFreeRow #roomNameContainer {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -moz-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-flex-basis: 3;
-  -ms-flex-preferred-size: 3;
-  flex-basis: 3;
-  flex: 3 1 0;
-  position: relative;
-  min-height: 1px;
-  margin: auto;
-}
-#locationRow #starContainer,
-#roomsFreeRow #starContainer {
-  -webkit-box-flex: 0;
-  -webkit-flex-grow: 0;
-  -moz-box-flex: 0;
-  -ms-flex-positive: 0;
-  flex-grow: 0;
-  -webkit-flex-shrink: 0;
-  -ms-flex-negative: 0;
-  flex-shrink: 0;
-  -webkit-flex-basis: 51px;
-  -ms-flex-preferred-size: 51px;
-  flex-basis: 51px;
-  flex: 51px 0 0;
-  text-align: center;
-  position: relative;
-  min-height: 1px;
-  margin: auto;
 }
 #roomsFreeNumber {
   margin: 0 0 3px 5px;

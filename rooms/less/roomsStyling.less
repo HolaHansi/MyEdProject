@@ -78,9 +78,7 @@
     .transition(opacity, @optionsMenuTransitionTime);
 }
 
-#roomName{   
-    margin: 0 0 10; 
-    
+#roomName, #buildingName:not(.subtitle){   
     //responsive text size
     font-size: 14px;
     line-height: 14px;
@@ -104,6 +102,22 @@
     }
 }
 
+#buildingNameRow{
+    margin: 0 0 10; 
+    .display-flex();
+}
+#buildingName.subtitle{
+    &:before{
+        content:'(';
+    }
+    &:after{
+        content:')';
+    }
+}
+
+#starContainer .fa-star{
+    float:right;
+}
 
 //responsive text size for computers free label: 
 #roomsFreeLabel{
@@ -120,25 +134,13 @@
         line-height: 18px;
     }
 }
-
-//room and availability row positioning (using flex, unsupported on IE < 10 )
-#locationRow, #roomsFreeRow{
+#roomsFreeRow{
+    margin:0;
+}
+//room and availability row positioning
+#roomRow{
+    margin: 0 0 5px;
     .display-flex();
-    margin: 0;
-    #roomNameContainer{
-        .flex(3,1,0);
-        position: relative;
-        min-height: 1px;
-        margin: auto;
-    }
-
-    #starContainer{
-        .flex(51px,0,0);
-        text-align: center;
-        position: relative;
-        min-height: 1px;
-        margin: auto;
-    }
 }
 
 #roomsFreeNumber{
