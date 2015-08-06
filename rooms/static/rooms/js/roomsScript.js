@@ -563,8 +563,8 @@ function getSuggestionsUsingOptions(){
     if (ids.length==5){
         ids = [];
     }
-    // get the suggestions 0613//TODO
-    getSuggestions(true, true, false, false, false, false, currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO FIX
+    // get the suggestions
+    getSuggestions(false, false, false, false, false, false, currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO FIX
 }
 
 // returns the id of all campuses the user doesn't want included
@@ -659,6 +659,13 @@ function loadChoice() {
     } else{
         $('#roomName').html(currentChoice.room_name);
         $('#capacityNumber').html(currentChoice.capacity);
+        if (currentChoice.availableFor=='unknown'){
+            $('#availabilityNumber').addClass('unavailable');
+            $('#availabilityNumber').html('(No information available)');
+        } else {
+            $('#availabilityNumber').removeClass('unavailable');
+            $('#availabilityNumber').html(currentChoice.availableFor);
+        }
         // check if current choice is liked by user and toggle the star icon appropriately
         liked(currentChoice.locationId);
     }
@@ -691,6 +698,7 @@ function switchView(){
         $('#roomsFreeRow').show();
         // hide the room details
         $('#capacityRow').hide();
+        $('#availabilityRow').hide();
         // display the map
         $('#mapContainer').show();
         // change search version button to 'View rooms >>'
@@ -712,6 +720,7 @@ function switchView(){
         $('#roomsFreeRow').hide();
         // show the room details
         $('#capacityRow').show();
+        $('#availabilityRow').show();
         // display the map
         $('#mapContainer').hide();
         // change search version button to 'View rooms >>'

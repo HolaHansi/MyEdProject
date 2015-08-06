@@ -5,7 +5,7 @@
 @optionsMenuTransitionTime: 0.5s;
 
 .row{
-    margin:0;
+    margin:0 0 15px;
 }
 
 #toMapBtnContainer, #switchViewBtnContainer, #bookBtnContainer{
@@ -106,7 +106,6 @@
 }
 
 #buildingNameRow{
-    margin: 0 0 12; 
     .display-flex();
 }
 #buildingName.subtitle{
@@ -138,7 +137,7 @@
 }
 
 //responsive text size for computers free label: 
-#roomsFreeLabel, #capacityLabel{
+#roomsFreeLabel, #capacityLabel, #availabilityLabel{
     font-size: 12px;
     line-height: 12px;
     @media (min-width: 200px) {
@@ -153,14 +152,16 @@
     }
 }
 
-//room and availability row positioning
+#availabilityNumber.unavailable{
+    font-size:12px;
+    line-height:18px;
+    color:grey;
+}
+
+//room row positioning
 #roomRow{
     margin: 0 0 5px;
     .display-flex();
-}
-
-#roomsFreeRow{
-    margin:0;
 }
 
 #roomsFreeNumber, #capacityNumber{
