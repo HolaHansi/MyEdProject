@@ -281,6 +281,7 @@
 }
 #optionsMenu {
   width: 100%;
+  max-width: 1000px;
   position: fixed;
   background-color: #eeeeee;
   -webkit-transition: top 0.5s;
