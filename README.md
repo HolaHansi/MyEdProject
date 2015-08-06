@@ -2,10 +2,11 @@
 
 ##TODO:
 
+- Set up scheduler
+- Add coloured border to right of current page on collapsed dropdown menu too
+- Implement chosen design
 - Documentation, documentation, documentation
 - Get feedback
-- Implement chosen design
-- Add location corrector
 - Go to Hive
 - Easter Eggs
 
@@ -16,10 +17,8 @@
 - Custom 'recenter map' option
 - Toggle displaying directions/location
 - Remember user preferences (cookies?)
-- Change name + logo ?
 - Implement swiping animation
 - Add custom error pages for more significant errors
-- Add coloured border to right of current page on collapsed dropdown menu too
 
 ###Stretch goals:
 - 'Suggest a study space'
