@@ -2,6 +2,14 @@
 .row {
   margin: 0 0 15px;
 }
+#starContainer,
+#roomRow,
+#capacityRow,
+#availabilityRow,
+#facilitiesRow,
+#bookBtnContainer {
+  display: none;
+}
 #toMapBtnContainer,
 #switchViewBtnContainer,
 #bookBtnContainer {
@@ -182,14 +190,16 @@
 }
 #roomsFreeLabel,
 #capacityLabel,
-#availabilityLabel {
+#availabilityLabel,
+#facilities {
   font-size: 12px;
   line-height: 12px;
 }
 @media (min-width: 200px) {
   #roomsFreeLabel,
   #capacityLabel,
-  #availabilityLabel {
+  #availabilityLabel,
+  #facilities {
     font-size: 12px;
     line-height: 12px;
     font-size: 6vw;
@@ -199,7 +209,8 @@
 @media (min-width: 300px) {
   #roomsFreeLabel,
   #capacityLabel,
-  #availabilityLabel {
+  #availabilityLabel,
+  #facilities {
     font-size: 18px;
     line-height: 18px;
   }
@@ -208,6 +219,13 @@
   font-size: 12px;
   line-height: 18px;
   color: grey;
+}
+#facilitiesLabel .custom-glyphicon {
+  margin: 0 3px;
+}
+#facilitiesLabel .fa {
+  margin: 0 3px;
+  font-size: 20px;
 }
 #roomRow {
   margin: 0 0 5px;

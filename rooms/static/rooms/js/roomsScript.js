@@ -666,6 +666,36 @@ function loadChoice() {
             $('#availabilityNumber').removeClass('unavailable');
             $('#availabilityNumber').html(currentChoice.availableFor);
         }
+        if (currentChoice.pc){
+            $('#facilities .glyphicon-computer').show();
+        } else {
+            $('#facilities .glyphicon-computer').hide();
+        }
+        if (currentChoice.printer){
+            $('#facilities .glyphicon-printer').show();
+        } else {
+            $('#facilities .glyphicon-printer').hide();
+        }
+        if (currentChoice.projector){
+            $('#facilities .glyphicon-projector').show();
+        } else {
+            $('#facilities .glyphicon-projector').hide();
+        }
+        if (currentChoice.whiteboard){
+            $('#facilities .glyphicon-whiteboard').show();
+        } else {
+            $('#facilities .glyphicon-whiteboard').hide();
+        }
+        if (currentChoice.blackboard){
+            $('#facilities .glyphicon-blackboard-custom').show();
+        } else {
+            $('#facilities .glyphicon-blackboard-custom').hide();
+        }
+        if (currentChoice.pc || currentChoice.printer || currentChoice.projector || currentChoice.whiteboard || currentChoice.blackboard){
+            $('#facilities .noFacilities').hide();
+        } else {
+            $('#facilities .noFacilities').show();
+        }
         // check if current choice is liked by user and toggle the star icon appropriately
         liked(currentChoice.locationId);
     }
@@ -699,6 +729,7 @@ function switchView(){
         // hide the room details
         $('#capacityRow').hide();
         $('#availabilityRow').hide();
+        $('#facilitiesRow').hide();
         // display the map
         $('#mapContainer').show();
         // change search version button to 'View rooms >>'
@@ -721,6 +752,7 @@ function switchView(){
         // show the room details
         $('#capacityRow').show();
         $('#availabilityRow').show();
+        $('#facilitiesRow').show();
         // display the map
         $('#mapContainer').hide();
         // change search version button to 'View rooms >>'

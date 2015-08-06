@@ -8,6 +8,11 @@
     margin:0 0 15px;
 }
 
+// hide the room view at the start
+#starContainer, #roomRow, #capacityRow, #availabilityRow, #facilitiesRow, #bookBtnContainer{
+    display:none;
+}
+
 #toMapBtnContainer, #switchViewBtnContainer, #bookBtnContainer{
     text-align: center;
 }
@@ -137,7 +142,7 @@
 }
 
 //responsive text size for computers free label: 
-#roomsFreeLabel, #capacityLabel, #availabilityLabel{
+#roomsFreeLabel, #capacityLabel, #availabilityLabel, #facilities{
     font-size: 12px;
     line-height: 12px;
     @media (min-width: 200px) {
@@ -156,6 +161,16 @@
     font-size:12px;
     line-height:18px;
     color:grey;
+}
+
+#facilitiesLabel{
+    .custom-glyphicon{
+        margin: 0 3px;
+    }
+    .fa{
+        margin: 0 3px;
+        font-size:20px;
+    }
 }
 
 //room row positioning
