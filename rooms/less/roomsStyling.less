@@ -2,8 +2,11 @@
 
 @import "../../core/less/colours.less";
 
-
 @optionsMenuTransitionTime: 0.5s;
+
+.row{
+    margin:0;
+}
 
 #toMapBtnContainer, #switchViewBtnContainer, #bookBtnContainer{
     text-align: center;
@@ -27,7 +30,7 @@
 }
 
 #switchViewBtn{
-    margin: 15px;
+    margin: 15px 0px;
     .forwardIcon{
         margin-left:5px;
     }
@@ -103,7 +106,7 @@
 }
 
 #buildingNameRow{
-    margin: 0 0 10; 
+    margin: 0 0 12; 
     .display-flex();
 }
 #buildingName.subtitle{
@@ -113,6 +116,21 @@
     &:after{
         content:')';
     }
+    //responsive text size
+    font-size: 12px;
+    line-height: 12px;
+    @media (min-width: 300px) {
+        font-size: 14px;
+        line-height: 14px;
+    }
+    @media (min-width: 400px) {
+        font-size: 3.5vw;
+        line-height: 3.5vw;
+    }
+    @media (min-width: 500px) {
+        font-size: 17.5px;
+        line-height: 17.5px;
+    }
 }
 
 #starContainer .fa-star{
@@ -120,7 +138,7 @@
 }
 
 //responsive text size for computers free label: 
-#roomsFreeLabel{
+#roomsFreeLabel, #capacityLabel{
     font-size: 12px;
     line-height: 12px;
     @media (min-width: 200px) {
@@ -134,16 +152,18 @@
         line-height: 18px;
     }
 }
-#roomsFreeRow{
-    margin:0;
-}
+
 //room and availability row positioning
 #roomRow{
     margin: 0 0 5px;
     .display-flex();
 }
 
-#roomsFreeNumber{
+#roomsFreeRow{
+    margin:0;
+}
+
+#roomsFreeNumber, #capacityNumber{
     margin: 0 0 3px 5px;
     font-size: 14px;
     min-width:30px;

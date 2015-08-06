@@ -650,8 +650,6 @@ function loadChoice() {
     // populate the html
     
     if (searchingForBuildings){
-        
-        // populate the html
         $('#buildingName').html(currentChoice.building_name);
         $('#roomsFreeNumber').html(currentChoice.rooms);
         // update the map to the new coordinates
@@ -659,10 +657,8 @@ function loadChoice() {
         // update the 'Take me there' Google Maps deeplink
         $('#toMapBtn').attr('href','https://www.google.com/maps/preview?saddr='+userLatitude+','+userLongitude+'&daddr='+currentChoice.latitude+','+currentChoice.longitude+'&dirflg=w');
     } else{
-        
         $('#roomName').html(currentChoice.room_name);
-        $('#roomsFreeNumber').html(currentChoice.capacity);
-        $('#starContainer').show();
+        $('#capacityNumber').html(currentChoice.capacity);
         // check if current choice is liked by user and toggle the star icon appropriately
         liked(currentChoice.locationId);
     }
@@ -693,12 +689,14 @@ function switchView(){
         $('#buildingName').removeClass('subtitle');
         // show the number of rooms free
         $('#roomsFreeRow').show();
+        // hide the room details
+        $('#capacityRow').hide();
+        // display the map
+        $('#mapContainer').show();
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').hide();
         $('#switchViewBtn .forwardIcon').show();
         $('#switchViewBtn .content').html('View rooms');
-        // display the map
-        $('#mapContainer').show();
         // display the 'Take me there' button
         $('#toMapBtnContainer').show();
         // hide the 'book now' button
@@ -712,12 +710,14 @@ function switchView(){
         $('#buildingName').addClass('subtitle');
         // hide the number of rooms free
         $('#roomsFreeRow').hide();
+        // show the room details
+        $('#capacityRow').show();
+        // display the map
+        $('#mapContainer').hide();
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').show();
         $('#switchViewBtn .forwardIcon').hide();
         $('#switchViewBtn .content').html('Back to buildings');
-        // display the map
-        $('#mapContainer').hide();
         // display the 'Take me there' button
         $('#toMapBtnContainer').hide();
         // show the 'book now' button
