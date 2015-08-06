@@ -278,39 +278,79 @@ function autoCompleteAPI() {
                 var availability = suggestion.data.availability;
 
                 console.log(availability);
+
+
+
+                var panelRoom = $(".panel.panel-default.room.template");
+
                 // if the room is available
-                if (availability == 'availableNow') {
-                    console.log('its avail!!!!');
 
-                    // determine where to insert the new favourite
-                    var placeToInsert = '#insertRoomAvailableNow';
-                    // determine which template to use - the template is currently not visible: css(display:none;)
-                    var panelRoom = $(".panel.panel-default.room.available.template");
-                    // determine the content of theLink which displays the name and badge on the tab for the favourite
-                    var linkHtml = '<span class="badge free">' + suggestion.data.free + '</span>' + suggestion.value + '<span class="caret"></span>';
-
-                }
-                else if (availability == 'notAvailable') {
-                    var placeToInsert = '#insertRoomNotAvailable';
-                }
-
-                else {
-                    var placeToInsert = '#insertRoomLocal';
-                };
 
                 // clone the template and make is visible by removing the style attribute.
-                var clone = panelPC.clone(true);
+                var clone = panelRoom.clone(true);
                 clone.removeAttr('style');
 
                 // remove the clone's template class
                 clone.removeClass('template');
 
 
+                if (availability == 'availableNow') {
+                    console.log('its avail!!!!');
+
+                    // determine where to insert the new favourite
+                    var placeToInsert = '#insertRoomAvailableNow';
+                    // theLink html - this goes into the panelHeading
+                    var linkHtml = '<span class="badge check"><i class="fa fa-check avail"></i></span>' + suggestion.value + '<span class="caret"></span>';
+
+                    var availForIconHtml = '<i class="fa fa-check-circle"></i>';
+                    var availForDescriptionHtml = 'Available for less than';
+                    var availForValueHtml = suggestion.data.availableFor;
+
+
+                    console.log('panelRoom coming up');
+                    console.log(panelRoom);
+                }
+                else if (availability == 'notAvailable') {
+                    var placeToInsert = '#insertRoomNotAvailable';
+
+                    var linkHtml = '<span class="badge times"><i class="fa fa-times"></i></span>' + suggestion.value + '<span class="caret"></span>';
+
+
+                    var availForIconHtml = '<i class="fa fa-hourglass"></i>';
+                    var availForDescriptionHtml = 'Will be available';
+                    var availForValueHtml = suggestion.data.unavailableFor;
+
+                    // disable the bookNow button.
+                    console.log('not avail booknow');
+                    console.log($('.booknow'));
+
+
+                    clone.find('.booknow').addClass('disabled');
+
+
+                }
+
+                else {
+                    var placeToInsert = '#insertRoomLocal';
+                    var linkHtml = '<span class="badge minus"><i class="fa fa-minus avail"></i></span>' + suggestion.value + '<span class="caret"></span>';
+
+                    var availForIconHtml = '<i class="fa fa-exclamation-triangle"></i>';
+                    var availForDescriptionHtml = 'Locally Allocated';
+                    var availForValueHtml = 'n/a';
+
+
+                    // disable the bookNow button.
+                    clone.find('.booknow').addClass('disabled');
+
+
+                };
+
+
                 // initialize id variables
-                var infoForID = 'infoFor-room-' + suggestion.data.id;
-                var roomID = 'room-'+ suggestion.data.id;
-                var collapseID = '#collapse-' + suggestion.data.id;
-                var collapseIDNoHashtag = 'collapse-' + suggestion.data.id;
+                var infoForID = 'infoFor-room-' + suggestion.data.locationId;
+                var roomID = 'room-'+ suggestion.data.locationId;
+                var collapseID = '#collapse-' + suggestion.data.locationId;
+                var collapseIDNoHashtag = 'collapse-' + suggestion.data.locationId;
 
 
                 // give panel the id for infoForID.
@@ -324,11 +364,69 @@ function autoCompleteAPI() {
 
                 var capacity = clone.find('.capacityNumber');
 
-                // WORK IN PROGRESS
+
+                console.log('this is the clone coming up');
+                console.log(clone);
 
 
 
+                // opening hour paragraphs
+                var openTimeP = panelCollapse.find(".openTimeP");
+                var closingTimeP = panelCollapse.find(".closingTimeP");
 
+                // availFor
+                var availForIcon = panelCollapse.find(".availForIcon");
+                var availForDescription = panelCollapse.find(".availForDescription");
+                var availForValue = panelCollapse.find(".availForValue");
+
+                //suitabilities
+                var suitabilities = panelCollapse.find(".suitabilitiesRoom");
+
+                // map and remove btn
+                var mapBtn = panelCollapse.find(".mapBtn");
+                var rmvBtn = panelCollapse.find(".remove-btn");
+                var calBtn = panelCollapse.find(".calBtn");
+                var bookNow = panelCollapse.find("booknow");
+
+                // change date-target for panelHeading
+                panelHeading.attr('data-target', collapseID);
+
+
+                // change attributes for theLink
+                theLink.attr("data-target", collapseID);
+                theLink.attr("href", collapseID);
+                theLink.attr("aria-controls", collapseIDNoHashtag);
+
+
+                // change the html in theLink - the html value depends on whether place is closed or not.
+                theLink.html(linkHtml);
+
+
+                // change id of panelCollapse to match id favourite - slice expression is for getting rid of hashtag
+                panelCollapse.attr('id', collapseIDNoHashtag);
+
+
+                // get the opening hours
+                if (suggestion.data.openHour == 'n/a') {
+                    var openHourHtml = 'n/a';
+                    var closingHourHtml = 'n/a';
+                }
+                else {
+                    var openHourHtml = suggestion.data.openHour.slice(0, 5);
+                    var closingHourHtml = suggestion.data.closingHour.slice(0,5);
+                }
+
+                // write the opening hours to the paragraphs in the clone.
+                openTimeP.html(openHourHtml);
+                closingTimeP.html(closingHourHtml);
+
+                // update capacity
+                capacity.html(suggestion.data.capacity);
+
+                // update availFor
+                availForIcon.html(availForIconHtml);
+                availForDescription.html(availForDescriptionHtml);
+                availForValue.html(availForValueHtml);
 
 
                 facilities = '';
@@ -347,13 +445,18 @@ function autoCompleteAPI() {
                 if (suggestion.data.whiteboard){
                     facilities += '<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> '
                 }
-                if (facilities == ''){
-                    facilities = "<div id='blackboardTick' class='tickOrCross cross'></div>"
-                }
-                // create the other details
-                var newItem = $('<li class="list-group-item" id="room-'+suggestion.data.id+'">'+suggestion.data.room_name+', '+suggestion.data.building_name+': '+facilities+' <span class="unliker unclicked">Unlike</span></li>');
+
+
+                suitabilities.html(facilities);
+
+                // update remove btn id
+                rmvBtn.attr('id', roomID);
+
                 // insert the new favourite into the dom
-                newItem.insertBefore(placeToInsert);
+                clone.insertBefore(placeToInsert);
+
+                // relocate the insertAfter div.
+                $(placeToInsert).insertAfter(clone);
             }
         });
     });

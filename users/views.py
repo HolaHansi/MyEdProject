@@ -88,9 +88,13 @@ def autocompleteAPI(request):
             if len(already_favourited.filter(locationId=room.locationId)) == 0:
 
                 # get opening hours
-                openHours = utilities.getOpenHours(lab)
+                openHours = utilities.getOpenHours(room)
                 openHour = openHours['openHour']
                 closingHour = openHours['closingHour']
+
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
 
                 rooms.append(
                     {'value': room.room_name + ', ' + room.building_name,
@@ -121,9 +125,13 @@ def autocompleteAPI(request):
                 isOpen = utilities.isOpen(room)
 
                 # get opening hours
-                openHours = utilities.getOpenHours(lab)
+                openHours = utilities.getOpenHours(room)
                 openHour = openHours['openHour']
                 closingHour = openHours['closingHour']
+
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
 
                 rooms.append(
                     {'value': room.room_name + ', ' + room.building_name,
@@ -151,9 +159,13 @@ def autocompleteAPI(request):
             if len(already_favourited.filter(locationId=room.locationId)) == 0:
 
                 # get opening hours
-                openHours = utilities.getOpenHours(lab)
+                openHours = utilities.getOpenHours(room)
                 openHour = openHours['openHour']
                 closingHour = openHours['closingHour']
+
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
 
                 rooms.append(
                     {'value': room.room_name + ', ' + room.building_name,
