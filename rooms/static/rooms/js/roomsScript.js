@@ -666,6 +666,36 @@ function loadChoice() {
             $('#availabilityNumber').removeClass('unavailable');
             $('#availabilityNumber').html(currentChoice.availableFor);
         }
+        if (currentChoice.pc){
+            $('#facilities .glyphicon-computer').show();
+        } else {
+            $('#facilities .glyphicon-computer').hide();
+        }
+        if (currentChoice.printer){
+            $('#facilities .glyphicon-printer').show();
+        } else {
+            $('#facilities .glyphicon-printer').hide();
+        }
+        if (currentChoice.projector){
+            $('#facilities .glyphicon-projector').show();
+        } else {
+            $('#facilities .glyphicon-projector').hide();
+        }
+        if (currentChoice.whiteboard){
+            $('#facilities .glyphicon-whiteboard').show();
+        } else {
+            $('#facilities .glyphicon-whiteboard').hide();
+        }
+        if (currentChoice.blackboard){
+            $('#facilities .glyphicon-blackboard-custom').show();
+        } else {
+            $('#facilities .glyphicon-blackboard-custom').hide();
+        }
+        if (currentChoice.pc || currentChoice.printer || currentChoice.projector || currentChoice.whiteboard || currentChoice.blackboard){
+            $('#facilities .noFacilities').hide();
+        } else {
+            $('#facilities .noFacilities').show();
+        }
         // check if current choice is liked by user and toggle the star icon appropriately
         liked(currentChoice.locationId);
     }
@@ -699,8 +729,9 @@ function switchView(){
         // hide the room details
         $('#capacityRow').hide();
         $('#availabilityRow').hide();
+        $('#facilitiesRow').hide();
         // display the map
-        $('#mapContainer').show();
+        $('#mapContainer').removeClass('hidden-xs');
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').hide();
         $('#switchViewBtn .forwardIcon').show();
@@ -721,13 +752,14 @@ function switchView(){
         // show the room details
         $('#capacityRow').show();
         $('#availabilityRow').show();
-        // display the map
-        $('#mapContainer').hide();
-        // change search version button to 'View rooms >>'
+        $('#facilitiesRow').show();
+        // hide the map on mobiles
+        $('#mapContainer').addClass('hidden-xs');
+        // change search version button to '<< Back to buildings'
         $('#switchViewBtn .backIcon').show();
         $('#switchViewBtn .forwardIcon').hide();
         $('#switchViewBtn .content').html('Back to buildings');
-        // display the 'Take me there' button
+        // hide the 'Take me there' button
         $('#toMapBtnContainer').hide();
         // show the 'book now' button
         $('#bookBtnContainer').show();
