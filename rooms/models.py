@@ -94,7 +94,7 @@ class Tutorial_Room(models.Model):
 
     # availability status: this field must updated very often!
     # availableNow, notAvailable or localAvailable
-    availability = models.CharField(max_length=30)
+    availability = models.CharField(max_length=30, default='unknown')
 
 
     def __str__(self):

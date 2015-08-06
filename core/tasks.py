@@ -19,6 +19,8 @@ def repopulate_all_tables():
     print('Activities merged')
     get_pc_data()
     print('PC labs saved')
+    update_status_rooms()
+    print('Room Status Updated')
 
 
 # refresh the availability of all the rooms
