@@ -19,17 +19,64 @@ body * {
 .navbar .navbar-nav {
   margin: 0 -15px;
 }
+@media (min-width: 768px) {
+  .navbar .navbar-nav {
+    margin: 0 -30px;
+    height: 44px;
+  }
+}
 .navbar .navbar-nav li {
   text-align: right;
 }
 .navbar .navbar-nav li a {
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 8px 15px 8px 0px;
+  color: black;
+  font-size: 16px;
+}
+.navbar .navbar-nav li a .tabLabel {
+  display: inline-block;
 }
 .navbar .navbar-nav li i {
   float: right;
   margin-left: 5px;
   line-height: 20px;
+}
+@media (min-width: 768px) {
+  .navbar .navbar-nav li {
+    height: inherit;
+  }
+}
+@media (min-width: 768px) {
+  .navbar .navbar-nav li {
+    text-align: center;
+  }
+  .navbar .navbar-nav li a {
+    height: inherit;
+    border-left: solid 1px #ddd;
+    padding: 3px 15px;
+  }
+  .navbar .navbar-nav li a.currentTab {
+    border-bottom: solid 3px;
+  }
+  .navbar .navbar-nav li a.currentTab.labsTab {
+    border-bottom-color: #337ab7;
+  }
+  .navbar .navbar-nav li a.currentTab.roomsTab {
+    border-bottom-color: #5cb85c;
+  }
+  .navbar .navbar-nav li a.currentTab.favouritesTab {
+    border-bottom-color: #f0ad4e;
+  }
+  .navbar .navbar-nav li a.currentTab.historyTab {
+    border-bottom-color: #5bc0de;
+  }
+  .navbar .navbar-nav li a .tabLabel {
+    display: block;
+    margin-top: -3px;
+  }
+  .navbar .navbar-nav li i {
+    float: none;
+  }
 }
 .navbar .navbar-toggle {
   margin-top: 5px;

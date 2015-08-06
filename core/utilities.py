@@ -17,9 +17,71 @@ import datetime
 from django.utils import timezone
 import math
 from rooms.models import Activity as act
+from rooms.models import Tutorial_Room
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.db.models import F
+
+
+# ======= availability of rooms functions ================
+
+def update_status_rooms():
+    """
+    update_status receives all the rooms in the database, and updates the field value of availability.
+    :param rooms:
+    :return: nothing
+    """
+    # set up
+    rooms = Tutorial_Room.objects.all()
+
+    rooms_locally_allocated = rooms.filter(locally_allocated=True)
+
+    rooms_globally_allocated = rooms.filter(locally_allocated=False)
+
+    closedRooms = get_currently_closed_locations(rooms, typeOfSpace='Room')
+
+
+    # availableNow : rooms available now =============================
+
+    # All rooms that are not currently booked.
+    rooms_not_currently_booked = filter_out_busy_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+    # Exclude all the closed rooms from this set.
+    rooms_available_now = excludeClosedLocations(rooms_not_currently_booked)
+
+    # Update the availability field and the available_for field.
+    available_for_hours(rooms_available_now)
+
+    # Update availability Field.
+    rooms_available_now.update(availability='availableNow')
+
+
+    # notAvailable : room NOT available now. ===========================
+
+    # get all the currently booked rooms
+    rooms_currently_booked = filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+    # a room is not available if it's either closed or currently booked
+    rooms_not_available_now = closedRooms | rooms_currently_booked
+
+    # Update the unavailableFor field
+    unavailable_till_hours(rooms_not_available_now)
+
+    # Update the availability field
+    rooms_not_available_now.update(availability='notAvailable')
+
+    # localAvailable : locally allocated, but open ===========================
+
+    # exclude all closed locally allocated rooms.
+    rooms_open_locally_allocated = excludeClosedLocations(rooms_locally_allocated)
+
+    # update every availability field in this queryset:
+    rooms_open_locally_allocated.update(availability='localAvailable')
+
+
+    return 'updated the status of all rooms'
+
+
 
 # ======= functions used in both pc/views and rooms/views ======= #
 
@@ -259,6 +321,7 @@ def unavailable_till_hours(unavailable_rooms):
     tomorrow = now + datetime.timedelta(hours=24)
 
     for unavailable_room in unavailable_rooms:
+
         # get all of the rooms activities ending after now, but starting before tomorrow.
         activities = act.objects.filter(tutorialRooms=unavailable_room,
                                         endTime__gt=now,
@@ -377,6 +440,9 @@ def available_for_hours(available_rooms):
     weekday = now.weekday()
 
     for available_room in available_rooms:
+        #first update the availability field:
+        available_room.availability = 'availableNow'
+
         # get all activities for the room beginning after now.
         activities = act.objects.filter(tutorialRooms=available_room,
                                         startTime__gt=now)

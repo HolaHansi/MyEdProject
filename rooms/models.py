@@ -91,6 +91,12 @@ class Tutorial_Room(models.Model):
     availableFor = models.CharField(max_length=15, default='unknown')
     unavailableFor = models.CharField(max_length=15, default='unknown')
 
+
+    # availability status: this field must updated very often!
+    # availableNow, notAvailable or localAvailable
+    availability = models.CharField(max_length=30)
+
+
     def __str__(self):
         return self.building_name + ": " + self.room_name
 

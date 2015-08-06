@@ -281,16 +281,50 @@ function autoCompleteAPI() {
                 // if the room is available
                 if (availability == 'availableNow') {
                     console.log('its avail!!!!');
+
+                    // determine where to insert the new favourite
+                    var placeToInsert = '#insertRoomAvailableNow';
+                    // determine which template to use - the template is currently not visible: css(display:none;)
+                    var panelRoom = $(".panel.panel-default.room.available.template");
+                    // determine the content of theLink which displays the name and badge on the tab for the favourite
+                    var linkHtml = '<span class="badge free">' + suggestion.data.free + '</span>' + suggestion.value + '<span class="caret"></span>';
+
+                }
+                else if (availability == 'notAvailable') {
+                    var placeToInsert = '#insertRoomNotAvailable';
+                }
+
+                else {
+                    var placeToInsert = '#insertRoomLocal';
                 };
 
+                // clone the template and make is visible by removing the style attribute.
+                var clone = panelPC.clone(true);
+                clone.removeAttr('style');
+
+                // remove the clone's template class
+                clone.removeClass('template');
 
 
+                // initialize id variables
+                var infoForID = 'infoFor-room-' + suggestion.data.id;
+                var roomID = 'room-'+ suggestion.data.id;
+                var collapseID = '#collapse-' + suggestion.data.id;
+                var collapseIDNoHashtag = 'collapse-' + suggestion.data.id;
 
 
+                // give panel the id for infoForID.
+                clone.attr('id', infoForID);
+
+                // get pointers to all the element that must be modified in the clone:
+                var panelHeading = clone.find(".panel-heading");
+                var theLink = clone.find('.theLink');
+                var panelCollapse = clone.find('.panel-collapse.collapse');
 
 
+                var capacity = clone.find('.capacityNumber');
 
-
+                // WORK IN PROGRESS
 
 
 
@@ -319,7 +353,7 @@ function autoCompleteAPI() {
                 // create the other details
                 var newItem = $('<li class="list-group-item" id="room-'+suggestion.data.id+'">'+suggestion.data.room_name+', '+suggestion.data.building_name+': '+facilities+' <span class="unliker unclicked">Unlike</span></li>');
                 // insert the new favourite into the dom
-                newItem.insertBefore('#autocompleteRoomLi');
+                newItem.insertBefore(placeToInsert);
             }
         });
     });

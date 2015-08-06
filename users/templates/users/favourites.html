@@ -337,7 +337,7 @@
             <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
                         <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
@@ -394,7 +394,7 @@
 
             {% endfor %}
 
-
+            <div id="insertRoomAvailableNow" style="border:none;"></div>
 
 
 {##}
@@ -416,7 +416,7 @@
             <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
                         <span class="badge times"><i class="fa fa-times"></i></span>{{ fav.room_name }}, {{fav.building_name}}<span class="caret"></span>
                         </a>
                     </h4>
@@ -484,6 +484,10 @@
 
             {% endfor %}
 
+        <div id="insertRoomNotAvailable" style="border:none;"></div>
+
+
+
 
 
             {% for fav in rooms_open_locally_allocated %}
@@ -494,7 +498,7 @@
             <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
                         <span class="badge minus"><i class="fa fa-minus avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
@@ -550,6 +554,8 @@
 
             {% endfor %}
 
+        <div id="insertRoomLocal" style="border:none;"></div>
+
 
 {##}
 {#            <!-- favourite -->#}
@@ -584,7 +590,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapseSix">
                     <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-target="#collapseSix" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapseSix" href="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                         <span class="badge minus"><i class="fa fa-minus avail"></i></span>Hugh Robson <span class="caret"></span>
                         </a>
                     </h4>
@@ -617,3 +623,67 @@
 
 
 {% endblock %}
+
+            <!-- ROOM TEMPLATES -->
+
+
+
+          <!-- template for available_now rooms-->
+
+            <div id="infoFor-room-" class="panel panel-default room available template" style="display:none;">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-">
+                    <h4 class="panel-title">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-" href="#collapse-" aria-expanded="true" aria-controls="collapse-">
+                        <span class="badge check"><i class="fa fa-check avail"></i></span>
+                            <span class="caret"></span>
+                        </a>
+                    </h4>
+                </div>
+
+                <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
+
+                        <div class="panel-body">
+                            <div class="row">
+                                 <div class="col-xs-3" style="text-align: center;">
+                                     <p><i class="fa fa-clock-o"></i></p>
+                                     <div class="descriptionRoom"><p>Opening Hours</p></div>
+                                     <p class="openHour"></p>
+                                     <p class="closingHour"></p>
+                                 </div>
+                                <div class="col-xs-2" style="text-align:center;">
+                                    <p><i class="fa fa-users"></i></p>
+                                    <div class="descriptionRoom"><p>Capacity</p></div>
+                                    <p class="capacityNumber"></p>
+
+
+                                </div>
+                                <div class="col-xs-3" style="text-align: center; padding-left:5px; padding-right:5px;">
+                                    <p><i class="fa fa-check-circle"></i></p>
+                                    <div class="descriptionRoom"><p>Available for less than</p></div>
+
+                                    <p></p>
+                                </div>
+                                 <div class="col-xs-4" style="text-align:right;">
+                                    <p></p>
+                                 </div>
+
+
+                            </div>
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-xs-2">
+                                    <button id="room-" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
+                                </div>
+                                <div class="col-xs-6 btn-group btn-group-rooms">
+                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                     <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
+                                </div>
+                            </div>
+                        <!-- panel-body -->
+                        </div>
+                <!-- panel collapse -->
+                </div>
+            <!-- end of this room -->
+            </div>
+
+            <!-- end of favourite room -->
