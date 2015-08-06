@@ -731,7 +731,7 @@ function switchView(){
         $('#availabilityRow').hide();
         $('#facilitiesRow').hide();
         // display the map
-        $('#mapContainer').show();
+        $('#mapContainer').removeClass('hidden-xs');
         // change search version button to 'View rooms >>'
         $('#switchViewBtn .backIcon').hide();
         $('#switchViewBtn .forwardIcon').show();
@@ -753,13 +753,13 @@ function switchView(){
         $('#capacityRow').show();
         $('#availabilityRow').show();
         $('#facilitiesRow').show();
-        // display the map
-        $('#mapContainer').hide();
-        // change search version button to 'View rooms >>'
+        // hide the map on mobiles
+        $('#mapContainer').addClass('hidden-xs');
+        // change search version button to '<< Back to buildings'
         $('#switchViewBtn .backIcon').show();
         $('#switchViewBtn .forwardIcon').hide();
         $('#switchViewBtn .content').html('Back to buildings');
-        // display the 'Take me there' button
+        // hide the 'Take me there' button
         $('#toMapBtnContainer').hide();
         // show the 'book now' button
         $('#bookBtnContainer').show();
