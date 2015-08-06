@@ -127,10 +127,10 @@ $(document).ready(function () {
     
     // when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
 	$('#suggestion .fa-star').click(function () {
-		var pc_id = currentChoice.id;
+		var locationId = currentChoice.locationId;
         // send the like request to the server
 		$.post('/like/', {
-				'locationId': currentChoice.locationId,
+				'locationId': locationId,
 				'roomLikedByUser': (''+roomLikedByUser)
 			})
 			.fail(function () {
@@ -142,6 +142,7 @@ $(document).ready(function () {
         // toggle star colour
         $('#suggestion .fa-star').toggleClass('unstarred');
         $('#suggestion .fa-star').toggleClass('starred');
+        roomLikedByUser=!roomLikedByUser;
 	});
     
     // Enable swiping to switch suggestions
@@ -527,10 +528,10 @@ function updateMap(){
 	Check if the current suggestion is liked by the user and color the star appropriately
 	Parameters: locationId (string) - the id of the suggestion to be checked
  */
-function liked(pc_id) {
+function liked(locationId) {
     // send the request to the server to find out if this room is liked or not
 	$.get('/like/', {
-			'pc_id': pc_id
+			'locationId': locationId
 		})
 		.done(function (data) {
 			roomLikedByUser = (data==='true');

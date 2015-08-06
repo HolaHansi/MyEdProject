@@ -113,7 +113,7 @@ $(document).ready(function () {
         // send the like request to the server
 		$.post('/like/', {
 				'pc_id': pc_id,
-				'labLikedByUser': (''+labLikedByUser)
+				'pcLikedByUser': (''+labLikedByUser)
 			})
 			.fail(function () {
                 alert('Failed to favourite location');
@@ -124,6 +124,7 @@ $(document).ready(function () {
         // toggle star colour
         $('#suggestion .fa-star').toggleClass('unstarred');
         $('#suggestion .fa-star').toggleClass('starred');
+        labLikedByUser=!labLikedByUser;
 	});
     
     // Enable swiping to switch suggestions
