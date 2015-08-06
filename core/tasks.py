@@ -2,7 +2,7 @@ from celery import task
 from pc.table import get_pc_data
 from rooms.table import update_room_table, update_building_hours, update_building_table, merge_room_building, \
     get_activities
-
+from core.utilities import update_status_rooms
 
 # rebuild the database, including checking for any new rooms or labs
 @task
@@ -28,3 +28,5 @@ def refresh_availability():
     print('PC availability refreshed')
     get_activities()
     print('Activities merged')
+    update_status_rooms()
+    print('Room Status Updated')

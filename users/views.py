@@ -68,49 +68,22 @@ def autocompleteAPI(request):
         # create the list of tutorial rooms in the format needed for the autocompleter
         data = Tutorial_Room.objects.all()
         rooms = []
-
         already_favourited = user.room_favourites.all()
-
-
-        # from users favourites, get all rooms that are locally allocated: we don't know the availability of these.
-        rooms_locally_allocated = data.filter(locally_allocated=True)
-
-        # do the same thing for rooms that we know the availability of.
-        rooms_globally_allocated = data.filter(locally_allocated=False)
-
-        # rooms currently closed of both globally and locally allocated rooms.
-        closed_rooms = utilities.get_currently_closed_locations(data, typeOfSpace='Room')
 
 
         # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
 
-        # get all the favourite rooms that we KNOW are available
-        # now both in terms of opening hours and activities.
-        rooms_not_currently_booked = utilities.filter_out_busy_rooms(data=rooms_globally_allocated, available_for_hours=1)
-
-        # filter out rooms that are also currently closed
-        rooms_available_now = utilities.excludeClosedLocations(rooms_not_currently_booked)
-
-        # Now update the available_for field in each of these rooms:
-        utilities.available_for_hours(rooms_available_now)
-
+        rooms_available_now = data.filter(availability='availableNow')
 
         #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
 
-        # get all favourite rooms KNOWN to be currently booked
-        rooms_currently_booked = utilities.filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
-
-        # if a room is either booked or currently closed, then it is not available:
-        rooms_not_available_now = closed_rooms | rooms_currently_booked
-
-        utilities.unavailable_till_hours(rooms_not_available_now)
-
+        rooms_not_available_now = data.filter(availability='notAvailable')
 
         # LOCALLY ALLOCATED OPEN ROOMS:
-        rooms_open_locally_allocated = utilities.excludeClosedLocations(rooms_locally_allocated)
 
+        rooms_open_locally_allocated = data.filter(availability='localAvailable')
 
-
+        # ADD to rooms : list of dictionaries.
         for room in rooms_available_now:
             if len(already_favourited.filter(locationId=room.locationId)) == 0:
 
@@ -313,42 +286,19 @@ def favourites(request):
     # get all rooms liked by the user.
     room_favourites = user.room_favourites.all()
 
-    # from users favourites, get all rooms that are locally allocated: we don't know the availability of these.
-    rooms_locally_allocated = room_favourites.filter(locally_allocated=True)
-
-    # do the same thing for rooms that we know the availability of.
-    rooms_globally_allocated = room_favourites.filter(locally_allocated=False)
-
-    # rooms currently closed of both globally and locally allocated rooms.
-    closed_rooms = utilities.get_currently_closed_locations(room_favourites, typeOfSpace='Room')
-
 
     # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
 
-    # get all the favourite rooms that we KNOW are available
-    # now both in terms of opening hours and activities.
-    rooms_not_currently_booked = utilities.filter_out_busy_rooms(data=rooms_globally_allocated, available_for_hours=1)
-
-    # filter out rooms that are also currently closed
-    rooms_available_now = utilities.excludeClosedLocations(rooms_not_currently_booked)
-
-    # Now update the available_for field in each of these rooms:
-    utilities.available_for_hours(rooms_available_now)
+    rooms_available_now = room_favourites.filter(availability='availableNow')
 
     #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
 
-    # get all favourite rooms KNOWN to be currently booked
-    rooms_currently_booked = utilities.filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
-
-    # if a room is either booked or currently closed, then it is not available:
-    rooms_not_available_now = closed_rooms | rooms_currently_booked
-
-    utilities.unavailable_till_hours(rooms_not_available_now)
+    rooms_not_available_now = room_favourites.filter(availability='notAvailable')
 
 
     #ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
 
-    rooms_open_locally_allocated = utilities.excludeClosedLocations(rooms_locally_allocated)
+    rooms_open_locally_allocated = room_favourites.filter(availability='localAvailable')
 
 
     context = {'pc_favourites_open': pc_favourites_open,
