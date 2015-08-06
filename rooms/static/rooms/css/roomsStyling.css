@@ -250,7 +250,6 @@
   position: relative;
 }
 #mapContainer #busyAnimation {
-  display: none;
   height: 54px;
   width: 54px;
   position: absolute;
