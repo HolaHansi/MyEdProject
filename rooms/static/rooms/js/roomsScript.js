@@ -648,8 +648,8 @@ function loadChoice() {
     switchView();
     
     // populate the html
-    
     if (searchingForBuildings){
+        // display the details for the building
         $('#buildingName').html(currentChoice.building_name);
         $('#roomsFreeNumber').html(currentChoice.rooms);
         // update the map to the new coordinates
@@ -657,8 +657,10 @@ function loadChoice() {
         // update the 'Take me there' Google Maps deeplink
         $('#toMapBtn').attr('href','https://www.google.com/maps/preview?saddr='+userLatitude+','+userLongitude+'&daddr='+currentChoice.latitude+','+currentChoice.longitude+'&dirflg=w');
     } else{
+        // display the details for the room
         $('#roomName').html(currentChoice.room_name);
         $('#capacityNumber').html(currentChoice.capacity);
+        // display the availability details
         if (currentChoice.availableFor=='unknown'){
             $('#availabilityNumber').addClass('unavailable');
             $('#availabilityNumber').html('(No information available)');
@@ -666,6 +668,19 @@ function loadChoice() {
             $('#availabilityNumber').removeClass('unavailable');
             $('#availabilityNumber').html(currentChoice.availableFor);
         }
+        // display the opening hours
+        // if it's a Sunday, display Sunday's hours
+        if (new Date().getDay==0){
+            displayTime(currentChoice.sundayOpen,currentChoice.sundayClosed);
+        // if it's a Saturday, display Saturday's hours
+        } else if (new Date().getDay==6){
+            displayTime(currentChoice.saturdayOpen,currentChoice.saturdayClosed);
+        // if it's a weekday, display the weekday's hours
+        } else {
+            displayTime(currentChoice.weekdayOpen,currentChoice.weekdayClosed);
+        }
+        $('#openingHoursValue').html()
+        // display the facilities
         if (currentChoice.pc){
             $('#facilities .glyphicon-computer').show();
         } else {
@@ -730,6 +745,7 @@ function switchView(){
         $('#capacityRow').hide();
         $('#availabilityRow').hide();
         $('#facilitiesRow').hide();
+        $('#openingHoursRow').hide();
         // display the map
         $('#mapContainer').removeClass('hidden-xs');
         // change search version button to 'View rooms >>'
@@ -753,6 +769,7 @@ function switchView(){
         $('#capacityRow').show();
         $('#availabilityRow').show();
         $('#facilitiesRow').show();
+        $('#openingHoursRow').show();
         // hide the map on mobiles
         $('#mapContainer').addClass('hidden-xs');
         // change search version button to '<< Back to buildings'
@@ -763,6 +780,21 @@ function switchView(){
         $('#toMapBtnContainer').hide();
         // show the 'book now' button
         $('#bookBtnContainer').show();
+    }
+}
+
+// displays the times inputted in a nicely formatted style
+// if no times are known, displays a message saying so to the user
+// inputs: start (string) - the opening time of the building, in the format HH:MM:SS
+//         end   (string) - the closing time of the building, in the format HH:MM:SS
+// output: none;
+function displayTime(start,end){
+    if (start===null){
+        $('#openingHoursValue').addClass('unavailable');
+        $('#openingHoursValue').html( '(No information available)' );
+    } else{
+        $('#openingHoursValue').removeClass('unavailable');
+        $('#openingHoursValue').html( start.slice(0,5) + ' - ' + end.slice(0,5) );
     }
 }
 

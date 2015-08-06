@@ -9,7 +9,7 @@
 }
 
 // hide the room view at the start
-#starContainer, #roomRow, #capacityRow, #availabilityRow, #facilitiesRow, #bookBtnContainer{
+#starContainer, #roomRow, #capacityRow, #availabilityRow, #facilitiesRow, #bookBtnContainer, #openingHoursRow{
     display:none;
 }
 
@@ -142,7 +142,7 @@
 }
 
 //responsive text size for computers free label: 
-#roomsFreeLabel, #capacityLabel, #availabilityLabel, #facilities{
+#roomsFreeLabel, #capacityLabel, #availabilityLabel, #facilities, #openingHoursLabel{
     font-size: 12px;
     line-height: 12px;
     @media (min-width: 200px) {
@@ -157,9 +157,9 @@
     }
 }
 
-#availabilityNumber.unavailable{
+.unavailable{
     font-size:12px;
-    line-height:18px;
+    line-height:12px;
     color:grey;
 }
 

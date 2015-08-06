@@ -7,7 +7,8 @@
 #capacityRow,
 #availabilityRow,
 #facilitiesRow,
-#bookBtnContainer {
+#bookBtnContainer,
+#openingHoursRow {
   display: none;
 }
 #toMapBtnContainer,
@@ -191,7 +192,8 @@
 #roomsFreeLabel,
 #capacityLabel,
 #availabilityLabel,
-#facilities {
+#facilities,
+#openingHoursLabel {
   font-size: 12px;
   line-height: 12px;
 }
@@ -199,7 +201,8 @@
   #roomsFreeLabel,
   #capacityLabel,
   #availabilityLabel,
-  #facilities {
+  #facilities,
+  #openingHoursLabel {
     font-size: 12px;
     line-height: 12px;
     font-size: 6vw;
@@ -210,14 +213,15 @@
   #roomsFreeLabel,
   #capacityLabel,
   #availabilityLabel,
-  #facilities {
+  #facilities,
+  #openingHoursLabel {
     font-size: 18px;
     line-height: 18px;
   }
 }
-#availabilityNumber.unavailable {
+.unavailable {
   font-size: 12px;
-  line-height: 18px;
+  line-height: 12px;
   color: grey;
 }
 #facilitiesLabel .custom-glyphicon {
