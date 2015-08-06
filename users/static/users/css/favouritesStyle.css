@@ -81,6 +81,9 @@
   font-size: 14px;
   margin-bottom: 5px;
 }
+.panel-group .panel {
+  margin-bottom: 5px;
+}
 .badge-group {
   padding-top: 4px;
   margin-left: 0px;
