@@ -39,6 +39,8 @@
 .arrow {
   height: 0px;
   cursor: pointer;
+  min-width: 20px;
+  max-width: 40px;
   -webkit-box-flex: 0;
   -webkit-flex-grow: 0;
   -moz-box-flex: 0;
@@ -47,10 +49,10 @@
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
-  -webkit-flex-basis: 20px;
-  -ms-flex-preferred-size: 20px;
-  flex-basis: 20px;
-  flex: 20px 0 1;
+  -webkit-flex-basis: 4%;
+  -ms-flex-preferred-size: 4%;
+  flex-basis: 4%;
+  flex: 4% 0 1;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;

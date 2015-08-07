@@ -1,5 +1,13 @@
+body {
+  background-color: #f9f9f9;
+}
 body * {
   font-family: 'Source Sans Pro', sans-serif;
+}
+#contentWrapper {
+  max-width: 1000px;
+  margin: auto;
+  background-color: white;
 }
 .navbar {
   background: none;

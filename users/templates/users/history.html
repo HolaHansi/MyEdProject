@@ -50,11 +50,11 @@
 
             <!-- beginning of favourite room-->
 
-            <div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
+            <div id="infoFor-room-{{ fav.his_id }}" class="panel panel-default">
 
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.his_id}}">
                     <h4 class="panel-title">
-                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
+                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.his_id}}" href="#collapse-{{fav.his_id}}" aria-expanded="true" aria-controls="collapse-{{fav.his_id}}">
 
                             <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
@@ -62,7 +62,7 @@
                     </h4>
                 </div>
 
-                <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
+                <div id="collapse-{{fav.his_id}}" class="panel-collapse collapse" role="tabpanel">
 
                         <div class="panel-body">
                             <div class="row">

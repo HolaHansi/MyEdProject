@@ -6,7 +6,8 @@
 #capacityRow,
 #availabilityRow,
 #facilitiesRow,
-#bookBtnContainer {
+#bookBtnContainer,
+#openingHoursRow {
   display: none;
 }
 #toMapBtnContainer,
@@ -67,6 +68,8 @@
 .arrow {
   height: 0px;
   cursor: pointer;
+  min-width: 20px;
+  max-width: 40px;
   -webkit-box-flex: 0;
   -webkit-flex-grow: 0;
   -moz-box-flex: 0;
@@ -75,10 +78,10 @@
   -webkit-flex-shrink: 1;
   -ms-flex-negative: 1;
   flex-shrink: 1;
-  -webkit-flex-basis: 20px;
-  -ms-flex-preferred-size: 20px;
-  flex-basis: 20px;
-  flex: 20px 0 1;
+  -webkit-flex-basis: 4%;
+  -ms-flex-preferred-size: 4%;
+  flex-basis: 4%;
+  flex: 4% 0 1;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -190,7 +193,8 @@
 #roomsFreeLabel,
 #capacityLabel,
 #availabilityLabel,
-#facilities {
+#facilities,
+#openingHoursLabel {
   font-size: 12px;
   line-height: 12px;
 }
@@ -198,7 +202,8 @@
   #roomsFreeLabel,
   #capacityLabel,
   #availabilityLabel,
-  #facilities {
+  #facilities,
+  #openingHoursLabel {
     font-size: 12px;
     line-height: 12px;
     font-size: 6vw;
@@ -209,14 +214,15 @@
   #roomsFreeLabel,
   #capacityLabel,
   #availabilityLabel,
-  #facilities {
+  #facilities,
+  #openingHoursLabel {
     font-size: 18px;
     line-height: 18px;
   }
 }
-#availabilityNumber.unavailable {
+.unavailable {
   font-size: 12px;
-  line-height: 18px;
+  line-height: 12px;
   color: grey;
 }
 #facilitiesLabel .custom-glyphicon {
@@ -245,7 +251,6 @@
   position: relative;
 }
 #mapContainer #busyAnimation {
-  display: none;
   height: 54px;
   width: 54px;
   position: absolute;
@@ -277,6 +282,7 @@
 }
 #optionsMenu {
   width: 100%;
+  max-width: 1000px;
   position: fixed;
   background-color: #eeeeee;
   -webkit-transition: top 0.5s;
