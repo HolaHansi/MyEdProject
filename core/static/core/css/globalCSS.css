@@ -50,6 +50,21 @@ body * {
     border-top: solid 1px #eee;
     padding: 8px 15px 8px 0px;
   }
+  .navbar .navbar-collapse .navbar-nav li a.currentTab {
+    border-right: solid 3px;
+  }
+  .navbar .navbar-collapse .navbar-nav li a.currentTab.labsTab {
+    border-right-color: #337ab7;
+  }
+  .navbar .navbar-collapse .navbar-nav li a.currentTab.roomsTab {
+    border-right-color: #5cb85c;
+  }
+  .navbar .navbar-collapse .navbar-nav li a.currentTab.favouritesTab {
+    border-right-color: #f0ad4e;
+  }
+  .navbar .navbar-collapse .navbar-nav li a.currentTab.historyTab {
+    border-right-color: #5bc0de;
+  }
   .navbar .navbar-collapse .navbar-nav li a .tabLabel {
     display: inline-block;
   }
