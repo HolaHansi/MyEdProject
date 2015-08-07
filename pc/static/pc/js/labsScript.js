@@ -380,6 +380,14 @@ function toggleOptionsMenu(){
             if (currentChoice.index != 0) {
                 $('.left-arrow').removeClass('disabled');
             }
+            // if there are no rooms that fit the criteria, keep the options menu open
+            if (suggestions.length==0){
+                // timeout makes the options menu do a wee bump for pretty-ness sake
+                setTimeout(function(){
+                    toggleOptionsMenu();
+                    alert('No rooms available fit that criteria.  Try again.  ');
+                }, 30)
+            }
             
         }
         // deselect all options
