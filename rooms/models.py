@@ -119,6 +119,7 @@ class Tutorial_Room(models.Model):
                 )
 
 
+
 class Activity(models.Model):
     # Unique identifier in the RDB
     activityId = models.CharField(max_length=50, primary_key=True)

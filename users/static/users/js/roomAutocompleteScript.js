@@ -93,15 +93,11 @@ function removeFromFavourites(id) {
     autoCompleteAPI();
 }
 
-
-
 function autoCompleteAPI() {
     // this is the function that gets the data, and configures the settings for the autoCompleter.
 
     // get the data from the autocomplete API
     $.get('/autocompleteAPI/', function(allLocations) {
-        allLocations;
-
         // autocomplete code for PC-LABS:
         $('#autocompleteLab').autocomplete({
             lookup: allLocations['labs'],
@@ -263,7 +259,7 @@ function autoCompleteAPI() {
                         'roomLikedByUser': false
                     });
                 // don't bring it up in the autocomplete dropdown again
-                allLocations['rooms'] = allLocations['rooms'].filter(function(room){return room.data.id!=suggestion.data.id})
+                allLocations['rooms'] = allLocations['rooms'].filter(function(room){return room.data.locationId!=suggestion.data.locationId});
                 $(this).autocomplete().setOptions({lookup:allLocations['rooms']});
                 // reset the autocomplete dropdown
                 $(this).autocomplete().clear();
@@ -279,12 +275,7 @@ function autoCompleteAPI() {
 
                 console.log(availability);
 
-
-
                 var panelRoom = $(".panel.panel-default.room.template");
-
-                // if the room is available
-
 
                 // clone the template and make is visible by removing the style attribute.
                 var clone = panelRoom.clone(true);

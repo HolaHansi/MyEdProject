@@ -1,17 +1,21 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
 from rooms.models import Tutorial_Room
-from django.utils import timezone
+from django.utils.timezone import utc
 import datetime
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.conf import settings
 from django.contrib import messages
 from core import utilities
+from users.models import RoomHistory
+
+
 
 
 
@@ -28,11 +32,6 @@ def autocompleteAPI(request):
         data = Computer_Labs.objects.all()
         labs = []
         already_favourited = user.pc_favourites.all()
-
-        now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
-        currentTime = now.time().isoformat()
-        weekday = now.weekday()
-
 
         for lab in data:
             if len(already_favourited.filter(id=lab.id)) == 0:
@@ -325,13 +324,60 @@ def favourites(request):
 
 @login_required
 def history(request):
+    """
+    Returns a template with all rooms the user has booked.
+    :param request:
+    :return:
+    """
+    # get user
     user = request.user
-    pc_history = user.pc_history.all()
-    room_history = user.room_history.all()
-    context = {'pc_favourites': pc_history,
-               'room_favourites': room_history,
-               'user': user}
-    return render(request, 'users/history.html', context)
+
+    # for the ajax post requests from the room suggester.
+    if request.method == 'POST':
+
+        clearAll = request.POST['clearAll']
+
+        if clearAll == 'true':
+            # get history for user
+            roomHis = RoomHistory.objects.filter(user=user)
+            # delete them all
+            roomHis.delete()
+
+        # otherwise, the request is about adding a room to history
+        else:
+            # get the locationId of the room in question.
+            locationId = request.POST['locationId']
+
+            # look up room
+            room = Tutorial_Room.objects.get(locationId=locationId)
+
+            # get time now
+            now = datetime.datetime.now().replace(tzinfo=utc)
+
+
+            # create new RoomHistory obj
+            roomHis = RoomHistory(room=room, user=user, booked_at_time=now)
+            roomHis.save()
+
+        return HttpResponse(status=200)
+
+    # Otherwise, the request is get, return a template that displays history
+    else:
+        # get history for user
+        historicalBookings = RoomHistory.objects.filter(user=user)
+        toReturn = []
+        for historicalBooking in historicalBookings:
+            print(model_to_dict(historicalBooking.room))
+            thisRoom = model_to_dict(historicalBooking.room)
+            thisRoom['booked_at_time'] = historicalBooking.booked_at_time
+            print(thisRoom)
+            toReturn.append(thisRoom)
+
+        # make context for template
+        context = {'roomHis': toReturn}
+
+        return render(request, 'users/history.html', context)
+
 
 
 def logout(request):
