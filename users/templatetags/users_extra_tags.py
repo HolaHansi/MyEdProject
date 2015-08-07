@@ -33,6 +33,56 @@ def facilities(room):
     return mark_safe(to_return)
 
 
+
+@register.filter
+def get_batch(room):
+    avail = room['availability']
+    if avail == 'availableNow':
+        htmlReturn = '<span class="badge check"><i class="fa fa-check avail"></i></span>'
+    elif avail == 'notAvailable':
+        htmlReturn = '<span class="badge times"><i class="fa fa-times"></i></span>'
+    elif avail == 'localAvailable':
+        htmlReturn = '<span class="badge minus"><i class="fa fa-minus avail"></i></span>'
+
+    return mark_safe(htmlReturn)
+
+
+@register.filter
+def get_availFor(room):
+    avail = room['availability']
+
+    if avail == 'availableNow':
+        htmlReturn = '<p><i class="fa fa-check-circle"></i></p>'
+        htmlReturn += '<div class="descriptionRoom"><p>Available for less than</p></div>'
+        htmlReturn += '<p>' + room['availableFor'] + '</p>'
+
+
+    elif avail == 'notAvailable':
+        if room['locally_allocated']:
+            htmlReturn = '<p><i class="fa fa-exclamation-triangle"></i></p>'
+            htmlReturn += '<div class="descriptionRoom"><p>Locally Allocated</p></div>'
+            htmlReturn += '<p>n/a</p>'
+        else:
+            htmlReturn = '<p><i class="fa fa-hourglass"></i></p>'
+            htmlReturn += '<div class="descriptionRoom"><p>Will be available</p></div>'
+            htmlReturn += '<p>' + room['unavailableFor'] + '</p>'
+
+    elif avail == 'localAvailable':
+        htmlReturn = '<p><i class="fa fa-exclamation-triangle"></i></p>'
+        htmlReturn += '<div class="descriptionRoom"><p>Locally Allocated</p></div>'
+        htmlReturn += '<p>n/a</p>'
+
+    return mark_safe(htmlReturn)
+
+@register.filter
+def get_bookBtn(room):
+    if room['availability'] == 'availableNow':
+        htmlReturn = '<a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>'
+    else:
+        htmlReturn = '<a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>'
+
+    return mark_safe(htmlReturn)
+
 @register.filter
 def facilitiesRoom(room):
     """

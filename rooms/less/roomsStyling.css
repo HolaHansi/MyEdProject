@@ -21,6 +21,10 @@
 }
 #toMapBtn,
 #bookBtn {
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
   margin: 0 0 15px;
 }
 #toMapBtn .fa,
@@ -32,6 +36,10 @@
   display: none;
 }
 #switchViewBtn {
+  -webkit-transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  -o-transition: opacity 0.5s;
+  transition: opacity 0.5s;
   margin: 15px 0px;
 }
 #switchViewBtn .forwardIcon {
@@ -364,22 +372,30 @@
 #optionsMenu #optionsContent .optionsCategory#sortingOptions > .row {
   margin: 0;
 }
-#optionsMenu #optionsContent .optionsCategory .campusCheckbox {
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox,
+#optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox {
   color: #fff;
   background-color: #5cb85c;
   border-color: #4cae4c;
   padding: 6px 2px;
 }
-#optionsMenu #optionsContent .optionsCategory .campusCheckbox:not(.checked) {
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:not(.checked),
+#optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox:not(.checked) {
   background-color: #d9534f;
   border-color: #d43f3a;
   opacity: 0.5;
 }
-#optionsMenu #optionsContent .optionsCategory .campusCheckbox:hover {
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:hover,
+#optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox:hover {
   z-index: auto;
 }
-#optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus {
+#optionsMenu #optionsContent .optionsCategory .campusCheckbox:focus,
+#optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox:focus {
   z-index: 3;
+}
+#optionsMenu #optionsContent .optionsCategory .custom-glyphicon {
+  margin: 0 auto 3px;
+  display: block;
 }
 @media (max-width: 374px) {
   #optionsMenu #optionsContent .optionsCategory #holyroodCheckboxDiv {

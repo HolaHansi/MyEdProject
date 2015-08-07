@@ -56,7 +56,7 @@
                     <h4 class="panel-title">
                         <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.his_id}}" href="#collapse-{{fav.his_id}}" aria-expanded="true" aria-controls="collapse-{{fav.his_id}}">
 
-                            <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
+                            {{ fav | get_batch}} {{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
                     </h4>
@@ -80,12 +80,9 @@
 
                                 </div>
                                 <div class="col-xs-3" style="text-align: center; padding-left:5px; padding-right:5px;">
-                                    <p><i class="fa fa-check-circle"></i></p>
-                                    <div class="descriptionRoom"><p>Available for less than</p></div>
-
-                                    <p>{{ fav.availableFor }}</p>
+                                    {{ fav | get_availFor }}
                                 </div>
-                                 <div class="col-xs-4" style="text-align:right;">
+                                 <div class="col-xs-4" style="text-align:right; padding-right:0px; padding-left: 0px;">
                                     <p>{{ fav | facilitiesRoom }}</p>
                                  </div>
 
@@ -107,7 +104,8 @@
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                                     <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
+
+                                    {{ fav | get_bookBtn }}
                                 </div>
                             </div>
                         <!-- panel-body -->

@@ -371,7 +371,7 @@ def history(request):
             thisRoom = model_to_dict(historicalBooking.room)
             thisRoom['booked_at_time'] = historicalBooking.booked_at_time
             thisRoom['his_id'] = historicalBooking.id
-            toReturn.append(thisRoom)
+            toReturn = [thisRoom] + toReturn
 
         # make context for template
         context = {'roomHis': toReturn}

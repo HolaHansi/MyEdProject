@@ -2,10 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from rooms.models import Tutorial_Room
 from pc.models import Computer_Labs
-import datetime
-from django.utils import timezone
-
-
 
 class User(AbstractUser):
     room_favourites = models.ManyToManyField(Tutorial_Room, related_name='room_fav')
