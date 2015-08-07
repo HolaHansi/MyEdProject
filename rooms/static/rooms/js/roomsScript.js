@@ -130,6 +130,13 @@ $(document).ready(function () {
         loadPreviousSuggestion();
 	});
     
+    $('#bookBtn').click(function(){
+        $.post('/history/',{
+            'locationId': currentChoice.locationId,
+            'clearAll': false
+        })
+    })
+    
     // when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
 	$('#suggestion .fa-star').click(function () {
 		var locationId = currentChoice.locationId;
