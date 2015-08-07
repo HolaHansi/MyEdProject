@@ -130,12 +130,13 @@ $(document).ready(function () {
         loadPreviousSuggestion();
 	});
     
+    // when the user books a room, save that room to the history database
     $('#bookBtn').click(function(){
         $.post('/history/',{
             'locationId': currentChoice.locationId,
             'clearAll': false
         })
-    })
+    });
     
     // when the user clicks the 'add to favourites' star, like or unlike the room as appropriate
 	$('#suggestion .fa-star').click(function () {
@@ -378,15 +379,23 @@ function resizeOptionsMenu(){
 // open or close the options menu
 function toggleOptionsMenu(){
     $('#optionsMenu').toggleClass('opened');
-    // if there's no rooms that fit the current options, ensure the options menu stays open
     // apply the JS styling to reposition the options menu
     resizeElements();
     // if the options menu has just opened:
     if ($('#optionsMenu').hasClass('opened')){
+        // disable the suggester interface
         $('.arrow').addClass('disabled');
+        $('#switchViewBtn').addClass('disabled');
+        $('#bookBtn').addClass('disabled');
+        $('#toMapBtn').addClass('disabled');
         $('#mainContainer').css('opacity',0.3);
     } else {
+        // reenable the suggester interface
+        // note that arrows are reenabled seperately due to their also being disabled if on the first or last suggestion
         $('#mainContainer').css('opacity',1);
+        $('#switchViewBtn').removeClass('disabled');
+        $('#bookBtn').removeClass('disabled');
+        $('#toMapBtn').removeClass('disabled');
         // check if the options have changed
         var newOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
@@ -416,6 +425,14 @@ function toggleOptionsMenu(){
                 $('.left-arrow').removeClass('disabled');
             }
             
+            // if there are no rooms that fit the criteria, keep the options menu open
+            if (suggestions.length==0){
+                // timeout makes the options menu do a wee bump for pretty-ness sake
+                setTimeout(function(){
+                    toggleOptionsMenu();
+                    alert('No rooms available fit that criteria.  Try again.  ');
+                }, 30)
+            }
         }
         // deselect all options
         $('#optionsMenu *').blur();
