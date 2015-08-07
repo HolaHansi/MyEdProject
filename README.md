@@ -3,7 +3,6 @@
 ##TODO:
 
 - Set up scheduler
-- Add coloured border to right of current page on collapsed dropdown menu too
 - Implement chosen design
 - Documentation, documentation, documentation
 - Get feedback
