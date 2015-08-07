@@ -45,20 +45,25 @@ $(document).ready(function () {
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['roomOptions']){
         var options = JSON.parse(sessionStorage['roomOptions']);
-        
         $('#nearbyCheckbox').attr('checked',options.nearby);
-        $('#quietCheckbox').attr('checked',options.quiet);
-        for (i in options.campuses){
-            campus = options.campuses[i]
-            $('#'+campus).attr('checked',false);
-        }
-    
+        $('#pcCheckbox').toggleClass('checked',options.pc);
+        $('#printerCheckbox').toggleClass('checked',options.printer);
+        $('#projectorCheckbox').toggleClass('checked',options.projector);
+        $('#whiteboardCheckbox').toggleClass('checked',options.whiteboard);
+        $('#blackboardCheckbox').toggleClass('checked',options.blackboard);
+        $('.campusCheckbox').each(function(){
+            $(this).toggleClass('checked', (options.campuses.indexOf($(this).attr('id'))==-1) )
+        })
     // otherwise, use and save the standard settings
     } else {
         // save the current options state
         var oldOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
-            quiet: $('#quietCheckbox').is(':checked'), 
+            pc: $('#pcCheckbox').is(':checked'), 
+            printer: $('#printerCheckbox').is(':checked'), 
+            projector: $('#projectorCheckbox').is(':checked'), 
+            whiteboard: $('#whiteboardCheckbox').is(':checked'), 
+            blackboard: $('#blackboardCheckbox').is(':checked'), 
             campuses:getUnselectedCampuses()
         };
         sessionStorage['roomOptions'] = JSON.stringify(oldOptions)
@@ -267,13 +272,10 @@ $(document).ready(function () {
         }
     });
     
-    // intialize campus buttons to act as checkboxes
-    $('.campusCheckbox').click(function(){
+    // intialize options buttons to act as checkboxes
+    $('.campusCheckbox, .facilitiesCheckbox').click(function(){
         $(this).toggleClass('checked');
         $('input', this).prop('checked', !$('input', this).prop('checked'))
-    });
-    $('.campusCheckbox input').click(function(){
-        $(this).prop('checked', !$(this).prop('checked'))
     });
     // when the 'other' checkbox is clicked, toggle all hidden campuses too
     $('#otherCheckbox').click(function(){
@@ -369,6 +371,7 @@ function resizeOptionsMenu(){
 // open or close the options menu
 function toggleOptionsMenu(){
     $('#optionsMenu').toggleClass('opened');
+    // if there's no rooms that fit the current options, ensure the options menu stays open
     // apply the JS styling to reposition the options menu
     resizeElements();
     // if the options menu has just opened:
@@ -380,13 +383,19 @@ function toggleOptionsMenu(){
         // check if the options have changed
         var newOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
-            quiet: $('#quietCheckbox').is(':checked'), 
+            pc: $('#pcCheckbox').hasClass('checked'), 
+            printer: $('#printerCheckbox').hasClass('checked'), 
+            projector: $('#projectorCheckbox').hasClass('checked'), 
+            whiteboard: $('#whiteboardCheckbox').hasClass('checked'), 
+            blackboard: $('#blackboardCheckbox').hasClass('checked'), 
             campuses:getUnselectedCampuses()
         };
         var oldOptions = JSON.parse(sessionStorage['roomOptions']);
-        var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.quiet!=newOptions.quiet || (! arraysEqual(oldOptions.campuses,newOptions.campuses));
+        var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.pc!=newOptions.pc || oldOptions.printer!=newOptions.printer || oldOptions.projector!=newOptions.projector || oldOptions.blackboard!=newOptions.blackboard || oldOptions.whiteboard!=newOptions.whiteboard ||  (! arraysEqual(oldOptions.campuses,newOptions.campuses));
         // if they have, or the user specifically asked for a refresh, refresh the suggestions
         if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
+            buildingIndexToReturnTo=0;
+            currentBuildingId='';
             getSuggestionsUsingOptions();
             sessionStorage['roomOptions'] = JSON.stringify(newOptions)
         // if they haven't, just continue where you left off
@@ -564,7 +573,7 @@ function getSuggestionsUsingOptions(){
         ids = [];
     }
     // get the suggestions
-    getSuggestions(false, false, false, false, false, false, currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO FIX
+    getSuggestions(false, $('#pcCheckbox').hasClass('checked'), $('#printerCheckbox').hasClass('checked'), $('#whiteboardCheckbox').hasClass('checked'), $('#blackboardCheckbox').hasClass('checked'), $('#projectorCheckbox').hasClass('checked'), currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO add bookable toggle
 }
 
 // returns the id of all campuses the user doesn't want included
@@ -629,6 +638,7 @@ function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector
                 }
 			} else {
 				$('.arrow').addClass('disabled');
+                toggleOptionsMenu();
 				alert('No rooms available fit that criteria.  Try again.  ');
 			}
 		})
@@ -642,8 +652,6 @@ function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector
    Parameters: none
 */
 function loadChoice() {
-    console.log(currentChoice)
-	
     // change view to the appropriate version
     switchView();
     

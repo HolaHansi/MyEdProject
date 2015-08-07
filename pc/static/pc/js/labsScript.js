@@ -45,10 +45,9 @@ $(document).ready(function () {
         
         $('#nearbyCheckbox').attr('checked',options.nearby);
         $('#quietCheckbox').attr('checked',options.quiet);
-        for (i in options.campuses){
-            campus = options.campuses[i]
-            $('#'+campus).attr('checked',false);
-        }
+        $('.campusCheckbox').each(function(){
+            $(this).toggleClass('checked', (options.campuses.indexOf($(this).attr('id'))==-1) )
+        })
     
     // otherwise, use and save the standard settings
     } else {
@@ -563,7 +562,7 @@ function getUnselectedCampuses(){
    Parameters:
    nearby (boolean): whether the user is sorting by distance
    empty (boolean): whether the user is sorting by emptiness ratio
-   campuses (array of strings): the campuses that the user doesn't want, a subset of [‘Central’,‘Lauriston’,"King's Buildings", 'Holyrood', 'Other']
+   campuses (array of strings): the campuses that the user doesn't want, a subset of ['Central','Lauriston',"King's Buildings", 'Holyrood', 'Other']
 */
 function getSuggestions(nearby, empty, campuses) {
 	// send the get request
