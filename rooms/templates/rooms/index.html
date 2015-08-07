@@ -62,7 +62,7 @@
             <a type="button" class="btn btn-success" id='toMapBtn' href=''>Take me there <i class="fa fa-external-link"></i></a>
         </div>
         <div id='bookBtnContainer'>
-            <a type="button" class="btn btn-success" id='bookBtn' href=''>Book now <i class="fa fa-external-link"></i></a>
+            <a type="button" class="btn btn-success" id='bookBtn'>Book now <i class="fa fa-external-link"></i></a>
         </div>
         <div id='swipeReminder'><i class='fa fa-long-arrow-left fa-2x'></i> <span id='swipeReminderText'> Swipe left to see next suggestion</span></div>
     </div>
@@ -90,12 +90,33 @@
                     <input type='checkbox' id='nearbyCheckbox' checked>
                 </div>
             </div>
+        </div>
+        
+        <div id='bookableOptions' class='optionsCategory'>
+            <h1>Filter by:</h1>
             <div class='row'>
                 <div class='col-xs-6'>
-                    <label id='quietLabel' for='quietCheckbox'>Emptiness: </label>
+                    <label id='bookableLabel' for='bookableCheckbox'>Bookable: </label>
                 </div>
                 <div class='col-xs-6'>
-                    <input type='checkbox' id='quietCheckbox' checked>
+                    <input type='checkbox' id='bookableCheckbox' checked>
+                </div>
+            </div>
+            <div class='btn-group btn-group-md btn-group-justified'>
+                <div class='btn-group' role='group'>
+                    <button type='checkbox' id='pcCheckbox' class='facilitiesCheckbox btn'><span class='custom-glyphicon glyphicon-computer'></span>Computer</button>
+                </div>
+                <div class='btn-group' role='group'>
+                    <button type='checkbox' id='printerCheckbox' class='facilitiesCheckbox btn'><span class='custom-glyphicon glyphicon-printer'></span>Printer</button>
+                </div>
+                <div class='btn-group' role='group'>
+                    <button type='checkbox' id='projectorCheckbox' class='facilitiesCheckbox btn'><span class='custom-glyphicon glyphicon-projector'></span>Projector</button>
+                </div>
+                <div class='btn-group' role='group'>
+                    <button type='checkbox' id='whiteboardCheckbox' class='facilitiesCheckbox btn'><span class='custom-glyphicon glyphicon-whiteboard'></span>Whiteboard</button>
+                </div>
+                <div class='btn-group' role='group'>
+                    <button type='checkbox' id='blackboardCheckbox' class='facilitiesCheckbox btn'><span class='custom-glyphicon glyphicon-blackboard-custom'></span>Blackboard</button>
                 </div>
             </div>
         </div>

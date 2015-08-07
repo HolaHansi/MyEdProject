@@ -1,8 +1,6 @@
 //out: ../static/rooms/css/roomsStyling.css
 
-@import "../../core/less/colours.less";
-
-@optionsMenuTransitionTime: 0.5s;
+@import "../../core/less/variables.less";
 
 .row{
     margin:0 0 15px;
@@ -23,6 +21,7 @@
 }
 
 #toMapBtn, #bookBtn{
+    .transition(opacity, @optionsMenuTransitionTime);
     margin: 0 0 15px;
     .fa{
         margin-left:5px;
@@ -35,6 +34,7 @@
 }
 
 #switchViewBtn{
+    .transition(opacity, @optionsMenuTransitionTime);
     margin: 15px 0px;
     .forwardIcon{
         margin-left:5px;
@@ -291,7 +291,7 @@
                 margin:0;
             }
             
-            .campusCheckbox{
+            .campusCheckbox, .facilitiesCheckbox{
                 color: #fff;
                 background-color: #5cb85c;
                 border-color: #4cae4c;
@@ -307,6 +307,11 @@
                 &:focus {
                     z-index: 3;
                 }
+            }
+            
+            .custom-glyphicon{
+                margin: 0 auto 3px;
+                display:block;
             }
             
             #holyroodCheckboxDiv{

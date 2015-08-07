@@ -1,9 +1,6 @@
 //out: ../static/core/css/globalCSS.css
 
-@import "colours.less";
-
-//note you'll have to change this in the bootstrap source too
-@navbar-toggle-width: 564px;
+@import "variables.less";
 
 //Default font set to Source Sans Pro
 body {
@@ -17,6 +14,7 @@ body {
     max-width: @maxMainScreenWidth;
     margin:auto;
     background-color: white;
+    height:100%;
 }
 //Global navbar styling:
 .navbar {
@@ -52,6 +50,22 @@ body {
                     @media(max-width:(@navbar-toggle-width - 1)){
                         border-top: solid 1px #eee;
                         padding:8px 15px 8px 0px;
+                        // give the current tab a coloured right border
+                        &.currentTab{
+                            border-right: solid 3px;
+                            &.labsTab{
+                                border-right-color: @brand-primary;
+                            }
+                            &.roomsTab{
+                                border-right-color: @brand-success;
+                            }
+                            &.favouritesTab{
+                                border-right-color: @brand-warning;
+                            }
+                            &.historyTab{
+                                border-right-color: @brand-info;
+                            }
+                        }
                         .tabLabel{
                             display:inline-block;
                         }
