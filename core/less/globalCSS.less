@@ -6,10 +6,18 @@
 @navbar-toggle-width: 564px;
 
 //Default font set to Source Sans Pro
-body * {
-    font-family: 'Source Sans Pro', sans-serif;
+body {
+    // on bigger screens, give it a lightly shaded border
+    background-color: #f9f9f9;
+    * {
+        font-family: 'Source Sans Pro', sans-serif;
+    }
 }
-
+#contentWrapper{
+    max-width: @maxMainScreenWidth;
+    margin:auto;
+    background-color: white;
+}
 //Global navbar styling:
 .navbar {
     //standard styling

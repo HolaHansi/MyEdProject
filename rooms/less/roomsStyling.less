@@ -9,7 +9,7 @@
 }
 
 // hide the room view at the start
-#starContainer, #roomRow, #capacityRow, #availabilityRow, #facilitiesRow, #bookBtnContainer{
+#starContainer, #roomRow, #capacityRow, #availabilityRow, #facilitiesRow, #bookBtnContainer, #openingHoursRow{
     display:none;
 }
 
@@ -65,9 +65,10 @@
 .arrow{
     height: 0px; // height is set dynamically by JS
     cursor: pointer;
-    
+    min-width:20px;
+    max-width:40px;
     //position the arrow using flexbox
-    .flex(20px,0,1);
+    .flex(4%,0,1);
     
     //center align the arrow icon itself using flexbox: 
     .flex-center();
@@ -142,7 +143,7 @@
 }
 
 //responsive text size for computers free label: 
-#roomsFreeLabel, #capacityLabel, #availabilityLabel, #facilities{
+#roomsFreeLabel, #capacityLabel, #availabilityLabel, #facilities, #openingHoursLabel{
     font-size: 12px;
     line-height: 12px;
     @media (min-width: 200px) {
@@ -157,9 +158,9 @@
     }
 }
 
-#availabilityNumber.unavailable{
+.unavailable{
     font-size:12px;
-    line-height:18px;
+    line-height:12px;
     color:grey;
 }
 
@@ -191,7 +192,6 @@
 #mapContainer{
     position:relative;
     #busyAnimation{
-        display:none;
         height: @busyAnimationHeight;
         width: @busyAnimationHeight;
         position: absolute;
@@ -224,6 +224,7 @@
 // positioning is set using JS
 #optionsMenu{
     width: 100%;
+    max-width:@maxMainScreenWidth;
     position:fixed;
     background-color: @optionsBackground;
     .transition(top, @optionsMenuTransitionTime);
