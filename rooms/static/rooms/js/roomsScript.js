@@ -46,6 +46,7 @@ $(document).ready(function () {
     if (sessionStorage['roomOptions']){
         var options = JSON.parse(sessionStorage['roomOptions']);
         $('#nearbyCheckbox').attr('checked',options.nearby);
+        $('#bookableCheckbox').attr('checked',options.bookable);
         $('#pcCheckbox').toggleClass('checked',options.pc);
         $('#printerCheckbox').toggleClass('checked',options.printer);
         $('#projectorCheckbox').toggleClass('checked',options.projector);
@@ -59,6 +60,7 @@ $(document).ready(function () {
         // save the current options state
         var oldOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
+            bookable: $('bookableCheckbox').is(':checked'), 
             pc: $('#pcCheckbox').is(':checked'), 
             printer: $('#printerCheckbox').is(':checked'), 
             projector: $('#projectorCheckbox').is(':checked'), 
@@ -399,6 +401,7 @@ function toggleOptionsMenu(){
         // check if the options have changed
         var newOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
+            bookable: $('#bookableCheckbox').is(':checked'), 
             pc: $('#pcCheckbox').hasClass('checked'), 
             printer: $('#printerCheckbox').hasClass('checked'), 
             projector: $('#projectorCheckbox').hasClass('checked'), 
@@ -407,7 +410,7 @@ function toggleOptionsMenu(){
             campuses:getUnselectedCampuses()
         };
         var oldOptions = JSON.parse(sessionStorage['roomOptions']);
-        var optionsChanged = oldOptions.nearby!=newOptions.nearby || oldOptions.pc!=newOptions.pc || oldOptions.printer!=newOptions.printer || oldOptions.projector!=newOptions.projector || oldOptions.blackboard!=newOptions.blackboard || oldOptions.whiteboard!=newOptions.whiteboard ||  (! arraysEqual(oldOptions.campuses,newOptions.campuses));
+        var optionsChanged = oldOptions.bookable!=newOptions.bookable || oldOptions.nearby!=newOptions.nearby || oldOptions.pc!=newOptions.pc || oldOptions.printer!=newOptions.printer || oldOptions.projector!=newOptions.projector || oldOptions.blackboard!=newOptions.blackboard || oldOptions.whiteboard!=newOptions.whiteboard ||  (! arraysEqual(oldOptions.campuses,newOptions.campuses));
         // if they have, or the user specifically asked for a refresh, refresh the suggestions
         if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
             buildingIndexToReturnTo=0;
@@ -597,7 +600,7 @@ function getSuggestionsUsingOptions(){
         ids = [];
     }
     // get the suggestions
-    getSuggestions(false, $('#pcCheckbox').hasClass('checked'), $('#printerCheckbox').hasClass('checked'), $('#whiteboardCheckbox').hasClass('checked'), $('#blackboardCheckbox').hasClass('checked'), $('#projectorCheckbox').hasClass('checked'), currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO add bookable toggle
+    getSuggestions($('#bookableCheckbox').is(':checked'), $('#pcCheckbox').hasClass('checked'), $('#printerCheckbox').hasClass('checked'), $('#whiteboardCheckbox').hasClass('checked'), $('#blackboardCheckbox').hasClass('checked'), $('#projectorCheckbox').hasClass('checked'), currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO add bookable toggle
 }
 
 // returns the id of all campuses the user doesn't want included
