@@ -11,5 +11,5 @@ core/wsgi.py
 manage.py
 logs/debug.log
 secrets.json
-googleCredentialSecrets.json
+googleCredentialsSecrets.json
 databaseconfig.cnf
