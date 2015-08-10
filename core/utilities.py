@@ -336,6 +336,7 @@ def unavailable_till_hours(unavailable_rooms):
                     break
             # if avail_till is undefined, then every activity except the final one has been checked, and
             # has failed this condition. Hence, take the last activity.endTime as avail_till.
+
             if avail_till_time is None:
                 avail_till_time = activities[activities.count() - 1].endTime
 
