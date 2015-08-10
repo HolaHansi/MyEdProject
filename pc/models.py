@@ -29,7 +29,6 @@ class Computer_Labs(models.Model):
     sundayOpen = models.TimeField(null=True)
     sundayClosed = models.TimeField(null=True)
 
-
     # By default, order based on number of computers available
     class Meta:
         ordering = ['-free']

@@ -345,9 +345,6 @@ def unavailable_till_hours(unavailable_rooms):
             # if avail_till is undefined, then every activity except the final one has been checked, and
             # has failed this condition. Hence, take the last activity.endTime as avail_till.
 
-            print('activity', activities)
-            print('room is ', unavailable_room)
-            print('room is open, ', isOpenVar)
 
             if avail_till_time is None:
                 avail_till_time = activities[activities.count()-1].endTime
@@ -514,7 +511,6 @@ def available_for_hours(available_rooms):
         else:
             avail_for = datetime.datetime.combine(datetime.date.today(), avail_till_time) - datetime.datetime.combine(datetime.date.today(), now.time())
 
-        print('does activity win?', actWins)
         # get the hours and minutes
         avail_for_hours = avail_for.seconds // 3600
         avail_for_minutes = (avail_for.seconds // 60) % 60
@@ -523,7 +519,6 @@ def available_for_hours(available_rooms):
         availForString = str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
         available_room.availableFor = availForString
         available_room.save()
-        print(available_room, 'has avail_for', availForString)
         continue
 
     print('updated availableFor')
