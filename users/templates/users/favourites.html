@@ -16,6 +16,13 @@
 
 <script type="text/javascript" src="{% static 'users/js/roomAutocompleteScript.js' %}"></script>
 <script type="text/javascript" src="{% static 'users/js/jquery.autocomplete.js' %}"></script>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.css"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.print.css"></script>
+
+<script type="text/javascript" src="{% static 'users/js/calendarScript.js' %}"></script>
+
 {% endblock %}
 
 {% block content %}
@@ -370,7 +377,7 @@
                                     <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>
@@ -455,7 +462,7 @@
                                     <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
                                 </div>
@@ -529,7 +536,7 @@
                                     <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
                                 </div>
@@ -642,7 +649,7 @@
                                     <button id="room-" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn mapBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>

@@ -5,7 +5,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
-from rooms.models import Tutorial_Room
+from rooms.models import Tutorial_Room, Activity
+from rooms.serializer import Activity_Serializer
 from django.utils.timezone import utc
 import datetime
 from django.contrib.auth.views import logout as django_logout
@@ -14,9 +15,6 @@ from django.conf import settings
 from django.contrib import messages
 from core import utilities
 from users.models import RoomHistory
-
-
-
 
 
 def index(request):
@@ -379,6 +377,30 @@ def history(request):
         return render(request, 'users/history.html', context)
 
 
+
+def calendar(request):
+    """
+    Returns json of all the activities of a particular room (given by locationId).
+    This is the view for the calendar function.
+    :param room:
+    :return:
+    """
+    if request.method == 'GET':
+
+        # get the location id
+        locationId = request.GET['locationId']
+
+        # get the room in question
+        room = Tutorial_Room.objects.get(locationId=locationId)
+
+        # get the activities for this room
+        activities = Activity.objects.filter(tutorialRooms=room)
+
+        # Serialize all the activities
+        serializer = Activity_Serializer(activities, many=True)
+
+        # return sorted suggestions
+        return utilities.JSONResponse(serializer.data)
 
 def logout(request):
     """
