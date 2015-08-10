@@ -200,7 +200,7 @@ function autoCompleteAPI() {
 
                 // update inUse and free badge values
                 freeBadgeStat.html('Free:  <span class="badge free">'+ freeVar + '</span>');
-                useBadgeStat.html('Free:  <span class="badge inuse">'+ inUseVar + '</span>');
+                useBadgeStat.html('In use:  <span class="badge inuse">'+ inUseVar + '</span>');
 
                 // remove the script that normally makes the pie chart.
                 panelCollapse.find('.makePieScript').remove();
