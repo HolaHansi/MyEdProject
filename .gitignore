@@ -7,8 +7,9 @@ db.sqlite3
 celerybeat.pid
 rooms/migrations/
 pc/migrations/
-*.pyc
 core/wsgi.py
 manage.py
 logs/debug.log
-googlecredentialssecrets.json
+secrets.json
+googleCredentialSecrets.json
+databaseconfig.cnf

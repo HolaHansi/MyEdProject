@@ -159,3 +159,416 @@ Traceback (most recent call last):
   File "/Users/hanschristiangregersen/PycharmProjects/InternProject/core/utilities.py", line 173, in sortingByLocationAndEmptiness
     key=lambda x: x.get_heuristic(average_distance, average_ratio, sd_distance, sd_ratio,
 TypeError: unorderable types: complex() < complex()
+[21/Jul/2015 15:41:59] WARNING [django.request:170] Not Found: /history
+[21/Jul/2015 15:41:59] WARNING [django.request:170] Not Found: /favicon.ico
+[21/Jul/2015 20:51:15] WARNING [django.request:170] Not Found: /new
+[21/Jul/2015 20:51:15] WARNING [django.request:170] Not Found: /favicon.ico
+[21/Jul/2015 20:52:49] WARNING [django.request:170] Not Found: /history
+[21/Jul/2015 20:53:02] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:03] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:03] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:03] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:04] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:04] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:05] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:06] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:06] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:11] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:13] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:14] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:29] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:30] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:30] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:31] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:32] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:33] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:33] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:35] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:36] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:36] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:36] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:37] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:37] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:38] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:39] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:39] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:44] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:45] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:45] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:46] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:46] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:46] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:46] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:47] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:47] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:47] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:47] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:47] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 147, in like
+    user.room_favourites.get(locationId=locationId)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'room_favourites'
+[21/Jul/2015 20:53:54] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'
+[21/Jul/2015 20:55:33] ERROR [django.request:256] Internal Server Error: /new/favourites/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/new/views.py", line 25, in users_favourites
+    return render(request, 'new/users/favourites.html', context)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/shortcuts.py", line 67, in render
+    template_name, context, request=request, using=using)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/template/loader.py", line 98, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/template/loader.py", line 46, in get_template
+    raise TemplateDoesNotExist(template_name)
+django.template.base.TemplateDoesNotExist: new/users/favourites.html
+[21/Jul/2015 20:55:52] ERROR [django.request:256] Internal Server Error: /new/favourites/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/contrib/auth/decorators.py", line 22, in _wrapped_view
+    return view_func(request, *args, **kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/new/views.py", line 25, in users_favourites
+    return render(request, 'new/users/favourites.html', context)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/shortcuts.py", line 67, in render
+    template_name, context, request=request, using=using)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/template/loader.py", line 98, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/template/loader.py", line 46, in get_template
+    raise TemplateDoesNotExist(template_name)
+django.template.base.TemplateDoesNotExist: new/users/favourites.html
+[22/Jul/2015 13:49:53] ERROR [django.request:256] Internal Server Error: /like/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/InternProject/users/views.py", line 130, in like
+    user.pc_favourites.get(id=pc_id)
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/functional.py", line 227, in inner
+    return func(self._wrapped, *args)
+AttributeError: 'AnonymousUser' object has no attribute 'pc_favourites'

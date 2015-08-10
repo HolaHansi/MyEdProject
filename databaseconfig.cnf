@@ -1,6 +1,0 @@
-[client]
-database = wwwbook_central
-host = localhost
-user = wwwbook_hansi
-password = MmMm1234
-default-character-set = utf8

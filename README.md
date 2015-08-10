@@ -2,25 +2,25 @@
 
 ##TODO:
 
-- Documentation, documentation, documentation
-- Use availability API to display availability
-- Get feedback
+- Set up scheduler
 - Implement chosen design
-- Get feedback on a new name
-- Create logo
-- Get feedback on logo
-- Implement location corrector
-- Remember user preferences (cookies?)
+- Documentation, documentation, documentation
+- Get feedback
 - Go to Hive
+- Easter Eggs
 
 ##Possible tweaks:
 
 - Send all rooms liked and toggle liked button locally
+- Custom pan display
+- Custom 'recenter map' option
+- Toggle displaying directions/location
+- Remember user preferences (cookies?)
+- Implement swiping animation
+- Add custom error pages for more significant errors
 
 ###Stretch goals:
-- 'Tutorial'
 - 'Suggest a study space'
-- 'My location is wrong'
 - Machine learning 'people like you like...'
 - Add config file to easily change which suitabilities are displayed
 - Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)

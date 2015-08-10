@@ -58,7 +58,6 @@ INSTALLED_APPS = (
     # local apps
     'rooms',
     'pc',
-    'api',
     'users',
     'new'
 )
