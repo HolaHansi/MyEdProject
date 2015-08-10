@@ -36,10 +36,6 @@ class Computer_Labs(models.Model):
     def __str__(self):
         return self.name
 
-    # ratio getter
-    def get_ratio(self):
-        return self.ratio
-
     # calculate the distance between the current building and the inputted point
     # parameters: long1 - the longitude of the user
     #             lat1 - the latitude of the user
@@ -63,22 +59,28 @@ class Computer_Labs(models.Model):
         return x * math.pi / 180
 
     # heuristic function for when both distance and empty are selected
-    # calculates a heuristic value based on the normalised distance and emptiness
-    # parameters: averageDistance - the average distance to all the buildings
-    #             averageRatio - the average emptiness ratio of all the buildings
-    #             standardDeviationDistance - the standard deviation of the distance to all the buildings
-    #             standardDeviationRatio - the standard deviation of the emptiness ratio of all the buildings
+    # calculates a heuristic value based on the normalised values for distance, emptiness and number of computers free
+    # parameters: average_distance - the average distance to all the buildings
+    #             average_ratio - the average emptiness ratio of all the buildings
+    #             average_free - the average number of computers free in all the buildings
+    #             standard_deviation_distance - the standard deviation of the distance to all the buildings
+    #             standard_deviation_ratio - the standard deviation of the emptiness ratio of all the buildings
+    #             standard_deviation_free - the standard deviation of the number of computers free in all the buildings
     #             long - the user's current longitude
     #             lat - the user's current latitude
-    def get_heuristic(self, average_distance, average_ratio, standard_deviation_distance, standard_deviation_ratio,
+    def get_heuristic(self, average_distance, average_ratio, average_free,
+                      standard_deviation_distance, standard_deviation_ratio, standard_deviation_free,
                       long, lat):
         # avoid dividing by 0
         if standard_deviation_distance == 0:
             standard_deviation_distance = 0.00001
         if standard_deviation_ratio == 0:
             standard_deviation_ratio = 0.00001
-        # normalise the building's distance and ratio (normalised mean=0, normalised SD=1)
+        if standard_deviation_free == 0:
+            standard_deviation_free = 0.00001
+        # normalise the building's distance, ratio and number of free computers (normalised mean=0, normalised SD=1)
         normalised_distance = (self.get_distance(long, lat) - average_distance) / standard_deviation_distance
-        normalised_ratio = (self.get_ratio() - average_ratio) / standard_deviation_ratio
-        # we want a small distance and a large ratio
-        return normalised_distance - normalised_ratio
+        normalised_ratio = (self.ratio - average_ratio) / standard_deviation_ratio
+        normalised_free = (self.free - average_free) / standard_deviation_free
+        # we want a small distance, a large ratio and a large number of seats free, though the latter is least important
+        return normalised_distance - normalised_ratio - normalised_free/2
