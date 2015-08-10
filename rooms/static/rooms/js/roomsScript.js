@@ -137,7 +137,10 @@ $(document).ready(function () {
         $.post('/history/',{
             'locationId': currentChoice.locationId,
             'clearAll': false
-        })
+        }).done(function(data){
+            window.location.href = 'https://www.ted.is.ed.ac.uk/UOE1415STU_WRB/default.aspx';
+        });
+        
     });
     
     // when the user clicks the 'add to favourites' star, like or unlike the room as appropriate

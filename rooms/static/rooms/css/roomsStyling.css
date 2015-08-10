@@ -394,6 +394,16 @@
 #optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox:focus {
   z-index: 3;
 }
+@media (max-width: 450px) {
+  #optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox {
+    font-size: 3.2vw;
+  }
+}
+@media (max-width: 350px) {
+  #optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox {
+    font-size: 0vw;
+  }
+}
 #optionsMenu #optionsContent .optionsCategory .custom-glyphicon {
   margin: 0 auto 3px;
   display: block;
