@@ -2,10 +2,6 @@ import xml.etree.ElementTree as ET
 from .models import Computer_Labs
 from rooms.models import Building_Feed
 import requests
-import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import json
 import re
 
 
@@ -52,7 +48,6 @@ def get_pc_data():
                     # Opening Hours:
                     try:
                         weekdayOpen = building.open_hours.weekdayOpen
-                        print(weekdayOpen)
                         weekdayClosed = building.open_hours.weekdayClosed
                         saturdayOpen = building.open_hours.saturdayOpen
                         saturdayClosed = building.open_hours.saturdayClosed
@@ -64,7 +59,6 @@ def get_pc_data():
 
                     # a building was matched, hence no need to continue for-loop.
                     break
-
 
             # if you didn't manage to find a building associated with this room, try what we've hard coded instead
             if latitude == 0.0:
@@ -94,7 +88,6 @@ def get_pc_data():
                 obj.saturdayClosed = saturdayClosed
                 obj.sundayOpen = sundayOpen
                 obj.sundayClosed = sundayClosed
-
 
             obj.save()
 
@@ -135,21 +128,10 @@ def process_pc_name(name, campus):
     return to_return
 
 
-# sends an email alert to bring the error to the attention of the admins so that it can be fixed
+# sends an alert to bring the error to the attention of the admins so that it can be fixed
 # input: location (string): the location which couldn't be loaded
 def send_mail(location):
-    fromaddr = "book.ed.alerts@gmail.com"
-    toaddr = "s1337523@sms.ed.ac.uk"  # TODO: send to someone appropriate
-    # load the password from the secret json file
-    with open('secrets.json') as f:
-        secrets = json.load(f)
-    password = secrets["GMAIL_PASSWORD"]
-    msg = MIMEMultipart()
-    msg['From'] = fromaddr
-    msg['To'] = toaddr
-    msg['Subject'] = "Alert"
-
-    body = (
+    message = (
         "Error in book.ed app: new location added which couldn't be matched to a building from the location database "
         "at http://webproxy.is.ed.ac.uk/web-proxy/maps/portal.php.  \n\n"
         "Unknown location: " + location +
@@ -161,11 +143,5 @@ def send_mail(location):
         "(in /pc/table.py).  "
         "\n\nThis is an automated message.  To turn off alerts, go to /pc/table.py and remove the line "
         "'sendMail(location)' from get_pc_data().")
-    msg.attach(MIMEText(body, 'plain'))
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(fromaddr, password)
-    text = msg.as_string()
-    server.sendmail(fromaddr, toaddr, text)
-    server.quit()
+    # TODO: send message to admin
+    return message
