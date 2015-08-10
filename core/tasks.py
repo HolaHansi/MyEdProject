@@ -4,23 +4,24 @@ from rooms.table import update_room_table, update_building_hours, update_buildin
     get_activities
 from core.utilities import update_status_rooms
 
-# rebuild the database, including checking for any new rooms or labs
+# rebuild the whole database
 @task
 def repopulate_all_tables():
+    refresh_locations()
+    refresh_availability()
+
+
+# Check for any new rooms or labs
+@task
+def refresh_locations():
     update_building_table()
     print('Buildings saved')
     update_building_hours()
-    print('building hours updated')
+    print('Building hours updated')
     update_room_table()
     print('Rooms saved')
     merge_room_building()
     print('Rooms merged')
-    get_activities()
-    print('Activities merged')
-    get_pc_data()
-    print('PC labs saved')
-    update_status_rooms()
-    print('Room Status Updated')
 
 
 # refresh the availability of all the rooms
