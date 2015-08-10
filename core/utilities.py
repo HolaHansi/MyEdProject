@@ -14,9 +14,74 @@ to how their heuristic functions work, and so keeping their dependencies apart u
 developers.
 """
 import datetime
+from django.utils import timezone
 import math
+from rooms.models import Activity as act
+from rooms.models import Tutorial_Room
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
+from django.db.models import F
+
+
+# ======= availability of rooms functions ================
+
+def update_status_rooms():
+    """
+    update_status receives all the rooms in the database, and updates the field value of availability.
+    :param rooms:
+    :return: nothing
+    """
+    # set up
+    rooms = Tutorial_Room.objects.all()
+
+    rooms_locally_allocated = rooms.filter(locally_allocated=True)
+
+    rooms_globally_allocated = rooms.filter(locally_allocated=False)
+
+    closedRooms = get_currently_closed_locations(rooms, typeOfSpace='Room')
+
+
+    # availableNow : rooms available now =============================
+
+    # All rooms that are not currently booked.
+    rooms_not_currently_booked = filter_out_busy_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+    # Exclude all the closed rooms from this set.
+    rooms_available_now = excludeClosedLocations(rooms_not_currently_booked)
+
+    # Update the availability field and the available_for field.
+    available_for_hours(rooms_available_now)
+
+    # Update availability Field.
+    rooms_available_now.update(availability='availableNow')
+
+
+    # notAvailable : room NOT available now. ===========================
+
+    # get all the currently booked rooms
+    rooms_currently_booked = filter_out_avail_rooms(data=rooms_globally_allocated, available_for_hours=1)
+
+    # a room is not available if it's either closed or currently booked
+    rooms_not_available_now = closedRooms | rooms_currently_booked
+
+    # Update the unavailableFor field
+    unavailable_till_hours(rooms_not_available_now)
+
+    # Update the availability field
+    rooms_not_available_now.update(availability='notAvailable')
+
+    # localAvailable : locally allocated, but open ===========================
+
+    # exclude all closed locally allocated rooms.
+    rooms_open_locally_allocated = excludeClosedLocations(rooms_locally_allocated)
+
+    # update every availability field in this queryset:
+    rooms_open_locally_allocated.update(availability='localAvailable')
+
+
+    return 'updated the status of all rooms'
+
+
 
 # ======= functions used in both pc/views and rooms/views ======= #
 
@@ -40,50 +105,73 @@ def to_radians(x):
 
 def excludeClosedLocations(data):
     """
-    Given a queryset of either rooms or pc-labs, the function returns a queryset without any currently closed rooms.
+    Given a queryset of either rooms or pc-labs, the function returns a queryset without any currently closed locations.
+    It does NOT filter out rooms without opening hours!
     :param data:
     :return: data (without any closed PCs or Rooms)
     """
 
     # get current time and weekday
-    now = datetime.datetime.now()
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
     currentTime = now.time().isoformat()
     weekday = now.weekday()
+
 
     # I'm using exclude instead of filter, so not to filter out all the rooms without opening times.
     # if it's a day between Mon-Fri, then filter out all closed rooms on these days.
     if weekday >= 0 and weekday <= 4:
-        data = data.exclude(weekdayOpen__gt=currentTime)
-        data = data.exclude(weekdayClosed__lt=currentTime,
-                            # to accomodate the case where the building closes after midnight
-                            # a building is only excluded if the closing time is ALSO greater than
-                            # 9 in the morning, so closing times like 02:30 are not filtered out.
-                            weekdayClosed__gt="09:00:00"
-                            )
+        # case 1 : now < open < closing
+        data = data.exclude(weekdayOpen__gt=currentTime,
+                            weekdayClosed__gt=currentTime,
+                            weekdayOpen__lt=F('weekdayClosed'))
+        # case 2 : open < close < now
+        data = data.exclude(weekdayOpen__lt=currentTime,
+                            weekdayClosed__lt=currentTime,
+                            weekdayClosed__gt=F('weekdayOpen'))
 
-    # the same thing for saturday.
+        # case 3 : close < now < open
+        data = data.exclude(weekdayOpen__gt=currentTime,
+                            weekdayClosed__lt=currentTime)
+
+
+    # saturday
     if weekday == 5:
-        data = data.exclude(saturdayOpen__gt=currentTime)
-        data = data.exclude(saturdayClosed__lt=currentTime,
-                            # to accomodate the case where the building closes after midnight
-                            # a building is only excluded if the closing time is ALSO greater than
-                            # 9 in the morning, so closing times like 02:30 are not filtered out.
-                            saturdayClosed__gt="09:00:00"
-                            )
+        # case 1 : now < open < closing
+        data = data.exclude(saturdayOpen__gt=currentTime,
+                            saturdayClosed__gt=currentTime,
+                            saturdayOpen__lt=F('saturdayClosed'))
+        # case 2 : open < close < now
+        data = data.exclude(saturdayOpen__lt=currentTime,
+                            saturdayClosed__lt=currentTime,
+                            saturdayClosed__gt=F('saturdayOpen'))
 
-    # if it's sunday... etc.
+        # case 3 : close < now < open
+        data = data.exclude(saturdayOpen__gt=currentTime,
+                            saturdayClosed__lt=currentTime)
+
+    # sunday
     if weekday == 6:
-        data = data.exclude(sundayOpen__gt=currentTime)
-        data = data.exclude(sundayClosed__lt=currentTime,
-                            # to accomodate the case where the building closes after midnight
-                            # a building is only excluded if the closing time is ALSO greater than
-                            # 9 in the morning, so closing times like 02:30 are not filtered out.
-                            sundayClosed__gt="09:00:00"
-                            )
+        # case 1 : now < open < closing
+        data = data.exclude(sundayOpen__gt=currentTime,
+                            sundayClosed__gt=currentTime,
+                            sundayOpen__lt=F('sundayClosed'))
+
+        # case 2 : open < close < now
+        data1 = data.exclude(sundayOpen__lt=currentTime,
+                            sundayClosed__lt=currentTime,
+                            sundayClosed__gt=F('sundayOpen'))
+
+        # case 3 : close < now < open
+        data = data1.exclude(sundayOpen__gt=currentTime,
+                            sundayClosed__lt=currentTime)
+
     return data
 
 
 # ======= rooms/views functions ======= #
+
+
+
 
 def get_distance(building_long, building_lat, long1, lat1):
     """
@@ -139,6 +227,342 @@ def sortBuildingsByDistance(usr_longitude, usr_latitude, building_details):
         x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
 
     return building_details
+
+
+def filter_out_busy_rooms(data, available_for_hours=1):
+    """
+    Exclude all the rooms that are hosting an activity that overlaps the duration from now
+    till a time after some specified amount of hours.
+    :param available_for_hours:
+    :return: data of rooms that are not currently booked
+    """
+    # get the timespan that the user is interested in.
+    current_time = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
+
+    # if an event starts before end time, and ends after currentTime, then the room is
+    # already booked, and should be added to busy_rooms.
+
+    busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
+                            activity__endTime__gte=current_time)
+
+    # now exclude all rooms that are busy from the room suggestions (data)
+    busy_rooms = [x.locationId for x in busy_rooms]
+    data = data.exclude(locationId__in=busy_rooms)
+
+    return data
+
+# ======= users/views functions ======= #
+
+def getOpenHours(location):
+    """
+    given a location the function returns a dictionary containing opening and closing hours on the current
+    day.
+    :param location:
+    :return: dictionary
+    """
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    weekday = now.weekday()
+
+    # get the current opening hours of the room
+    if weekday >= 0 and weekday <= 4:
+       closingHour = location.weekdayClosed
+       openHour = location.weekdayOpen
+
+    elif weekday == 5:
+        closingHour = location.saturdayClosed
+        openHour = location.saturdayOpen
+    else:
+        closingHour = location.sundayClosed
+        openHour = location.sundayOpen
+
+    dict = {'openHour': openHour, 'closingHour': closingHour}
+
+    return dict
+
+
+def isOpen(location):
+    """
+    Takes a location and returns true if the location is currently open. Sensitive to weekdays!
+    :param location:
+    :return: boolean
+    """
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+
+    # get the current opening hours of the room
+    dict = getOpenHours(location)
+    openHour = dict['openHour']
+    closingHour = dict['closingHour']
+
+    # if opening hours are None, then just return True (they are not closed for all we know!)
+    if openHour is None or closingHour is None:
+        return True
+
+     # determine if the place is currently open.
+    if openHour < now.time() < closingHour:
+        isOpenVar = True
+    # this is the second more unusual case where the room is open (e.g. closing hour: 2 am)
+    elif closingHour < openHour <= now.time() or now.time() < closingHour < openHour:
+        isOpenVar = True
+    else:
+        isOpenVar = False
+
+    return isOpenVar
+
+
+def unavailable_till_hours(unavailable_rooms):
+    """
+    given a queryset of rooms, the function will populate the unavailableFor field of every room in the queryset.
+    :param unavailable_room:
+    :return:
+    """
+
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    tomorrow = now + datetime.timedelta(hours=24)
+
+    for unavailable_room in unavailable_rooms:
+
+        # get all of the rooms activities ending after now, but starting before tomorrow.
+        activities = act.objects.filter(tutorialRooms=unavailable_room,
+                                        endTime__gt=now,
+                                        startTime__lt=tomorrow)
+
+        # check if location is open
+        isOpenVar = isOpen(unavailable_room)
+
+
+        # if the place is open, then we know that the reason the place is unavailable is due
+        # to an activity that is currently taking place.
+        if isOpenVar:
+            # go through the activities, and get the end time of the first activity whose endTime
+            # is at least an hour prior to the next activity.
+            # first, initialize avail_till
+            avail_till_time = None
+            for i in range(activities.count()-1):
+                if activities[i].endTime <= (activities[i+1].startTime - datetime.timedelta(hours=1)):
+                    avail_till_time = activities[i].endTime
+                    break
+            # if avail_till is undefined, then every activity except the final one has been checked, and
+            # has failed this condition. Hence, take the last activity.endTime as avail_till.
+
+            print('activity', activities)
+            print('room is ', unavailable_room)
+            print('room is open, ', isOpenVar)
+
+            if avail_till_time is None:
+                avail_till_time = activities[activities.count()-1].endTime
+
+
+            # now get the time from now until avail_till_time.
+            avail_for = avail_till_time - now
+
+            # get the hours and minutes
+            avail_for_hours = avail_for.seconds // 3600
+            avail_for_minutes = (avail_for.seconds // 60) % 60
+
+            # return result as a string
+            unavailForString = str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
+            unavailable_room.unavailableFor = unavailForString
+            unavailable_room.save()
+            continue
+
+
+
+        # otherwise, the room is currently Closed, and this is why it's unavailable. Find out when it opens
+        else:
+            # get open and closing hour - we know these are available because the room is closed.
+            dict = getOpenHours(unavailable_room)
+            openHour = dict['openHour']
+            closingHour = dict['closingHour']
+
+
+            # if the room is about to open later same day, then avail_till_time is openHour + the duration
+            # of any potential activities starting from openHour.
+            if now.time() < openHour:
+                # get openHour as datetime object and initialize variable which is an hour after opening.
+                openHourDateTime = datetime.datetime.combine(datetime.date.today(), openHour)
+                anHourLater = openHourDateTime + datetime.timedelta(hours=1)
+
+                # get all activities starting in the first hour of the room being open.
+                activities = activities.filter(startTime__lt=anHourLater,
+                                               startTime__gte=openHourDateTime)
+
+                # In case, there are no such activities, then the room will surely be available on opening
+                if activities.count() == 0:
+                    avail_till_time = openHourDateTime
+
+                # Otherwise, find the endTime of the last activity in a potential consecutive streak of activities.
+                # the code is the same as in the 'isOpen - condition'.
+                else:
+                    avail_till_time = None
+                    for i in range(activities.count()-1):
+                        if activities[i].endTime <= (activities[i+1].startTime - datetime.timedelta(hours=1)):
+                            avail_till_time = activities[i].endTime
+                            break
+                    # if avail_till is undefined, then every activity except the final one has been checked, and
+                    # has failed this condition. Hence, take the last activity.endTime as avail_till.
+                    if avail_till_time is None:
+                        avail_till_time = activities[activities.count()-1].endTime
+
+
+                # get the difference between time it becomes available and now.
+                avail_for = avail_till_time - datetime.datetime.combine(datetime.date.today(), now.time())
+
+
+                # get the hours and minutes
+                avail_for_hours = avail_for.seconds // 3600
+                avail_for_minutes = (avail_for.seconds // 60) % 60
+
+                # return result as string
+                unavailForString = str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
+                unavailable_room.unavailableFor = unavailForString
+                unavailable_room.save()
+
+
+            # the room is closed for today, and so just return: tomorrow.
+            else:
+                unavailable_room.unavailableFor = 'tomorrow'
+                unavailable_room.save()
+
+
+    print('updated unavailableFor')
+
+def available_for_hours(available_rooms):
+    """
+    Given a queryset of rooms, the function will populate the availableFor field of every room in the queryset.
+    If there is an activity or an closing on the same day, then the field is formatted e.g. 2h 30m
+    Otherwise, for example if there is no activites or opening hours, or no opening hours an activity the following day.
+    The field will be updated with the string value 'unknown'.
+    :param available_room:
+    :return: nothing - the function updates a field in every room of available_rooms.
+    """
+    now = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    weekday = now.weekday()
+
+    for available_room in available_rooms:
+        #first update the availability field:
+        available_room.availability = 'availableNow'
+
+        # get all activities for the room beginning after now.
+        activities = act.objects.filter(tutorialRooms=available_room,
+                                        startTime__gt=now)
+
+        # order from most recent till most distant
+        activities = activities.order_by("startTime")
+
+        # true if there is no activities for the room.
+        noAct = False
+
+        # true if activity decides available_till.
+        actWins = False
+
+        # check if there are any activities
+
+        if activities.count() == 0:
+            noAct = True
+        else:
+            next_activity = activities[0]
+            # get the starting_time of this activity (type is datetime.datetime)
+            startTime = next_activity.startTime
+
+
+        # get the current closing hour of the room
+        dict = getOpenHours(available_room)
+        closingHour = dict['closingHour']
+
+        # no closing hour nor activities for room - return unknown
+        if closingHour is None and noAct:
+            available_room.availableFor = 'unknown'
+            available_room.save()
+            continue
+
+        # closing hour, but no activities - closingHour becomes avail_till.
+        elif closingHour is not None and noAct:
+            avail_till_time = closingHour
+
+        # if there is no closing hour, but there is an activity, then activity wins.
+        elif closingHour is None and not noAct:
+            avail_till_time = startTime
+            actWins = True
+
+        # otherwise (that means there are both activities and closing hours.)
+        else:
+            # if the activity starts another day, then the avail_till is bound by closing hour.
+            if startTime.date() > now.date():
+                avail_till_time = closingHour
+
+            else:
+                # if room closes before the start of the next activity, and is greater
+                # than the current time, then the closing hour is
+                # the available_till_time, otherwise it is the activity startTime.
+                if closingHour <= startTime.time() and closingHour > now.time():
+                    avail_till_time = closingHour
+                else:
+                    avail_till_time = startTime
+                    actWins = True
+
+
+        if actWins:
+            # if an activity is on a late date, then return unknown.
+            if avail_till_time.date() > now.date():
+                available_room.availableFor = 'unknown'
+                available_room.save()
+                continue
+
+            avail_for = avail_till_time - now
+        # otherwise, if closingHour wins, then now must be formatted as a time object.
+        else:
+            avail_for = datetime.datetime.combine(datetime.date.today(), avail_till_time) - datetime.datetime.combine(datetime.date.today(), now.time())
+
+        print('does activity win?', actWins)
+        # get the hours and minutes
+        avail_for_hours = avail_for.seconds // 3600
+        avail_for_minutes = (avail_for.seconds // 60) % 60
+
+        # return result as a string
+        availForString = str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
+        available_room.availableFor = availForString
+        available_room.save()
+        print(available_room, 'has avail_for', availForString)
+        continue
+
+    print('updated availableFor')
+
+
+def get_currently_closed_locations(data, typeOfSpace='PC'):
+    """
+    given a queryset of both closed and open locations, returns all the currently closed places.
+    A parameter specifies whether the queryset is for PCs or rooms.
+    """
+    openPlaces = excludeClosedLocations(data)
+    if typeOfSpace == 'PC':
+        openPlacesList = [x.id for x in openPlaces]
+        data = data.exclude(id__in=openPlacesList)
+    else:
+        openPlacesList = [x.locationId for x in openPlaces]
+        data = data.exclude(locationId__in=openPlacesList)
+    return data
+
+def filter_out_avail_rooms(data, available_for_hours=1):
+    """
+    Get all rooms that are currently unavailable - either closed or currently booked
+    :param available_for_hours:
+    :return: data of rooms that are currently booked
+    """
+    # get the timespan that the user is interested in.
+    current_time = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
+
+    # if an event starts before end time, and ends after currentTime, then the room is
+    # already booked, and should be added to busy_rooms.
+
+    busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
+                             activity__endTime__gte=current_time)
+
+    # rooms that are currently closed should also feature in busy_rooms.
+
+
+    return busy_rooms
 
 
 # ======= pc/views functions ======= #

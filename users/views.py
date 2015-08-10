@@ -1,30 +1,26 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
 from rooms.models import Tutorial_Room
-from rest_framework.renderers import JSONRenderer
+from django.utils.timezone import utc
+import datetime
 from django.contrib.auth.views import logout as django_logout
 from django.contrib.auth.views import login as django_login
 from django.conf import settings
 from django.contrib import messages
+from core import utilities
+from users.models import RoomHistory
 
 
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into JSON.
-    """
 
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
 
 
 def index(request):
-    return render(request, 'users/index.html')
+    return render(request, 'core/index.html')
 
 
 def autocompleteAPI(request):
@@ -36,16 +32,35 @@ def autocompleteAPI(request):
         data = Computer_Labs.objects.all()
         labs = []
         already_favourited = user.pc_favourites.all()
+
         for lab in data:
             if len(already_favourited.filter(id=lab.id)) == 0:
+                # check if lab is open
+                isOpen = utilities.isOpen(lab)
+
+                # get opening hours
+                openHours = utilities.getOpenHours(lab)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                # if no opening hours, then set them to 'n/a'
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
+
                 labs.append(
                     {'value': lab.name,
                      'data': {
                          'id': lab.id,
                          'free': lab.free,
                          'seats': lab.seats,
-                         'ratio': lab.ratio
-                     }
+                         'ratio': lab.ratio,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'isOpen': isOpen,
+                         'longitude': lab.longitude,
+                         'latitude': lab.latitude
+                        }
                      }
                 )
 
@@ -53,24 +68,125 @@ def autocompleteAPI(request):
         data = Tutorial_Room.objects.all()
         rooms = []
         already_favourited = user.room_favourites.all()
-        for room in data:
+
+
+        # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
+
+        rooms_available_now = data.filter(availability='availableNow')
+
+        #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
+
+        rooms_not_available_now = data.filter(availability='notAvailable')
+
+        # LOCALLY ALLOCATED OPEN ROOMS:
+
+        rooms_open_locally_allocated = data.filter(availability='localAvailable')
+
+        # ADD to rooms : list of dictionaries.
+        for room in rooms_available_now:
             if len(already_favourited.filter(locationId=room.locationId)) == 0:
+
+                # get opening hours
+                openHours = utilities.getOpenHours(room)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
+
                 rooms.append(
                     {'value': room.room_name + ', ' + room.building_name,
                      'data': {
                          'room_name': room.room_name,
                          'building_name': room.building_name,
-                         'id': room.locationId,
+                         'locationId': room.locationId,
+                         'capacity': room.capacity,
                          'pc': room.pc,
                          'printer': room.printer,
                          'projector': room.projector,
                          'whiteboard': room.whiteboard,
-                         'blackboard': room.blackboard
-                     }
+                         'blackboard': room.blackboard,
+                         'isOpen': True,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'locally_allocated': False,
+                         'availability': 'availableNow',
+                         'availableFor': room.availableFor
+                        }
                      }
                 )
 
-        return JSONResponse({'labs': labs, 'rooms': rooms})
+        for room in rooms_not_available_now:
+            if len(already_favourited.filter(locationId=room.locationId)) == 0:
+
+                #get isOpen variable
+                isOpen = utilities.isOpen(room)
+
+                # get opening hours
+                openHours = utilities.getOpenHours(room)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
+
+                rooms.append(
+                    {'value': room.room_name + ', ' + room.building_name,
+                     'data': {
+                         'room_name': room.room_name,
+                         'building_name': room.building_name,
+                         'locationId': room.locationId,
+                         'capacity': room.capacity,
+                         'pc': room.pc,
+                         'printer': room.printer,
+                         'projector': room.projector,
+                         'whiteboard': room.whiteboard,
+                         'blackboard': room.blackboard,
+                         'isOpen': isOpen,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'locally_allocated': room.locally_allocated,
+                         'availability': 'notAvailable',
+                         'unavailableFor': room.unavailableFor
+                        }
+                     }
+                )
+
+        for room in rooms_open_locally_allocated:
+            if len(already_favourited.filter(locationId=room.locationId)) == 0:
+
+                # get opening hours
+                openHours = utilities.getOpenHours(room)
+                openHour = openHours['openHour']
+                closingHour = openHours['closingHour']
+
+                if openHour is None:
+                    openHour = 'n/a'
+                    closingHour = 'n/a'
+
+                rooms.append(
+                    {'value': room.room_name + ', ' + room.building_name,
+                     'data': {
+                         'room_name': room.room_name,
+                         'building_name': room.building_name,
+                         'locationId': room.locationId,
+                         'capacity': room.capacity,
+                         'pc': room.pc,
+                         'printer': room.printer,
+                         'projector': room.projector,
+                         'whiteboard': room.whiteboard,
+                         'blackboard': room.blackboard,
+                         'openHour': openHour,
+                         'closingHour': closingHour,
+                         'locally_allocated': room.locally_allocated,
+                         'availability': 'localAvailable'
+                        }
+                     }
+                )
+
+        return utilities.JSONResponse({'labs': labs, 'rooms': rooms})
 
 
 def like(request):
@@ -132,14 +248,14 @@ def like(request):
             except ObjectDoesNotExist:
                 pcLikedByUser = 'false'
 
-            return JSONResponse(pcLikedByUser)
+            return utilities.JSONResponse(pcLikedByUser)
 
         # for Room requests
         else:
             # get the room in question
             locationId = request.GET['locationId']
 
-            # get userprofile
+            # get user from request
             user = request.user
 
             # if the room is already liked by user, then assign true to pcLikedByUser
@@ -149,24 +265,124 @@ def like(request):
             except ObjectDoesNotExist:
                 roomLikedByUser = 'false'
 
-            return JSONResponse(roomLikedByUser)
+            return utilities.JSONResponse(roomLikedByUser)
 
 
 @login_required
 def favourites(request):
+    """
+    The view for the favourites page. It renders a template that displays
+    all the favourites of current user in the following categories:
+    PC: currently open, currently closed
+    Rooms: 1) Rooms Available Now (currently open and not booked), 2) Rooms not available (Either closed or currently booked
+    of both locally and globally allocated rooms), 3) locally allocated and currently open.
+    """
+    # get the user from the request
     user = request.user
+
+    # ==== FOR PCs ====
+
+    # get all PCs liked by the user.
     pc_favourites = user.pc_favourites.all()
+    # get all currently open PC-labs and sort according to ratio
+    pc_favourites_open = utilities.excludeClosedLocations(pc_favourites)
+    pc_favourites_open = utilities.sortPCLabByEmptiness(pc_favourites_open)
+
+    # get all currently closed PC-labs and sort according to ratio
+    pc_favourites_closed = utilities.get_currently_closed_locations(pc_favourites)
+    pc_favourites_closed = utilities.sortPCLabByEmptiness(pc_favourites_closed)
+
+    # ==== FOR ROOMs ====
+
+    # get all rooms liked by the user.
     room_favourites = user.room_favourites.all()
-    context = {'pc_favourites': pc_favourites,
-               'room_favourites': room_favourites,
+
+
+    # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
+
+    rooms_available_now = room_favourites.filter(availability='availableNow')
+
+    #ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
+
+    rooms_not_available_now = room_favourites.filter(availability='notAvailable')
+
+
+    #ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
+
+    rooms_open_locally_allocated = room_favourites.filter(availability='localAvailable')
+
+
+    context = {'pc_favourites_open': pc_favourites_open,
+               'pc_favourites_closed': pc_favourites_closed,
+               'rooms_open_locally_allocated': rooms_open_locally_allocated,
+               'rooms_available_now': rooms_available_now,
+               'rooms_not_available_now': rooms_not_available_now,
                'user': user}
+
     return render(request, 'users/favourites.html', context)
+
+
+@login_required
+def history(request):
+    """
+    Returns a template with all rooms the user has booked.
+    :param request:
+    :return:
+    """
+    # get user
+    user = request.user
+
+    # for the ajax post requests from the room suggester.
+    if request.method == 'POST':
+
+        clearAll = request.POST['clearAll']
+
+        if clearAll == 'true':
+            # get history for user
+            roomHis = RoomHistory.objects.filter(user=user)
+            # delete them all
+            roomHis.delete()
+
+        # otherwise, the request is about adding a room to history
+        else:
+            # get the locationId of the room in question.
+            locationId = request.POST['locationId']
+
+            # look up room
+            room = Tutorial_Room.objects.get(locationId=locationId)
+
+            # get time now
+            now = datetime.datetime.now().replace(tzinfo=utc)
+
+
+            # create new RoomHistory obj
+            roomHis = RoomHistory(room=room, user=user, booked_at_time=now)
+            roomHis.save()
+
+        return HttpResponse(status=200)
+
+    # Otherwise, the request is get, return a template that displays history
+    else:
+        # get history for user
+        historicalBookings = RoomHistory.objects.filter(user=user)
+        toReturn = []
+        for historicalBooking in historicalBookings:
+            print(model_to_dict(historicalBooking.room))
+            thisRoom = model_to_dict(historicalBooking.room)
+            thisRoom['booked_at_time'] = historicalBooking.booked_at_time
+            thisRoom['his_id'] = historicalBooking.id
+            toReturn = [thisRoom] + toReturn
+
+        # make context for template
+        context = {'roomHis': toReturn}
+
+        return render(request, 'users/history.html', context)
+
 
 
 def logout(request):
     """
     Function to log-out the current user. In production, this means also resetting the CoSign cookie.
-
     """
     if request.user.is_authenticated():
 

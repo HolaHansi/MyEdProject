@@ -1,0 +1,326 @@
+@import "../../../../core/less/variables.less";
+
+//@availableGreen: #00AA00;
+//@minusGrey: #777;
+//@unavailableRed: #AA0000;
+
+.containerForAllez {
+    margin-left: 6px;
+    margin-right: 6px;
+    .navbar-row>.row{
+        margin-right: 0px;
+    }
+}
+
+.btn-group-rooms {
+    padding-left: 0px;
+    padding-right:5px;
+    width: auto;
+    float: right;
+    //float:right;
+    //padding-right: 15px;
+
+}
+
+
+
+
+.openHourRoom {
+    width: 15px;
+    padding-left: 0px;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.openHourDivRoom {
+    padding-left: 0px;
+}
+
+
+#favourites-page-logo {
+    #favtext {
+        //padding-top: 15px;
+        //padding-bottom: 10px;
+        text-align: center;
+        right: 20px;
+    }
+    float: right;
+    padding-right: 8px;
+    padding-top: 2px;
+}
+
+#logostar {
+    color: #f0ad4e;
+}
+
+@media (max-width: 288px) {
+    .openHourDiv {
+        opacity: 0;
+    }
+}
+
+@media(max-width: 648px) {
+    .descriptionRoom {
+        display: none;
+    }
+}
+
+
+
+.body {
+    background-color: @unavailableRed;
+}
+
+.btn-lg {
+    border-radius: 0;
+}
+.nav {
+    margin-bottom: 6px;
+    .nav-pills {
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+.map-btn {
+    margin-top: 5px;
+    float: right;
+}
+
+
+.badge {
+    float: right;
+    font-size: 14px;
+    &.free {
+        background-color: @availableGreen;
+        margin-bottom: 0px;
+        &.closed {
+            background-color: @minusGrey;
+        }
+    }
+    &.inuse{
+        background-color: @unavailableRed;
+    }
+}
+
+.badge-text {
+    white-space: nowrap;
+    overflow: hidden;
+    p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    }
+
+}
+
+.panel-group .panel {
+    margin-bottom:5px;
+}
+
+.badge-group {
+    padding-top: 4px;
+    margin-left: 0px;
+}
+
+.panel-default > .panel-heading .badge {
+    background-color: #337AB7;
+    .badge()
+    /*brand-primary*/
+}
+
+.avail {
+    float: right;
+    width: 12px;
+}
+
+
+.suitAvail {
+    color: @availableGreen;
+    padding-left: 5px;
+}
+
+.suitUnAvil {
+    color: @unavailableRed;
+    padding-left: 5px;
+}
+
+.suitabilityCol {
+    //padding: 0;
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+.fa-map-marker,
+.fa-calendar {
+    color: #555;
+    /*grey-light*/
+}
+.fa-check {
+    margin-left: -1px;
+}
+.panel-default > .panel-heading .badge.check {
+    background-color: @availableGreen;
+}
+.panel-default > .panel-heading .badge.minus {
+    background-color: @minusGrey;
+}
+.panel-default > .panel-heading .badge.times {
+    background-color: @unavailableRed;
+}
+.booknow {
+    margin-left: 0px;
+    padding: 7px 5px 13px 5px;
+    font-size: 14px;
+}
+
+.btn-group>.btn {
+    //float: right;
+    margin-right: 0;
+    //border-radius: 0 !important;
+}
+
+
+
+.computersFreeGraph{
+    height:50px;
+    width:50px;
+
+}
+
+.remove-btn {
+    align: left;
+    margin: 0px 0px 0px 0px;
+    padding: 7px 5px 10px 0px;
+    font-size: 14px;
+}
+
+
+
+.unliker.unclicked{
+    background-color:blue;
+    color: white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:50px;
+    cursor:pointer;
+}
+.unliker.clicked{
+    margin-left:50px;
+}
+.favRemover{
+    color: white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:5px;
+    margin-right:5px;
+    cursor:pointer;
+}
+.confirmRemoval{
+    background-color:green;
+}
+.cancelRemoval{
+    background-color: red;
+}
+
+
+
+.fa-check.confirmRemove {
+    color: @availableGreen;
+    .avail {
+        color: black;
+    }
+}
+
+.fa-times.cancelRemove {
+    color: @unavailableRed;
+}
+
+.openHoursComp {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.openHourDiv {
+    float: left;
+    text-align: center;
+    //border-style: dotted;
+}
+
+.closedStats {
+    background-color: grey;
+    opacity: 0.4;
+}
+
+.closedOpeningHour {
+    color: @unavailableRed;
+}
+
+
+
+.autocomplete-suggestions {
+        border: 1px solid #999;
+        background: #fff;
+        cursor: default;
+        overflow: auto;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+.autocomplete-suggestion {
+    padding: 8px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.autocomplete-selected {
+    background: #f0f0f0;
+}
+
+.autocomplete-suggestions strong {
+    font-weight: normal;
+    color: #3399ff;
+}
+
+#searchfield {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+#searchfield form {
+    display: inline-block;
+    background: #eeefed;
+    padding: 0;
+    margin: 0;
+    padding: 5px;
+    border-radius: 3px;
+    margin: 5px 0 0 0;
+}
+
+#searchfield form .biginput {
+    width: 600px;
+    height: 40px;
+    padding: 0 10px 0 10px;
+    background-color: #fff;
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    color: #aeaeae;
+    font-weight: normal;
+    font-size: 1.5em;
+    -webkit-transition: all 0.2s linear;
+    -moz-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+#searchfield form .biginput:focus {
+    color: #858585;
+}
+
+.autocompleteForm {
+    width: 50%;
+}

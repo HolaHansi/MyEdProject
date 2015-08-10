@@ -53,7 +53,7 @@ def filter_suggestions(request):
             # if sorting by both location and emptiness
             if request.GET['empty'] == 'true':
                 # sort according to both location and emptiness using this core/utilities function.
-                utilities.sortingByLocationAndEmptiness(data=data,
+                data = utilities.sortingByLocationAndEmptiness(data=data,
                                                         usr_longitude=usr_longitude,
                                                         usr_latitude=usr_latitude)
 

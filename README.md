@@ -18,6 +18,7 @@
 - Remember user preferences (cookies?)
 - Implement swiping animation
 - Add custom error pages for more significant errors
+- Add feedback stuff
 
 ###Stretch goals:
 - 'Suggest a study space'

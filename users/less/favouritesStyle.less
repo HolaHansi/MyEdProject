@@ -1,0 +1,132 @@
+@import "../../core/less/colours.less";
+
+//@availableGreen: #00AA00;
+//@minusGrey: #777;
+//@unavailableRed: #AA0000;
+
+
+.btn-lg {
+    border-radius: 0;
+}
+.nav {
+    margin-bottom: 6px;
+}
+.map-btn {
+    margin-top: 5px;
+    float: right;
+}
+
+
+.badge {
+    float: right;
+    font-size: 14px;
+    &.free {
+        background-color: @availableGreen;
+        margin-bottom: 0px;
+    }
+    &.inuse{
+        background-color: @unavailableRed;
+    }
+}
+
+.badge-text {
+    white-space: nowrap;
+    overflow: hidden;
+    p {
+    font-size: 14px;
+    margin-bottom: 5px;
+    }
+
+
+}
+
+.badge-group {
+    padding-top: 4px;
+    margin-left: 0px;
+}
+
+.panel-default > .panel-heading .badge {
+    background-color: #337AB7;
+    .badge()
+    /*brand-primary*/
+}
+
+.avail {
+    float: right;
+    width: 12px;
+}
+.fa-map-marker,
+.fa-calendar {
+    color: #555;
+    /*grey-light*/
+}
+.fa-check {
+    margin-left: -1px;
+}
+.panel-default > .panel-heading .badge.check {
+    background-color: @availableGreen;
+}
+.panel-default > .panel-heading .badge.minus {
+    background-color: @minusGrey;
+}
+.panel-default > .panel-heading .badge.times {
+    background-color: @unavailableRed;
+}
+.booknow {
+    margin-left: 0px;
+    padding-bottom: 14px;
+}
+
+
+.computersFreeGraph{
+    height:50px;
+    width:50px;
+
+}
+
+.remove-btn {
+    align: left;
+    padding: 0px 4px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+
+
+.unliker.unclicked{
+    background-color:blue;
+    color: white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:50px;
+    cursor:pointer;
+}
+.unliker.clicked{
+    margin-left:50px;
+}
+.favRemover{
+    color: white;
+    padding:7px;
+    border-radius:5px;
+    margin-left:5px;
+    margin-right:5px;
+    cursor:pointer;
+}
+.confirmRemoval{
+    background-color:green;
+}
+.cancelRemoval{
+    background-color: red;
+}
+
+
+
+.fa-check.confirmRemove {
+    color: @availableGreen;
+    .avail {
+        color: black;
+    }
+}
+
+.fa-times.cancelRemove {
+    color: @unavailableRed;
+}

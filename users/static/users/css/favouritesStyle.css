@@ -1,0 +1,264 @@
+.containerForAllez {
+  margin-left: 6px;
+  margin-right: 6px;
+}
+.containerForAllez .navbar-row > .row {
+  margin-right: 0px;
+}
+.btn-group-rooms {
+  padding-left: 0px;
+  padding-right: 5px;
+  width: auto;
+  float: right;
+}
+.openHourRoom {
+  width: 15px;
+  padding-left: 0px;
+  padding-top: 10px;
+  text-align: center;
+}
+.openHourDivRoom {
+  padding-left: 0px;
+}
+#favourites-page-logo {
+  float: right;
+  padding-right: 8px;
+  padding-top: 2px;
+}
+#favourites-page-logo #favtext {
+  text-align: center;
+  right: 20px;
+}
+#logostar {
+  color: #f0ad4e;
+}
+@media (max-width: 288px) {
+  .openHourDiv {
+    opacity: 0;
+  }
+}
+@media (max-width: 648px) {
+  .descriptionRoom {
+    display: none;
+  }
+}
+.body {
+  background-color: #d9433b;
+}
+.btn-lg {
+  border-radius: 0;
+}
+.nav {
+  margin-bottom: 6px;
+}
+.nav .nav-pills {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.map-btn {
+  margin-top: 5px;
+  float: right;
+}
+.badge {
+  float: right;
+  font-size: 14px;
+}
+.badge.free {
+  background-color: #2ea83d;
+  margin-bottom: 0px;
+}
+.badge.free.closed {
+  background-color: #777777;
+}
+.badge.inuse {
+  background-color: #d9433b;
+}
+.badge-text {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.badge-text p {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.panel-group .panel {
+  margin-bottom: 5px;
+}
+.badge-group {
+  padding-top: 4px;
+  margin-left: 0px;
+}
+.panel-default > .panel-heading .badge {
+  background-color: #337AB7;
+  float: right;
+  font-size: 14px;
+  /*brand-primary*/
+}
+.panel-default > .panel-heading .badge.free {
+  background-color: #2ea83d;
+  margin-bottom: 0px;
+}
+.panel-default > .panel-heading .badge.free.closed {
+  background-color: #777777;
+}
+.panel-default > .panel-heading .badge.inuse {
+  background-color: #d9433b;
+}
+.avail {
+  float: right;
+  width: 12px;
+}
+.suitAvail {
+  color: #2ea83d;
+  padding-left: 5px;
+}
+.suitUnAvil {
+  color: #d9433b;
+  padding-left: 5px;
+}
+.suitabilityCol {
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+.fa-map-marker,
+.fa-calendar {
+  color: #555;
+  /*grey-light*/
+}
+.fa-check {
+  margin-left: -1px;
+}
+.panel-default > .panel-heading .badge.check {
+  background-color: #2ea83d;
+}
+.panel-default > .panel-heading .badge.minus {
+  background-color: #777777;
+}
+.panel-default > .panel-heading .badge.times {
+  background-color: #d9433b;
+}
+.booknow {
+  margin-left: 0px;
+  padding: 7px 5px 13px 5px;
+  font-size: 14px;
+}
+.btn-group > .btn {
+  margin-right: 0;
+}
+.computersFreeGraph {
+  height: 50px;
+  width: 50px;
+}
+.remove-btn {
+  align: left;
+  margin: 0px 0px 0px 0px;
+  padding: 7px 5px 10px 0px;
+  font-size: 14px;
+}
+.unliker.unclicked {
+  background-color: blue;
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  margin-left: 50px;
+  cursor: pointer;
+}
+.unliker.clicked {
+  margin-left: 50px;
+}
+.favRemover {
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+.confirmRemoval {
+  background-color: green;
+}
+.cancelRemoval {
+  background-color: red;
+}
+.fa-check.confirmRemove {
+  color: #2ea83d;
+}
+.fa-check.confirmRemove .avail {
+  color: black;
+}
+.fa-times.cancelRemove {
+  color: #d9433b;
+}
+.openHoursComp {
+  margin-left: auto;
+  margin-right: auto;
+}
+.openHourDiv {
+  float: left;
+  text-align: center;
+}
+.closedStats {
+  background-color: grey;
+  opacity: 0.4;
+}
+.closedOpeningHour {
+  color: #d9433b;
+}
+.autocomplete-suggestions {
+  border: 1px solid #999;
+  background: #fff;
+  cursor: default;
+  overflow: auto;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.autocomplete-suggestion {
+  padding: 8px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
+}
+.autocomplete-selected {
+  background: #f0f0f0;
+}
+.autocomplete-suggestions strong {
+  font-weight: normal;
+  color: #3399ff;
+}
+#searchfield {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 35px;
+}
+#searchfield form {
+  display: inline-block;
+  background: #eeefed;
+  padding: 0;
+  margin: 0;
+  padding: 5px;
+  border-radius: 3px;
+  margin: 5px 0 0 0;
+}
+#searchfield form .biginput {
+  width: 600px;
+  height: 40px;
+  padding: 0 10px 0 10px;
+  background-color: #fff;
+  border: 1px solid #c8c8c8;
+  border-radius: 3px;
+  color: #aeaeae;
+  font-weight: normal;
+  font-size: 1.5em;
+  -webkit-transition: all 0.2s linear;
+  -moz-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+#searchfield form .biginput:focus {
+  color: #858585;
+}
+.autocompleteForm {
+  width: 50%;
+}

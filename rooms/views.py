@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
 from core import utilities
+import datetime
 
 
 def index(request):
@@ -46,6 +47,9 @@ def filter_suggestions(request):
             data = data.filter(projector='true')
 
 
+
+
+
         # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
         # if 'other' needs removed...
@@ -62,13 +66,39 @@ def filter_suggestions(request):
             for campus in campuses_to_remove:
                 data = data.exclude(campus_name=campus)
 
-        hr = 12
-        # filter all rooms which have an activity that starts before x hours time and ends after now
-        # currently using test times and dates
-        busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
-                                 activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
-        busy_rooms = [x.locationId for x in busy_rooms]
-        data = data.exclude(locationId__in=busy_rooms)
+
+        # REMEMBER TO IMPLEMENT THIS IN THE JSON FEED!!
+        # available_for_hours = request.GET['availableForHours']
+
+
+        # THIS IS A DUMMY VARIABLE! Remove after test!
+        available_for_hours = 3
+
+        data = utilities.filter_out_busy_rooms(data, available_for_hours)
+
+        #
+        # # filter all rooms which have an activity that starts before x hours time and ends after now
+        # # currently using test times and dates
+        #
+        # current_time = datetime.datetime.now()
+        # wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
+        #
+        #
+        # # if an event starts before end time, and ends after currentTime, then the room is
+        # # already booked, and should be added to busy_rooms.
+        #
+        # busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
+        #                          activity__endTime__gte=current_time)
+        #
+        #
+        #
+        #
+        # # busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
+        # #                          activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
+        #
+        # # now exclude all rooms that are busy from the room suggestions (data)
+        # busy_rooms = [x.locationId for x in busy_rooms]
+        # data = data.exclude(locationId__in=busy_rooms)
 
 
         # if they're currently searching for a building:

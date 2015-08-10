@@ -1,0 +1,373 @@
+//out: ../static/pc/css/labsStyling.css
+
+@import "../../core/less/variables.less";
+
+#yesBtnContainer{
+    text-align: center;
+}
+
+#currentMap{
+    margin-top: 15px;
+    height:300px;
+}
+
+#yesBtn{
+    margin: 15px;
+    .fa-external-link{
+        margin-left:5px;
+        font-size:13px;
+    }
+}
+
+.navbar{
+    margin-bottom: 0px;
+}
+
+#suggestion{
+    margin: 5px 0 15px 0;
+    padding: 0;
+    .flex(1,1,0);
+}
+// add a wee bid of extra padding between the suggestion and the left/right buttons if you can spare the space
+@media (min-width: 400px){
+    #suggestion{
+        padding: 0 5px;
+    }
+}
+
+//left and right arrow styling and positioning
+.arrow{
+    height: 0px; // height is set dynamically by JS
+    cursor: pointer;
+    min-width:20px;
+    max-width:40px;
+    //position the arrow using flexbox
+    .flex(4%,0,1);
+    
+    //center align the arrow icon itself using flexbox: 
+    .flex-center();
+    &:hover{
+        background-color: rgba(200,200,200,0.2);
+    }
+    &.disabled{
+        cursor: default;
+        opacity: 0;
+    }
+}
+
+#mainContainer{
+    .display-inline-flex();
+    width:100%;
+    .transition(opacity, @optionsMenuTransitionTime);
+}
+
+#roomName{   
+    margin: 0; 
+    
+    //responsive text size
+    font-size: 14px;
+    line-height: 14px;
+    @media (min-width: 200px) {
+        font-size: 14px;
+        line-height: 14px;
+        font-size: 7vw;
+        line-height: 7vw;
+    }
+    @media (min-width: 300px) {
+        font-size: 21px;
+        line-height: 21px;
+    }
+    @media (min-width: 400px) {
+        font-size: 5.25vw;
+        line-height: 5.25vw;
+    }
+    @media (min-width: 500px) {
+        font-size: 26.25px;
+        line-height: 26.25px;
+    }
+}
+
+
+//responsive text size for computers free label: 
+#computersFreeLabel{
+    font-size: 12px;
+    line-height: 12px;
+    @media (min-width: 200px) {
+        font-size: 12px;
+        line-height: 12px;
+        font-size: 6vw;
+        line-height: 6vw;
+    }
+    @media (min-width: 300px) {
+        font-size: 18px;
+        line-height: 18px;
+    }
+}
+
+//room and availability row positioning (using flex, unsupported on IE < 10 )
+#roomRow, #computersFreeRow{
+    .display-flex();
+    margin: 0;
+    #roomNameContainer, #computersFreeLabelContainer{
+        .flex(3,1,0);
+        position: relative;
+        min-height: 1px;
+        margin: auto;
+    }
+
+    #starContainer, #computersFreeGraphContainer{
+        .flex(51px,0,0);
+        text-align: center;
+        position: relative;
+        min-height: 1px;
+        margin: auto;
+    }
+}
+
+#computersFreeGraph{
+    height: 51px;
+    width: 51px;
+    margin: auto;
+}
+
+#computersFreeNumber{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: #00aa00;
+}
+
+@busyAnimationHeight:54px;
+// center the busy animation
+#mapContainer{
+    position:relative;
+    #busyAnimation{
+        height: @busyAnimationHeight;
+        width: @busyAnimationHeight;
+        position: absolute;
+        z-index: 1;
+        top: 50%;
+        right: 50%;
+        margin-top: -@busyAnimationHeight/2;
+        margin-right: -@busyAnimationHeight/2;
+    }
+}
+
+#swipeReminder{
+    position:relative;
+    left:30px;
+    cursor:default;
+    opacity:0;
+    .transitions(opacity, 0.5s, left, 0.5s);
+    text-align: center;
+    font-size: 18px;
+    width:95%;
+    .fa{
+        vertical-align: bottom;
+        color:#555555;
+    }
+    #swipeReminderText{
+        line-height: 36px;
+    }
+}
+
+// positioning is set using JS
+#optionsMenu{
+    width: 100%;
+    max-width: 1000px;
+    position:fixed;
+    background-color: @optionsBackground;
+    .transition(top, @optionsMenuTransitionTime);
+    // make the transition toggleable
+    &.transitionOff{
+        .transition(top, 0s);
+    }
+    // wee triangle on top of the options menu signifying up or down
+    .triangle {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        cursor: pointer;
+        //positioning:
+        position: relative;
+        right: 0;
+        left: 0;
+        margin-left: auto;
+        margin-right: auto;
+        // triangle up:
+        border-width: 0 6px 10px 6px;
+        border-color: transparent transparent @optionsBackground transparent;
+        bottom: 10px;
+        margin-bottom: -10px;
+    }
+    #optionsTitle{
+        height: 40px;
+        width: 100%;
+        font-size: 20px;
+        cursor: pointer;
+        .flex-center();
+        .fa-cog{
+            margin-right: 5px;
+            color:#555;
+            cursor: pointer;
+        }
+    }
+    &.opened{
+        .triangle {
+            // triangle down:
+            border-width: 10px 6px 0 6px;
+            border-color: white transparent transparent transparent;
+            bottom:0px;
+            z-index: 1;
+        }
+    }
+    #optionsContent{
+        margin: 0 10px;
+        padding-bottom: 15px;
+        text-align: center;
+        .optionsCategory{
+            border-top: solid #ddd 1px;
+            margin-bottom: 5px;
+            h1{
+                font-size:20px;
+                margin: 5px 0px;
+            }
+            label{
+                font-weight: normal;
+                font-size:16px;
+                margin-bottom: 0px;
+            }
+            &#sortingOptions>.row{
+                margin:0;
+            }
+            
+            .campusCheckbox{
+                color: #fff;
+                background-color: #5cb85c;
+                border-color: #4cae4c;
+                padding: 6px 2px;
+                &:not(.checked) {
+                    background-color: #d9534f;
+                    border-color: #d43f3a;
+                    opacity: 0.5;
+                }
+                &:hover {
+                    z-index: auto;
+                }
+                &:focus {
+                    z-index: 3;
+                }
+            }
+            
+            #holyroodCheckboxDiv{
+                @media (max-width:374px){
+                    display:none;
+                }
+            }
+            #lauristonCheckboxDiv{
+                @media (max-width:290px){
+                    display:none;
+                }
+            }
+            #locationCorrectorText:focus{
+                z-index: 3;
+            }
+            #locationCorrectorGo{
+                i{
+                    line-height: 20px;
+                }
+            }
+            #searchWithNewOptionsBtn{
+                font-size: 20px;
+                margin-top: 20px;
+            }
+        }
+    }
+}
+
+// needed for scroll disabling for some reason
+body{
+    width:100%;
+}
+
+// shorthand for all versions of display: flex
+.display-flex(){
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+// shorthand for all versions of display: inline-flex
+.display-inline-flex(){
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -moz-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+}
+
+// shorthand for all versions of flex: a b c
+.flex(@a, @b, @c){
+    -webkit-box-flex: @b;
+    -webkit-flex-grow: @b;
+    -moz-box-flex: @b;
+    -ms-flex-positive: @b;
+    flex-grow: @b;
+
+    -webkit-flex-shrink: @c;
+    -ms-flex-negative: @c;
+    flex-shrink: @c;
+    -webkit-flex-basis: @a;
+    -ms-flex-preferred-size: @a;
+    flex-basis: @a;
+    flex: @a @b @c;
+}
+
+//shorthand for all versions of justify-content: a
+.justify-content(@a){
+    -webkit-box-pack: @a;
+    -webkit-justify-content: @a;
+    -ms-flex-pack: @a;
+    -moz-box-pack: @a;
+    justify-content: @a;
+}
+
+//shorthand for all versions of align-items: a
+.align-items(@a){
+    -webkit-box-align: @a;
+    -webkit-align-items: @a;
+    -ms-flex-align: @a;
+    -moz-box-align: @a;
+    align-items: @a;
+}
+
+//shorthand for all versions of transition: property time;
+.transition(@property, @time){
+    -webkit-transition: @property @time;
+    -moz-transition: @property @time;
+    -o-transition: @property @time;
+    transition: @property @time;
+}
+
+//shorthand for all versions of transition: property time,  property2 time2;
+.transitions(@property, @time, @property2, @time2){
+    -webkit-transition: @property @time, @property2, @time2;
+    -moz-transition: @property @time, @property2, @time2;
+    -o-transition: @property @time, @property2, @time2;
+    transition: @property @time, @property2, @time2;
+}
+
+//center content using flexbox
+.flex-center(){
+    .display-flex();
+    .justify-content(center);
+    .align-items(center);
+}
