@@ -120,24 +120,6 @@
     line-height: 26.25px;
   }
 }
-#computersFreeLabel {
-  font-size: 12px;
-  line-height: 12px;
-}
-@media (min-width: 200px) {
-  #computersFreeLabel {
-    font-size: 12px;
-    line-height: 12px;
-    font-size: 6vw;
-    line-height: 6vw;
-  }
-}
-@media (min-width: 300px) {
-  #computersFreeLabel {
-    font-size: 18px;
-    line-height: 18px;
-  }
-}
 #roomRow,
 #computersFreeRow {
   display: -webkit-box;
@@ -187,6 +169,81 @@
   position: relative;
   min-height: 1px;
   margin: auto;
+}
+#roomRow #computersFreeLabel,
+#computersFreeRow #computersFreeLabel,
+#roomRow #computersInUseLabel,
+#computersFreeRow #computersInUseLabel {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 12px;
+}
+@media (min-width: 200px) {
+  #roomRow #computersFreeLabel,
+  #computersFreeRow #computersFreeLabel,
+  #roomRow #computersInUseLabel,
+  #computersFreeRow #computersInUseLabel {
+    font-size: 12px;
+    line-height: 12px;
+    font-size: 6vw;
+    line-height: 6vw;
+  }
+}
+@media (min-width: 300px) {
+  #roomRow #computersFreeLabel,
+  #computersFreeRow #computersFreeLabel,
+  #roomRow #computersInUseLabel,
+  #computersFreeRow #computersInUseLabel {
+    font-size: 18px;
+    line-height: 18px;
+  }
+}
+@media (max-width: 449px) {
+  #roomRow #computersFreeLabel .hidden-xs-custom,
+  #computersFreeRow #computersFreeLabel .hidden-xs-custom,
+  #roomRow #computersInUseLabel .hidden-xs-custom,
+  #computersFreeRow #computersInUseLabel .hidden-xs-custom {
+    display: none;
+  }
+}
+@media (min-width: 450px) {
+  #roomRow #computersFreeLabel .visible-xs-custom,
+  #computersFreeRow #computersFreeLabel .visible-xs-custom,
+  #roomRow #computersInUseLabel .visible-xs-custom,
+  #computersFreeRow #computersInUseLabel .visible-xs-custom {
+    display: none;
+  }
+}
+@media (max-width: 349px) {
+  #roomRow #computersFreeLabel .hidden-xss-custom,
+  #computersFreeRow #computersFreeLabel .hidden-xss-custom,
+  #roomRow #computersInUseLabel .hidden-xss-custom,
+  #computersFreeRow #computersInUseLabel .hidden-xss-custom {
+    display: none;
+  }
+}
+@media (min-width: 350px) {
+  #roomRow #computersFreeLabel .visible-xss-custom,
+  #computersFreeRow #computersFreeLabel .visible-xss-custom,
+  #roomRow #computersInUseLabel .visible-xss-custom,
+  #computersFreeRow #computersInUseLabel .visible-xss-custom {
+    display: none;
+  }
+}
+#roomRow .badge,
+#computersFreeRow .badge {
+  margin: 0 0 3px 5px;
+  font-size: 14px;
+  min-width: 30px;
+}
+#roomRow .badge.free,
+#computersFreeRow .badge.free {
+  background-color: #2ea83d;
+  margin-right: 10px;
+}
+#roomRow .badge.inuse,
+#computersFreeRow .badge.inuse {
+  background-color: #d9433b;
 }
 #computersFreeGraph {
   height: 51px;
