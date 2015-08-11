@@ -216,7 +216,7 @@
                             </div>
 
                             <div class="col-xs-2">
-                                <a href="http://maps.google.com/maps?q=" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
                         <div class="row">
@@ -275,7 +275,7 @@
                             </div>
 
                             <div class="col-xs-2">
-                                <a href="http://maps.google.com/maps?q=" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                             </div>
                         </div>
                         <div class="row">
@@ -371,7 +371,7 @@
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                     <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>
                             </div>
@@ -456,7 +456,7 @@
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                     <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
                                 </div>
                             </div>
@@ -530,7 +530,7 @@
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                     <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
                                 </div>
                             </div>
@@ -565,7 +565,7 @@
 {#                                <a href="/" class="btn btn-default" role="button"><i class="fa fa-calendar fa-2x"></i></a>#}
 {#                            </div>#}
 {#                            <div class="col-xs-4">#}
-{#                                <a href="{% url 'labs' %}" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>#}
+{#                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default" role="button"><i class="fa fa-map-marker fa-2x"></i></a>#}
 {#                            </div>#}
 {#                            <div class="col-xs-4">#}
 {#                                <a href="/" class="btn btn-default booknow" role="button">Book Now</a>#}
@@ -635,7 +635,6 @@
                                     <p class="suitabilitiesRoom"></p>
                                  </div>
 
-
                             </div>
                             <div class="row" style="margin-top: 15px;">
                                 <div class="col-xs-2">
@@ -643,7 +642,7 @@
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
                                      <a href="/" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn mapBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                                     <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn mapBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>
                             </div>
