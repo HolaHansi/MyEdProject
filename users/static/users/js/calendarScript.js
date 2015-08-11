@@ -65,6 +65,7 @@ $(document).ready(function(){
             right: 'agendaWeek,agendaDay'
         },
         defaultDate: dateNow,
+        // show week before day
         defaultView: 'agendaWeek',
         editable: false,
         businessHours: false,
