@@ -1,37 +1,38 @@
 {% extends "core/base.html" %}
 
+<!-- only used in development, production uses EASE to login -->
+
 {% block content %}
     <div class="container-fluid">
-    <br><br><br>
+        {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page.
+                    To proceed, please login with an account that has access.</p>
+            {% else %}
+                <p>Please login to see this page.</p>
+            {% endif %}
+        {% endif %}
+        <br>
+        <form method="post" action="{% url 'users.views.login' %}">
+            {% csrf_token %}
 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
+            {{ form.username.label_tag }}
+            {{ form.username }}
 
-<form method="post" action="{% url 'users.views.login' %}">
-{% csrf_token %}
+            <br><br>
+            {{ form.password.label_tag }}
+            {{ form.password }}
+            <br>
+            <br>
 
-{{ form.username.label_tag }}
-{{ form.username }}
-
-<br><br>
-  {{ form.password.label_tag }}
-{{ form.password }}
-<br>
-    <br>
-
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-</div>
+            <input type="submit" class="btn btn-default" value="Log in" />
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+        <a role="button" class="btn btn-default" href="/registration">Register</a>
+    </div>
 
 {% endblock %}
