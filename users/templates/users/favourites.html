@@ -17,10 +17,10 @@
 <script type="text/javascript" src="{% static 'users/js/roomAutocompleteScript.js' %}"></script>
 <script type="text/javascript" src="{% static 'users/js/jquery.autocomplete.js' %}"></script>
 
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.css"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.print.css"></script>
-
+    <!-- FULL CALENDAR STUFF -->
+<link rel="stylesheet" href="{% static 'core/fullcalendar/fullcalendar.css' %}" />
+<script src="{% static 'core/fullcalendar/moment.min.js' %}"></script>
+<script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
 <script type="text/javascript" src="{% static 'users/js/calendarScript.js' %}"></script>
 
 {% endblock %}
@@ -326,6 +326,27 @@
 
 
 
+
+        <!-- MODAL Calendar -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" >
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Calendar</h4>
+      </div>
+      <div class="modal-body">
+        <div id="calendar"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+        <!-- end Modal -->
+
+
             <!-- generated favourites -->
 
             {% for fav in rooms_available_now %}
@@ -337,7 +358,7 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                        <span class="badge check"><i class="fa fa-check avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
+                        <span class="badge check"><i class="fa fa-check avail"></i></span><div class="roomName {{ fav.locationId }}" id="{{ fav.room_name }}"></div>{{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
                     </h4>
@@ -377,7 +398,7 @@
                                     <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>
@@ -416,7 +437,7 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                        <span class="badge times"><i class="fa fa-times"></i></span>{{ fav.room_name }}, {{fav.building_name}}<span class="caret"></span>
+                        <span class="badge times"><i class="fa fa-times"></i></span><div class="roomName {{ fav.locationId }}" id="{{ fav.room_name }}"></div>{{ fav.room_name }}, {{fav.building_name}}<span class="caret"></span>
                         </a>
                     </h4>
                 </div>
@@ -462,7 +483,7 @@
                                     <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
                                 </div>
@@ -497,7 +518,7 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
                     <h4 class="panel-title">
                         <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                        <span class="badge minus"><i class="fa fa-minus avail"></i></span>{{ fav.room_name }}, {{fav.building_name}}
+                        <span class="badge minus"><i class="fa fa-minus avail"></i></span><div class="roomName {{ fav.locationId }}" id="{{ fav.room_name }}"></div>{{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
                     </h4>
@@ -536,7 +557,7 @@
                                     <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>
                                 </div>
@@ -603,13 +624,13 @@
     <!-- full page container end -->
     </div>
 
-              <!-- template for available_now rooms-->
+              <!-- template for rooms added using the autoCompleter-->
 
             <div id="infoFor-room-" class="panel panel-default room template" style="display:none;">
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-">
                     <h4 class="panel-title">
                         <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-" href="#collapse-" aria-expanded="true" aria-controls="collapse-">
-                        <span class="badge check"><i class="fa fa-check avail"></i></span>
+                        <span class="badge check"><i class="fa fa-check avail"></i></span><div class="roomName" id="dummyId"></div>
                             <span class="caret"></span>
                         </a>
                     </h4>
@@ -649,7 +670,7 @@
                                     <button id="room-" class="btn btn-default remove-btn"><i class="fa fa-star starred"></i>Remove</button>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="#" class="btn btn-default roomBtn calBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn mapBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                                      <a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>
                                 </div>

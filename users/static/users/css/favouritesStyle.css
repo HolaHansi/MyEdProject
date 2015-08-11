@@ -262,3 +262,6 @@
 .autocompleteForm {
   width: 50%;
 }
+.fc-today {
+  background: #f0f3ff !important;
+}

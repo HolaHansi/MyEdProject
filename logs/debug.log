@@ -68,3 +68,337 @@ Traceback (most recent call last):
   File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
     raise MultiValueDictKeyError(repr(key))
 django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:03:13] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:11:23] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:11:29] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:12:55] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:13:14] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:13:30] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:13:30] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:35:07] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:35:07] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:36:12] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:36:13] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:36:55] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:36:55] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:37:09] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:37:10] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:37:31] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:37:32] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:49:20] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:49:21] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:59:10] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:59:11] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 10:59:34] WARNING [django.request:170] Not Found: /favourites/fullcalendar/fullcalendar.js
+[11/Aug/2015 10:59:34] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:00:24] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:00:53] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:02:09] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:03:11] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:03:33] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:03:36] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:05:27] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:06:53] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:07:39] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 390, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:08:34] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 390, in calendar
+    # get the location id
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"
+[11/Aug/2015 11:08:49] ERROR [django.request:256] Internal Server Error: /calendar/
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 320, in __getitem__
+    list_ = super(MultiValueDict, self).__getitem__(key)
+KeyError: 'locationId'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/core/handlers/base.py", line 132, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/hanschristiangregersen/PycharmProjects/NewDesignBooked/MyEdProject/users/views.py", line 391, in calendar
+    locationId = request.GET['locationId']
+  File "/Users/hanschristiangregersen/.virtualenvs/booked/lib/python3.4/site-packages/django/utils/datastructures.py", line 322, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+django.utils.datastructures.MultiValueDictKeyError: "'locationId'"

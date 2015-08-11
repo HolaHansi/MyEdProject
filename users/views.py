@@ -377,7 +377,6 @@ def history(request):
         return render(request, 'users/history.html', context)
 
 
-
 def calendar(request):
     """
     Returns json of all the activities of a particular room (given by locationId).
@@ -390,6 +389,7 @@ def calendar(request):
         # get the location id
         locationId = request.GET['locationId']
 
+
         # get the room in question
         room = Tutorial_Room.objects.get(locationId=locationId)
 
@@ -398,6 +398,8 @@ def calendar(request):
 
         # Serialize all the activities
         serializer = Activity_Serializer(activities, many=True)
+
+        #TODO Could add opening hours to fade out the areas that are closed in FullCalendar.
 
         # return sorted suggestions
         return utilities.JSONResponse(serializer.data)
