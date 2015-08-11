@@ -608,7 +608,7 @@ function getSuggestions(nearby, empty, campuses) {
         });
 }
 
-/* 
+/*
    Populate the website with the suggestion
    Parameters: none
 */

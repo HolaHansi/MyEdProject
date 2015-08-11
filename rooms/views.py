@@ -3,7 +3,6 @@ from django.shortcuts import render
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
 from core import utilities
-import datetime
 
 
 def index(request):
