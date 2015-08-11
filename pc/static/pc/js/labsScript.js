@@ -615,7 +615,8 @@ function getSuggestions(nearby, empty, campuses) {
 function loadChoice() {
 	// populate the html
 	$('#roomName').html(currentChoice.name);
-	$('#computersFreeNumber').html(currentChoice.free);
+	$('#computersFreeRow .badge.free').html(currentChoice.free);
+    $('#computersFreeRow .badge.inuse').html(currentChoice.seats-currentChoice.free);
     makepie("computersFreeGraph", currentChoice.free, (currentChoice.seats-currentChoice.free));
     
 	// if the user has reached the end of the list of suggestions, disable the 'next' button
