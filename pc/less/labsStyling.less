@@ -87,23 +87,6 @@
     }
 }
 
-
-//responsive text size for computers free label: 
-#computersFreeLabel{
-    font-size: 12px;
-    line-height: 12px;
-    @media (min-width: 200px) {
-        font-size: 12px;
-        line-height: 12px;
-        font-size: 6vw;
-        line-height: 6vw;
-    }
-    @media (min-width: 300px) {
-        font-size: 18px;
-        line-height: 18px;
-    }
-}
-
 //room and availability row positioning (using flex, unsupported on IE < 10 )
 #roomRow, #computersFreeRow{
     .display-flex();
@@ -121,6 +104,58 @@
         position: relative;
         min-height: 1px;
         margin: auto;
+    }
+    #computersFreeLabel, #computersInUseLabel{
+        display:inline-block;
+        //responsive text size for both labels: 
+        font-size: 12px;
+        line-height: 12px;
+        @media (min-width: 200px) {
+            font-size: 12px;
+            line-height: 12px;
+            font-size: 6vw;
+            line-height: 6vw;
+        }
+        @media (min-width: 300px) {
+            font-size: 18px;
+            line-height: 18px;
+        }
+        //custom version of bootstrap's .hidden-xs, this one hides it until a smaller point, and then sets it to inline-block rather than block
+        .hidden-xs-custom{
+            @media (max-width: 449px){
+                display:none;
+            }
+        }
+        //custom version of bootstrap's .visible-xs, this one shows it until a smaller point, and uses inline-block rather than block
+        .visible-xs-custom{
+            @media (min-width: 450px){
+                display:none;
+            }
+        }
+        //custom version of bootstrap's .hidden-xs, this one hides it until an even smaller point, and then sets it to inline-block rather than block
+        .hidden-xss-custom{
+            @media (max-width: 349px){
+                display:none;
+            }
+        }
+        //custom version of bootstrap's .visible-xs, this one shows it until an even smaller point, and uses inline-block rather than block
+        .visible-xss-custom{
+            @media (min-width: 350px){
+                display:none;
+            }
+        }
+    }
+    .badge{
+        margin: 0 0 3px 5px;
+        font-size: 14px;
+        min-width:30px;
+        &.free{
+            background-color: @availableGreen;
+            margin-right: 10px;
+        }
+        &.inuse{
+            background-color:@unavailableRed;
+        }
     }
 }
 

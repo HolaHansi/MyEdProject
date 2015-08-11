@@ -3,7 +3,6 @@ from django.shortcuts import render
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
 from core import utilities
-import datetime
 
 
 def index(request):
@@ -46,10 +45,6 @@ def filter_suggestions(request):
         if request.GET['projector'] == 'true':
             data = data.filter(projector='true')
 
-
-
-
-
         # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
         # if 'other' needs removed...
@@ -66,10 +61,8 @@ def filter_suggestions(request):
             for campus in campuses_to_remove:
                 data = data.exclude(campus_name=campus)
 
-
         # REMEMBER TO IMPLEMENT THIS IN THE JSON FEED!!
         # available_for_hours = request.GET['availableForHours']
-
 
         # THIS IS A DUMMY VARIABLE! Remove after test!
         available_for_hours = 3
@@ -100,7 +93,6 @@ def filter_suggestions(request):
         # busy_rooms = [x.locationId for x in busy_rooms]
         # data = data.exclude(locationId__in=busy_rooms)
 
-
         # if they're currently searching for a building:
         if request.GET['building'] == '':
             # work out how many rooms are available in each building
@@ -127,8 +119,8 @@ def filter_suggestions(request):
 
                 # sort the buildings based on distance from user, closest first
                 building_details = utilities.sortBuildingsByDistance(usr_longitude=usr_longitude,
-                                                                    usr_latitude=usr_latitude,
-                                                                    building_details=building_details)
+                                                                     usr_latitude=usr_latitude,
+                                                                     building_details=building_details)
 
             # if not sorting by location, sort by number of suitable rooms available
             else:

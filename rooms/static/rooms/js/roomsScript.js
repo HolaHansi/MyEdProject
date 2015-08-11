@@ -1,5 +1,6 @@
 var suggestions = []; // all suggestions provided by the server
 var currentChoice = {}; // the suggestion currently on display
+var userFavourites = []; // all the rooms currently liked by the user
 
 var userLatitude = 55.943655; // current latitude of user
 var userLongitude = -3.188775; // current longitude of user
@@ -41,6 +42,9 @@ $(window).resize(function(){
 $(document).ready(function () {
     // Create the map
     makeMap();
+    
+    // get the list of all the rooms the user likes
+    getFavourites()
     
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['roomOptions']){
@@ -153,13 +157,30 @@ $(document).ready(function () {
 			})
 			.fail(function () {
                 alert('Failed to favourite location');
-                // if the request failed, undo the star change
+                // if the request failed, undo the local favouriting
                 $('#suggestion .fa-star').toggleClass('unstarred');
                 $('#suggestion .fa-star').toggleClass('starred');
+                // toggle the room from the local list of favourite rooms
+                if (roomLikedByUser){
+                    // remove locationId from the list
+                    userFavourites.splice(userFavourites.indexOf(locationId),1);
+                } else {
+                    // add locationId to the list
+                    userFavourites.push(locationId);
+                }
+                roomLikedByUser=!roomLikedByUser;
 			});
         // toggle star colour
         $('#suggestion .fa-star').toggleClass('unstarred');
         $('#suggestion .fa-star').toggleClass('starred');
+        // toggle the room from the local list of favourite rooms
+        if (roomLikedByUser){
+            // remove locationId from the list
+            userFavourites.splice(userFavourites.indexOf(locationId),1);
+        } else {
+            // add locationId to the list
+            userFavourites.push(locationId);
+        }
         roomLikedByUser=!roomLikedByUser;
 	});
     
@@ -563,25 +584,19 @@ function updateMap(){
     });
 }
 
+
 /*
 	Check if the current suggestion is liked by the user and color the star appropriately
 	Parameters: locationId (string) - the id of the suggestion to be checked
- */
+*/
 function liked(locationId) {
-    // send the request to the server to find out if this room is liked or not
-	$.get('/like/', {
-			'locationId': locationId
-		})
-		.done(function (data) {
-			roomLikedByUser = (data==='true');
-			if (roomLikedByUser) {
-                $('#suggestion .fa-star').removeClass('unstarred');
-                $('#suggestion .fa-star').addClass('starred');
-			} else {
-                $('#suggestion .fa-star').addClass('unstarred');
-                $('#suggestion .fa-star').removeClass('starred');
-			}
-		});
+    if (userFavourites.indexOf(locationId)>=0){
+        $('#suggestion .fa-star').removeClass('unstarred');
+        $('#suggestion .fa-star').addClass('starred');
+    } else {
+        $('#suggestion .fa-star').addClass('unstarred');
+        $('#suggestion .fa-star').removeClass('starred');
+    }
 };
 
 // get the suggestions from the server using the current options chosen by the user as parameters
@@ -622,7 +637,7 @@ function getUnselectedCampuses(){
    pc (boolean): whether the user wants only rooms with a pc
    printer (boolean): whether the user wants only rooms with a printer
    whiteboard (boolean): whether the user wants only rooms with a whiteboard
-   pcblackboard(boolean): whether the user wants only rooms with a blackboard
+   blackboard(boolean): whether the user wants only rooms with a blackboard
    projector (boolean): whether the user wants only rooms with a projector
    building (string): the abbreviation of the building the user is searching within if they've chosen one, else ''
    nearby (boolean): whether the user is sorting by distance
@@ -675,6 +690,19 @@ function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector
         .fail(function(data){
             alert('Unable to get suggestions.  \n\nCheck your internet connection and refresh the page.  ');
         });
+}
+
+/*
+    Get the list of this user's favourites from the server
+    Parameters: none
+*/
+function getFavourites(){
+    $.get('/getLiked', {
+        'type':'rooms'
+    })
+    .done(function (data) {
+        userFavourites = data;
+    })
 }
 
 /* 

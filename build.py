@@ -4,6 +4,7 @@ Should be called like this : python build.py, and on the apache server: python3 
 """
 import os
 
+
 # set up the django environment
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.development")
 
