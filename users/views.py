@@ -228,41 +228,29 @@ def like(request):
 
             return HttpResponse(status=200)
 
-    # the GET branch is for obtaining the likedByUser variable for a particular room or pc.
+# get the list of all this users favourites
+@login_required
+def get_all_favourites(request):
     if request.method == 'GET':
-        # for PC request try:
-        if 'pc_id' in request.GET.keys():
-            # get the pc in question
-            pc_id = request.GET['pc_id']
 
-            # get user
-            user = request.user
+        # get user
+        user = request.user
 
-            # if the pc is already liked by user, then assign true to pcLikedByUser
-            try:
-                user.pc_favourites.get(id=pc_id)
-                pcLikedByUser = 'true'
-            except ObjectDoesNotExist:
-                pcLikedByUser = 'false'
+        # if getting favourite labs:
+        if request.GET['type']=='labs':
+            # make a list of all this users favourite labs' ids
+            users_favourites = user.pc_favourites.all().values_list('id', flat=True)
 
-            return utilities.JSONResponse(pcLikedByUser)
+            # return this list as a JSON response
+            return utilities.JSONResponse(users_favourites)
 
-        # for Room requests
+        # if getting favourite rooms
         else:
-            # get the room in question
-            locationId = request.GET['locationId']
+            # make a list of all this users favourite rooms' ids
+            users_favourites = user.room_favourites.all().values_list('locationId', flat=True)
 
-            # get user from request
-            user = request.user
-
-            # if the room is already liked by user, then assign true to pcLikedByUser
-            try:
-                user.room_favourites.get(locationId=locationId)
-                roomLikedByUser = 'true'
-            except ObjectDoesNotExist:
-                roomLikedByUser = 'false'
-
-            return utilities.JSONResponse(roomLikedByUser)
+            # return this list as a JSON response
+            return utilities.JSONResponse(users_favourites)
 
 
 @login_required
@@ -272,8 +260,8 @@ def favourites(request):
     all the favourites of current user in the following categories:
     PC: currently open, currently closed
     Rooms: 1) Rooms Available Now (currently open and not booked),
-           2) Rooms not available (Either closed or currently booked
-    of both locally and globally allocated rooms), 3) locally allocated and currently open.
+           2) Rooms not available (Either closed or currently booked of both locally and globally allocated rooms),
+           3) locally allocated and currently open.
     """
     # get the user from the request
     user = request.user

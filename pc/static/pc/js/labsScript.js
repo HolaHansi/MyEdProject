@@ -1,5 +1,6 @@
 var suggestions = []; // all suggestions provided by the server
 var currentChoice = {}; // the suggestion currently on display
+var userFavourites = []; // all the labs currently liked by the user
 
 var userLatitude = 55.943655; // current latitude of user
 var userLongitude = -3.188775; // current longitude of user
@@ -39,6 +40,9 @@ $(document).ready(function () {
     // Create the map
     makeMap();
     
+    // get the list of all the rooms the user likes
+    getFavourites()
+    
     // if the user has changed their settings this session, use the new settings
     if (sessionStorage['labOptions']){
         var options = JSON.parse(sessionStorage['labOptions']);
@@ -71,6 +75,7 @@ $(document).ready(function () {
         // get the user's location, then send a get request if that's successful and display the initial suggestion
 	   getLocation();
     }
+    
     // Apply the JS styling
     resizeElements();
     
@@ -116,13 +121,30 @@ $(document).ready(function () {
 			})
 			.fail(function () {
                 alert('Failed to favourite location');
-                // if the request failed, undo the star change
+                // if the request failed, undo the local favouriting
                 $('#suggestion .fa-star').toggleClass('unstarred');
                 $('#suggestion .fa-star').toggleClass('starred');
+                // toggle the lab from the local list of favourite labs
+                if (labLikedByUser){
+                    // remove pc_id from the list
+                    userFavourites.splice(userFavourites.indexOf(pc_id),1);
+                } else {
+                    // add pc_id to the list
+                    userFavourites.push(pc_id);
+                }
+                labLikedByUser=!labLikedByUser;
 			});
         // toggle star colour
         $('#suggestion .fa-star').toggleClass('unstarred');
         $('#suggestion .fa-star').toggleClass('starred');
+        // toggle the lab from the local list of favourite labs
+        if (labLikedByUser){
+            // remove pc_id from the list
+            userFavourites.splice(userFavourites.indexOf(pc_id),1);
+        } else {
+            // add pc_id to the list
+            userFavourites.push(pc_id);
+        }
         labLikedByUser=!labLikedByUser;
 	});
     
@@ -515,23 +537,16 @@ function updateMap(){
 
 /*
 	Check if the current suggestion is liked by the user and color the star appropriately
-	Parameters: locationId (string) - the id of the suggestion to be checked
- */
+	Parameters: pc_id (string) - the id of the suggestion to be checked
+*/
 function liked(pc_id) {
-    // send the request to the server to find out if this room is liked or not
-	$.get('/like/', {
-			'pc_id': pc_id
-		})
-		.done(function (data) {
-			labLikedByUser = (data==='true');
-			if (labLikedByUser) {
-                $('#suggestion .fa-star').removeClass('unstarred');
-                $('#suggestion .fa-star').addClass('starred');
-			} else {
-                $('#suggestion .fa-star').addClass('unstarred');
-                $('#suggestion .fa-star').removeClass('starred');
-			}
-		});
+    if (userFavourites.indexOf(pc_id)>=0){
+        $('#suggestion .fa-star').removeClass('unstarred');
+        $('#suggestion .fa-star').addClass('starred');
+    } else {
+        $('#suggestion .fa-star').addClass('unstarred');
+        $('#suggestion .fa-star').removeClass('starred');
+    }
 };
 
 // get the suggestions from the server using the current options chosen by the user as parameters
@@ -606,6 +621,19 @@ function getSuggestions(nearby, empty, campuses) {
         .fail(function(data){
             alert('Unable to get suggestions.  \n\nCheck your internet connection and refresh the page.  ');
         });
+}
+
+/*
+    Get the list of this user's favourites from the server
+    Parameters: none
+*/
+function getFavourites(){
+    $.get('/getLiked', {
+        'type':'labs'
+    })
+    .done(function (data) {
+        userFavourites = data;
+    })
 }
 
 /*
