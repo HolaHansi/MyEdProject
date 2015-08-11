@@ -3,7 +3,6 @@
 ##TODO:
 
 - Set up scheduler
-- Implement chosen design
 - Documentation, documentation, documentation
 - Get feedback
 - Go to Hive
@@ -11,7 +10,6 @@
 
 ##Possible tweaks:
 
-- Send all rooms liked and toggle liked button locally
 - Custom pan display
 - Custom 'recenter map' option
 - Toggle displaying directions/location
