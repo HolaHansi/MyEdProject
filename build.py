@@ -6,7 +6,7 @@ import os
 
 
 # set up the django environment
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'core.settings.development')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.development")
 
 from django.core.management import execute_from_command_line
 from core.tasks import repopulate_all_tables

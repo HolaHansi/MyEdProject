@@ -292,7 +292,6 @@ function autoCompleteAPI() {
                     var placeToInsert = '#insertRoomAvailableNow';
                     // theLink html - this goes into the panelHeading
                     var linkHtml = '<span class="badge check"><i class="fa fa-check avail"></i></span>' + suggestion.value + '<span class="caret"></span>';
-
                     var availForIconHtml = '<i class="fa fa-check-circle"></i>';
                     var availForDescriptionHtml = 'Available for less than';
                     var availForValueHtml = suggestion.data.availableFor;
@@ -336,6 +335,7 @@ function autoCompleteAPI() {
 
                 };
 
+                linkHtml += '<div class="roomName ' + suggestion.data.locationId + '" id="' + suggestion.data.room_name + '"></div>';
 
                 // initialize id variables
                 var infoForID = 'infoFor-room-' + suggestion.data.locationId;
@@ -440,8 +440,23 @@ function autoCompleteAPI() {
 
                 suitabilities.html(facilities);
 
+                // update the roomName div (this is where calendar gets the room name
+
+                var roomName = clone.find('.roomName');
+
+
+
+                //clone.find('.roomName').attr('id', suggestion.data.room_name);
+
+                console.log('roomName thing???');
+                console.log(roomName);
+                console.log('end of roomName');
+
                 // update remove btn id
                 rmvBtn.attr('id', roomID);
+
+                // update calBtn
+                calBtn.attr('id', suggestion.data.locationId);
 
                 // insert the new favourite into the dom
                 clone.insertBefore(placeToInsert);

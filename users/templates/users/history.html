@@ -8,6 +8,14 @@
 
 
 <script type="text/javascript" src="{% static 'users/js/history.js' %}"></script>
+
+    <!-- FULL CALENDAR STUFF -->
+<link rel="stylesheet" href="{% static 'core/fullcalendar/fullcalendar.css' %}" />
+<script src="{% static 'core/fullcalendar/moment.min.js' %}"></script>
+<script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
+<script type="text/javascript" src="{% static 'users/js/calendarScript.js' %}"></script>
+
+
 {% endblock %}
 
 {% block content %}
@@ -40,6 +48,27 @@
     <div id="ROOMs" class="tab-pane">
         <div class="panel-group" role="tablist" aria-multiselectable="true" style="margin-bottom:5px;">
 
+        <!-- MODAL Calendar -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Calendar</h4>
+              </div>
+              <div class="modal-body">
+                <div id="calendar"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end MODAL -->
+
+
+
             <div id="historyCleared" style="display:none;"><p>History cleared!</p></div>
             <!-- generated favourites -->
 
@@ -55,7 +84,7 @@
                 <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.his_id}}">
                     <h4 class="panel-title">
                         <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.his_id}}" href="#collapse-{{fav.his_id}}" aria-expanded="true" aria-controls="collapse-{{fav.his_id}}">
-
+                            <div class="roomName {{ fav.locationId }}" id="{{ fav.room_name }}"></div>
                             {{ fav | get_batch}} {{ fav.room_name }}, {{fav.building_name}}
                             <span class="caret"></span>
                         </a>
@@ -102,7 +131,7 @@
                                     <p>{{ fav | booked_at_time }}</p>
                                 </div>
                                 <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="/" class="btn btn-default roomBtn" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                                      <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
 
                                     {{ fav | get_bookBtn }}

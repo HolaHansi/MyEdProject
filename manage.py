@@ -3,7 +3,6 @@ import os
 import sys
 
 if __name__ == "__main__":
-
     # remember to update settings to .production in production!
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", 'core.settings.development')
 

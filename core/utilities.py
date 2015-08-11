@@ -21,6 +21,7 @@ from rooms.models import Tutorial_Room
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.db.models import F
+from django.utils.timezone import utc
 
 
 # ======= availability of rooms functions ================
@@ -107,7 +108,7 @@ def excludeClosedLocations(data):
     """
 
     # get current time and weekday
-    now = timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())
+    now = datetime.datetime.now().replace(tzinfo=utc)
     current_time = now.time().isoformat()
     weekday = now.weekday()
 
@@ -254,7 +255,9 @@ def getOpenHours(location):
     :param location:
     :return: dictionary
     """
-    now = timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())
+
+    # get time now
+    now = datetime.datetime.now().replace(tzinfo=utc)
     weekday = now.weekday()
 
     # get the current opening hours of the room
