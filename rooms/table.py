@@ -470,7 +470,7 @@ def get_building_hours():
     # first authenticate with google using oAuth2
     # the credentials are stored in googleCredentialsSecrets.json and are kept out of version control.
 
-    json_key = json.load(open('googleCredentialsSecrets.json'))
+    json_key = json.load(open('secrets.json'))
     scope = ['https://spreadsheets.google.com/feeds']
     credentials = SignedJwtAssertionCredentials(json_key['client_email'], bytes(json_key['private_key'], 'utf-8'),
                                                 scope)
