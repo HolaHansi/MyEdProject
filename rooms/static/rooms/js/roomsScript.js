@@ -593,9 +593,11 @@ function liked(locationId) {
     if (userFavourites.indexOf(locationId)>=0){
         $('#suggestion .fa-star').removeClass('unstarred');
         $('#suggestion .fa-star').addClass('starred');
+        roomLikedByUser=true;
     } else {
         $('#suggestion .fa-star').addClass('unstarred');
         $('#suggestion .fa-star').removeClass('starred');
+        roomLikedByUser=false;
     }
 };
 

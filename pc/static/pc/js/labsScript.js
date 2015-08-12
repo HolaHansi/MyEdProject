@@ -543,9 +543,11 @@ function liked(pc_id) {
     if (userFavourites.indexOf(pc_id)>=0){
         $('#suggestion .fa-star').removeClass('unstarred');
         $('#suggestion .fa-star').addClass('starred');
+        labLikedByUser=true;
     } else {
         $('#suggestion .fa-star').addClass('unstarred');
         $('#suggestion .fa-star').removeClass('starred');
+        labLikedByUser=false;
     }
 };
 
