@@ -1,8 +1,9 @@
 from django.core.management.base import NoArgsCommand
+from core.tasks import refresh_locations
 
 
 class Command(NoArgsCommand):
-    help = 'test'
+    help = 'Check for any changed labs or rooms'
 
     def handle_noargs(self, **options):
-        self.stdout.write('test command run')
+        refresh_locations()
