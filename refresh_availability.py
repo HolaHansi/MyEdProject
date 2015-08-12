@@ -1,11 +1,13 @@
 # This file is run by a Cron job every 24 hours
 
-import os
 import django
+from django.conf import settings
+from core.settings import production
 
-# set up the django environment
+settings.configure(default_settings=production)
 django.setup()
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings.production")
+
+# Now this script can use any part of Django it needs.
 
 from core.tasks import refresh_availability
 
