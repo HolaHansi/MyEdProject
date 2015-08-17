@@ -83,4 +83,4 @@ class Computer_Labs(models.Model):
         normalised_ratio = (self.ratio - average_ratio) / standard_deviation_ratio
         normalised_free = (self.free - average_free) / standard_deviation_free
         # we want a small distance, a large ratio and a large number of seats free, though the latter is least important
-        return normalised_distance - normalised_ratio - normalised_free/2
+        return normalised_distance - normalised_ratio*.75 - normalised_free*.25
