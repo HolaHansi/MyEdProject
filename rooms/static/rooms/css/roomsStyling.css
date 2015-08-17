@@ -373,6 +373,17 @@
 #optionsMenu #optionsContent .optionsCategory#sortingOptions > .row {
   margin: 0;
 }
+#optionsMenu #optionsContent .optionsCategory #availabilityInput {
+  font-size: 17px;
+  padding: 0 0 0 10px;
+  width: 50px;
+  height: 30px;
+  display: inline-block;
+}
+#optionsMenu #optionsContent .optionsCategory #availabilityAddOn {
+  margin-left: 5px;
+  font-size: 17px;
+}
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox,
 #optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox {
   color: #fff;
