@@ -61,13 +61,10 @@ def filter_suggestions(request):
             for campus in campuses_to_remove:
                 data = data.exclude(campus_name=campus)
 
-        # REMEMBER TO IMPLEMENT THIS IN THE JSON FEED!!
-        # available_for_hours = request.GET['availableForHours']
-
-        # THIS IS A DUMMY VARIABLE! Remove after test!
-        available_for_hours = 3
-
-        data = utilities.filter_out_busy_rooms(data, available_for_hours)
+        # remove any rooms that aren't available for the next x hours, with x chosen by the user
+        available_for_hours = int(request.GET['availableFor'])
+        if available_for_hours>=0:
+            data = utilities.filter_out_busy_rooms(data, available_for_hours)
 
         # if they're currently searching for a building:
         if request.GET['building'] == '':

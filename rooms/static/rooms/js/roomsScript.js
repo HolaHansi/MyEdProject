@@ -51,6 +51,7 @@ $(document).ready(function () {
         var options = JSON.parse(sessionStorage['roomOptions']);
         $('#nearbyCheckbox').attr('checked',options.nearby);
         $('#bookableCheckbox').attr('checked',options.bookable);
+        $('#availabilityInput').val(options.availableForHours);
         $('#pcCheckbox').toggleClass('checked',options.pc);
         $('#printerCheckbox').toggleClass('checked',options.printer);
         $('#projectorCheckbox').toggleClass('checked',options.projector);
@@ -65,6 +66,7 @@ $(document).ready(function () {
         var oldOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
             bookable: $('bookableCheckbox').is(':checked'), 
+            availableForHours: $('#availabilityInput').val(),
             pc: $('#pcCheckbox').is(':checked'), 
             printer: $('#printerCheckbox').is(':checked'), 
             projector: $('#projectorCheckbox').is(':checked'), 
@@ -422,10 +424,25 @@ function toggleOptionsMenu(){
         $('#switchViewBtn').removeClass('disabled');
         $('#bookBtn').removeClass('disabled');
         $('#toMapBtn').removeClass('disabled');
+        // ensure the 'available for' option has a sensible value
+        // ie it's an integer between 0 and 24
+        if (!( (parseInt($('#availabilityInput').val()))>=0 && (parseInt($('#availabilityInput').val()))<=24 )){
+            // if they entered a value that's too large, cap it at 24
+            if (parseInt($('#availabilityInput').val())>=24 ){
+                $('#availabilityInput').val(24);
+            // if they entered a value that's too small or invalid in some other way (not an integer), set it to 0
+            } else {
+                $('#availabilityInput').val(0);
+            }
+        }
+        // ensure the number is indeed an int not a float
+        // needed to prevent weirdness with eg 1.3e10
+        $('#availabilityInput').val(parseInt($('#availabilityInput').val()));
         // check if the options have changed
         var newOptions = {
             nearby: $('#nearbyCheckbox').is(':checked'), 
             bookable: $('#bookableCheckbox').is(':checked'), 
+            availableForHours: $('#availabilityInput').val(),
             pc: $('#pcCheckbox').hasClass('checked'), 
             printer: $('#printerCheckbox').hasClass('checked'), 
             projector: $('#projectorCheckbox').hasClass('checked'), 
@@ -434,9 +451,9 @@ function toggleOptionsMenu(){
             campuses:getUnselectedCampuses()
         };
         var oldOptions = JSON.parse(sessionStorage['roomOptions']);
-        var optionsChanged = oldOptions.bookable!=newOptions.bookable || oldOptions.nearby!=newOptions.nearby || oldOptions.pc!=newOptions.pc || oldOptions.printer!=newOptions.printer || oldOptions.projector!=newOptions.projector || oldOptions.blackboard!=newOptions.blackboard || oldOptions.whiteboard!=newOptions.whiteboard ||  (! arraysEqual(oldOptions.campuses,newOptions.campuses));
+        var optionsChanged = oldOptions.bookable!=newOptions.bookable || oldOptions.nearby!=newOptions.nearby || oldOptions.availableForHours!=newOptions.availableForHours || oldOptions.pc!=newOptions.pc || oldOptions.printer!=newOptions.printer || oldOptions.projector!=newOptions.projector || oldOptions.blackboard!=newOptions.blackboard || oldOptions.whiteboard!=newOptions.whiteboard ||  (! arraysEqual(oldOptions.campuses,newOptions.campuses));
         // if they have, or the user specifically asked for a refresh, refresh the suggestions
-        if (optionsChanged || $(this).prop('id')=='searchWithNewOptions'){
+        if (optionsChanged || $(this).prop('id')=='searchWithNewOptionsBtn'){
             buildingIndexToReturnTo=0;
             currentBuildingId='';
             getSuggestionsUsingOptions();
@@ -620,7 +637,7 @@ function getSuggestionsUsingOptions(){
         ids = [];
     }
     // get the suggestions
-    getSuggestions($('#bookableCheckbox').is(':checked'), $('#pcCheckbox').hasClass('checked'), $('#printerCheckbox').hasClass('checked'), $('#whiteboardCheckbox').hasClass('checked'), $('#blackboardCheckbox').hasClass('checked'), $('#projectorCheckbox').hasClass('checked'), currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO add bookable toggle
+    getSuggestions($('#bookableCheckbox').is(':checked'), $('#availabilityInput').val(), $('#pcCheckbox').hasClass('checked'), $('#printerCheckbox').hasClass('checked'), $('#whiteboardCheckbox').hasClass('checked'), $('#blackboardCheckbox').hasClass('checked'), $('#projectorCheckbox').hasClass('checked'), currentBuildingId, $('#nearbyCheckbox').is(':checked'), ids); //TODO add bookable toggle
 }
 
 // returns the id of all campuses the user doesn't want included
@@ -645,10 +662,11 @@ function getUnselectedCampuses(){
    nearby (boolean): whether the user is sorting by distance
    campuses (array of strings): the campuses that the user doesn't want, a subset of [‘Central’,‘Lauriston’,"King's Buildings", 'Holyrood', 'Other']
 */
-function getSuggestions(bookable, pc, printer, whiteboard, blackboard, projector, building, nearby, campuses) {
+function getSuggestions(bookable, availableFor, pc, printer, whiteboard, blackboard, projector, building, nearby, campuses) {
 	// send the get request
 	$.get('filter', {
 			'bookable': bookable,
+            'availableFor': availableFor,
 			'pc': pc,
             'printer': printer,
             'whiteboard': whiteboard,
