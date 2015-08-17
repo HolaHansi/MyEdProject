@@ -69,35 +69,13 @@ def filter_suggestions(request):
 
         data = utilities.filter_out_busy_rooms(data, available_for_hours)
 
-        #
-        # # filter all rooms which have an activity that starts before x hours time and ends after now
-        # # currently using test times and dates
-        #
-        # current_time = datetime.datetime.now()
-        # wanted_end_time = current_time + datetime.timedelta(hours=available_for_hours)
-        #
-        #
-        # # if an event starts before end time, and ends after currentTime, then the room is
-        # # already booked, and should be added to busy_rooms.
-        #
-        # busy_rooms = data.filter(activity__startTime__lte=wanted_end_time,
-        #                          activity__endTime__gte=current_time)
-        #
-        #
-        #
-        #
-        # # busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
-        # #                          activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
-        #
-        # # now exclude all rooms that are busy from the room suggestions (data)
-        # busy_rooms = [x.locationId for x in busy_rooms]
-        # data = data.exclude(locationId__in=busy_rooms)
-
         # if they're currently searching for a building:
         if request.GET['building'] == '':
             # work out how many rooms are available in each building
             building_details = {}
+            # for each room which fits the criteria selected by the user
             for room in data:
+                # if this room's building has not yet been added to the JSON, initialize it now
                 if not (room.abbreviation in building_details):
                     building_details[room.abbreviation] = {
                         'abbreviation': room.abbreviation,
@@ -107,9 +85,10 @@ def filter_suggestions(request):
                         'longitude': room.longitude,
                         'campus': room.campus_name
                     }
+                # otherwise, add one to the number of rooms in this room's building
                 else:
                     building_details[room.abbreviation]['rooms'] += 1
-            # convert it from a JSON of JSONs to a list of JSONs
+            # convert this data from a JSON of JSONs to a list of JSONs
             building_details = list(building_details.values())
             # if sorting by location
             if request.GET['nearby'] == 'true':
@@ -129,46 +108,12 @@ def filter_suggestions(request):
             return utilities.JSONResponse(building_details)
 
         # if they're searching for a room...
-
-        # get only rooms within that building
+        # get only rooms within their selected building
         data = data.filter(abbreviation=request.GET['building'])
 
         # sort the rooms based on a simple heuristic function
         data = sorted(data, key=lambda x: utilities.calculate_heuristic(x), reverse=True)
 
-        # return the rooms
-        serializer = Bookable_Room_Serializer(data, many=True)
-
-        # FOR TESTING:
-        # print('for testing! \n', data)
-
         # return sorted suggestions
+        serializer = Bookable_Room_Serializer(data, many=True)
         return utilities.JSONResponse(serializer.data)
-
-
-# FOR TESTING ONLY!
-def testing(hr):
-    data = Tutorial_Room.objects.all()
-
-    # filter all rooms which have an activity that starts before x hours time and ends after now
-    busy_rooms = data.filter(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
-                             activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000')
-    print("Busy rooms:", busy_rooms.count())
-    busy_rooms = [x.locationId for x in busy_rooms]
-    data = data.exclude(locationId__in=busy_rooms)
-    print("Inefficiently:", data.count())
-    data = Tutorial_Room.objects.all()
-    data = data.exclude(activity__startTime__lte='2015-08-12 ' + str(hr + 1) + ':00:00+0000',
-                        activity__endTime__gte='2015-08-12 ' + str(hr) + ':00:00+0000')
-    print("Basic exclude:", data.count())
-    data = Tutorial_Room.objects.all()
-    data = data.exclude(activity__startTime__lte='2015-08-12 ' + str(hr + 1) + ':00:00+0000').exclude(
-        activity__endTime__gte='2015-08-12 ' + str(hr) + ':00:00+0000')
-    print("Double exclude:", data.count())
-    data = Tutorial_Room.objects.exclude(Q(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000') | Q(
-        activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000'))
-    print("Fancy exclude:", data.count())
-    data = Tutorial_Room.objects.filter(~Q(activity__startTime__lt='2015-08-12 ' + str(hr + 1) + ':00:00+0000') | ~Q(
-        activity__endTime__gt='2015-08-12 ' + str(hr) + ':00:00+0000'))
-    print("Fancy filter:", data.count())
-    # Only 'Inefficiently' works correctly, all the others don't.  No idea why basic exclude doesn't.
