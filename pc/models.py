@@ -84,4 +84,4 @@ class Computer_Labs(models.Model):
         normalised_free = (self.free - average_free) / standard_deviation_free
         # we want a small distance, a large ratio and a large number of seats free, though the latter is least important
         # Note these scale factors are simply what seemed to work nicely rather than anything mathematically perfect
-        return (normalised_distance*2) - (normalised_ratio*.75) - (normalised_free*.25)
+        return (normalised_distance*2) - (normalised_ratio*.9) - (normalised_free*.1)
