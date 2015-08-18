@@ -68,6 +68,10 @@ def get_pc_data():
                 elif 'High School Yards Lab' in name:
                     latitude = 55.948633
                     longitude = -3.184002
+                elif 'Mary Bruck' in name:
+                    latitude = 55.923024
+                    longitude = -3.171045
+                    # TODO: update with appropriate coordinates (as of time of writing, it's not on Google Maps)
                 else:
                     print('ERROR: Unable to get coordinates of ' + name)
                     send_mail(name)
