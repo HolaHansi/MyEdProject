@@ -52,7 +52,9 @@
                     <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
                         <h4 class="panel-title">
                             <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
-                            <span class="badge free">{{ fav.free }}</span> {{ fav.name }} <span class="caret"></span>
+                                <span class='labName'>{{ fav.name }}</span>
+                                <span class="caret"></span>
+                                <span class="badge {{fav | badge_class}}">{{ fav.free }}</span>
                             </a>
                         </h4>
                     </div>

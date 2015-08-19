@@ -166,6 +166,9 @@
 .badge.free.closed {
   background-color: #777777;
 }
+.badge.busyish {
+  background-color: #f19c09;
+}
 .badge.inuse {
   background-color: #d9433b;
 }
@@ -187,6 +190,9 @@
 }
 .panel-default > .panel-heading .badge.free.closed {
   background-color: #777777;
+}
+.panel-default > .panel-heading .badge.busyish {
+  background-color: #f19c09;
 }
 .panel-default > .panel-heading .badge.inuse {
   background-color: #d9433b;

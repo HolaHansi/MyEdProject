@@ -2,7 +2,6 @@ from django import template
 from django.utils.safestring import mark_safe
 import datetime
 
-
 register = template.Library()
 
 
@@ -233,3 +232,19 @@ def inUse(pc):
     """
     used = pc.seats - pc.free
     return used
+
+
+@register.filter
+def badge_class(pc):
+    """
+    returns 'free', 'busyish' or 'inuse' depending on how full the location is
+    :param pc:
+    :return: string: the class of the badge for this lab as decided by how busy it is
+    """
+    # Note the cutoff points are entirely arbitrary, simply what felt intuitive to me
+    if pc.ratio > 0.8:
+        return 'free'
+    elif pc.ratio > 0.5:
+        return 'busyish'
+    else:
+        return 'inuse'
