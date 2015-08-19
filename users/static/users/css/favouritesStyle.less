@@ -127,7 +127,7 @@
     }
 }
 
-.badge {
+.panel-default > .panel-heading .badge, .badge {
     float: right;
     font-size: 14px;
     &.free {
@@ -138,14 +138,19 @@
         }
     }
     &.busyish{
-        background-color: @iffyOrange;
+        background-color: @iffyColour;
     }
-    &.inuse{
+    &.shut{
+        background-color: #333;
+        color:#ddd;
+    }
+    &.full, &.inuse{
         background-color: @unavailableRed;
     }
-    &.full{
-        background-color: @unavailableRed;
-    }
+}
+
+#PCs .badge{
+    min-width:35px;
 }
 
 .panel-group .panel {
@@ -155,11 +160,6 @@
 .badge-group {
     padding-top: 4px;
     margin-left: 0px;
-}
-
-.panel-default > .panel-heading .badge {
-    background-color: #337AB7;
-    .badge()
 }
 
 .avail {

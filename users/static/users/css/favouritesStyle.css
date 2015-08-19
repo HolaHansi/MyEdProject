@@ -155,25 +155,37 @@
   white-space: nowrap;
   overflow: hidden;
 }
+.panel-default > .panel-heading .badge,
 .badge {
   float: right;
   font-size: 14px;
 }
+.panel-default > .panel-heading .badge.free,
 .badge.free {
   background-color: #2ea83d;
   margin-bottom: 0px;
 }
+.panel-default > .panel-heading .badge.free.closed,
 .badge.free.closed {
   background-color: #777777;
 }
+.panel-default > .panel-heading .badge.busyish,
 .badge.busyish {
   background-color: #f19c09;
 }
+.panel-default > .panel-heading .badge.shut,
+.badge.shut {
+  background-color: #333;
+  color: #ddd;
+}
+.panel-default > .panel-heading .badge.full,
+.badge.full,
+.panel-default > .panel-heading .badge.inuse,
 .badge.inuse {
   background-color: #d9433b;
 }
-.badge.full {
-  background-color: #d9433b;
+#PCs .badge {
+  min-width: 35px;
 }
 .panel-group .panel {
   margin-bottom: 5px;
@@ -181,27 +193,6 @@
 .badge-group {
   padding-top: 4px;
   margin-left: 0px;
-}
-.panel-default > .panel-heading .badge {
-  background-color: #337AB7;
-  float: right;
-  font-size: 14px;
-}
-.panel-default > .panel-heading .badge.free {
-  background-color: #2ea83d;
-  margin-bottom: 0px;
-}
-.panel-default > .panel-heading .badge.free.closed {
-  background-color: #777777;
-}
-.panel-default > .panel-heading .badge.busyish {
-  background-color: #f19c09;
-}
-.panel-default > .panel-heading .badge.inuse {
-  background-color: #d9433b;
-}
-.panel-default > .panel-heading .badge.full {
-  background-color: #d9433b;
 }
 .avail {
   float: right;

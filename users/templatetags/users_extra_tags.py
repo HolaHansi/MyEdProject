@@ -242,7 +242,7 @@ def badge_class(pc):
     :return: string: the class of the badge for this lab as decided by how busy it is
     """
     # Note the cutoff points are entirely arbitrary, simply what felt intuitive to me
-    if pc.ratio > 0.8:
+    if pc.ratio > 0.75:
         return 'free'
     elif pc.ratio > 0.5:
         return 'busyish'
