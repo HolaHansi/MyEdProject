@@ -237,7 +237,7 @@ def inUse(pc):
 @register.filter
 def badge_class(pc):
     """
-    returns 'free', 'busyish' or 'inuse' depending on how full the location is
+    returns 'free', 'busyish' or 'full' depending on how full the location is
     :param pc:
     :return: string: the class of the badge for this lab as decided by how busy it is
     """
@@ -247,4 +247,4 @@ def badge_class(pc):
     elif pc.ratio > 0.5:
         return 'busyish'
     else:
-        return 'inuse'
+        return 'full'
