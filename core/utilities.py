@@ -117,11 +117,9 @@ def excludeClosedLocations(data):
     if 0 <= weekday <= 4:
         # case 1 : now < open < closing
         data = data.exclude(weekdayOpen__gt=current_time,
-                            weekdayClosed__gt=current_time,
                             weekdayOpen__lt=F('weekdayClosed'))
         # case 2 : open < close < now
-        data = data.exclude(weekdayOpen__lt=current_time,
-                            weekdayClosed__lt=current_time,
+        data = data.exclude(weekdayClosed__lt=current_time,
                             weekdayClosed__gt=F('weekdayOpen'))
 
         # case 3 : close < now < open
