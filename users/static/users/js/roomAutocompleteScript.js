@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-    // isClicked will change value whenever the remove fav btn is pressed.
+    // isClicked will change value whenever the remove fav btn is cancelled
     isClicked = false;
     $(".remove-btn").click(removeFavouriteBtn);
 
@@ -39,12 +39,8 @@ function removeFavouriteBtn(){
     else {
         if (isClicked == false) {
             // button is not clicked yet
-
-            // append x and check symbol to button.
-            $(this).html("<i class='fa fa-star unstarred'></i>Remove &nbsp;");
-            $("<a href='#' class='fa fa-check confirmRemove'> &nbsp; </a>").appendTo(this);
-            $("<a href='#' class='fa fa-times cancelRemove'> &nbsp; </a>").appendTo(this);
-
+            $(this).addClass('expanded');
+            
             // if x is pressed, then set is clicked to true, so to escape this clause.
             $('.cancelRemove').click(function () {
                 isClicked = true;
@@ -54,22 +50,20 @@ function removeFavouriteBtn(){
             // call the remove from favourites function.
             $('.confirmRemove').click(function () {
                 var btn = $(this).parent();
-                console.log(btn);
                 var thisId = btn.attr('id');
-                console.log(thisId);
                 removeFromFavourites(thisId);
             });
-        // end of coditional
         };
 
         if (isClicked == true) {
             // the x has been pressed, return to normal button again
-            $(this).html("<i class='fa fa-star starred'></i>Remove");
+            $(this).removeClass('expanded');
+            $(this).blur();
             isClicked = false;
         };
-    // end of else
+        
     };
-// end of function
+    
 };
 
 function removeFromFavourites(id) {

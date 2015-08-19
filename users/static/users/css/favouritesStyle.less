@@ -208,47 +208,42 @@
 }
 
 .remove-btn {
-    align: left;
     margin: 0px 0px 0px 0px;
-    padding: 7px 5px 10px 0px;
+    padding: 2px 5px 2px 0px;
     font-size: 14px;
-}
-
-.unliker.unclicked{
-    background-color:blue;
-    color: white;
-    padding:7px;
-    border-radius:5px;
-    margin-left:50px;
-    cursor:pointer;
-}
-.unliker.clicked{
-    margin-left:50px;
-}
-.favRemover{
-    color: white;
-    padding:7px;
-    border-radius:5px;
-    margin-left:5px;
-    margin-right:5px;
-    cursor:pointer;
-}
-.confirmRemoval{
-    background-color:green;
-}
-.cancelRemoval{
-    background-color: red;
-}
-
-.fa-check.confirmRemove {
-    color: @availableGreen;
-    .avail {
-        color: black;
+    &:not(.expanded){
+        .confirmRemove, .cancelRemove{
+            display:none;
+        }
     }
-}
-
-.fa-times.cancelRemove {
-    color: @unavailableRed;
+    &.expanded{
+        background-color: #e6e6e6;
+        border-color: #8c8c8c;
+        //disable normal button display when expanded
+        &:active{
+            background-color: #e6e6e6;
+            border-color: #8c8c8c;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+    }
+    .confirmRemove {
+        margin-left:5px;
+        color: @availableGreen;
+        .avail {
+            color: black;
+        }
+    }
+    .cancelRemove {
+        color: @unavailableRed;
+    }
+    .confirmRemove, .cancelRemove{
+        width:18px;
+        &:hover{
+            font-size: 1.2em;
+            text-decoration: none;
+        }
+    }
 }
 
 .closedStats {
