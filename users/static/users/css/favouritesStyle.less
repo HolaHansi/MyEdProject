@@ -8,6 +8,11 @@
     }
 }
 
+.theLink{
+    width: calc(~"100% - 35px");
+    display: inline-block;
+}
+
 .favouritesInfoRow{
     .display-flex();
     margin-left: 0px;
@@ -41,7 +46,7 @@
     .openHourDiv{
         .flex(1, 1, 50px);
         text-align: center;
-        @media (max-width: 288px) {
+        @media (max-width: @hideOpeningHoursWidth) {
             display: none;
         }
         .openHoursClock {
@@ -73,6 +78,38 @@
         text-align: right;
         .map-btn {
             margin-top: 5px;
+        }
+    }
+}
+
+.pc.closed .favouritesInfoRow{
+
+    .availabilityInfo {
+        opacity:0.4;
+        p {
+        }
+    }
+    
+    .computersFreeGraphContainer{
+        opacity:0.4;
+        @media (max-width: @hideOpeningHoursWidth) {
+            display: none;
+        }
+        .computersFreeGraph{
+        }
+    }
+    
+    .openHourDiv{
+        display: block;
+        color: @unavailableRed;
+        font-weight: bold;
+        .openHoursClock {
+            color:black;
+        }
+    }
+    
+    .yesBtnDiv{
+        .map-btn {
         }
     }
 }
@@ -127,7 +164,7 @@
     }
 }
 
-.panel-default > .panel-heading .badge, .badge {
+.badge, .panel-default > .panel-heading .badge {
     float: right;
     font-size: 14px;
     &.free {
@@ -247,15 +284,6 @@
             text-decoration: none;
         }
     }
-}
-
-.closedStats {
-    background-color: grey;
-    opacity: 0.4;
-}
-
-.closedOpeningHour {
-    color: @unavailableRed;
 }
 
 .autocomplete-suggestions {

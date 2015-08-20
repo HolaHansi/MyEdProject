@@ -15,7 +15,7 @@ from django.conf import settings
 from django.contrib import messages
 from core import utilities
 from users.models import RoomHistory
-
+from itertools import chain
 
 def index(request):
     return render(request, 'core/index.html')
@@ -274,10 +274,14 @@ def favourites(request):
     # get all currently open PC-labs and sort according to ratio
     pc_favourites_open = utilities.excludeClosedLocations(pc_favourites)
     pc_favourites_open = utilities.sortPCLabByEmptiness(pc_favourites_open)
-
-    # get all currently closed PC-labs and sort according to ratio
+    for lab in pc_favourites_open:
+        lab.openInfo='open'
+    # get all currently closed PC-labs
     pc_favourites_closed = utilities.get_currently_closed_locations(pc_favourites)
-    pc_favourites_closed = utilities.sortPCLabByEmptiness(pc_favourites_closed)
+    for lab in pc_favourites_closed:
+        lab.openInfo='closed'
+
+    all_labs = chain(pc_favourites_open,pc_favourites_closed)
 
     # ==== FOR ROOMs ====
 
@@ -296,8 +300,7 @@ def favourites(request):
 
     rooms_open_locally_allocated = room_favourites.filter(availability='localAvailable')
 
-    context = {'pc_favourites_open': pc_favourites_open,
-               'pc_favourites_closed': pc_favourites_closed,
+    context = {'pc_favourites': all_labs,
                'rooms_open_locally_allocated': rooms_open_locally_allocated,
                'rooms_available_now': rooms_available_now,
                'rooms_not_available_now': rooms_not_available_now,

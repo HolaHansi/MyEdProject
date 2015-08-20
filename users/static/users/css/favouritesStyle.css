@@ -6,6 +6,10 @@
 .containerForAllez .navbar-row > .row {
   margin-right: 0px;
 }
+.theLink {
+  width: calc(100% - 35px);
+  display: inline-block;
+}
 .favouritesInfoRow {
   display: -webkit-box;
   display: -moz-box;
@@ -65,7 +69,7 @@
   flex: 1 1 50px;
   text-align: center;
 }
-@media (max-width: 288px) {
+@media (max-width: 325px) {
   .favouritesInfoRow .openHourDiv {
     display: none;
   }
@@ -112,6 +116,25 @@
 .favouritesInfoRow .yesBtnDiv .map-btn {
   margin-top: 5px;
 }
+.pc.closed .favouritesInfoRow .availabilityInfo {
+  opacity: 0.4;
+}
+.pc.closed .favouritesInfoRow .computersFreeGraphContainer {
+  opacity: 0.4;
+}
+@media (max-width: 325px) {
+  .pc.closed .favouritesInfoRow .computersFreeGraphContainer {
+    display: none;
+  }
+}
+.pc.closed .favouritesInfoRow .openHourDiv {
+  display: block;
+  color: #d9433b;
+  font-weight: bold;
+}
+.pc.closed .favouritesInfoRow .openHourDiv .openHoursClock {
+  color: black;
+}
 @media (max-width: 399px) {
   .hiddenTil400 {
     display: none;
@@ -155,33 +178,33 @@
   white-space: nowrap;
   overflow: hidden;
 }
-.panel-default > .panel-heading .badge,
-.badge {
+.badge,
+.panel-default > .panel-heading .badge {
   float: right;
   font-size: 14px;
 }
-.panel-default > .panel-heading .badge.free,
-.badge.free {
+.badge.free,
+.panel-default > .panel-heading .badge.free {
   background-color: #2ea83d;
   margin-bottom: 0px;
 }
-.panel-default > .panel-heading .badge.free.closed,
-.badge.free.closed {
+.badge.free.closed,
+.panel-default > .panel-heading .badge.free.closed {
   background-color: #777777;
 }
-.panel-default > .panel-heading .badge.busyish,
-.badge.busyish {
+.badge.busyish,
+.panel-default > .panel-heading .badge.busyish {
   background-color: #f19c09;
 }
-.panel-default > .panel-heading .badge.shut,
-.badge.shut {
+.badge.shut,
+.panel-default > .panel-heading .badge.shut {
   background-color: #333;
   color: #ddd;
 }
-.panel-default > .panel-heading .badge.full,
 .badge.full,
-.panel-default > .panel-heading .badge.inuse,
-.badge.inuse {
+.panel-default > .panel-heading .badge.full,
+.badge.inuse,
+.panel-default > .panel-heading .badge.inuse {
   background-color: #d9433b;
 }
 #PCs .badge {
@@ -272,13 +295,6 @@
 .remove-btn .cancelRemove:hover {
   font-size: 1.2em;
   text-decoration: none;
-}
-.closedStats {
-  background-color: grey;
-  opacity: 0.4;
-}
-.closedOpeningHour {
-  color: #d9433b;
 }
 .autocomplete-suggestions {
   border: 1px solid #999;

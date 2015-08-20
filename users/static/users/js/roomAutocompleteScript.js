@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
     // isClicked will change value whenever the remove fav btn is cancelled
     isClicked = false;
@@ -20,7 +19,6 @@ $(document).ready(function(){
     // load auto-complete
     autoCompleteAPI();
 });
-
 
 function removeFavouriteBtn(){
 

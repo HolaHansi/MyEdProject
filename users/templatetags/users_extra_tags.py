@@ -224,27 +224,42 @@ def closingTime(place):
 
 
 @register.filter
-def inUse(pc):
+def inUse(lab):
     """
     returns how many PCs are in use
-    :param pc:
+    :param lab:
     :return:
     """
-    used = pc.seats - pc.free
+    used = lab.seats - lab.free
     return used
 
 
 @register.filter
-def badge_class(pc):
+def badge_class(lab):
     """
-    returns 'free', 'busyish' or 'full' depending on how full the location is
-    :param pc:
+    returns 'free', 'busyish' or 'full' depending on how full the lab is,
+    or 'shut' if the lab is shut
+    :param lab:
     :return: string: the class of the badge for this lab as decided by how busy it is
     """
     # Note the cutoff points are entirely arbitrary, simply what felt intuitive to me
-    if pc.ratio > 0.75:
+    if lab.openInfo =='closed':
+        return 'shut'
+    if lab.ratio > 0.75:
         return 'free'
-    elif pc.ratio > 0.5:
+    elif lab.ratio > 0.5:
         return 'busyish'
     else:
         return 'full'
+
+@register.filter
+def opening_hours(lab):
+    """
+    returns the lab's opening hours if known, or 'unknown' if not
+    :param lab:
+    :return: string: the class of the badge for this lab as decided by how busy it is
+    """
+    if openTime(lab)=='n/a':
+        return mark_safe("<p>Unknown</p>")
+    else:
+        return mark_safe("<p class='openTimeP'>" + openTime(lab) + "</p> <p class='closingTimeP'>" + closingTime(lab) + "</p>")
