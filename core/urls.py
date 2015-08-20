@@ -23,10 +23,11 @@ urlpatterns = [
     url(r'^rooms/', include('rooms.urls'), name='rooms'),
     url(r'^favourites/$', 'users.views.favourites', name='favourites'),
     url(r'^history/$', 'users.views.history', name='history'),
-    url(r'^calendar/$', 'users.views.calendar', name='calendar'),
 
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^calendar/$', 'users.views.calendar', name='calendar'),
+    url(r'^favourites/panel/$', 'users.views.get_panel',name='panel'),
     url(r'^like/', 'users.views.like'),
     url(r'^getLiked/', 'users.views.get_all_favourites'),
     url(r'^registration/$', 'users.views.register'),

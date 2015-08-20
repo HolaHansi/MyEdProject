@@ -1,7 +1,7 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.html import escape
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
@@ -16,6 +16,7 @@ from django.contrib import messages
 from core import utilities
 from users.models import RoomHistory
 from itertools import chain
+
 
 def index(request):
     return render(request, 'core/index.html')
@@ -229,6 +230,7 @@ def like(request):
 
             return HttpResponse(status=200)
 
+
 # get the list of all this users favourites
 @login_required
 def get_all_favourites(request):
@@ -238,7 +240,7 @@ def get_all_favourites(request):
         user = request.user
 
         # if getting favourite labs:
-        if request.GET['type']=='labs':
+        if request.GET['type'] == 'labs':
             # make a list of all this users favourite labs' ids
             users_favourites = user.pc_favourites.all().values_list('id', flat=True)
 
@@ -252,6 +254,17 @@ def get_all_favourites(request):
 
             # return this list as a JSON response
             return utilities.JSONResponse(users_favourites)
+
+
+def get_panel(request):
+    if request.method == 'POST':
+        lab_id = escape(request.POST['pc_id'])
+        lab = Computer_Labs.objects.filter(id=lab_id)[0]
+        if utilities.isOpen(lab):
+            lab.openInfo = 'open'
+        else:
+            lab.openInfo = 'closed'
+        return render(request, 'users/favouritePanel.html', {'fav': lab})
 
 
 @login_required
@@ -275,13 +288,13 @@ def favourites(request):
     pc_favourites_open = utilities.excludeClosedLocations(pc_favourites)
     pc_favourites_open = utilities.sortPCLabByEmptiness(pc_favourites_open)
     for lab in pc_favourites_open:
-        lab.openInfo='open'
+        lab.openInfo = 'open'
     # get all currently closed PC-labs
     pc_favourites_closed = utilities.get_currently_closed_locations(pc_favourites)
     for lab in pc_favourites_closed:
-        lab.openInfo='closed'
+        lab.openInfo = 'closed'
 
-    all_labs = chain(pc_favourites_open,pc_favourites_closed)
+    all_labs = chain(pc_favourites_open, pc_favourites_closed)
 
     # ==== FOR ROOMs ====
 
@@ -370,11 +383,10 @@ def calendar(request):
     """
     Returns json of all the activities of a particular room (given by locationId).
     This is the view for the calendar function.
-    :param room:
+    :param request:
     :return:
     """
     if request.method == 'GET':
-
         # get the location id
         locationId = request.GET['locationId']
 
@@ -387,7 +399,7 @@ def calendar(request):
         # Serialize all the activities
         serializer = Activity_Serializer(activities, many=True)
 
-        #TODO Could add opening hours to fade out the areas that are closed in FullCalendar.
+        # TODO Could add opening hours to fade out the areas that are closed in FullCalendar.
 
         # return sorted suggestions
         return utilities.JSONResponse(serializer.data)

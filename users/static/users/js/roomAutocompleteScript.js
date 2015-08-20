@@ -107,135 +107,15 @@ function autoCompleteAPI() {
                 // reset the autocomplete dropdown
                 $(this).autocomplete().clear();
                 $(this).val('');
-
-
-                // ========== add the new favourite to list of favourites using its appropriate template ========== //
-
-
-                var isOpen = suggestion.data.isOpen;
-
-                // if the place is open:
-                if (isOpen) {
-                  // determine where to insert the new favourite
-                  var placeToInsert = '#insertAfterOpen';
-                  // determine which template to use - the template is currently not visible: css(display:none;)
-                  var panelPC = $(".panel.panel-default.pc.open.template");
-                  // determine the content of theLink which displays the name and badge on the tab for the favourite
-                  var linkHtml = '<span class="badge free">' + suggestion.data.free + '</span>' + suggestion.value + '<span class="caret"></span>';
-                }
-                // if the place is closed:
-                else {
-                    var placeToInsert = '#insertAfterClosed';
-                    var panelPC = $(".panel.panel-default.pc.closed.template");
-                    var linkHtml = '<span class="badge times"><i class="fa fa-times"></i></span>' + suggestion.value + '<span class="caret"></span>';
-                };
-
-                // clone the template and make is visible by removing the style attribute.
-                var clone = panelPC.clone(true);
-                clone.removeAttr('style');
-
-                // remove the clone's template class
-                clone.removeClass('template');
-
-                // initialize id variables
-                var infoForID = 'infoFor-lab-' + suggestion.data.id;
-                var labID = 'lab-'+ suggestion.data.id;
-                var collapseID = '#collapse-' + suggestion.data.id;
-                var collapseIDNoHashtag = 'collapse-' + suggestion.data.id;
-
-                // relevant attributes
-                var freeVar = suggestion.data.free;
-                var inUseVar = (suggestion.data.seats - suggestion.data.free);
-
-                // give panel the id for infoForID.
-                clone.attr('id', infoForID);
-
-                // get pointers to all the element that must be modified in the clone:
-                var panelHeading = clone.find(".panel-heading");
-                var theLink = clone.find('.theLink');
-                var panelCollapse = clone.find('.panel-collapse.collapse');
-
-                // the badges for free and inuse
-                var freeBadgeStat = panelCollapse.find("#freeBadgeText");
-                var useBadgeStat = panelCollapse.find("#useBadgeText");
-
-                // the div displaying the pie-chart
-                var computerFreeGraph = panelCollapse.find('.computersFreeGraph');
-
-                // opening hour paragraphs
-                var openTimeP = panelCollapse.find(".openTimeP");
-                var closingTimeP = panelCollapse.find(".closingTimeP");
-
-                // map and remove btn
-                var mapBtn = panelCollapse.find(".btn.btn-default.map-btn");
-                var rmvBtn = panelCollapse.find(".btn.btn-default.remove-btn");
-
-
-                // change date-target for panelHeading
-                panelHeading.attr('data-target', collapseID);
-
-
-                // change attributes for theLink
-                theLink.attr("data-target", collapseID);
-                theLink.attr("href", collapseID);
-                theLink.attr("aria-controls", collapseIDNoHashtag);
-
-
-                // change the html in theLink - the html value depends on whether place is closed or not.
-                theLink.html(linkHtml);
-
-
-
-                // change id of panelCollapse to match id favourite - slice expression is for getting rid of hashtag
-                panelCollapse.attr('id', collapseIDNoHashtag);
-
-
-                // update inUse and free badge values
-                freeBadgeStat.html('Free:  <span class="badge free">'+ freeVar + '</span>');
-                useBadgeStat.html('In use:  <span class="badge inuse">'+ inUseVar + '</span>');
-
-                // remove the script that normally makes the pie chart.
-                panelCollapse.find('.makePieScript').remove();
-
-                // change id of computerFreeGraph to match the favourite ID.
-                computerFreeGraph.attr('id', suggestion.data.id);
-
-                var stringId = suggestion.data.id.toString();
-
-
-
-                // get the opening hours
-                if (suggestion.data.openHour == 'n/a') {
-                    var openHourHtml = 'n/a';
-                    var closingHourHtml = 'n/a';
-                }
-                else {
-                    var openHourHtml = suggestion.data.openHour.slice(0, 5);
-                    var closingHourHtml = suggestion.data.closingHour.slice(0,5);
-                }
-                // write the opening hours to the paragraphs in the clone.
-                openTimeP.html(openHourHtml);
-                closingTimeP.html(closingHourHtml);
-
-
-                // get the right longitude, latitude for the googleMaps link.
-                mapBtn.attr('href', "http://maps.google.com/maps?q=" + suggestion.data.latitude + "," + suggestion.data.longitude);
-
-
-                // give rmvBtn the correctID.
-                rmvBtn.attr('id', labID);
-
-
-                // insert the now populated clone at the appropriate spot.
-                clone.insertAfter(placeToInsert);
-
-                // make the pieChart for this favourite.
-                makepie(stringId, suggestion.data.free, inUseVar);
-
-                // relocate the insertAfter div.
-                $(placeToInsert).insertAfter(clone);
-
-                // done job!
+                
+                // create the html for this favourite
+                $.post('panel/', {'pc_id':suggestion.data.id})
+                .done(function(panel){
+                    // append it to the list of favourites
+                    a = $(panel).insertBefore("#autocompleteLabLi");
+                    // add functionality to the remove button
+                    $(".remove-btn", a).click(removeFavouriteBtn);
+                });
             }
         });
 
