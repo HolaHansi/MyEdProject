@@ -45,195 +45,20 @@
         <div id="PCs" class="tab-pane fade in active">
             <div class="panel-group" role="tablist" aria-multiselectable="true">
                 
-                {% for fav in pc_favourites %}
-                <div id="infoFor-lab-{{ fav.id }}" class="panel panel-default pc {{fav.openInfo}}">
-                    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
-                        <h4 class="panel-title">
-                            <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
-                                <span class='labName'>{{ fav.name }}</span>
-                                <span class="caret"></span>
-                            </a>
-                            <span class="badge {{fav | badge_class}}">{% if fav.openInfo == "closed" %}<i class="fa fa-lock"></i>{% else %} {{ fav.free }} {% endif %}</span>
-                        </h4>
-                    </div>
-                    <div id="collapse-{{ fav.id }}" class="panel-collapse collapse" role="tabpanel">
-                        <div class="panel-body">
-                            <div class="row favouritesInfoRow">
-                                
-                                <div class="availabilityInfo">
-                                    <p class="freeBadgeText"><span class='hiddenTil400'>Computers f</span><span class='shownTil400'>F</span>ree:  <span class="badge free">{{ fav.free }}</span></p>
-                                    <p class="useBadgeText"><span class='hiddenTil400'>Computers i</span><span class='shownTil400'>I</span>n use:<span class="badge inuse">{{ fav | inUse }}</span></p>
-                                </div>
-                                
-                                <div class='computersFreeGraphContainer'>
-                                    <script class="makePieScript">
-                                        // makepiechart function takes the id, number of free, number in use
-                                        makepie("{{fav.id}}", {{ fav.free }}, {{ fav | inUse }});
-                                    </script>
-                                    <div class="computersFreeGraph" id="{{ fav.id }}"></div>
-                                </div>
-                                
-                                <div class="openHourDiv">
-                                    <i class="fa fa-clock-o openHoursClock"></i>
-                                    {{fav | opening_hours}}
-                                </div>
-                                
-                                <div class="yesBtnDiv">
-                                    <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                                </div>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-1">
-                                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn">
-                                        <i class="fa fa-star starred"></i>
-                                        <span>Remove</span>
-                                        <a class='fa fa-check confirmRemove'> &nbsp; </a>
-                                        <a class='fa fa-times cancelRemove'> &nbsp; </a>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% for favourite in pc_favourites %}
+                    
+                    {% include "users/favouritePanel.html" with fav=favourite %}
 
-        {% endfor %}
+                {% endfor %}
 
-    <!-- AutoComplete -->
-    <div class="list-group-item" id="autocompleteLabLi" style="margin-top: 5px;">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></div>
-    <!-- Blank box to allow autocomplete to expand into something -->
-    <div style="height:150px;"></div>
-
-        <!-- hidden template for PC OPEN -->
-
-        <div id="infoFor-lab-" class="panel panel-default pc open template" style="display:none;">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
-                    <h4 class="panel-title">
-                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-" href="#collapse-" aria-expanded="true" aria-controls="collapse-">
-                        <span class="badge free"></span> <span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse-" class="panel-collapse collapse" role="tabpanel">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-4 badge-text">
-                                <p id="freeBadgeText">Free:  <span class="badge free"></span></p>
-                                <p id="useBadgeText">In use:<span class="badge inuse"></span></p>
-                            </div>
-                            <div class="col-xs-3">
-                                <div id='computersFreeGraphContainer'>
-                                    <script class="makePieScript">
-                                    </script>
-                                    <div class="computersFreeGraph" id="someIdForOpen"></div>
-                                </div>
-                            </div>
-                            <div class="col-xs-3 openHourDiv">
-
-                                <i class="fa fa-clock-o openHoursComp"></i>
-                                <p class="openTimeP"></p>
-                                <p class="closingTimeP"></p>
-                            </div>
-
-                            <div class="col-xs-2">
-                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-1">
-                                <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn">
-                                        <i class="fa fa-star starred"></i>
-                                        <span>Remove</span>
-                                        <a class='fa fa-check confirmRemove'> &nbsp; </a>
-                                        <a class='fa fa-times cancelRemove'> &nbsp; </a>
-                                    </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- AutoComplete -->
+                <div class="list-group-item" id="autocompleteLabLi" style="margin-top: 5px;">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></div>
+                <!-- Blank box to allow autocomplete to expand into something -->
+                <div style="height:150px;"></div>
             </div>
-
-        <!-- END OF HIDDEN TEMPLATE FOR PC OPEN -->
-
-
-
-            <!-- HIDDEN TEMPLATE FOR PC CLOSED -->
-
-                       <!-- favourite -->
-
-            <div id="infoFor-lab-" class="panel panel-default pc closed template" style="display:none;">
-                <div class="panel-heading" data-toggle="collapse" data-target="#collapse-">
-                    <h4 class="panel-title">
-                        <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-" href="#collapse-" aria-expanded="true" aria-controls="collapse-">
-                        <span class="badge times"><i class="fa fa-times"></i></span>  <span class="caret"></span>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse-" class="panel-collapse collapse" role="tabpanel">
-                    <div class="panel-body">
-                        <div class="row">
-
-                            <div class="closedStats">
-
-                                <div class="col-xs-4 badge-text">
-                                    <p id="freeBadgeText">Free:  <span class="badge free"></span></p>
-                                    <p id="useBadgeText">In use:<span class="badge inuse"></span></p>
-                                </div>
-                                <div class="col-xs-3">
-                                    <div id='computersFreeGraphContainer'>
-                                        <script class="makePieScript">
-                                        </script>
-                                        <div class="computersFreeGraph" id="someIdForClosed"></div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="col-xs-3 openHourDiv">
-
-                                <i class="fa fa-clock-o openHoursComp"></i>
-
-                                <p class="closedOpeningHour openTimeP"></p>
-                                <p class="closedOpeningHour closingTimeP"></p>
-
-
-                            </div>
-
-                            <div class="col-xs-2">
-                                <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-1">
-                                <button id="lab-" class="btn btn-default remove-btn">
-                                    <i class="fa fa-star starred"></i>
-                                    <span>Remove</span>
-                                    <a class='fa fa-check confirmRemove'> &nbsp; </a>
-                                    <a class='fa fa-times cancelRemove'> &nbsp; </a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-            </div>
-
-
-
-            <!-- END OF HIDDEN TEMPLATE FOR PC CLOSED -->
-
-
-
-
-
-
         </div>
 
-    </div>
-
-    <!--Rooms-->
+        <!--Rooms-->
     <div id="ROOMs" class="tab-pane fade">
         <div class="panel-group" role="tablist" aria-multiselectable="true">
 

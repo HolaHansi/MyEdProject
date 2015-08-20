@@ -1,0 +1,51 @@
+{% load users_extra_tags %}
+<div id="infoFor-lab-{{ fav.id }}" class="panel panel-default pc {{fav.openInfo}}">
+    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav.id }}">
+        <h4 class="panel-title">
+            <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{ fav.id }}" href="#collapse-{{ fav.id }}" aria-expanded="true" aria-controls="collapse-{{ fav.id }}">
+                <span class='labName'>{{ fav.name }}</span>
+                <span class="caret"></span>
+            </a>
+            <span class="badge {{fav | badge_class}}">{% if fav.openInfo == "closed" %}<i class="fa fa-lock"></i>{% else %} {{ fav.free }} {% endif %}</span>
+        </h4>
+    </div>
+    <div id="collapse-{{ fav.id }}" class="panel-collapse collapse" role="tabpanel">
+        <div class="panel-body">
+            <div class="row favouritesInfoRow">
+
+                <div class="availabilityInfo">
+                    <p class="freeBadgeText"><span class='hiddenTil400'>Computers f</span><span class='shownTil400'>F</span>ree:  <span class="badge free">{{ fav.free }}</span></p>
+                    <p class="useBadgeText"><span class='hiddenTil400'>Computers i</span><span class='shownTil400'>I</span>n use:<span class="badge inuse">{{ fav | inUse }}</span></p>
+                </div>
+
+                <div class='computersFreeGraphContainer'>
+                    <script class="makePieScript">
+                        // makepiechart function takes the id, number of free, number in use
+                        makepie("{{fav.id}}", {{ fav.free }}, {{ fav | inUse }});
+                    </script>
+                    <div class="computersFreeGraph" id="{{ fav.id }}"></div>
+                </div>
+
+                <div class="openHourDiv">
+                    <i class="fa fa-clock-o openHoursClock"></i>
+                    {{fav | opening_hours}}
+                </div>
+
+                <div class="yesBtnDiv">
+                    <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default map-btn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xs-1">
+                    <button id="lab-{{ fav.id }}" class="btn btn-default remove-btn">
+                        <i class="fa fa-star starred"></i>
+                        <span>Remove</span>
+                        <a class='fa fa-check confirmRemove'> &nbsp; </a>
+                        <a class='fa fa-times cancelRemove'> &nbsp; </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
