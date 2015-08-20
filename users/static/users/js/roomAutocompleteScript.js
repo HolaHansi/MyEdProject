@@ -2,7 +2,19 @@ $(document).ready(function(){
     // isClicked will change value whenever the remove fav btn is cancelled
     isClicked = false;
     $(".remove-btn").click(removeFavouriteBtn);
+    // if x is pressed, then set is clicked to true, so to escape this clause.
+    $(this).find('.cancelRemove').click(function () {
+        isClicked = true;
+    });
 
+    // if the check symbol is pressed, then obtain the id from the parent div, and
+    // call the remove from favourites function.
+    $(this).find('.confirmRemove').click(function () {
+        var btn = $(this).parent();
+        var thisId = btn.attr('id');
+        removeFromFavourites(thisId);
+    });
+    
     // This will make sure that the arrow in each panel changes direction whenever the panel
     // either collapses or unfolds.
     $(".panel").on('show.bs.collapse', function(){
@@ -38,21 +50,7 @@ function removeFavouriteBtn(){
         if (isClicked == false) {
             // button is not clicked yet
             $(this).addClass('expanded');
-            
-            // if x is pressed, then set is clicked to true, so to escape this clause.
-            $('.cancelRemove').click(function () {
-                isClicked = true;
-            });
-
-            // if the check symbol is pressed, then obtain the id from the parent div, and
-            // call the remove from favourites function.
-            $('.confirmRemove').click(function () {
-                var btn = $(this).parent();
-                var thisId = btn.attr('id');
-                removeFromFavourites(thisId);
-            });
         };
-
         if (isClicked == true) {
             // the x has been pressed, return to normal button again
             $(this).removeClass('expanded');
@@ -61,7 +59,6 @@ function removeFavouriteBtn(){
         };
         
     };
-    
 };
 
 function removeFromFavourites(id) {
@@ -112,9 +109,9 @@ function autoCompleteAPI() {
                 $.post('panel/', {'pc_id':suggestion.data.id})
                 .done(function(panel){
                     // append it to the list of favourites
-                    a = $(panel).insertBefore("#autocompleteLabLi");
+                    remBtn = $(panel).insertBefore("#autocompleteLabLi");
                     // add functionality to the remove button
-                    $(".remove-btn", a).click(removeFavouriteBtn);
+                    $(".remove-btn", remBtn).click(removeFavouriteBtn);
                 });
             }
         });
