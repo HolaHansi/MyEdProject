@@ -46,7 +46,7 @@
         color:#ddd;
     }
     // for rooms with unknown availability
-    &.minus {//TODO change
+    &.unknown {
         background-color: @minusGrey;
     }
 }
@@ -240,12 +240,18 @@
 
 // styling for the favourite rooms
 #rooms{
+    .row{        
+        margin-left:0;
+        margin-right:0;
+    }
     .roomFavouritesInfoRow{
         .openHourDiv{
             text-align: center;
+            padding: 0;
         }
         .capacityDiv{
             text-align: center;
+            padding: 0;
         }
         .availabilityDiv{
             text-align: center;
@@ -265,13 +271,12 @@
         margin-top: 5px;
         .remove-btn{
             display: inline-block;
-            margin: 5.5px 0px 5.5px 15px;
+            margin: 5.5px 0px 5.5px 0px;
         }
 
         .btn-group-rooms {
             display:inline-block;
-            padding-left: 0px;
-            padding-right:5px;
+            padding: 0;
             width: auto;
             float: right;
             .fa-map-marker, .fa-calendar {

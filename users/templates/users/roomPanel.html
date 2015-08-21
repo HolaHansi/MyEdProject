@@ -6,7 +6,7 @@
                 <span class="roomName">{{ fav.room_name }}, {{fav.building_name}}</span>
                 <span class="caret"></span>
             </a>
-            <span class="badge free"><i class="fa fa-check"></i></span>
+            <span class="badge {{ fav | room_badge_class }}"><i class="fa fa-{{ fav | room_badge_icon_class }}"></i></span>
         </h4>
     </div>
 
@@ -26,9 +26,17 @@
                     <p>{{ fav.capacity }}</p>
                 </div>
                 <div class="col-xs-3 availabilityDiv">
-                    <i class="fa fa-check-circle"></i>
-                    <div class="descriptionRoom">Available for less than</div>
-                    <p>{{ fav.availableFor }}</p>
+                    <i class="fa fa-{{fav | room_availability_icon_class}}"></i>
+                    {% if fav.availability == 'availableNow' and fav.availableFor != 'unknown' %}
+                        <div class="descriptionRoom">Available for:</div>
+                        <p>{{ fav.availableFor }}</p>
+                    {% elif fav.availability == 'notAvailable' %}
+                        <div class="descriptionRoom">Available in:</div>
+                        <p>{{ fav.unavailableFor }}</p>
+                    {% else %}
+                        <div style='margin-bottom: -3px'>{% if fav.availability == 'availableNow' %} Opening times {% else %} Availability {% endif %}</div>
+                        <div>unknown</div>
+                    {% endif %}
                 </div>
                  <div class="col-xs-4 facilitiesDiv">
                     <p>{{ fav | facilities }}</p>
@@ -45,7 +53,7 @@
                 <div class="btn-group btn-group-rooms">
                      <a id="{{ fav.locationId }}" class="btn btn-default calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                      <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                     <a class="btn btn-default booknow" role="button">Book Now</a>
+                     <a class="btn btn-default booknow {% if fav.availability != 'availableNow' %} disabled {% endif %}" role="button">Book Now</a>
                 </div>
             </div>
 

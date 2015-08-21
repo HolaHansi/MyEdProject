@@ -19,8 +19,6 @@ def facilities(room):
         to_return += '<span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span> &nbsp; '
     if room.whiteboard:
         to_return += '<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> &nbsp; '
-    if to_return == '':
-        to_return = "No Suitabilities"
     return mark_safe(to_return)
 
 
@@ -97,8 +95,6 @@ def facilitiesRoom(room):
         to_return += '<span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span> &nbsp; '
     if room['whiteboard']:
         to_return += '<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> &nbsp; '
-    if to_return == '':
-        to_return = "No Suitabilities"
     return mark_safe(to_return)
 
 
@@ -235,22 +231,67 @@ def inUse(lab):
 
 
 @register.filter
-def badge_class(lab):
+def lab_badge_class(lab):
     """
     returns 'free', 'busyish' or 'full' depending on how full the lab is,
     or 'shut' if the lab is shut
-    :param lab:
+    :param lab: the lab we're asking about
     :return: string: the class of the badge for this lab as decided by how busy it is
     """
     # Note the cutoff points are entirely arbitrary, simply what felt intuitive to me
-    if lab.openInfo =='closed':
+    if lab.openInfo == 'closed':
         return 'shut'
     if lab.ratio > 0.75:
         return 'free'
-    elif lab.ratio > 0.5:
+    if lab.ratio > 0.5:
         return 'busyish'
+    return 'full'
+
+
+@register.filter
+def room_badge_class(room):
+    """
+    returns 'free', 'unknown' or 'full' depending on the room's availability
+    :param room: the room we're asking about
+    :return: string: the class of the badge for this room as decided its availability
+    """
+    if room.locally_allocated == 1:
+        return 'unknown'
+    if room.availability == 'availableNow':
+        return 'free'
     else:
         return 'full'
+
+
+@register.filter
+def room_badge_icon_class(room):
+    """
+    returns 'check', 'minus' or 'times' depending on the room's availability
+    :param room: the room we're asking about
+    :return: string: the class of the icon for the badge for this room as decided its availability
+    """
+    if room.locally_allocated == 1:
+        return 'minus'
+    if room.availability == 'availableNow':
+        return 'check'
+    else:
+        return 'times'
+
+
+@register.filter
+def room_availability_icon_class(room):
+    """
+    returns the fa class of the icon for the availability display depending on the room's availability
+    :param room: the room we're asking about
+    :return: string: the class of the icon for the badge for this room as decided its availability
+    """
+    if room.locally_allocated == 1 or (room.availability == 'availableNow' and room.availableFor == 'unknown'):
+        return 'exclamation-triangle'
+    if room.availability == 'availableNow':
+        return 'check-circle'
+    else:
+        return 'hourglass'
+
 
 @register.filter
 def opening_hours(lab):
@@ -259,7 +300,8 @@ def opening_hours(lab):
     :param lab:
     :return: string: the class of the badge for this lab as decided by how busy it is
     """
-    if openTime(lab)=='n/a':
+    if openTime(lab) == 'n/a':
         return mark_safe("<p>Unknown</p>")
     else:
-        return mark_safe("<p class='openTimeP'>" + openTime(lab) + "</p> <p class='closingTimeP'>" + closingTime(lab) + "</p>")
+        return mark_safe(
+            "<p class='openTimeP'>" + openTime(lab) + "</p> <p class='closingTimeP'>" + closingTime(lab) + "</p>")

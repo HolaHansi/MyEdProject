@@ -313,10 +313,10 @@ def favourites(request):
 
     rooms_open_locally_allocated = room_favourites.filter(availability='localAvailable')
 
+    all_rooms = chain(rooms_available_now, rooms_open_locally_allocated)
+    all_rooms = chain(all_rooms, rooms_not_available_now)
     context = {'pc_favourites': all_labs,
-               'rooms_open_locally_allocated': rooms_open_locally_allocated,
-               'rooms_available_now': rooms_available_now,
-               'rooms_not_available_now': rooms_not_available_now,
+               'room_favourites': all_rooms,
                'user': user}
 
     return render(request, 'users/favourites.html', context)
