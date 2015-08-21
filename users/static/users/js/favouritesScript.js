@@ -1,4 +1,7 @@
 $(document).ready(function(){
+    // load auto-complete
+    autoCompleteAPI();
+    
     // isClicked will change value whenever the remove fav btn is cancelled
     isClicked = false;
     $(".remove-btn").click(removeFavouriteBtn);
@@ -21,9 +24,13 @@ $(document).ready(function(){
 
     // style the favourites tab as the current tab
     $('#mainHamburgerMenuOptions .favouritesTab').addClass('currentTab');
-
-    // load auto-complete
-    autoCompleteAPI();
+    
+    // book this room when the 'Book Now' button is selected
+    $('.bookNow').click(function(){
+        id = $(this).parents('.panel-default').prop('id');
+        id = id.slice(id.indexOf('room-')+5);
+        bookRoom(id);
+    })
 });
 
 // the function called whenever a remove favourite button is selected

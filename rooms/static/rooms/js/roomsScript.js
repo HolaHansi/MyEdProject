@@ -139,14 +139,9 @@ $(document).ready(function () {
 	});
     
     // when the user books a room, save that room to the history database
+    // bookRoom function is in core/booking.js
     $('#bookBtn').click(function(){
-        $.post('/history/',{
-            'locationId': currentChoice.locationId,
-            'clearAll': false
-        }).done(function(data){
-            window.location.href = 'https://www.ted.is.ed.ac.uk/UOE1415STU_WRB/default.aspx';
-        });
-        
+        bookRoom(currentChoice.locationId)
     });
     
     // when the user clicks the 'add to favourites' star, like or unlike the room as appropriate

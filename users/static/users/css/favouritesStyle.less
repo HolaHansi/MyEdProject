@@ -1,250 +1,51 @@
 @import "../../../../core/less/variables.less";
 
+// main page styling
 .containerForAllez {
     margin-left: 6px;
     margin-right: 6px;
-    .navbar-row>.row{
-        margin-right: 0px;
-    }
+}
+.nav-pills {
+    margin-bottom: 6px;
+}
+.panel-group .panel {
+    margin-bottom:5px;
 }
 
+// styling for both labs and rooms
 .theLink{
     width: calc(~"100% - 35px");
     display: inline-block;
 }
 
-.favouritesInfoRow{
-    .display-flex();
-    margin-left: 0px;
-    margin-right: 0px;
-    
-    &>div{
-        display: inline-block;
-    }
-    
-    .availabilityInfo {
-        width: 80px;
-        margin-right:10px;
-        @media (min-width: 400px){
-            width: 150px;
-        }
-        p {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-    }
-    
-    .computersFreeGraphContainer{
-        .flex(1, 1, auto);
-        .computersFreeGraph{
-            height:50px;
-            width:50px;
-            margin:auto;
-        }
-    }
-    
-    .openHourDiv{
-        .flex(1, 1, 50px);
-        text-align: center;
-        @media (max-width: @hideOpeningHoursWidth) {
-            display: none;
-        }
-        .openHoursClock {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        @media (min-width:450px){
-            .flex(1, 1, 100px);
-            font-size: 16px;
-            .openHoursClock{
-                display:block;
-                font-size: 20px;
-                margin-top: 5px;
-            }
-            .openTimeP{
-                display:inline;
-            }
-            .openTimeP:after{
-                content:" - "
-            }
-            .closingTimeP{
-                display: inline;
-            }
-        }
-    }
-    
-    .yesBtnDiv{
-        width: 57px;
-        text-align: right;
-        .map-btn {
-            margin-top: 5px;
-        }
-    }
-}
-
-.pc.closed .favouritesInfoRow{
-
-    .availabilityInfo {
-        opacity:0.4;
-        p {
-        }
-    }
-    
-    .computersFreeGraphContainer{
-        opacity:0.4;
-        @media (max-width: @hideOpeningHoursWidth) {
-            display: none;
-        }
-        .computersFreeGraph{
-        }
-    }
-    
-    .openHourDiv{
-        display: block;
-        color: @unavailableRed;
-        font-weight: bold;
-        .openHoursClock {
-            color:black;
-        }
-    }
-    
-    .yesBtnDiv{
-        .map-btn {
-        }
-    }
-}
-
-.hiddenTil400{
-    @media (max-width:399px){
-        display: none;
-    }
-}
-.shownTil400{
-    @media (min-width:400px){
-        display: none;
-    }
-}
-
-.btn-group-rooms {
-    padding-left: 0px;
-    padding-right:5px;
-    width: auto;
-    float: right;
-}
-
-.openHourRoom {
-    width: 15px;
-    padding-left: 0px;
-    padding-top: 10px;
-    text-align: center;
-}
-
-.openHourDivRoom {
-    padding-left: 0px;
-}
-
-@media(max-width: 648px) {
-    .descriptionRoom {
-        display: none;
-    }
-}
-
-.body {
-    background-color: @unavailableRed;
-}
-
-.btn-lg {
-    border-radius: 0;
-}
-.nav {
-    margin-bottom: 6px;
-    .nav-pills {
-        white-space: nowrap;
-        overflow: hidden;
-    }
-}
-
 .badge, .panel-default > .panel-heading .badge {
+    min-width:35px;
     float: right;
     font-size: 14px;
+    // for # of seats free,
+    // plus available rooms and very empty labs
     &.free {
         background-color: @availableGreen;
         margin-bottom: 0px;
-        &.closed {
-            background-color: @minusGrey;
-        }
     }
+    // for slightly busy labs
     &.busyish{
         background-color: @iffyColour;
     }
+    // for # of seats in use,
+    // plus unavailable rooms and busy labs
+    &.full, &.inuse{
+        background-color: @unavailableRed;
+    }
+    // for closed labs
     &.shut{
         background-color: #333;
         color:#ddd;
     }
-    &.full, &.inuse{
-        background-color: @unavailableRed;
+    // for rooms with unknown availability
+    &.minus {//TODO change
+        background-color: @minusGrey;
     }
-}
-
-#PCs .badge{
-    min-width:35px;
-}
-
-.panel-group .panel {
-    margin-bottom:5px;
-}
-
-.badge-group {
-    padding-top: 4px;
-    margin-left: 0px;
-}
-
-.avail {
-    float: right;
-    width: 12px;
-}
-
-.suitAvail {
-    color: @availableGreen;
-    padding-left: 5px;
-}
-
-.suitUnAvil {
-    color: @unavailableRed;
-    padding-left: 5px;
-}
-
-.suitabilityCol {
-    text-align: center;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-
-.fa-map-marker,
-.fa-calendar {
-    color: #555;
-}
-.fa-check {
-    margin-left: -1px;
-}
-.panel-default > .panel-heading .badge.check {
-    background-color: @availableGreen;
-}
-.panel-default > .panel-heading .badge.minus {
-    background-color: @minusGrey;
-}
-.panel-default > .panel-heading .badge.times {
-    background-color: @unavailableRed;
-}
-.booknow {
-    margin-left: 0px;
-    padding: 7px 5px 13px 5px;
-    font-size: 14px;
-}
-
-.btn-group>.btn {
-    margin-right: 0;
 }
 
 .remove-btn {
@@ -286,78 +87,184 @@
     }
 }
 
+// styling for the autocompleter:
+
+// the list element containing the suggester
+.autocompleteLi{
+    .display-flex();
+    // the text input itself
+    .autocompleteForm {
+        margin-left:5px;
+        width:50%; // only rendered if the browser doesn't support flex
+        .flex(1,1,auto);
+        &:focus{
+            outline:none;
+        }
+    }
+}
+
+// the div containing all the suggestions
 .autocomplete-suggestions {
-    border: 1px solid #999;
+    border: 1px solid #ddd;
+    border-top: none;
     background: #fff;
     cursor: default;
     overflow: auto;
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
+    // each individual suggestion
+    .autocomplete-suggestion {
+        // white-space: nowrap; // include if you want all the suggestions to be on one line
+        padding: 8px 5px;
+        // the selected suggestion
+        &.autocomplete-selected {
+            background: #f0f0f0;
+        }
+    }
+    // any matched text
+    strong {
+        font-weight: normal;
+        color: #3399ff;
+    }
 }
 
-.autocomplete-suggestion {
-    padding: 8px 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 14px;
+// styling for the favourite labs
+#labs{
+    // general styling for the lab details
+    .labFavouritesInfoRow{
+        .display-flex();
+        margin-left: 0px;
+        margin-right: 0px;
+
+        &>div{
+            display: inline-block;
+        }
+
+        .availabilityInfo {
+            width: 80px;
+            margin-right:10px;
+            @media (min-width: 400px){
+                width: 150px;
+            }
+            p {
+                font-size: 14px;
+                margin-bottom: 5px;
+            }
+        }
+
+        .computersFreeGraphContainer{
+            .flex(1, 1, auto);
+            .computersFreeGraph{
+                height:50px;
+                width:50px;
+                margin:auto;
+            }
+        }
+
+        .openHourDiv{
+            .flex(1, 1, 50px);
+            text-align: center;
+            @media (max-width: @hideOpeningHoursWidth) {
+                display: none;
+            }
+            .openHoursClock {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            @media (min-width:450px){
+                .flex(1, 1, 100px);
+                font-size: 16px;
+                .openHoursClock{
+                    display:block;
+                    font-size: 20px;
+                    margin-top: 5px;
+                }
+                .openTimeP{
+                    display:inline;
+                }
+                .openTimeP:after{
+                    content:" - "
+                }
+                .closingTimeP{
+                    display: inline;
+                }
+            }
+        }
+
+        .yesBtnDiv{
+            width: 57px;
+            text-align: right;
+            .map-btn {
+                margin-top: 5px;
+            }
+        }
+    }
+    
+    // add extra styling if the lab is shut
+    .pc.closed .labFavouritesInfoRow{
+
+        .availabilityInfo {
+            opacity:0.4;
+        }
+
+        .computersFreeGraphContainer{
+            opacity:0.4;
+            @media (max-width: @hideOpeningHoursWidth) {
+                display: none;
+            }
+        }
+
+        .openHourDiv{
+            display: block;
+            color: @unavailableRed;
+            font-weight: bold;
+            .openHoursClock {
+                color:black;
+            }
+        }
+    }
 }
 
-.autocomplete-selected {
-    background: #f0f0f0;
+// styling for the favourite rooms
+#rooms{
+    .btn-group-rooms {
+        padding-left: 0px;
+        padding-right:5px;
+        width: auto;
+        float: right;
+        .fa-map-marker, .fa-calendar {
+            color: #555;
+        }
+    }
+
+    @media(max-width: 648px) {
+        .descriptionRoom {
+            display: none;
+        }
+    }
+    .booknow {
+        padding: 7px 5px 13px 5px;
+    }
 }
 
-.autocomplete-suggestions strong {
-    font-weight: normal;
-    color: #3399ff;
-}
-
-#searchfield {
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin-bottom: 35px;
-}
-
-#searchfield form {
-    display: inline-block;
-    background: #eeefed;
-    padding: 0;
-    margin: 0;
-    padding: 5px;
-    border-radius: 3px;
-    margin: 5px 0 0 0;
-}
-
-#searchfield form .biginput {
-    width: 600px;
-    height: 40px;
-    padding: 0 10px 0 10px;
-    background-color: #fff;
-    border: 1px solid #c8c8c8;
-    border-radius: 3px;
-    color: #aeaeae;
-    font-weight: normal;
-    font-size: 1.5em;
-    -webkit-transition: all 0.2s linear;
-    -moz-transition: all 0.2s linear;
-    transition: all 0.2s linear;
-}
-
-#searchfield form .biginput:focus {
-    color: #858585;
-}
-
-.autocompleteForm {
-    width: 50%;
-}
-
-// this is for the FullCalendar:
+// styling for the calendar:
 .fc-today {
     background: #f0f3ff !important;
 }
 
+// reusable styles/functions
 
+.hiddenTil400{
+    @media (max-width:399px){
+        display: none;
+    }
+}
+.shownTil400{
+    @media (min-width:400px){
+        display: none;
+    }
+}
 // shorthand for all versions of display: flex
 .display-flex(){
     display: -webkit-box;
