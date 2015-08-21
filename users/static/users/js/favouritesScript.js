@@ -110,6 +110,7 @@ function autoCompleteAPI() {
         $('#autocompleteLab').autocomplete({
             lookup: allLocations['labs'],
             autoSelectFirst: true,
+            maxHeight: '150',
             // when a place is chosen
             onSelect: function(suggestion) {
                 // add it to favourites
@@ -141,6 +142,7 @@ function autoCompleteAPI() {
         $('#autocompleteRoom').autocomplete({
             lookup: allLocations['rooms'],
             autoSelectFirst: true,
+            maxHeight: '150',
             // when a place is chosen
             onSelect: function(suggestion) {
                 // add it to favourites

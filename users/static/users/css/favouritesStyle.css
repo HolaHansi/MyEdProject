@@ -6,6 +6,9 @@
 .nav-pills {
   margin-bottom: 6px;
 }
+.panel-group {
+  margin-bottom: 0px;
+}
 .panel-group .panel {
   margin-bottom: 5px;
 }
