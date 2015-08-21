@@ -6,70 +6,54 @@
 
 <link href="{% static 'users/css/favouritesStyle.css' %}" rel="stylesheet">
 
-
 <script type="text/javascript" src="{% static 'users/js/history.js' %}"></script>
 
-    <!-- FULL CALENDAR STUFF -->
+<!-- Calendar static files -->
 <link rel="stylesheet" href="{% static 'core/fullcalendar/fullcalendar.css' %}" />
 <script src="{% static 'core/fullcalendar/moment.min.js' %}"></script>
 <script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
 <script type="text/javascript" src="{% static 'users/js/calendarScript.js' %}"></script>
 
 
-{% endblock %}
+{% endblock %} {% block content %}
+<div class="containerForAllez">
 
-{% block content %}
-    <div class="containerForAllez">
+    <div class=header>
+        <h1 id='pageTitle'>History<i class="fa fa-history"></i></h1>
 
-    <!-- perhaps not needed! -->
+    </div>
 
-
-
-
-
-    <!-- END OF STUFF THAT IS PERHAPS NOT NEED -->
-
-<style>
-
-.panel.panel-default {
-    margin-bottom: 5px;
-}
-
-</style>
-
-
-<div class=header>
-    <h1 id='pageTitle'>History<i class="fa fa-history"></i></h1>
-
-</div>
-
+    {% if not roomHis %}
+    <div class="noHistory">
+        <h4>No room booking history to show.</h4>
+    </div>
+    {% else %}
 
     <!--Rooms-->
     <div id="ROOMs" class="tab-pane">
-        <div class="panel-group" role="tablist" aria-multiselectable="true" style="margin-bottom:5px;">
+        <div class="panel-group" role="tablist" aria-multiselectable="true">
 
-        <!-- MODAL Calendar -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header" >
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Calendar</h4>
-              </div>
-              <div class="modal-body">
-                <div id="calendar"></div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
-              </div>
+            <!--Calendar modal-->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Calendar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="calendar"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <!-- end MODAL -->
 
-
-
-            <div id="historyCleared" style="display:none;"><p>History cleared!</p></div>
+            <div id="historyCleared" style="display:none;">
+                <p>History cleared!</p>
+            </div>
             <!-- generated favourites -->
 
             {% for fav in roomHis %}
@@ -93,89 +77,65 @@
 
                 <div id="collapse-{{fav.his_id}}" class="panel-collapse collapse" role="tabpanel">
 
-                        <div class="panel-body">
-                            <div class="row">
-                                 <div class="col-xs-3" style="text-align: center;">
-                                     <p><i class="fa fa-clock-o"></i></p>
-                                     <div class="descriptionRoom"><p>Opening Hours</p></div>
-                                     <p>{{ fav | openTimeRoom }}</p>
-                                     <p>{{ fav | closingTimeRoom }}</p>
-                                 </div>
-                                <div class="col-xs-2" style="text-align:center;">
-                                    <p><i class="fa fa-users"></i></p>
-                                    <div class="descriptionRoom"><p>Capacity</p></div>
-                                    <p>{{ fav.capacity }}</p>
-
-
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-3" style="text-align: center;">
+                                <p><i class="fa fa-clock-o"></i></p>
+                                <div class="descriptionRoom">
+                                    <p>Opening Hours</p>
                                 </div>
-                                <div class="col-xs-3" style="text-align: center; padding-left:5px; padding-right:5px;">
-                                    {{ fav | get_availFor }}
+                                <p>{{ fav | openTimeRoom }}</p>
+                                <p>{{ fav | closingTimeRoom }}</p>
+                            </div>
+                            <div class="col-xs-2" style="text-align:center;">
+                                <p><i class="fa fa-users"></i></p>
+                                <div class="descriptionRoom">
+                                    <p>Capacity</p>
                                 </div>
-                                 <div class="col-xs-4" style="text-align:right; padding-right:0px; padding-left: 0px;">
-                                    <p>{{ fav | facilitiesRoom }}</p>
-                                 </div>
+                                <p>{{ fav.capacity }}</p>
 
 
                             </div>
-                            <div class="row" style="margin-top:15px;">
-                                <div class="col-xs-3" style="">
-                                    <p style="text-align: center;"><i class="fa fa-history"></i></p>
-                                </div>
+                            <div class="col-xs-3" style="text-align: center; padding-left:5px; padding-right:5px;">
+                                {{ fav | get_availFor }}
                             </div>
-                            <div class="row">
-                                <div class="col-xs-3" style="text-align:center; padding:0 0 0;">
-                                    <div class="descriptionRoom">
-                                        <p>Time of booking</p>
-
-                                    </div>
-                                    <p>{{ fav | booked_at_time }}</p>
-                                </div>
-                                <div class="col-xs-6 btn-group btn-group-rooms">
-                                     <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                                     <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-
-                                    {{ fav | get_bookBtn }}
-                                </div>
+                            <div class="col-xs-4" style="text-align:right; padding-right:0px; padding-left: 0px;">
+                                <p>{{ fav | facilitiesRoom }}</p>
                             </div>
-                        <!-- panel-body -->
+
+
                         </div>
-                <!-- panel collapse -->
+                        <div class="row" style="margin-top:15px;">
+                            <div class="col-xs-3" style="">
+                                <p style="text-align: center;"><i class="fa fa-history"></i></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-3" style="text-align:center; padding:0 0 0;">
+                                <div class="descriptionRoom">
+                                    <p>Time of booking</p>
+
+                                </div>
+                                <p>{{ fav | booked_at_time }}</p>
+                            </div>
+                            <div class="col-xs-6 btn-group btn-group-rooms">
+                                <a href="#" id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                                <a href="{% url 'labs' %}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a> {{ fav | get_bookBtn }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            <!-- end of this room -->
             </div>
 
-            <!-- end of favourite room -->
-
             {% endfor %}
+        </div>
+
+
     </div>
-
-
-</div>
-            {% if not roomHis %}
-                <div class="noHistory">
-                    <p>No room booking history to show.</p>
-                </div>
-            {% else %}
-                <button type="button" class="btn btn-info" id="clearHistory">Clear History</button>
-            {% endif %}
-
+    <button type="button" class="btn btn-info" id="clearHistory">Clear History</button>
+    {% endif %}
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
