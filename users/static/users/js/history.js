@@ -14,17 +14,14 @@ $(document).ready(function(){
     
     $('#clearHistory').click(function(){
 
-        $.post('/history/', {
-                'clearAll': true
-        })
+        $.post('/history/', {'clearAll': true})
         .done(function(){
-                $('.panel.panel-default').fadeOut(function() {
-                    $(this).remove();
-                    $('#historyCleared').removeAttr('style');
-                    $('#clearHistory').remove();
-                });
-            }
-        )
+            $('.panel.panel-default').fadeOut(function() {
+                $(this).remove();
+                $('#historyCleared').show();
+                $('#clearHistory').remove();
+            });
+        })
     });
 
 });
