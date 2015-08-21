@@ -264,7 +264,7 @@ def get_panel(request):
             lab.openInfo = 'open'
         else:
             lab.openInfo = 'closed'
-        return render(request, 'users/favouritePanel.html', {'fav': lab})
+        return render(request, 'users/labPanel.html', {'fav': lab})
 
 
 @login_required

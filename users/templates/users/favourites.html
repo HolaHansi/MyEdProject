@@ -48,7 +48,7 @@
                 
                 {% for favourite in pc_favourites %}
                     
-                    {% include "users/favouritePanel.html" with fav=favourite %}
+                    {% include "users/labPanel.html" with fav=favourite %}
 
                 {% endfor %}
 
@@ -63,100 +63,29 @@
         <div id="rooms" class="tab-pane fade">
             <div class="panel-group" role="tablist" aria-multiselectable="true">
                 
-                <!-- Calendar modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                  <div class="modal-dialog" role="document">
+            <!-- Calendar modal -->
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                      <div class="modal-header" >
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Calendar</h4>
-                      </div>
-                      <div class="modal-body">
-                        <div id="calendar"></div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {% for fav in rooms_available_now %}
-
-<div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
-    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
-        <h4 class="panel-title">
-            <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" href="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
-                <span class="roomName">{{ fav.room_name }}, {{fav.building_name}}</span>
-                <span class="caret"></span>
-            </a>
-            <span class="badge free"><i class="fa fa-check"></i></span>
-        </h4>
-    </div>
-
-    <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
-
-            <div class="panel-body">
-                <div class="row">
-                     <div class="col-xs-3" style="text-align: center;">
-                         <p><i class="fa fa-clock-o"></i></p>
-                         <div class="descriptionRoom"><p>Opening Hours</p></div>
-                         <p>{{ fav | openTime }}</p>
-                         <p>{{ fav | closingTime }}</p>
-                     </div>
-                    <div class="col-xs-2" style="text-align:center;">
-                        <p><i class="fa fa-users"></i></p>
-                        <div class="descriptionRoom"><p>Capacity</p></div>
-                        <p>{{ fav.capacity }}</p>
-                    </div>
-                    <div class="col-xs-3" style="text-align: center; padding-left:5px; padding-right:5px;">
-                        <p><i class="fa fa-check-circle"></i></p>
-                        <div class="descriptionRoom"><p>Available for less than</p></div>
-                        <p>{{ fav.availableFor }}</p>
-                    </div>
-                     <div class="col-xs-4" style="text-align:right; padding-left:0px; padding-right:0px;">
-                        <p>{{ fav | facilities }}</p>
-                     </div>
-                </div>
-                <div class="row" style="margin-top: 15px;">
-                    <div class="col-xs-2">
-                        <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn">
-                            <i class="fa fa-star starred"></i>
-                            <span>Remove</span>
-                            <a class='fa fa-check confirmRemove'> &nbsp; </a>
-                            <a class='fa fa-times cancelRemove'> &nbsp; </a>
-                        </button>
-                    </div>
-                    <div class="col-xs-6 btn-group btn-group-rooms">
-                         <a id="{{ fav.locationId }}" class="btn btn-default roomBtn calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                         <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                         <a class="btn btn-default booknow roomBtn" role="button">Book Now</a>
+                        <div class="modal-header" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Calendar</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="calendar"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+                        </div>
                     </div>
                 </div>
-            <!-- panel-body -->
             </div>
-    <!-- panel collapse -->
-    </div>
-<!-- end of this room -->
-</div>
 
-                <!-- end of favourite room -->
+            {% for favourite in rooms_available_now %}
 
-                {% endfor %}
+                {% include "users/roomPanel.html" with fav=favourite %}
 
-            <div id="insertRoomAvailableNow" style="border:none;"></div>
-
-
-{##}
-{##}
-{##}
-{#        <li class="list-group-item" id="room-{{fav.locationId}}">{{ fav.room_name }}, {{fav.building_name}}: {{fav | facilities}}#}
-{#            <span class="unliker unclicked">Unlike</span></li>#}
-
-
-
-
-
+            {% endfor %}
 
             {% for fav in rooms_not_available_now %}
 
