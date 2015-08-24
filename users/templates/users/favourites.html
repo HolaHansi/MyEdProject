@@ -5,7 +5,6 @@
 {% block head %}
 
     <link href="{% static 'users/css/favouritesStyle.css' %}" rel="stylesheet">
-    <script type='text/javascript' src="{% static 'core/js/booking.js' %}"></script>
 
     <!-- amCharts javascript sources -->
     <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
@@ -13,14 +12,15 @@
 
     <script type="text/javascript" src="{% static 'core/js/makeGraph.js' %}"></script>
 
-    <script type="text/javascript" src="{% static 'users/js/favouritesScript.js' %}"></script>
     <script type="text/javascript" src="{% static 'users/js/jquery.autocomplete.js' %}"></script>
 
     <!-- Calendar static files -->
     <link rel="stylesheet" href="{% static 'core/fullcalendar/fullcalendar.css' %}" />
     <script src="{% static 'core/fullcalendar/moment.min.js' %}"></script>
     <script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
-    <script type="text/javascript" src="{% static 'users/js/calendarScript.js' %}"></script>
+
+    <script type='text/javascript' src="{% static 'core/js/booking.js' %}"></script>
+    <script type="text/javascript" src="{% static 'users/js/favouritesScript.js' %}"></script>
 
 {% endblock %}
 

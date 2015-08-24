@@ -258,13 +258,21 @@ def get_all_favourites(request):
 
 def get_panel(request):
     if request.method == 'POST':
-        lab_id = escape(request.POST['pc_id'])
-        lab = Computer_Labs.objects.filter(id=lab_id)[0]
-        if utilities.isOpen(lab):
-            lab.openInfo = 'open'
+        # if getting a lab
+        if 'pc_id' in request.POST:
+            lab_id = escape(request.POST['pc_id'])
+            lab = Computer_Labs.objects.filter(id=lab_id)[0]
+            if utilities.isOpen(lab):
+                lab.openInfo = 'open'
+            else:
+                lab.openInfo = 'closed'
+            return render(request, 'users/labPanel.html', {'fav': lab})
         else:
-            lab.openInfo = 'closed'
-        return render(request, 'users/labPanel.html', {'fav': lab})
+            room_id = escape(request.POST['locationId'])
+            room = Tutorial_Room.objects.filter(locationId=room_id)[0]
+            return render(request, 'users/roomPanel.html', {'fav': room})
+
+
 
 
 @login_required

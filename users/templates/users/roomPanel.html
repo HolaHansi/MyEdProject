@@ -51,7 +51,7 @@
                     <a class='fa fa-times cancelRemove'> &nbsp; </a>
                 </button>
                 <div class="btn-group btn-group-rooms">
-                     <a id="{{ fav.locationId }}" class="btn btn-default calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                     <a class="btn btn-default calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                      <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
                      <a class="btn btn-default booknow {% if fav.availability != 'availableNow' %} disabled {% endif %}" role="button">Book Now</a>
                 </div>

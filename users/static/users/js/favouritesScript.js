@@ -4,34 +4,117 @@ $(document).ready(function(){
     
     // isClicked will change value whenever the remove fav btn is cancelled
     isClicked = false;
-    $(".remove-btn").click(removeFavouriteBtn);
-    // if x is pressed, then set is clicked to true, so to escape this clause.
-    $('.cancelRemove').click(cancelRemoveBtn);
-
-    // if the check symbol is pressed, then obtain the id from the parent div, and
-    // call the remove from favourites function.
-    $('.confirmRemove').click(confirmRemoveBtn);
     
-    // This will make sure that the arrow in each panel changes direction whenever the panel
-    // either collapses or unfolds.
-    $(".panel").on('show.bs.collapse', function(){
-        $(this).addClass('dropup');
-    });
-
-    $(".panel").on('hide.bs.collapse', function(){
-        $(this).removeClass('dropup');
-    });
-
     // style the favourites tab as the current tab
     $('#mainHamburgerMenuOptions .favouritesTab').addClass('currentTab');
     
+    // make sure calendar renders when modal shows.
+    $('#myModal').on('shown.bs.modal', function () {
+        $("#calendar").fullCalendar('render');
+    });
+
+    // when the modal closed - kill the calendar.
+    $('#closeModal').click(function(){
+       $('#calendar').fullCalendar('destroy');
+    });
+    
+    // add functionality to all the panels
+    addGeneralFunctionalityToPanel($('#labs .panel'));
+    addFunctionalityToRoomPanel($('#rooms .panel'));
+});
+
+
+// add triggers to the remove button and the caret within the inputted panel
+// input: panelDiv (object): the panel which we're applying functionality to
+function addGeneralFunctionalityToPanel(panelDiv){
+    // 'Remove button' functionality: 
+    $(".remove-btn", panelDiv).click(removeFavouriteBtn);
+    // if x is pressed, then set is clicked to true, so to escape this clause.
+    $('.cancelRemove', panelDiv).click(cancelRemoveBtn);
+    // if the check symbol is pressed, then obtain the id from the parent div, and
+    // call the remove from favourites function.
+    $('.confirmRemove', panelDiv).click(confirmRemoveBtn);
+    
+    // This will make sure that the arrow in each panel changes direction whenever the panel
+    // either collapses or unfolds.
+    panelDiv.on('show.bs.collapse', function(){
+        $(this).addClass('dropup');
+    });
+    panelDiv.on('hide.bs.collapse', function(){
+        $(this).removeClass('dropup');
+    });
+}
+
+// add triggers to all the appropriate objects within the inputted room panel
+// input: panelDiv (object): the room panel which we're applying functionality to
+function addFunctionalityToRoomPanel(panelDiv){
+    
+    // add all the functionality that all panels have
+    addGeneralFunctionalityToPanel(panelDiv);
+    
+    // add specific functionality for rooms panels
+    
     // book this room when the 'Book Now' button is selected
-    $('.bookNow').click(function(){
+    $('.bookNow', panelDiv).click(function(){
         id = $(this).parents('.panel-default').prop('id');
         id = id.slice(id.indexOf('room-')+5);
         bookRoom(id);
     })
-});
+    
+    // display the calendar when the calendar button is selected
+    $(".calBtn", panelDiv).click(function() {
+        
+        // get the location id from the parent div
+        var locationId = $(this).parents('.panel-default').prop('id');
+        locationId = locationId.slice(locationId.indexOf('room-')+5);
+
+        // get the room name from the the div with class roomName + locationId.
+        // the id of this div is the name of the room.
+        var roomName = $(".roomName." + locationId).attr('id');
+
+        // change the heading label for the modal to the room name.
+        $('#myModalLabel').html(roomName);
+
+        // get all activities on this room.
+        $.get('/calendar/', {
+                'locationId': locationId
+        })
+        .done(function(activities){
+            // convert all activities to a format that FullCalendar understands
+            // get current time
+            var dateNow = moment().format("YYYY-MM-DD");
+
+            var events = [];
+            for (var i=0; i<=activities.length - 1; i++) {
+                var act = activities[i];
+                var title = act.name;
+                var start = act.startTime;
+                var end = act.endTime;
+                var dict = [{title: title, start: start, end: end}];
+                events = events.concat(dict);
+            };
+
+            // initialize a calendar in the modal with the activities as events.
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next',
+                    right: 'agendaWeek,agendaDay'
+                },
+                defaultDate: dateNow,
+                // show week before day
+                defaultView: 'agendaWeek',
+                editable: false,
+                businessHours: false,
+                events: events,
+                // unavailable red (from variables.less)
+                eventColor: '#D9433B',
+                allDaySlot: false,
+                height: 400
+            });
+        });
+
+    });
+}
 
 // the function called whenever a remove favourite button is selected
 // it'll prompt the user to confirm the removal
@@ -66,6 +149,7 @@ function removeFavouriteBtn(){
     }
 }
 
+
 // the function called whenever a confirm removal button is selected
 // gets the id of the location to be removed and passes it to the removeFromFavourites function
 function confirmRemoveBtn(){
@@ -74,6 +158,7 @@ function confirmRemoveBtn(){
     removeFromFavourites(thisId);
 }
 
+
 // the function called whenever a cancel removal button is selected
 // since this button is a child of the main 'remove from favourites' button, 
 // the main logic is carried out on the parent's click function to prevent
@@ -81,6 +166,7 @@ function confirmRemoveBtn(){
 function cancelRemoveBtn(){
     isClicked = true;    
 }
+
 
 // removes the given pc or room from the users favourites
 function removeFromFavourites(id) {
@@ -101,6 +187,7 @@ function removeFromFavourites(id) {
     // update the autoComplete function
     autoCompleteAPI();
 }
+
 
 // this is the function that gets the data, and configures the settings for the autoCompleter
 function autoCompleteAPI() {
@@ -125,15 +212,13 @@ function autoCompleteAPI() {
                 $(this).autocomplete().clear();
                 $(this).val('');
                 
-                // create the html for this favourite
+                // create the html for this favourite server side
                 $.post('panel/', {'pc_id':suggestion.data.id})
                 .done(function(panel){
                     // append it to the list of favourites
                     newPanel = $(panel).insertBefore("#autocompleteLabLi");
-                    // add functionality to the remove button
-                    $(".remove-btn", newPanel).click(removeFavouriteBtn);
-                    $(".confirmRemove", newPanel).click(confirmRemoveBtn);
-                    $(".cancelRemove", newPanel).click(cancelRemoveBtn);
+                    // add functionality to the panel
+                    addGeneralFunctionalityToPanel(newPanel);
                 });
             }
         });
@@ -156,205 +241,15 @@ function autoCompleteAPI() {
                 // reset the autocomplete dropdown
                 $(this).autocomplete().clear();
                 $(this).val('');
-                // add the new favourite to the list:
-                // create all the icons:
-
-                // ========== add the new favourite to list of favourites using its appropriate template ========== //
-
-                // get one of three categories: availableNow, notAvailable or localAvailable
-
-                var availability = suggestion.data.availability;
-
-                console.log(availability);
-
-                var panelRoom = $(".panel.panel-default.room.template");
-
-                // clone the template and make is visible by removing the style attribute.
-                var clone = panelRoom.clone(true);
-                clone.removeAttr('style');
-
-                // remove the clone's template class
-                clone.removeClass('template');
-
-
-                if (availability == 'availableNow') {
-                    console.log('its avail!!!!');
-
-                    // determine where to insert the new favourite
-                    var placeToInsert = '#insertRoomAvailableNow';
-                    // theLink html - this goes into the panelHeading
-                    var linkHtml = '<span class="badge check"><i class="fa fa-check avail"></i></span>' + suggestion.value + '<span class="caret"></span>';
-                    var availForIconHtml = '<i class="fa fa-check-circle"></i>';
-                    var availForDescriptionHtml = 'Available for less than';
-                    var availForValueHtml = suggestion.data.availableFor;
-
-
-                    console.log('panelRoom coming up');
-                    console.log(panelRoom);
-                }
-                else if (availability == 'notAvailable') {
-                    var placeToInsert = '#insertRoomNotAvailable';
-
-                    var linkHtml = '<span class="badge times"><i class="fa fa-times"></i></span>' + suggestion.value + '<span class="caret"></span>';
-
-
-                    var availForIconHtml = '<i class="fa fa-hourglass"></i>';
-                    var availForDescriptionHtml = 'Will be available';
-                    var availForValueHtml = suggestion.data.unavailableFor;
-
-                    // disable the bookNow button.
-                    console.log('not avail booknow');
-                    console.log($('.booknow'));
-
-
-                    clone.find('.booknow').addClass('disabled');
-
-
-                }
-
-                else {
-                    var placeToInsert = '#insertRoomLocal';
-                    var linkHtml = '<span class="badge minus"><i class="fa fa-minus avail"></i></span>' + suggestion.value + '<span class="caret"></span>';
-
-                    var availForIconHtml = '<i class="fa fa-exclamation-triangle"></i>';
-                    var availForDescriptionHtml = 'Locally Allocated';
-                    var availForValueHtml = 'n/a';
-
-
-                    // disable the bookNow button.
-                    clone.find('.booknow').addClass('disabled');
-
-
-                }
-
-                linkHtml += '<div class="roomName ' + suggestion.data.locationId + '" id="' + suggestion.data.room_name + '"></div>';
-
-                // initialize id variables
-                var infoForID = 'infoFor-room-' + suggestion.data.locationId;
-                var roomID = 'room-'+ suggestion.data.locationId;
-                var collapseID = '#collapse-' + suggestion.data.locationId;
-                var collapseIDNoHashtag = 'collapse-' + suggestion.data.locationId;
-
-
-                // give panel the id for infoForID.
-                clone.attr('id', infoForID);
-
-                // get pointers to all the element that must be modified in the clone:
-                var panelHeading = clone.find(".panel-heading");
-                var theLink = clone.find('.theLink');
-                var panelCollapse = clone.find('.panel-collapse.collapse');
-
-
-                var capacity = clone.find('.capacityNumber');
-
-
-                console.log('this is the clone coming up');
-                console.log(clone);
-
-
-
-                // opening hour paragraphs
-                var openTimeP = panelCollapse.find(".openTimeP");
-                var closingTimeP = panelCollapse.find(".closingTimeP");
-
-                // availFor
-                var availForIcon = panelCollapse.find(".availForIcon");
-                var availForDescription = panelCollapse.find(".availForDescription");
-                var availForValue = panelCollapse.find(".availForValue");
-
-                //suitabilities
-                var suitabilities = panelCollapse.find(".suitabilitiesRoom");
-
-                // map and remove btn
-                var mapBtn = panelCollapse.find(".mapBtn");
-                var rmvBtn = panelCollapse.find(".remove-btn");
-                var calBtn = panelCollapse.find(".calBtn");
-                var bookNow = panelCollapse.find("booknow");
-
-                // change date-target for panelHeading
-                panelHeading.attr('data-target', collapseID);
-
-
-                // change attributes for theLink
-                theLink.attr("data-target", collapseID);
-                theLink.attr("href", collapseID);
-                theLink.attr("aria-controls", collapseIDNoHashtag);
-
-
-                // change the html in theLink - the html value depends on whether place is closed or not.
-                theLink.html(linkHtml);
-
-
-                // change id of panelCollapse to match id favourite - slice expression is for getting rid of hashtag
-                panelCollapse.attr('id', collapseIDNoHashtag);
-
-
-                // get the opening hours
-                if (suggestion.data.openHour == 'n/a') {
-                    var openHourHtml = 'n/a';
-                    var closingHourHtml = 'n/a';
-                }
-                else {
-                    var openHourHtml = suggestion.data.openHour.slice(0, 5);
-                    var closingHourHtml = suggestion.data.closingHour.slice(0,5);
-                }
-
-                // write the opening hours to the paragraphs in the clone.
-                openTimeP.html(openHourHtml);
-                closingTimeP.html(closingHourHtml);
-
-                // update capacity
-                capacity.html(suggestion.data.capacity);
-
-                // update availFor
-                availForIcon.html(availForIconHtml);
-                availForDescription.html(availForDescriptionHtml);
-                availForValue.html(availForValueHtml);
-
-
-                facilities = '';
-                if (suggestion.data.pc){
-                    facilities += '<span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> '
-                }
-                if (suggestion.data.printer){
-                    facilities += '<span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span> '
-                }
-                if (suggestion.data.projector){
-                    facilities += '<span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span> '
-                }
-                if (suggestion.data.blackboard){
-                    facilities += '<span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span> '
-                }
-                if (suggestion.data.whiteboard){
-                    facilities += '<span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> '
-                }
-
-
-                suitabilities.html(facilities);
-
-                // update the roomName div (this is where calendar gets the room name
-
-                var roomName = clone.find('.roomName');
-
-
-
-                //clone.find('.roomName').attr('id', suggestion.data.room_name);
-
-                console.log('roomName thing???');
-                console.log(roomName);
-                console.log('end of roomName');
-
-                // update remove btn id
-                rmvBtn.attr('id', roomID);
-
-                // update calBtn
-                calBtn.attr('id', suggestion.data.locationId);
-
-                // insert the new favourite into the dom
-                clone.insertBefore(placeToInsert);
-
-                // relocate the insertAfter div.
-                $(placeToInsert).insertAfter(clone);
+                
+                // create the html for this favourite
+                $.post('panel/', {'locationId':suggestion.data.locationId})
+                .done(function(panel){
+                    // append it to the list of favourites
+                    newPanel = $(panel).insertBefore("#autocompleteRoomLi");
+                    // add functionality to the panel
+                    addFunctionalityToRoomPanel(newPanel);
+                });
             }
         });
     });
