@@ -27,16 +27,7 @@
                 </div>
                 <div class="col-xs-3 availabilityDiv">
                     <i class="fa fa-{{fav | room_availability_icon_class}}"></i>
-                    {% if fav.availability == 'availableNow' and fav.availableFor != 'unknown' %}
-                        <div class="descriptionRoom">Available for:</div>
-                        <p>{{ fav.availableFor }}</p>
-                    {% elif fav.availability == 'notAvailable' %}
-                        <div class="descriptionRoom">Available in:</div>
-                        <p>{{ fav.unavailableFor }}</p>
-                    {% else %}
-                        <div style='margin-bottom: -3px'>{% if fav.availability == 'availableNow' %} Opening times {% else %} Availability {% endif %}</div>
-                        <div>unknown</div>
-                    {% endif %}
+                    {{ fav | availability_text }}
                 </div>
                  <div class="col-xs-4 facilitiesDiv">
                     <p>{{ fav | facilities }}</p>
@@ -53,7 +44,7 @@
                 <div class="btn-group btn-group-rooms">
                      <a class="btn btn-default calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
                      <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                     <a class="btn btn-default booknow {% if fav.availability != 'availableNow' %} disabled {% endif %}" role="button">Book Now</a>
+                     <a class="btn btn-default booknow {{ fav | maybe_disabled }}" role="button">Book Now</a>
                 </div>
             </div>
 

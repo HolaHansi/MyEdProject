@@ -1,6 +1,4 @@
 from django.db import models
-from django.utils import timezone
-import datetime
 
 
 class Room_Feed(models.Model):
@@ -38,6 +36,7 @@ class Building_Feed(models.Model):
     def __str__(self):
         return str(self.building_name)
 
+
 class Open_Hours(models.Model):
     # building info that are not currently used
     building = models.OneToOneField(Building_Feed)
@@ -54,7 +53,7 @@ class Open_Hours(models.Model):
     sundayClosed = models.TimeField(null=True)
 
     def __str__(self):
-        return 'Opening Hours for building: ' + self.building_name
+        return 'Opening Hours for building: ' + str(self.building_name)
 
 
 class Tutorial_Room(models.Model):
@@ -87,16 +86,6 @@ class Tutorial_Room(models.Model):
     sundayOpen = models.TimeField(null=True)
     sundayClosed = models.TimeField(null=True)
 
-    # available till/for updated in users views
-    availableFor = models.CharField(max_length=15, default='unknown')
-    unavailableFor = models.CharField(max_length=15, default='unknown')
-
-
-    # availability status: this field must updated very often!
-    # availableNow, notAvailable or localAvailable
-    availability = models.CharField(max_length=30, default='unknown')
-
-
     def __str__(self):
         return self.building_name + ": " + self.room_name
 
@@ -117,7 +106,6 @@ class Tutorial_Room(models.Model):
                 self.campus_name == other.campus_name and
                 self.campus_id == other.campus_id
                 )
-
 
 
 class Activity(models.Model):

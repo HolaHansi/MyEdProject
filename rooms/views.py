@@ -24,7 +24,7 @@ def filter_suggestions(request):
         data = Tutorial_Room.objects.all()
 
         # Exclude all rooms that we KNOW are currently closed.
-        data = utilities.excludeClosedLocations(data)
+        data = utilities.exclude_closed_locations(data)
 
         # if searching for bookable spaces...
         if request.GET['bookable'] == 'true':
@@ -64,7 +64,7 @@ def filter_suggestions(request):
         # remove any rooms that aren't available for the next x hours, with x chosen by the user
         available_for_hours = int(request.GET['availableFor'])
         if available_for_hours>=0:
-            data = utilities.filter_out_busy_rooms(data, available_for_hours)
+            data = utilities.exclude_busy_rooms(data, available_for_hours)
 
         # if they're currently searching for a building:
         if request.GET['building'] == '':

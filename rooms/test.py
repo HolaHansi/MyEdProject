@@ -33,7 +33,7 @@ def makeClosedRoom(name="locallyAllocatedButClosed"):
 
 class ActivityTestCase(TestCase):
     """
-    This is a test pertaining to the utilities.filter_out_busy_rooms function that is
+    This is a test pertaining to the utilities.exclude_busy_rooms function that is
     crucial to the filter_suggestions function in rooms/views. It creates three rooms and two activities.
     busyRoom is busy, and should be excluded from the data of suggestions after the function call.
     nonBusyRoom has an activitu associated with it, but this activity is not clashing, and hence
@@ -96,7 +96,7 @@ class ActivityTestCase(TestCase):
 
     def filter_out_busy_rooms(self):
         """
-        this function tests utilities.filter_out_busy_rooms that is used in the
+        this function tests utilities.exclude_busy_rooms that is used in the
         filter suggestions room view.
         :return:
         """
@@ -122,7 +122,7 @@ class ActivityTestCase(TestCase):
 
         # filter out the rooms that are currently booked and check if the only room left
         # will be room NonBusyRoom and roomNoAct
-        data = utilities.filter_out_busy_rooms(data, available_for_hours=1)
+        data = utilities.exclude_busy_rooms(data, available_for_hours=1)
 
         # check that there are two rooms left in data
         x = data.count()

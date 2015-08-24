@@ -1,6 +1,7 @@
 from django import template
 from django.utils.safestring import mark_safe
 import datetime
+from core.utilities import get_availability, getOpenHours, time_until_unavailable, time_until_available
 
 register = template.Library()
 
@@ -255,12 +256,12 @@ def room_badge_class(room):
     :param room: the room we're asking about
     :return: string: the class of the badge for this room as decided its availability
     """
-    if room.locally_allocated == 1:
-        return 'unknown'
-    if room.availability == 'availableNow':
+    if get_availability(room) == 'available':
         return 'free'
-    else:
+    elif get_availability(room) == 'busy' or get_availability(room) == 'shut':
         return 'full'
+    else:
+        return 'unknown'
 
 
 @register.filter
@@ -270,12 +271,12 @@ def room_badge_icon_class(room):
     :param room: the room we're asking about
     :return: string: the class of the icon for the badge for this room as decided its availability
     """
-    if room.locally_allocated == 1:
-        return 'minus'
-    if room.availability == 'availableNow':
+    if get_availability(room) == 'available':
         return 'check'
-    else:
+    elif get_availability(room) == 'busy' or get_availability(room) == 'shut':
         return 'times'
+    else:
+        return 'minus'
 
 
 @register.filter
@@ -285,12 +286,13 @@ def room_availability_icon_class(room):
     :param room: the room we're asking about
     :return: string: the class of the icon for the badge for this room as decided its availability
     """
-    if room.locally_allocated == 1 or (room.availability == 'availableNow' and room.availableFor == 'unknown'):
-        return 'exclamation-triangle'
-    if room.availability == 'availableNow':
-        return 'check-circle'
-    else:
+    if get_availability(room) == 'busy' or get_availability(room) == 'shut':
         return 'hourglass'
+    elif room.locally_allocated == 1 or (
+            get_availability(room) == 'available' and getOpenHours(room)['closingHour'] is None):
+        return 'exclamation-triangle'
+    else:
+        return 'check-circle'
 
 
 @register.filter
@@ -298,10 +300,40 @@ def opening_hours(lab):
     """
     returns the lab's opening hours if known, or 'unknown' if not
     :param lab:
-    :return: string: the class of the badge for this lab as decided by how busy it is
+    :return: string: the opening hours of the lab as HTML
     """
     if openTime(lab) == 'n/a':
         return mark_safe("<p>Unknown</p>")
     else:
         return mark_safe(
             "<p class='openTimeP'>" + openTime(lab) + "</p> <p class='closingTimeP'>" + closingTime(lab) + "</p>")
+
+
+@register.filter
+def availability_text(room):
+    """
+    returns the availability of the room
+    :param room:
+    :return: string: the availability of the room as HTML
+    """
+    if get_availability(room) == 'available' and getOpenHours(room)['closingHour'] is not None:
+        return mark_safe('<div class="descriptionRoom">Available for:</div><p>' + time_until_unavailable(room) + '</p>')
+    elif get_availability(room) == 'busy' or get_availability(room) == 'shut':
+        return mark_safe('<div class="descriptionRoom">Available' + (
+            'in' if time_until_available(room) != 'Tomorrow' else ''
+        ) + ':</div><p>' + time_until_available(room) + '</p>')
+    else:
+        return mark_safe('<div style="margin-bottom: -3px">' + (
+            "Opening times" if get_availability(room) == 'available' else "Availability") + '</div><div>unknown</div>')
+
+
+@register.filter
+def maybe_disabled(room):
+    """
+    disables the book now button if the room is unavailable
+    :param room:
+    :return: string: disabled or empty
+    """
+    if get_availability(room) != 'available':
+        return 'disabled'
+    return ''

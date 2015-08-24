@@ -2,6 +2,7 @@ from django.forms import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.html import escape
+from core.utilities import get_available_rooms, get_unavailable_rooms, get_open_local_rooms
 from .forms import UserForm
 from django.contrib.auth.decorators import login_required
 from pc.models import Computer_Labs
@@ -68,122 +69,20 @@ def autocompleteAPI(request):
         data = Tutorial_Room.objects.all()
         rooms = []
         already_favourited = user.room_favourites.all()
-
-        # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
-
-        rooms_available_now = data.filter(availability='availableNow')
-
-        # ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
-
-        rooms_not_available_now = data.filter(availability='notAvailable')
-
-        # LOCALLY ALLOCATED OPEN ROOMS:
-
-        rooms_open_locally_allocated = data.filter(availability='localAvailable')
+        fav_ids = [x.locationId for x in already_favourited]
+        data = data.exclude(locationId__in=fav_ids)
 
         # ADD to rooms : list of dictionaries.
-        for room in rooms_available_now:
-            if len(already_favourited.filter(locationId=room.locationId)) == 0:
-
-                # get opening hours
-                open_hours = utilities.getOpenHours(room)
-                open_hour = open_hours['openHour']
-                closing_hour = open_hours['closingHour']
-
-                if open_hour is None:
-                    open_hour = 'n/a'
-                    closing_hour = 'n/a'
-
-                rooms.append(
-                    {'value': room.room_name + ', ' + room.building_name,
-                     'data': {
-                         'room_name': room.room_name,
-                         'building_name': room.building_name,
-                         'locationId': room.locationId,
-                         'capacity': room.capacity,
-                         'pc': room.pc,
-                         'printer': room.printer,
-                         'projector': room.projector,
-                         'whiteboard': room.whiteboard,
-                         'blackboard': room.blackboard,
-                         'isOpen': True,
-                         'openHour': open_hour,
-                         'closingHour': closing_hour,
-                         'locally_allocated': False,
-                         'availability': 'availableNow',
-                         'availableFor': room.availableFor
-                     }
-                     }
-                )
-
-        for room in rooms_not_available_now:
-            if len(already_favourited.filter(locationId=room.locationId)) == 0:
-
-                # get isOpen variable
-                is_open = utilities.isOpen(room)
-
-                # get opening hours
-                open_hours = utilities.getOpenHours(room)
-                open_hour = open_hours['openHour']
-                closing_hour = open_hours['closingHour']
-
-                if open_hour is None:
-                    open_hour = 'n/a'
-                    closing_hour = 'n/a'
-
-                rooms.append(
-                    {'value': room.room_name + ', ' + room.building_name,
-                     'data': {
-                         'room_name': room.room_name,
-                         'building_name': room.building_name,
-                         'locationId': room.locationId,
-                         'capacity': room.capacity,
-                         'pc': room.pc,
-                         'printer': room.printer,
-                         'projector': room.projector,
-                         'whiteboard': room.whiteboard,
-                         'blackboard': room.blackboard,
-                         'isOpen': is_open,
-                         'openHour': open_hour,
-                         'closingHour': closing_hour,
-                         'locally_allocated': room.locally_allocated,
-                         'availability': 'notAvailable',
-                         'unavailableFor': room.unavailableFor
-                     }
-                     }
-                )
-
-        for room in rooms_open_locally_allocated:
-            if len(already_favourited.filter(locationId=room.locationId)) == 0:
-
-                # get opening hours
-                open_hours = utilities.getOpenHours(room)
-                open_hour = open_hours['openHour']
-                closing_hour = open_hours['closingHour']
-
-                if open_hour is None:
-                    open_hour = 'n/a'
-                    closing_hour = 'n/a'
-
-                rooms.append(
-                    {'value': room.room_name + ', ' + room.building_name,
-                     'data': {
-                         'room_name': room.room_name,
-                         'building_name': room.building_name,
-                         'locationId': room.locationId,
-                         'capacity': room.capacity,
-                         'pc': room.pc,
-                         'printer': room.printer,
-                         'projector': room.projector,
-                         'whiteboard': room.whiteboard,
-                         'blackboard': room.blackboard,
-                         'openHour': open_hour,
-                         'closingHour': closing_hour,
-                         'locally_allocated': room.locally_allocated,
-                         'availability': 'localAvailable'
-                     }
-                     }
-                )
+        for room in data:
+            rooms.append(
+                {'value': room.room_name + ', ' + room.building_name,
+                 'data': {
+                     'room_name': room.room_name,
+                     'building_name': room.building_name,
+                     'locationId': room.locationId
+                 }
+                 }
+            )
 
         return utilities.JSONResponse({'labs': labs, 'rooms': rooms})
 
@@ -273,8 +172,6 @@ def get_panel(request):
             return render(request, 'users/roomPanel.html', {'fav': room})
 
 
-
-
 @login_required
 def favourites(request):
     """
@@ -293,12 +190,12 @@ def favourites(request):
     # get all PCs liked by the user.
     pc_favourites = user.pc_favourites.all()
     # get all currently open PC-labs and sort according to ratio
-    pc_favourites_open = utilities.excludeClosedLocations(pc_favourites)
+    pc_favourites_open = utilities.exclude_closed_locations(pc_favourites)
     pc_favourites_open = utilities.sortPCLabByEmptiness(pc_favourites_open)
     for lab in pc_favourites_open:
         lab.openInfo = 'open'
     # get all currently closed PC-labs
-    pc_favourites_closed = utilities.get_currently_closed_locations(pc_favourites)
+    pc_favourites_closed = utilities.exclude_open_locations(pc_favourites)
     for lab in pc_favourites_closed:
         lab.openInfo = 'closed'
 
@@ -309,18 +206,10 @@ def favourites(request):
     # get all rooms liked by the user.
     room_favourites = user.room_favourites.all()
 
-    # ROOMS AVAILABLE NOW (OPEN AND NOT BOOKED):
-
-    rooms_available_now = room_favourites.filter(availability='availableNow')
-
-    # ROOMS NOT AVAILABLE NOW (CLOSED OR BOOKED):
-
-    rooms_not_available_now = room_favourites.filter(availability='notAvailable')
-
-    # ROOMS UNKNOWN AVAILABILITY (OPEN AND LOCALLY ALLOCATED)
-
-    rooms_open_locally_allocated = room_favourites.filter(availability='localAvailable')
-
+    # sort them into available, then locally allocated, then unavailable
+    rooms_available_now = get_available_rooms(room_favourites)
+    rooms_open_locally_allocated = get_open_local_rooms(room_favourites)
+    rooms_not_available_now = get_unavailable_rooms(room_favourites)
     all_rooms = chain(rooms_available_now, rooms_open_locally_allocated)
     all_rooms = chain(all_rooms, rooms_not_available_now)
     context = {'pc_favourites': all_labs,
@@ -375,7 +264,6 @@ def history(request):
         historical_bookings = RoomHistory.objects.filter(user=user)
         to_return = []
         for historicalBooking in historical_bookings:
-            print(model_to_dict(historicalBooking.room))
             this_room = model_to_dict(historicalBooking.room)
             this_room['booked_at_time'] = historicalBooking.booked_at_time
             this_room['his_id'] = historicalBooking.id

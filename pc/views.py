@@ -21,7 +21,7 @@ def filter_suggestions(request):
         data = Computer_Labs.objects.exclude(ratio__lt=0.1)
 
         # Exclude all rooms that we KNOW are currently closed. (taken from rooms.views)
-        data = utilities.excludeClosedLocations(data)
+        data = utilities.exclude_closed_locations(data)
 
         # remove any campuses they didn't select
         campuses_to_remove = request.GET.getlist('campusesUnselected[]')
