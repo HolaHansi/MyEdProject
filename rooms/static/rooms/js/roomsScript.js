@@ -270,29 +270,6 @@ $(document).ready(function () {
          }
     });
     
-    // a wee easter egg just for a bit of fun
-    // if the user enters the 'konami code' (up,up,down,down,left,right,left,right,b,a),
-    // display a custom suggestion
-    var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
-    $(document).keydown(function(e) {
-        kkeys.push( e.keyCode );
-        if ( kkeys.toString().indexOf( konami ) >= 0 ) {
-            $(document).unbind('keydown',arguments.callee);
-            currentChoice['campus']='';
-            currentChoice['longitude']=-3.186933;
-            currentChoice['latitude']=55.949635;
-            currentChoice['name']='The Hive';
-            currentChoice['index']=0;
-            currentChoice['free']=1337;
-            currentChoice['seats']=9001;
-            suggestions=[currentChoice];
-            loadChoice();
-            if($('#optionsMenu').hasClass('opened')){
-                toggleOptionsMenu();
-            }
-        }
-    });
-    
     // display or hide the options menu when the options header is clicked
     $('#optionsTitle, .triangle, #searchWithNewOptionsBtn').click(toggleOptionsMenu);
     
@@ -450,6 +427,7 @@ function toggleOptionsMenu(){
         // if they have, or the user specifically asked for a refresh, refresh the suggestions
         if (optionsChanged || $(this).prop('id')=='searchWithNewOptionsBtn'){
             buildingIndexToReturnTo=0;
+            searchingForBuildings=true;
             currentBuildingId='';
             getSuggestionsUsingOptions();
             sessionStorage['roomOptions'] = JSON.stringify(newOptions)
