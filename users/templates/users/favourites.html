@@ -20,6 +20,7 @@
     <script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
 
     <script type='text/javascript' src="{% static 'core/js/booking.js' %}"></script>
+    <script type="text/javascript" src="{% static 'users/js/roomPanel.js' %}"></script>
     <script type="text/javascript" src="{% static 'users/js/favouritesScript.js' %}"></script>
 
 {% endblock %}
@@ -83,7 +84,7 @@
 
             {% for favourite in room_favourites %}
 
-                {% include "users/roomPanel.html" with fav=favourite %}
+                {% include "users/roomPanel.html" with fav=favourite type='favourite' %}
 
             {% endfor %}
 

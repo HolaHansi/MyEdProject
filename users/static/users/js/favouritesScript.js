@@ -19,7 +19,7 @@ $(document).ready(function(){
     });
     
     // add functionality to all the panels
-    addGeneralFunctionalityToPanel($('#labs .panel'));
+    addGeneralFunctionalityToPanel($('.panel'));
     addFunctionalityToRoomPanel($('#rooms .panel'));
 });
 
@@ -45,76 +45,6 @@ function addGeneralFunctionalityToPanel(panelDiv){
     });
 }
 
-// add triggers to all the appropriate objects within the inputted room panel
-// input: panelDiv (object): the room panel which we're applying functionality to
-function addFunctionalityToRoomPanel(panelDiv){
-    
-    // add all the functionality that all panels have
-    addGeneralFunctionalityToPanel(panelDiv);
-    
-    // add specific functionality for rooms panels
-    
-    // book this room when the 'Book Now' button is selected
-    $('.bookNow', panelDiv).click(function(){
-        id = $(this).parents('.panel-default').prop('id');
-        id = id.slice(id.indexOf('room-')+5);
-        bookRoom(id);
-    })
-    
-    // display the calendar when the calendar button is selected
-    $(".calBtn", panelDiv).click(function() {
-        
-        // get the location id from the parent div
-        var locationId = $(this).parents('.panel-default').prop('id');
-        locationId = locationId.slice(locationId.indexOf('room-')+5);
-
-        // get the room name from the the div with class roomName + locationId.
-        // the id of this div is the name of the room.
-        var roomName = $(".roomName." + locationId).attr('id');
-
-        // change the heading label for the modal to the room name.
-        $('#myModalLabel').html(roomName);
-
-        // get all activities on this room.
-        $.get('/calendar/', {
-                'locationId': locationId
-        })
-        .done(function(activities){
-            // convert all activities to a format that FullCalendar understands
-            // get current time
-            var dateNow = moment().format("YYYY-MM-DD");
-
-            var events = [];
-            for (var i=0; i<=activities.length - 1; i++) {
-                var act = activities[i];
-                var title = act.name;
-                var start = act.startTime;
-                var end = act.endTime;
-                var dict = [{title: title, start: start, end: end}];
-                events = events.concat(dict);
-            };
-
-            // initialize a calendar in the modal with the activities as events.
-            $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next',
-                    right: 'agendaWeek,agendaDay'
-                },
-                defaultDate: dateNow,
-                // show week before day
-                defaultView: 'agendaWeek',
-                editable: false,
-                businessHours: false,
-                events: events,
-                // unavailable red (from variables.less)
-                eventColor: '#D9433B',
-                allDaySlot: false,
-                height: 400
-            });
-        });
-
-    });
-}
 
 // the function called whenever a remove favourite button is selected
 // it'll prompt the user to confirm the removal
@@ -248,6 +178,7 @@ function autoCompleteAPI() {
                     // append it to the list of favourites
                     newPanel = $(panel).insertBefore("#autocompleteRoomLi");
                     // add functionality to the panel
+                    addGeneralFunctionalityToPanel(newPanel);
                     addFunctionalityToRoomPanel(newPanel);
                 });
             }
