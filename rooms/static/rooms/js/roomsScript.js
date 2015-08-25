@@ -22,6 +22,8 @@ var geocodingOptions; // the JSON of options for translating an address to its g
 var directionsService; // the Google directions service object, the bit that calculates the route
 var directionsDisplay;  // the Google directions renderer object, the bit that displays the route
 var geocoder; // the Google object for geocoding
+var startMarker; // the Google object for the marker at the start of the route
+var endMarker; // the Google object for the marker at the end of the route
 
 // resize the JS styled elements if the window resizes
 $(window).resize(function(){
@@ -492,9 +494,9 @@ function loadNextSuggestion(){
 function makeMap(){
     // initialize Google objects
     directionsService = new google.maps.DirectionsService();
-    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
     geocoder = new google.maps.Geocoder();
-    
+
     // initialise map options, hiding all controls other than a small zoom and pan
     mapOptions = {
         disableDefaultUI: true,
@@ -521,17 +523,17 @@ function makeMap(){
     
     // initialise direction options
     directionOptions = {
-      origin: {
-          lat:55.943655,
-          lng:-3.188775
-      },
-      destination: {
+        origin: {
             lat:55.943655,
             lng:-3.188775
-      },
-      travelMode: google.maps.TravelMode.WALKING,
-      provideRouteAlternatives: false,
-      region: 'uk'
+        },
+        destination: {
+            lat:55.943655,
+            lng:-3.188775
+        },
+        travelMode: google.maps.TravelMode.WALKING,
+        provideRouteAlternatives: false,
+        region: 'uk',
     }
     
     // initialise geocoding options
@@ -544,6 +546,32 @@ function makeMap(){
     map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
     // bind the directions renderer to the map
     directionsDisplay.setMap(map);
+    
+    // initialize marker options
+    var startMarkerOptions = {
+        clickable: false,
+        cursor: 'default',
+        map: map,
+        icon: new google.maps.MarkerImage(
+            '/staticfiles/core/images/startIcon.png',
+            new google.maps.Size( 22, 40 ),
+            new google.maps.Point( 0, 0 ),
+            new google.maps.Point( 11, 40 )
+        )
+    }
+    var finishMarkerOptions = {
+        clickable: false,
+        cursor: 'default',
+        map: map,
+        icon: new google.maps.MarkerImage(
+            '/staticfiles/core/images/finishIcon.png',
+            new google.maps.Size( 22, 40 ),
+            new google.maps.Point( 0, 0 ),
+            new google.maps.Point( 11, 40 )
+        )
+    }
+    startMarker = new google.maps.Marker(startMarkerOptions)
+    endMarker = new google.maps.Marker(finishMarkerOptions)
 }
 
 // update the map with the new directions
@@ -562,7 +590,12 @@ function updateMap(){
     directionsService.route(directionOptions, function(result, status) {
         // if the route was successfully calculated, display it
         if (status == google.maps.DirectionsStatus.OK) {
+            // display route
             directionsDisplay.setDirections(result);
+            // display markers
+            var leg = result.routes[ 0 ].legs[ 0 ];
+            startMarker.setPosition(leg.start_location)
+            endMarker.setPosition(leg.end_location)
         // if the user is flicking through choices too quickly, wait before showing the map
         }else if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT){
             $('#busyAnimation').show();
