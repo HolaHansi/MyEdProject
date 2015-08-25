@@ -283,11 +283,6 @@
   text-align: right;
   padding: 0;
 }
-@media (max-width: 648px) {
-  #rooms .roomFavouritesInfoRow .descriptionRoom {
-    display: none;
-  }
-}
 #rooms .roomFavouritesButtonRow {
   margin-top: 5px;
 }
@@ -307,6 +302,16 @@
 }
 #rooms .roomFavouritesButtonRow .btn-group-rooms .booknow {
   padding: 9px 5px 11px 5px;
+}
+@media (max-width: 648px) {
+  #rooms .descriptionRoom {
+    display: none;
+  }
+}
+#rooms .historyDetails {
+  text-align: center;
+  padding: 0;
+  display: inline-block;
 }
 .fc-today {
   background: #f0f3ff !important;

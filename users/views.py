@@ -169,7 +169,7 @@ def get_panel(request):
         else:
             room_id = escape(request.POST['locationId'])
             room = Tutorial_Room.objects.filter(locationId=room_id)[0]
-            return render(request, 'users/roomPanel.html', {'fav': room})
+            return render(request, 'users/roomPanel.html', {'fav': room, 'type': 'favourite'})
 
 
 @login_required
@@ -261,17 +261,15 @@ def history(request):
     # Otherwise, the request is get, return a template that displays history
     else:
         # get history for user
-        historical_bookings = RoomHistory.objects.filter(user=user)
+        historical_bookings = RoomHistory.objects.filter(user=user).order_by('-booked_at_time')
         to_return = []
         for historicalBooking in historical_bookings:
-            this_room = model_to_dict(historicalBooking.room)
-            this_room['booked_at_time'] = historicalBooking.booked_at_time
-            this_room['his_id'] = historicalBooking.id
-            to_return = [this_room] + to_return
-
+            this_room = (historicalBooking.room)
+            this_room.booked_at_time = historicalBooking.booked_at_time
+            this_room.history_id = historicalBooking.id
+            to_return.append(this_room)
         # make context for template
         context = {'roomHis': to_return}
-
         return render(request, 'users/history.html', context)
 
 

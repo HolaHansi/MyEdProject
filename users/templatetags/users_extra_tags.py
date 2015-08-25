@@ -68,16 +68,6 @@ def get_availFor(room):
 
 
 @register.filter
-def get_bookBtn(room):
-    if room['availability'] == 'availableNow':
-        html_return = '<a href="/" class="btn btn-default booknow roomBtn" role="button">Book Now</a>'
-    else:
-        html_return = '<a href="/" class="btn btn-default booknow roomBtn disabled" role="button">Book Now</a>'
-
-    return mark_safe(html_return)
-
-
-@register.filter
 def facilitiesRoom(room):
     """
     this is facilities for history which takes dictionary rather than an object.
@@ -106,7 +96,7 @@ def booked_at_time(room):
     :param room:
     :return:
     """
-    time = room['booked_at_time']
+    time = room.booked_at_time
     hour = time.hour
     minute = time.minute
     day = time.day
@@ -289,7 +279,7 @@ def room_availability_icon_class(room):
     if get_availability(room) == 'busy' or get_availability(room) == 'shut':
         return 'hourglass'
     elif room.locally_allocated == 1 or (
-            get_availability(room) == 'available' and getOpenHours(room)['closingHour'] is None):
+        get_availability(room) == 'available' and getOpenHours(room)['closingHour'] is None):
         return 'exclamation-triangle'
     else:
         return 'check-circle'
@@ -337,3 +327,17 @@ def maybe_disabled(room):
     if get_availability(room) != 'available':
         return 'disabled'
     return ''
+
+
+@register.filter
+def get_id(room, type):
+    """
+    returns the location id or history id
+    :param room:
+    :param type: 'favourite' or 'history'
+    :return: string: locatoin/history id
+    """
+    if type == 'history':
+        return room.history_id
+    else:
+        return room.locationId

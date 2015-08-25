@@ -1,8 +1,8 @@
 {% load users_extra_tags %}
-<div id="infoFor-room-{{ fav.locationId }}" class="panel panel-default">
-    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}">
+<div id="infoFor-room-{{ fav | get_id:type }}" class="panel panel-default" data-locationId="{{ fav.locationId }}">
+    <div class="panel-heading" data-toggle="collapse" data-target="#collapse-{{ fav | get_id:type }}">
         <h4 class="panel-title">
-            <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{fav.locationId}}" aria-expanded="true" aria-controls="collapse-{{fav.locationId}}">
+            <a class='theLink' role="button" data-toggle="collapse" data-target="#collapse-{{ fav | get_id:type }}" aria-expanded="true" aria-controls="collapse-{{ fav | get_id:type }}">
                 <span class="roomName">{{ fav.room_name }}, {{fav.building_name}}</span>
                 <span class="caret"></span>
             </a>
@@ -10,9 +10,8 @@
         </h4>
     </div>
 
-    <div id="collapse-{{fav.locationId}}" class="panel-collapse collapse" role="tabpanel">
+    <div id="collapse-{{ fav | get_id:type }}" class="panel-collapse collapse" role="tabpanel">
         <div class="panel-body">
-
             <div class="row roomFavouritesInfoRow">
                 <div class="col-xs-3 openHourDiv">
                     <i class="fa fa-clock-o openHoursClock"></i>
@@ -33,21 +32,31 @@
                     <p>{{ fav | facilities }}</p>
                  </div>
             </div>
-
             <div class='row roomFavouritesButtonRow'>
+                {% if type == 'history' %}
+                <div class='col-xs-3 historyDetails'>
+                    <i class="fa fa-history"></i>
+                    <div class="descriptionRoom">
+                        <p>Time of booking</p>
+                    </div>
+                    <p>{{ fav | booked_at_time }}</p>
+                </div>
+                {% else %}
                 <button id="room-{{ fav.locationId }}" class="btn btn-default remove-btn">
                     <i class="fa fa-star starred"></i>
                     <span>Remove</span>
                     <a class='fa fa-check confirmRemove'> &nbsp; </a>
                     <a class='fa fa-times cancelRemove'> &nbsp; </a>
                 </button>
+                {% endif %}
                 <div class="btn-group btn-group-rooms">
-                     <a class="btn btn-default calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
-                     <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
-                     <a class="btn btn-default booknow {{ fav | maybe_disabled }}" role="button">Book Now</a>
+                    {% if not fav.locally_allocated %}
+                    <a class="btn btn-default calBtn" data-toggle="modal" data-target="#myModal" role="button"><i class="fa fa-calendar fa-2x"></i></a>
+                    {% endif %}
+                    <a href="http://maps.google.com/maps?q={{ fav.latitude }},{{ fav.longitude }}" class="btn btn-default roomBtn" role="button"><i class="fa fa-map-marker fa-2x"></i></a>
+                    <a class="btn btn-default booknow {{ fav | maybe_disabled }}" role="button">Book Now</a>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
