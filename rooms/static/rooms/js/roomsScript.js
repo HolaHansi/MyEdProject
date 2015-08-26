@@ -78,6 +78,12 @@ $(document).ready(function () {
         // get the user's location, then send a get request if that's successful and display the initial suggestion
 	   getLocation();
     }
+    
+    // initialize the alert if it's not been initialized yet
+    if (!sessionStorage['locallyAllocatedRoomWarningShown']){ 
+        sessionStorage['locallyAllocatedRoomWarningShown'] = false;
+    }
+    
     // Apply the JS styling
     resizeElements();
     
@@ -240,6 +246,15 @@ $(document).ready(function () {
             }
         });
     });
+    $('.bootstrap-switch-id-bookableCheckbox .bootstrap-switch-handle-on, .bootstrap-switch-id-bookableCheckbox .bootstrap-switch-label').click(function(){
+        if (sessionStorage['locallyAllocatedRoomWarningShown']=="false"){
+            if (!confirm('This will include rooms not accessible to all students.  Continue?')){
+                $('.bootstrap-switch-id-bookableCheckbox .bootstrap-switch-handle-off').trigger('click');
+                return;
+            }
+        }
+        sessionStorage['locallyAllocatedRoomWarningShown'] = true;
+    })
 });
 
 // JS styling {
