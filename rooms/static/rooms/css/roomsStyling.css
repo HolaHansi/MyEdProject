@@ -400,6 +400,8 @@
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox.checked,
 #optionsMenu #optionsContent .optionsCategory .facilitiesCheckbox.checked {
+  -webkit-box-shadow: inset 0 0 10px #888;
+  -moz-box-shadow: inset 0 0 10px #888;
   box-shadow: inset 0 0 10px #888;
 }
 #optionsMenu #optionsContent .optionsCategory .campusCheckbox:hover,
