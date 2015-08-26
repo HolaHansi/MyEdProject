@@ -1,5 +1,7 @@
 from django.db.models import Q
+from django.forms import model_to_dict
 from django.shortcuts import render
+from core.utilities import time_until_unavailable
 from .models import Tutorial_Room
 from .serializer import Bookable_Room_Serializer
 from core import utilities
@@ -111,6 +113,12 @@ def filter_suggestions(request):
         # sort the rooms based on a simple heuristic function
         data = sorted(data, key=lambda x: utilities.calculate_heuristic(x), reverse=True)
 
-        # return sorted suggestions
-        serializer = Bookable_Room_Serializer(data, many=True)
-        return utilities.JSONResponse(serializer.data)
+        # add the length of time the room is available for to the JSON response
+        rooms=[]
+        for room in data:
+            time = time_until_unavailable(room)
+            room=model_to_dict(room)
+            room['availableFor'] = time
+            rooms.append(room)
+
+        return utilities.JSONResponse(rooms)

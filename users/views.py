@@ -263,7 +263,7 @@ def history(request):
         historical_bookings = RoomHistory.objects.filter(user=user).order_by('-booked_at_time')
         to_return = []
         for historicalBooking in historical_bookings:
-            this_room = (historicalBooking.room)
+            this_room = historicalBooking.room
             this_room.booked_at_time = historicalBooking.booked_at_time
             this_room.history_id = historicalBooking.id
             to_return.append(this_room)
