@@ -9,7 +9,7 @@ rooms/migrations/
 pc/migrations/
 core/wsgi.py
 manage.py
-logs/debug.log
+*.log
 secrets.json
 googleCredentialsSecrets.json
 databaseconfig.cnf
