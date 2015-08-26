@@ -1,4 +1,3 @@
-from django.forms import model_to_dict
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.html import escape

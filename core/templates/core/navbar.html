@@ -21,24 +21,28 @@
                         <div class='tabLabel'>Computer Labs</div>
                     </a>
                 </li>
+                {% if not labsOnly %}
                 <li class="active">
                     <a href="/rooms" class='roomsTab'>
                         <i class="fa fa-home"></i>
                         <div class='tabLabel'>Tutorial Rooms</div>
                     </a>
                 </li>
+                {% endif %}
                 <li class="active">
                     <a href="/favourites" class='favouritesTab'>
                         <i class="fa fa-star"></i>
                         <div class='tabLabel'>Favourites</div>
                     </a>
                 </li>
+                {% if not labsOnly %}
                 <li class="active">
                     <a href="/history" class='historyTab'>
                         <i class="fa fa-history"></i>
                         <div class='tabLabel'>History</div>
                     </a>
                 </li>
+                {% endif %}
             </ul>
         </div>
         <!--/.nav-collapse -->

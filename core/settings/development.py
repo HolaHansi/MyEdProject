@@ -6,6 +6,9 @@ DEBUG = True
 # This variable is used in views to check whether the app is running in development or production.
 ENV_TYPE = 'development'
 
+# This variable is used in views to check whether the app is running in labs only mode
+LABS_ONLY = True
+
 # Database for development - SQLite
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 

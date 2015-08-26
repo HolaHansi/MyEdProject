@@ -4,10 +4,13 @@ from .base import *
 DEBUG = False
 
 # this needs to be specified, when debug is off.
-ALLOWED_HOSTS = ['.book.is.ed.ac.uk']
+ALLOWED_HOSTS = ['.book.is.ed.ac.uk', '.myed.ed.ac.uk']
 
 # This variable is used in views to check whether the app is running in development or production.
 ENV_TYPE = 'production'
+
+# This variable is used in views to check whether the app is running in labs only mode
+LABS_ONLY = True
 
 # USE Mysql in production - baseconfig.cnf contains all the configurations of the db on the chostt.
 DATABASES = {
