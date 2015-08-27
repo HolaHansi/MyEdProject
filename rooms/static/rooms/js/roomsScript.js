@@ -246,14 +246,21 @@ $(document).ready(function () {
             }
         });
     });
-    $('.bootstrap-switch-id-bookableCheckbox .bootstrap-switch-handle-on, .bootstrap-switch-id-bookableCheckbox .bootstrap-switch-label').click(function(){
-        if (sessionStorage['locallyAllocatedRoomWarningShown']=="false"){
-            if (!confirm('This will include rooms not accessible to all students.  Continue?')){
+    
+    // alert the user the first time they ask to include locally allocated rooms in their search
+    $('.bootstrap-switch-id-bookableCheckbox').on('switchChange.bootstrapSwitch',function(event, checkboxNowSelected){
+        // if this is the first time they've selected the checkbox
+        if (sessionStorage['locallyAllocatedRoomWarningShown']=="false" && !checkboxNowSelected){
+            // prompt for a response
+            if (confirm('This will include rooms not accessible to all students.  Continue?')){
+                // if they said yes, don't show them the alert again
+                sessionStorage['locallyAllocatedRoomWarningShown'] = true;
+            } else {
+                // if they said no, go back to not showing rooms
                 $('.bootstrap-switch-id-bookableCheckbox .bootstrap-switch-handle-off').trigger('click');
                 return;
             }
-        }
-        sessionStorage['locallyAllocatedRoomWarningShown'] = true;
+        } 
     })
 });
 
