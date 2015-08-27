@@ -504,6 +504,8 @@ def room_is_available_for_x_hours(room, available_for_hours):
 def format_time(time):
     # Takes a datetime object and returns it as a string in the format "Xh Ym"
     # get the hours and minutes
+    if type(time) is str:
+        return time
     hours = time.seconds // 3600
     minutes = (time.seconds // 60) % 60
     # return result as a string
