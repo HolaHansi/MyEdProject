@@ -442,22 +442,20 @@ def time_until_available(room):
 
     # get the hours and minutes
     avail_for_hours = avail_for.seconds // 3600
-    avail_for_minutes = (avail_for.seconds // 60) % 60
     if avail_for_hours > 23:
         return "Tomorrow"
     else:
         # return result as a string
-        return str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
+        return format_time(avail_for)
 
 
-def time_until_unavailable(room):
+def get_available_for(room):
     """
-    Given a room, will return a string detailing how long it is until the room is unavailable.
-    If there is an activity or an closing on the same day, then the field is formatted e.g. 2h 30m
+    Given a room, will return a datetime object detailing how long it is until the room is unavailable.
     Otherwise, for example if there is no activites or opening hours, or no opening hours an activity the following day.
     The field will be updated with the string value 'unknown'.
     :param room:
-    :return: string - a length of time in the format "Xh Ym"
+    :return: datetime object
     """
     now = timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())
 
@@ -474,9 +472,9 @@ def time_until_unavailable(room):
 
     # work out the date when the room closes rather than just the time
     closing_datetime = datetime.datetime.combine(now.date(), closing_hour)
-    # if the room has already closed today (early in the morn), then it closes next tomorrow
+    # if the room has already closed today (early in the morn), then it closes tomorrow
     if closing_hour < now.time():
-        closing_datetime = closing_datetime + datetime.datetime.timedelta.days(1)
+        closing_datetime = closing_datetime + datetime.timedelta(days=1)
 
     # if there are no activities, then the room must be unavailable when the building closes
     if activities.count() == 0:
@@ -492,15 +490,36 @@ def time_until_unavailable(room):
         # otherwise, the room is unavailable when the next activity starts
         else:
             avail_till_time = timezone.make_aware(activity_start_time, datetime.timezone.utc)
+    return avail_till_time - now
 
-    avail_for = avail_till_time - now
 
+def time_until_unavailable(room):
+    # return the time until the room is unavailable as a formatted string in the format "Xh Ym"
+    return format_time(get_available_for(room))
+
+
+def get_available_for_many_hours(rooms, available_for_hours):
+    # filter out all rooms available for less than available_for_hours
+    # note that this also unfortunately converts the queryset into a list
+
+    # filter out all rooms unavailable now
+    get_available_rooms(rooms, available_for_hours)
+    # filter out all rooms available for less than the number of hours input
+    return [room for room in rooms if room_is_available_for_x_hours(room, available_for_hours)]
+
+def room_is_available_for_x_hours(room, available_for_hours):
+    # helper function to prevent get_available_for() being called twice
+    availability=get_available_for(room)
+    return availability=='unknown' or availability.seconds//3600>=available_for_hours
+
+
+def format_time(time):
+    # Takes a datetime object and returns it as a string in the format "Xh Ym"
     # get the hours and minutes
-    avail_for_hours = avail_for.seconds // 3600
-    avail_for_minutes = (avail_for.seconds // 60) % 60
-
+    hours = time.seconds // 3600
+    minutes = (time.seconds // 60) % 60
     # return result as a string
-    return str(avail_for_hours) + "h " + str(avail_for_minutes) + "m"
+    return str(hours) + "h " + str(minutes) + "m"
 
 
 def get_availability(room):
@@ -517,9 +536,9 @@ def get_availability(room):
         return 'available'
 
 
-def get_available_rooms(data):
+def get_available_rooms(data, available_for_hours=0):
     data = data.filter(locally_allocated=False)
-    data = exclude_busy_rooms(data, available_for_hours=0)
+    data = exclude_busy_rooms(data, available_for_hours)
     data = exclude_closed_locations(data)
     return data
 

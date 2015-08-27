@@ -3,13 +3,12 @@ from django.forms import model_to_dict
 from django.shortcuts import render
 from core.utilities import time_until_unavailable
 from .models import Tutorial_Room
-from .serializer import Bookable_Room_Serializer
 from core import utilities
 
 
 def index(request):
     """
-    The view that returns the frontpage of the rooms' suggester app.
+    The view that returns the front page of the rooms' suggester app.
     """
     return render(request, 'rooms/index.html')
 
@@ -65,8 +64,8 @@ def filter_suggestions(request):
 
         # remove any rooms that aren't available for the next x hours, with x chosen by the user
         available_for_hours = int(request.GET['availableFor'])
-        if available_for_hours>=0:
-            data = utilities.exclude_busy_rooms(data, available_for_hours)
+        if available_for_hours >= 0:
+            data = utilities.get_available_for_many_hours(data, available_for_hours)
 
         # if they're currently searching for a building:
         if request.GET['building'] == '':
@@ -107,18 +106,19 @@ def filter_suggestions(request):
             return utilities.JSONResponse(building_details)
 
         # if they're searching for a room...
-        # get only rooms within their selected building
-        data = data.filter(abbreviation=request.GET['building'])
+        else:
+            # get only rooms within their selected building
+            data = [room for room in data if room.abbreviation == request.GET['building']]
 
-        # sort the rooms based on a simple heuristic function
-        data = sorted(data, key=lambda x: utilities.calculate_heuristic(x), reverse=True)
+            # sort the rooms based on a simple heuristic function
+            data = sorted(data, key=lambda x: utilities.calculate_heuristic(x), reverse=True)
 
-        # add the length of time the room is available for to the JSON response
-        rooms=[]
-        for room in data:
-            time = time_until_unavailable(room)
-            room=model_to_dict(room)
-            room['availableFor'] = time
-            rooms.append(room)
+            # add the length of time the room is available for to the JSON response
+            rooms = []
+            for room in data:
+                time = time_until_unavailable(room)
+                room = model_to_dict(room)
+                room['availableFor'] = time
+                rooms.append(room)
 
-        return utilities.JSONResponse(rooms)
+            return utilities.JSONResponse(rooms)
