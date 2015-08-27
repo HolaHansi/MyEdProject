@@ -1,17 +1,6 @@
 """
 This module contains all the utility functions needed for the views of pc and rooms.
 When defining a new function that should work for more than one view, please define it here!
-
-Because there is a slight difference in how heuristic and ranking functions operate in rooms and pc,
-most of the functions for pc have been defined in the model for PC_Lab in pc/models.py.
-
-Though get distance is overall the same for both rooms and pc, we've decided against using the same function
-in utilities. Partly, because this is how we initially went about developing the PC app and a lot of functions
-would break if we moved the functions out of the model and into this module.
-
-We've also kept things this way in recognition of the fact that PCs and rooms are fundamentally different with regards
-to how their heuristic functions work, and so keeping their dependencies apart underlines this point to future
-developers.
 """
 import datetime
 from itertools import chain
@@ -44,7 +33,7 @@ def to_radians(x):
     return x * math.pi / 180
 
 
-def get_distance(building_long, building_lat, long1, lat1):
+def get_distance(long0, lat0, long1, lat1):
     """
     calculate the distance between the current building and the inputted point
     parameters: long1 - the longitude of the user
@@ -53,9 +42,9 @@ def get_distance(building_long, building_lat, long1, lat1):
     earth_radius = 6371000  # metres
     # convert all coordinates to radians
     t1 = to_radians(lat1)
-    t2 = to_radians(building_lat)
-    dt = to_radians(building_lat - lat1)
-    dl = to_radians(building_long - long1)
+    t2 = to_radians(lat0)
+    dt = to_radians(lat0 - lat1)
+    dl = to_radians(long0 - long1)
     # do some clever maths which the internet told me was correct
     a = math.sin(dt / 2) * math.sin(dt / 2) + math.cos(t1) * math.cos(t2) * math.sin(dl / 2) * math.sin(dl / 2)
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
@@ -104,7 +93,7 @@ def sortingByLocationAndEmptiness(data, usr_longitude, usr_latitude):
     sd_free = 0
     i = 0
     for pc_lab in data:
-        average_distance = average_distance + pc_lab.get_distance(long1=usr_longitude, lat1=usr_latitude)
+        average_distance = average_distance + get_distance(pc_lab.longitude, pc_lab.latitude, usr_longitude, usr_latitude)
         average_ratio = average_ratio + pc_lab.ratio
         average_free = average_free + pc_lab.free
         i += 1
@@ -114,8 +103,7 @@ def sortingByLocationAndEmptiness(data, usr_longitude, usr_latitude):
         average_free = average_free / i
         # calculate the standard deviation of distance and ratio
         for pc_lab in data:
-            sd_distance += (pc_lab.get_distance(long1=usr_longitude,
-                                                lat1=usr_latitude) - average_distance) ** 2
+            sd_distance += (get_distance(pc_lab.longitude, pc_lab.latitude, usr_longitude, usr_latitude) - average_distance) ** 2
             sd_ratio += (pc_lab.ratio - average_ratio) ** 2
             sd_free += (pc_lab.free - average_free) ** 2
         sd_distance = (sd_distance / i) ** 0.5
@@ -165,7 +153,7 @@ def sortBuildingsByDistance(usr_longitude, usr_latitude, building_details):
     """
     # sort the buildings based on distance from user, closest first
     building_details = sorted(building_details, key=lambda x: get_distance(
-        x['longitude'], x['latitude'], long1=usr_longitude, lat1=usr_latitude))
+        x['longitude'], x['latitude'], usr_longitude, usr_latitude))
 
     return building_details
 

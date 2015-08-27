@@ -1,5 +1,6 @@
 from django.db import models
 import math
+from core.utilities import get_distance
 
 
 class Computer_Labs(models.Model):
@@ -36,28 +37,6 @@ class Computer_Labs(models.Model):
     def __str__(self):
         return self.name
 
-    # calculate the distance between the current building and the inputted point
-    # parameters: long1 - the longitude of the user
-    #             lat1 - the latitude of the user
-    def get_distance(self, long1, lat1):
-        earth_radius = 6371000  # metres
-        # convert all coordinates to radians
-        t1 = self.to_radians(lat1)
-        t2 = self.to_radians(self.latitude)
-        dt = self.to_radians(self.latitude - lat1)
-        dl = self.to_radians(self.longitude - long1)
-        # do some clever maths which the internet told me was correct
-        a = math.sin(dt / 2) * math.sin(dt / 2) + math.cos(t1) * math.cos(t2) * math.sin(dl / 2) * math.sin(dl / 2)
-        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-        # return the distance between the points
-        return earth_radius * c
-
-    # converts from degrees to radians
-    # parameters: x - the value in degrees to be converted
-    @staticmethod
-    def to_radians(x):
-        return x * math.pi / 180
-
     # heuristic function for when both distance and empty are selected
     # calculates a heuristic value based on the normalised values for distance, emptiness and number of computers free
     # parameters: average_distance - the average distance to all the buildings
@@ -79,7 +58,7 @@ class Computer_Labs(models.Model):
         if standard_deviation_free == 0:
             standard_deviation_free = 0.00001
         # normalise the building's distance, ratio and number of free computers (normalised mean=0, normalised SD=1)
-        normalised_distance = (self.get_distance(long, lat) - average_distance) / standard_deviation_distance
+        normalised_distance = (get_distance(self.longitude, self.latitude, long, lat) - average_distance) / standard_deviation_distance
         normalised_ratio = (self.ratio - average_ratio) / standard_deviation_ratio
         normalised_free = (self.free - average_free) / standard_deviation_free
         # we want a small distance, a large ratio and a large number of seats free, though the latter is least important
