@@ -1,7 +1,27 @@
 {% load staticfiles %}
-<body style='text-align:center;'>
-    <p>Find available study spaces across the university with</p>
-    <a href='http://www-test.book.is.ed.ac.uk' target="_blank"><img style='width:50%; max-width:225px;' src="{% static 'core/images/bookedLogo.jpg' %}" id="logo"></a>
+<head>
+    <style>
+        #bookEdContainer{
+            text-align: center;
+        }
+        
+        #bookEdContainer>#label1{
+            margin: 0 0 10px 0;
+        }
+        
+        #bookEdContainer #logo{
+            width:50%;
+            max-width: 225px;
+        }
+        
+        #bookEdContainer>#label2{
+            margin: 5px 0 0 0;
+        }
+    </style>
+</head>
+<body id='bookEdContainer'>
+    <p id='label1'>Find available study spaces across the university with</p>
+    <a href='http://www-test.book.is.ed.ac.uk' target="_blank"><img src="{% static 'core/images/bookedLogo.jpg' %}" id="logo"></a>
     <br>
-    <p>(opens in a new window)</p>
+    <p id='label2'>(opens in a new window)</p>
 </body>
