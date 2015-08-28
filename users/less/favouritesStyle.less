@@ -1,5 +1,7 @@
 //out: ../static/users/css/favouritesStyle.css
+
 @import "../../core/less/variables.less";
+@import "../../core/less/functions.less";
 
 // main page styling
 .containerForAllez {
@@ -312,29 +314,4 @@
     @media (min-width:400px){
         display: none;
     }
-}
-// shorthand for all versions of display: flex
-.display-flex(){
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-}
-
-// shorthand for all versions of flex: a b c
-.flex(@a, @b, @c){
-    -webkit-box-flex: @b;
-    -webkit-flex-grow: @b;
-    -moz-box-flex: @b;
-    -ms-flex-positive: @b;
-    flex-grow: @b;
-
-    -webkit-flex-shrink: @c;
-    -ms-flex-negative: @c;
-    flex-shrink: @c;
-    -webkit-flex-basis: @a;
-    -ms-flex-preferred-size: @a;
-    flex-basis: @a;
-    flex: @a @b @c;
 }

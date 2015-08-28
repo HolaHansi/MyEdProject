@@ -1,0 +1,77 @@
+//out: null
+
+// shorthand for all versions of display: flex
+.display-flex(){
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+// shorthand for all versions of display: inline-flex
+.display-inline-flex(){
+    display: -webkit-inline-box;
+    display: -webkit-inline-flex;
+    display: -moz-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+}
+
+// shorthand for all versions of flex: a b c
+.flex(@a, @b, @c){
+    -webkit-box-flex: @b;
+    -webkit-flex-grow: @b;
+    -moz-box-flex: @b;
+    -ms-flex-positive: @b;
+    flex-grow: @b;
+
+    -webkit-flex-shrink: @c;
+    -ms-flex-negative: @c;
+    flex-shrink: @c;
+    -webkit-flex-basis: @a;
+    -ms-flex-preferred-size: @a;
+    flex-basis: @a;
+    flex: @a @b @c;
+}
+
+//shorthand for all versions of justify-content: a
+.justify-content(@a){
+    -webkit-box-pack: @a;
+    -webkit-justify-content: @a;
+    -ms-flex-pack: @a;
+    -moz-box-pack: @a;
+    justify-content: @a;
+}
+
+//shorthand for all versions of align-items: a
+.align-items(@a){
+    -webkit-box-align: @a;
+    -webkit-align-items: @a;
+    -ms-flex-align: @a;
+    -moz-box-align: @a;
+    align-items: @a;
+}
+
+//shorthand for all versions of transition: property time;
+.transition(@property, @time){
+    -webkit-transition: @property @time;
+    -moz-transition: @property @time;
+    -o-transition: @property @time;
+    transition: @property @time;
+}
+
+//shorthand for all versions of transition: property time,  property2 time2;
+.transitions(@property, @time, @property2, @time2){
+    -webkit-transition: @property @time, @property2, @time2;
+    -moz-transition: @property @time, @property2, @time2;
+    -o-transition: @property @time, @property2, @time2;
+    transition: @property @time, @property2, @time2;
+}
+
+//center content using flexbox
+.flex-center(){
+    .display-flex();
+    .justify-content(center);
+    .align-items(center);
+}
