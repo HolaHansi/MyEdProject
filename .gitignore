@@ -4,7 +4,6 @@ db.sqlite3
 .settings
 .coverage
 */migrations
-celerybeat.pid
 rooms/migrations/
 pc/migrations/
 core/wsgi.py

@@ -1,8 +1,6 @@
-from celery import task
 from .table import update_room_table, update_building_table, merge_room_building, update_building_hours, get_activities
 
 
-@task
 def get_data():
     update_room_table()
     print('Rooms saved')

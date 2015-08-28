@@ -1,18 +1,15 @@
-from celery import task
 from pc.table import get_pc_data
 from rooms.table import update_room_table, update_building_hours, update_building_table, merge_room_building, \
     get_activities
 
 
 # rebuild the whole database
-@task
 def repopulate_all_tables():
     refresh_locations()
     refresh_availability()
 
 
 # Check for any new rooms or labs
-@task
 def refresh_locations():
     update_building_table()
     print('Buildings saved')
@@ -25,7 +22,6 @@ def refresh_locations():
 
 
 # refresh the availability of all the rooms
-@task
 def refresh_availability():
     get_pc_data()
     print('PC availability refreshed')
