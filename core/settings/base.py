@@ -58,7 +58,8 @@ INSTALLED_APPS = (
     'rooms',
     'pc',
     'users',
-    'management'
+    'management',
+    'myed'
 )
 
 

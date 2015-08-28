@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^rooms/', include('rooms.urls'), name='rooms'),
     url(r'^favourites/$', 'users.views.favourites', name='favourites'),
     url(r'^history/$', 'users.views.history', name='history'),
+    url(r'^myed/$', 'myed.views.index', name='myEdDesktop'),
 
     url(r'^admin/', include(admin.site.urls)),
 
