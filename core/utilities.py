@@ -93,7 +93,7 @@ def sortingByLocationAndEmptiness(data, usr_longitude, usr_latitude):
     sd_free = 0
     i = 0
     for pc_lab in data:
-        average_distance = average_distance + get_distance(pc_lab.longitude, pc_lab.latitude, usr_longitude, usr_latitude)
+        average_distance += get_distance(pc_lab.longitude, pc_lab.latitude, usr_longitude, usr_latitude)
         average_ratio = average_ratio + pc_lab.ratio
         average_free = average_free + pc_lab.free
         i += 1
@@ -103,7 +103,8 @@ def sortingByLocationAndEmptiness(data, usr_longitude, usr_latitude):
         average_free = average_free / i
         # calculate the standard deviation of distance and ratio
         for pc_lab in data:
-            sd_distance += (get_distance(pc_lab.longitude, pc_lab.latitude, usr_longitude, usr_latitude) - average_distance) ** 2
+            sd_distance += (get_distance(pc_lab.longitude, pc_lab.latitude, usr_longitude, usr_latitude)
+                            - average_distance) ** 2
             sd_ratio += (pc_lab.ratio - average_ratio) ** 2
             sd_free += (pc_lab.free - average_free) ** 2
         sd_distance = (sd_distance / i) ** 0.5
@@ -495,10 +496,11 @@ def get_available_for_many_hours(rooms, available_for_hours):
     # filter out all rooms available for less than the number of hours input
     return [room for room in rooms if room_is_available_for_x_hours(room, available_for_hours)]
 
+
 def room_is_available_for_x_hours(room, available_for_hours):
     # helper function to prevent get_available_for() being called twice
-    availability=get_available_for(room)
-    return availability=='unknown' or availability.seconds//3600>=available_for_hours
+    availability = get_available_for(room)
+    return availability == 'unknown' or availability.seconds // 3600 >= available_for_hours
 
 
 def format_time(time):
