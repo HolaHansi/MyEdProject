@@ -55,6 +55,10 @@ body * {
         div{
             &:first-child .mainMenuOption {
               border-radius: 4px 0 0 0;
+                // if in beta mode (ie displaying only two options):
+                &.reduced{
+                    border-radius: 4px 0 0 4px;
+                }
             }
             &:nth-child(2) .mainMenuOption {
               border-radius: 0 4px 0 0;
@@ -64,6 +68,10 @@ body * {
             }
             &:last-child .mainMenuOption {
               border-radius: 0 0 4px 0;
+                // if in beta mode (ie displaying only two options):
+                &.reduced{
+                    border-radius: 0px 4px 4px 0;
+                }
             }
             a{
                 padding:40px 0;
