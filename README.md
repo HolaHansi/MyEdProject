@@ -2,18 +2,15 @@
 
 ##TODO:
 
-- Set up scheduler
 - Documentation, documentation, documentation
-- Get feedback
-- Go to Hive
-- Easter Eggs
+- Set up to work in Mobile MyEd
 
-##Possible tweaks:
+##Possible updates:
 
 - Custom pan display
 - Custom 'recenter map' option
-- Toggle displaying directions/location
-- Remember user preferences (cookies?)
+- Add toggle option between displaying directions to study space or just location of space
+- Remember user preferences between sessions (cookies?)
 - Implement swiping animation
 - Add custom error pages for more significant errors
 - Add feedback stuff
@@ -22,4 +19,4 @@
 - 'Suggest a study space'
 - Machine learning 'people like you like...'
 - Add config file to easily change which suitabilities are displayed
-- Get data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
+- Get and use data from [LDAP](https://www.wiki.ed.ac.uk/display/AuthService/Basics)
