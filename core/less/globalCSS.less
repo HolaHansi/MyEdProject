@@ -47,22 +47,16 @@ body {
                     // if collapsed
                     @media(max-width:(@navbar-toggle-width - 1)){
                         border-top: solid 1px #eee;
-                        padding:8px 15px 8px 0px;
+                        padding:8px 12px 8px 0px;
+                        border-right: solid 3px;
+                        border-right-color: white;
+                        // give tabs a lightly coloured right border when hovered over
+                        &:hover{
+                            .colouredBorderForNavTabs(right, 30%);
+                        }
                         // give the current tab a coloured right border
                         &.currentTab{
-                            border-right: solid 3px;
-                            &.labsTab{
-                                border-right-color: @brand-primary;
-                            }
-                            &.roomsTab{
-                                border-right-color: @brand-success;
-                            }
-                            &.favouritesTab{
-                                border-right-color: @brand-warning;
-                            }
-                            &.historyTab{
-                                border-right-color: @brand-info;
-                            }
+                            .colouredBorderForNavTabs(right, 100%);
                         }
                         .tabLabel{
                             display:inline-block;
@@ -84,21 +78,13 @@ body {
                         height:inherit;
                         border-left: solid 1px #ddd;
                         padding: 3px 15px;
+                        // give tabs a lightly coloured bottom border when hovered over
+                        &:hover{
+                            .colouredBorderForNavTabs(bottom, 30%);
+                        }
                         // give the current tab a coloured bottom border
                         &.currentTab{
-                            border-bottom: solid 3px;
-                            &.labsTab{
-                                border-bottom-color: @brand-primary;
-                            }
-                            &.roomsTab{
-                                border-bottom-color: @brand-success;
-                            }
-                            &.favouritesTab{
-                                border-bottom-color: @brand-warning;
-                            }
-                            &.historyTab{
-                                border-bottom-color: @brand-info;
-                            }
+                            .colouredBorderForNavTabs(bottom, 100%);
                         }
                         i{
                             float:none;
@@ -182,4 +168,21 @@ p{
 	line-height: 20px;
 	vertical-align: text-top;
 	width: 20px;
+}
+
+//side = 'right' or 'bottom', opacity = float, 0% < opacity < 100%
+.colouredBorderForNavTabs(@side, @opacity){
+    border-@{side}: solid 3px;
+    &.labsTab{
+        border-@{side}-color: fade(@brand-primary, @opacity);
+    }
+    &.roomsTab{
+        border-@{side}-color: fade(@brand-success, @opacity);
+    }
+    &.favouritesTab{
+        border-@{side}-color: fade(@brand-warning, @opacity);
+    }
+    &.historyTab{
+        border-@{side}-color: fade(@brand-info, @opacity);
+    }
 }

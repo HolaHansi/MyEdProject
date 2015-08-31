@@ -46,7 +46,24 @@ body {
 @media (max-width: 563px) {
   .navbar .navbar-collapse .navbar-nav li a {
     border-top: solid 1px #eee;
-    padding: 8px 15px 8px 0px;
+    padding: 8px 12px 8px 0px;
+    border-right: solid 3px;
+    border-right-color: white;
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover {
+    border-right: solid 3px;
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.labsTab {
+    border-right-color: rgba(51, 122, 183, 0.3);
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.roomsTab {
+    border-right-color: rgba(92, 184, 92, 0.3);
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.favouritesTab {
+    border-right-color: rgba(240, 173, 78, 0.3);
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.historyTab {
+    border-right-color: rgba(91, 192, 222, 0.3);
   }
   .navbar .navbar-collapse .navbar-nav li a.currentTab {
     border-right: solid 3px;
@@ -81,6 +98,21 @@ body {
     height: inherit;
     border-left: solid 1px #ddd;
     padding: 3px 15px;
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover {
+    border-bottom: solid 3px;
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.labsTab {
+    border-bottom-color: rgba(51, 122, 183, 0.3);
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.roomsTab {
+    border-bottom-color: rgba(92, 184, 92, 0.3);
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.favouritesTab {
+    border-bottom-color: rgba(240, 173, 78, 0.3);
+  }
+  .navbar .navbar-collapse .navbar-nav li a:hover.historyTab {
+    border-bottom-color: rgba(91, 192, 222, 0.3);
   }
   .navbar .navbar-collapse .navbar-nav li a.currentTab {
     border-bottom: solid 3px;

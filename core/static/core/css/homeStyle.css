@@ -50,6 +50,9 @@ body * {
   #mainMenu div:first-child .mainMenuOption {
     border-radius: 4px 0 0 0;
   }
+  #mainMenu div:first-child .mainMenuOption.reduced {
+    border-radius: 4px 0 0 4px;
+  }
   #mainMenu div:nth-child(2) .mainMenuOption {
     border-radius: 0 4px 0 0;
   }
@@ -58,6 +61,9 @@ body * {
   }
   #mainMenu div:last-child .mainMenuOption {
     border-radius: 0 0 4px 0;
+  }
+  #mainMenu div:last-child .mainMenuOption.reduced {
+    border-radius: 0px 4px 4px 0;
   }
   #mainMenu div a {
     padding: 40px 0;
