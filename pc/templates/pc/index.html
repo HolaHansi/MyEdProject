@@ -1,4 +1,6 @@
-{% extends "core/base.html" %} {% load staticfiles %} 
+{% extends "core/base.html" %}
+{% load staticfiles %} 
+
 {% block head %} 
     <link rel="stylesheet" href="{% static 'pc/css/labsStyling.css' %}">
     <script type='text/javascript' src="{% static 'core/js/makeGraph.js' %}"></script>
@@ -6,8 +8,8 @@
     <script type='text/javascript' src="{% static 'core/js/suggesterPages.js' %}"></script>
     <script type='text/javascript' src="{% static 'pc/js/labsScript.js' %}"></script>
     <!-- Amchart code -->
-    <script type="text/javascript" src="http://www.amcharts.com/lib/3/amcharts.js"></script>
-    <script type="text/javascript" src="http://www.amcharts.com/lib/3/pie.js"></script>
+    <script type="text/javascript" src="//www.amcharts.com/lib/3/amcharts.js"></script>
+    <script type="text/javascript" src="//www.amcharts.com/lib/3/pie.js"></script>
     <!-- TouchSwipe code -->
     <script type="text/javascript" src="{% static 'core/js/jquery.touchSwipe.min.js' %}"></script>
     <!-- Google Maps code -->
@@ -17,7 +19,8 @@
     <!-- Bootstrap toggle switch js -->
     <script type='text/javascript' src="{% static 'core/js/bootstrap-switch.min.js' %}"></script>
     
-{% endblock %} 
+{% endblock %}
+
 {% block content %}
 
 <div id='mainContainer'>
