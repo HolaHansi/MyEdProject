@@ -10,5 +10,4 @@ core/wsgi.py
 manage.py
 *.log
 secrets.json
-googleCredentialsSecrets.json
 databaseconfig.cnf
