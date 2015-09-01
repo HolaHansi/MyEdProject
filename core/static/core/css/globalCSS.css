@@ -145,8 +145,8 @@ body {
   background-color: #d4d4d4;
 }
 #pageTitle {
-  margin: 0 0 5;
-  padding: 0 0 5;
+  margin: 0 0 5px;
+  padding: 0 0 5px;
   color: #777;
   font-size: 28px;
   line-height: 28px;
