@@ -28,6 +28,21 @@ $(document).ready(function () {
         sessionStorage['labOptions'] = JSON.stringify(oldOptions)
     }
     
+    // if the user has corrected their location this session, use the corrected coordinates
+    if(sessionStorage['customCoordinates']=="true"){
+        userLatitude = parseFloat(sessionStorage['userLatitude']);
+        userLongitude = parseFloat(sessionStorage['userLongitude']);
+	    getSuggestionsUsingOptions();
+    
+    // otherwise use JS to get their location
+    } else {
+        // get the user's location, then send a get request if that's successful and display the initial suggestion
+	   getLocation();
+    }
+    
+    // Apply the JS styling
+    resizeElements();
+    
     // style the labs tab as the current tab
     $('#mainHamburgerMenuOptions .labsTab').addClass('currentTab');
     
