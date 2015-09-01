@@ -31,7 +31,7 @@
     <div id='suggestion'>
         <h1 id='pageTitle'>Tutorial Rooms<i class='fa fa-home'></i></h1>
         <div id='starContainer'>
-            <i class="fa fa-star fa-3x unstarred"></i>
+            <i class="fa fa-star fa-3x unstarred"></i><span class="sr-only">Click to favourite/un-favourite room</span>
         </div>
         <div class="row" id='roomRow'>
             <p id='roomName'></p>
@@ -52,7 +52,7 @@
             <div id='openingHoursLabel'>Opening hours: <span id='openingHoursValue'></span></div>
         </div>
         <div class="row" id='facilitiesRow'>
-            <div id='facilities'>Facilities: <span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span> <span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span> <span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span> <span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span> <span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span><span class='noFacilities'>None</span></div>
+            <div id='facilities'>Facilities: <span class="custom-glyphicon glyphicon-computer" aria-hidden="true"></span><span class="sr-only">Computer</span> <span class="custom-glyphicon glyphicon-printer" aria-hidden="true"></span><span class="sr-only">Printer</span> <span class="custom-glyphicon glyphicon-projector" aria-hidden="true"></span><span class="sr-only">Projector</span> <span class="custom-glyphicon glyphicon-whiteboard" aria-hidden="true"></span><span class="sr-only">Whiteboard</span> <span class="custom-glyphicon glyphicon-blackboard-custom" aria-hidden="true"></span><span class="sr-only">Blackboard</span> <span class='noFacilities'>None</span><span class="sr-only">None</span></div>
         </div>
         <div id='mapContainer'>
             <img src="{% static 'core/images/busyAnimation.gif' %}" id="busyAnimation">
