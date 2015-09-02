@@ -6,7 +6,9 @@ from core import utilities
 
 
 def index(request):
-    return render(request, 'pc/index.html')
+    response = render(request, 'pc/index.html')
+    response['Access-Control-Allow-Origin']='https://www-test.myed.ed.ac.uk/'
+    return response
 
 
 def filter_suggestions(request):
