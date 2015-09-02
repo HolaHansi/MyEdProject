@@ -66,4 +66,6 @@ def filter_suggestions(request):
 
         # Serialize the response to a JSON file.
         serializer = PC_Space_Serializer(data, many=True)
-        return utilities.JSONResponse(serializer.data)
+        response = utilities.JSONResponse(serializer.data)
+        response['Access-Control-Allow-Origin']='https://www-test.myed.ed.ac.uk/'
+        return response
