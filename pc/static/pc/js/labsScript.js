@@ -204,7 +204,7 @@ function getSuggestionsUsingOptions(){
 */
 function getSuggestions(nearby, empty, campuses) {
 	// send the get request
-	$.get(rootURL + 'filter', {
+	$.get(rootURL + 'labs/filter', {
 			'nearby': nearby,
 			'empty': empty,
 			'campusesUnselected[]': campuses,

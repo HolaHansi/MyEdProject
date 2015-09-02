@@ -143,7 +143,7 @@ function autoCompleteAPI() {
                 $(this).val('');
                 
                 // create the html for this favourite server side
-                $.post(rootURL + 'panel/', {'pc_id':suggestion.data.id})
+                $.post(rootURL + 'favourites/panel/', {'pc_id':suggestion.data.id})
                 .done(function(panel){
                     // append it to the list of favourites
                     newPanel = $(panel).insertBefore("#autocompleteLabLi");
@@ -173,7 +173,7 @@ function autoCompleteAPI() {
                 $(this).val('');
                 
                 // create the html for this favourite
-                $.post(rootURL + 'panel/', {'locationId':suggestion.data.locationId})
+                $.post(rootURL + 'favourites/panel/', {'locationId':suggestion.data.locationId})
                 .done(function(panel){
                     // append it to the list of favourites
                     newPanel = $(panel).insertBefore("#autocompleteRoomLi");
