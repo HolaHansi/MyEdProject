@@ -265,7 +265,7 @@ function getUnselectedCampuses(){
     Parameters: type: 'rooms' or 'labs' depending on which favourites you're getting
 */
 function getFavourites(type){
-    $.get(rootURL + '/getLiked', {
+    $.get(rootURL + 'getLiked', {
         'type':type
     })
     .done(function (data) {

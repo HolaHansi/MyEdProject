@@ -110,7 +110,7 @@ function removeFromFavourites(id) {
         jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
     }
     // unlike the room
-    $.post(rootURL + '/like/', jsonToUnlike);
+    $.post(rootURL + 'like/', jsonToUnlike);
     // remove this panel from the page
     $('#infoFor-' + id).fadeOut(function() { $(this).remove(); });
     isClicked = false;
@@ -131,7 +131,7 @@ function autoCompleteAPI() {
             // when a place is chosen
             onSelect: function(suggestion) {
                 // add it to favourites
-                $.post(rootURL + '/like/', {
+                $.post(rootURL + 'like/', {
                         'pc_id': suggestion.data.id,
                         'pcLikedByUser': false
                     });
@@ -161,7 +161,7 @@ function autoCompleteAPI() {
             // when a place is chosen
             onSelect: function(suggestion) {
                 // add it to favourites
-                $.post(rootURL + '/like/', {
+                $.post(rootURL + 'like/', {
                         'locationId': suggestion.data.locationId,
                         'roomLikedByUser': false
                     });

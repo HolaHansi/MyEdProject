@@ -50,7 +50,7 @@ $(document).ready(function () {
 	$('#suggestion .fa-star').click(function () {
 		var pc_id = currentChoice.id;
         // send the like request to the server
-		$.post(rootURL + '/like/', {
+		$.post(rootURL + 'like/', {
 				'pc_id': pc_id,
 				'pcLikedByUser': (''+labLikedByUser)
 			})

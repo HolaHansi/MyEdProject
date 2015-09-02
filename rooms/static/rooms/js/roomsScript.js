@@ -89,7 +89,7 @@ $(document).ready(function () {
 	$('#suggestion .fa-star').click(function () {
 		var locationId = currentChoice.locationId;
         // send the like request to the server
-		$.post(rootURL + '/like/', {
+		$.post(rootURL + 'like/', {
 				'locationId': locationId,
 				'roomLikedByUser': (''+roomLikedByUser)
 			})
