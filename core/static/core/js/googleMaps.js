@@ -3,15 +3,8 @@
 // makeMap(): Initializes the Google map.  External global variables used: none
 // updateMap(): Updates the Google map to display the current choice. External global variables used: currentChoice, userLatitude, userLongitude
 
-var map; // the Google Map object
-var mapOptions; // the JSON of options for the map
-var directionOptions; // the JSON of options for getting directions
-var geocodingOptions; // the JSON of options for translating an address to its geolocation (geocoding)
-var directionsService; // the Google directions service object, the bit that calculates the route
-var directionsDisplay;  // the Google directions renderer object, the bit that displays the route
-var geocoder; // the Google object for geocoding
-var startMarker; // the Google object for the marker at the start of the route
-var endMarker; // the Google object for the marker at the end of the route
+var googleObjects = {}; // the wrapper for all the google objects.  
+// Contains map, geocoder, mapOptions, geocodingOptions, directionOptions, directionsService, directionsDisplay, startMarker, endMarker
 
 var refreshTimer; // the maps timeout variable for limiting number of queries per second to avoid limits
 
@@ -34,9 +27,9 @@ $(document).ready(function(){
             newLocation+=', Edinburgh';
         }
         // update the geocoding options
-        geocodingOptions.address = newLocation;
+        googleObjects.geocodingOptions.address = newLocation;
         // get the coordinates from Google
-        geocoder.geocode(geocodingOptions,function(results, status){
+        googleObjects.geocoder.geocode(googleObjects.geocodingOptions,function(results, status){
             // if successful, 
             if (status==google.maps.GeocoderStatus.OK){
                 
@@ -68,12 +61,12 @@ $(document).ready(function(){
 // The JSON {lat:55.943655, lng:-3.188775} is dummy data and is overwritten as soon as the list of suggestions is received from the server
 function makeMap(){
     // initialize Google objects
-    directionsService = new google.maps.DirectionsService();
-    directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
-    geocoder = new google.maps.Geocoder();
+    googleObjects.directionsService = new google.maps.DirectionsService();
+    googleObjects.directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+    googleObjects.geocoder = new google.maps.Geocoder();
 
     // initialise map options, hiding all controls other than a small zoom and pan
-    mapOptions = {
+    googleObjects.mapOptions = {
         disableDefaultUI: true,
         panControl: true,
         panControlOptions: {
@@ -97,7 +90,7 @@ function makeMap(){
     };
     
     // initialise direction options
-    directionOptions = {
+    googleObjects.directionOptions = {
         origin: {
             lat:55.943655,
             lng:-3.188775
@@ -112,21 +105,21 @@ function makeMap(){
     }
     
     // initialise geocoding options
-    geocodingOptions = {
+    googleObjects.geocodingOptions = {
         bounds: google.maps.LatLngBounds(google.maps.LatLng(55.913840,-3.243026),google.maps.LatLng(55.970666, -3.150412)),
         region: 'uk'
     };
     
     // create the map
-    map = new google.maps.Map(document.getElementById("currentMap"), mapOptions);
+    googleObjects.map = new google.maps.Map(document.getElementById("currentMap"), googleObjects.mapOptions);
     // bind the directions renderer to the map
-    directionsDisplay.setMap(map);
+    googleObjects.directionsDisplay.setMap(googleObjects.map);
     
     // initialize marker options
     var startMarkerOptions = {
         clickable: false,
         cursor: 'default',
-        map: map,
+        map: googleObjects.map,
         icon: new google.maps.MarkerImage(
             '/staticfiles/core/images/startIcon.png',
             new google.maps.Size( 22, 40 ),
@@ -137,7 +130,7 @@ function makeMap(){
     var finishMarkerOptions = {
         clickable: false,
         cursor: 'default',
-        map: map,
+        map: googleObjects.map,
         icon: new google.maps.MarkerImage(
             '/staticfiles/core/images/finishIcon.png',
             new google.maps.Size( 22, 40 ),
@@ -145,32 +138,32 @@ function makeMap(){
             new google.maps.Point( 11, 40 )
         )
     }
-    startMarker = new google.maps.Marker(startMarkerOptions)
-    endMarker = new google.maps.Marker(finishMarkerOptions)
+    googleObjects.startMarker = new google.maps.Marker(startMarkerOptions)
+    googleObjects.endMarker = new google.maps.Marker(finishMarkerOptions)
 }
 
 // update the map with the new directions
 function updateMap(){
     $('#busyAnimation').hide();
     // update direction options
-    directionOptions.origin= {
+    googleObjects.directionOptions.origin= {
           lat:userLatitude,
           lng:userLongitude
       }
-    directionOptions.destination= {
+    googleObjects.directionOptions.destination= {
             lat:currentChoice.latitude, 
             lng:currentChoice.longitude
       }
     // calculate and display the route
-    directionsService.route(directionOptions, function(result, status) {
+    googleObjects.directionsService.route(googleObjects.directionOptions, function(result, status) {
         // if the route was successfully calculated, display it
         if (status == google.maps.DirectionsStatus.OK) {
             // display route
-            directionsDisplay.setDirections(result);
+            googleObjects.directionsDisplay.setDirections(result);
             // display markers
             var leg = result.routes[ 0 ].legs[ 0 ];
-            startMarker.setPosition(leg.start_location)
-            endMarker.setPosition(leg.end_location)
+            googleObjects.startMarker.setPosition(leg.start_location)
+            googleObjects.endMarker.setPosition(leg.end_location)
         // if the user is flicking through choices too quickly, wait before showing the map
         }else if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT){
             $('#busyAnimation').show();
