@@ -4,7 +4,7 @@
 // parameters:
 // id (string): the id of the location to be booked
 function bookRoom(id){
-    $.post('/history/',{
+    $.post(rootURL + '/history/',{
         'locationId': id,
         'clearAll': false
     }).done(function(data){

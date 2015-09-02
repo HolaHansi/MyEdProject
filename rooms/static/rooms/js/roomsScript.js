@@ -89,7 +89,7 @@ $(document).ready(function () {
 	$('#suggestion .fa-star').click(function () {
 		var locationId = currentChoice.locationId;
         // send the like request to the server
-		$.post('/like/', {
+		$.post(rootURL + '/like/', {
 				'locationId': locationId,
 				'roomLikedByUser': (''+roomLikedByUser)
 			})
@@ -271,7 +271,7 @@ function getSuggestionsUsingOptions(){
 */
 function getSuggestions(bookable, availableFor, pc, printer, whiteboard, blackboard, projector, building, nearby, campuses) {
 	// send the get request
-	$.get('filter', {
+	$.get(rootURL + 'filter', {
 			'bookable': bookable,
             'availableFor': availableFor,
 			'pc': pc,

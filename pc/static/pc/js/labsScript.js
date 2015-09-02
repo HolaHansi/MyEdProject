@@ -50,7 +50,7 @@ $(document).ready(function () {
 	$('#suggestion .fa-star').click(function () {
 		var pc_id = currentChoice.id;
         // send the like request to the server
-		$.post('/like/', {
+		$.post(rootURL + '/like/', {
 				'pc_id': pc_id,
 				'pcLikedByUser': (''+labLikedByUser)
 			})
@@ -204,7 +204,7 @@ function getSuggestionsUsingOptions(){
 */
 function getSuggestions(nearby, empty, campuses) {
 	// send the get request
-	$.get('filter', {
+	$.get(rootURL + 'filter', {
 			'nearby': nearby,
 			'empty': empty,
 			'campusesUnselected[]': campuses,

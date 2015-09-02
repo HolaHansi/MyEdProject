@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     $('#clearHistory').click(function(){
 
-        $.post('/history/', {'clearAll': true})
+        $.post(rootURL + '/history/', {'clearAll': true})
         .done(function(){
             $('.panel.panel-default').fadeOut(function() {
                 $(this).remove();

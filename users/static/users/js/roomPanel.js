@@ -22,7 +22,7 @@ function addFunctionalityToRoomPanel(panelDiv){
         $('#myModalLabel').html(roomName);
 
         // get all activities on this room.
-        $.get('/calendar/', {
+        $.get(rootURL + '/calendar/', {
                 'locationId': locationId
         })
         .done(function(activities){

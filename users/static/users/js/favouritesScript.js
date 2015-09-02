@@ -110,7 +110,7 @@ function removeFromFavourites(id) {
         jsonToUnlike={'locationId': idToUnlike, 'roomLikedByUser': true}
     }
     // unlike the room
-    $.post('/like/', jsonToUnlike);
+    $.post(rootURL + '/like/', jsonToUnlike);
     // remove this panel from the page
     $('#infoFor-' + id).fadeOut(function() { $(this).remove(); });
     isClicked = false;
@@ -122,7 +122,7 @@ function removeFromFavourites(id) {
 // this is the function that gets the data, and configures the settings for the autoCompleter
 function autoCompleteAPI() {
     // get the data from the autocomplete API
-    $.get('/autocompleteAPI/', function(allLocations) {
+    $.get(rootURL + '/autocompleteAPI/', function(allLocations) {
         // autocomplete code for PC-LABS:
         $('#autocompleteLab').autocomplete({
             lookup: allLocations['labs'],
@@ -131,7 +131,7 @@ function autoCompleteAPI() {
             // when a place is chosen
             onSelect: function(suggestion) {
                 // add it to favourites
-                $.post('/like/', {
+                $.post(rootURL + '/like/', {
                         'pc_id': suggestion.data.id,
                         'pcLikedByUser': false
                     });
@@ -143,7 +143,7 @@ function autoCompleteAPI() {
                 $(this).val('');
                 
                 // create the html for this favourite server side
-                $.post('panel/', {'pc_id':suggestion.data.id})
+                $.post(rootURL + 'panel/', {'pc_id':suggestion.data.id})
                 .done(function(panel){
                     // append it to the list of favourites
                     newPanel = $(panel).insertBefore("#autocompleteLabLi");
@@ -161,7 +161,7 @@ function autoCompleteAPI() {
             // when a place is chosen
             onSelect: function(suggestion) {
                 // add it to favourites
-                $.post('/like/', {
+                $.post(rootURL + '/like/', {
                         'locationId': suggestion.data.locationId,
                         'roomLikedByUser': false
                     });
@@ -173,7 +173,7 @@ function autoCompleteAPI() {
                 $(this).val('');
                 
                 // create the html for this favourite
-                $.post('panel/', {'locationId':suggestion.data.locationId})
+                $.post(rootURL + 'panel/', {'locationId':suggestion.data.locationId})
                 .done(function(panel){
                     // append it to the list of favourites
                     newPanel = $(panel).insertBefore("#autocompleteRoomLi");
