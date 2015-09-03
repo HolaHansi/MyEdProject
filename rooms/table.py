@@ -98,7 +98,6 @@ def update_room_table():
     return 'success'
 
 
-
 def update_building_table():
     """
     Makes a call to the building feed and populates the Building_Feed table with the relevant data received.
@@ -245,8 +244,6 @@ def update_building_table():
                                 building_name=building_name)
             buildings_to_save.append(obj)
 
-
-
     # Remove any duplicates from the database, such as the Noreen and Kenneth Murray Library which is in the feed twice
     # WARNING: O(n^2) efficiency!  For now, the constants are small enough that it's not a problem though.
 
@@ -274,7 +271,7 @@ def update_building_hours():
         abbreviation = record['Building Abbreviation'].replace('"', '')
         if abbreviation != 'n/a':
             try:
-                building = Building_Feed.objects.get(abbreviation__exact = abbreviation)
+                building = Building_Feed.objects.get(abbreviation__exact=abbreviation)
                 zoneId = record['Zone_ID']
 
                 # get times as strings, and convert to time objects.
@@ -316,15 +313,15 @@ def update_building_hours():
                 building_name = record['Building Name']
 
                 # make an object for the database.
-                obj = Open_Hours(building = building,
+                obj = Open_Hours(building=building,
                                  abbreviation=abbreviation,
-                                 zoneId = zoneId,
+                                 zoneId=zoneId,
                                  weekdayOpen=weekdayOpen,
                                  weekdayClosed=weekdayClosed,
-                                 saturdayOpen = saturdayOpen,
-                                 saturdayClosed = saturdayClosed,
-                                 sundayOpen = sundayOpen,
-                                 sundayClosed = sundayClosed,
+                                 saturdayOpen=saturdayOpen,
+                                 saturdayClosed=saturdayClosed,
+                                 sundayOpen=sundayOpen,
+                                 sundayClosed=sundayClosed,
                                  building_name=building_name)
 
                 obj.save()
@@ -332,9 +329,6 @@ def update_building_hours():
                 pass
 
     return 'success'
-
-
-
 
 
 def merge_room_building():
@@ -358,8 +352,6 @@ def merge_room_building():
             # or "COMPUTER LAB" not in results.description.upper()
             room_name = re.sub(r'^z*', '', results.room_name)
 
-
-
             obj = Tutorial_Room(abbreviation=results.abbreviation,
                                 locationId=results.locationId,
                                 room_name=room_name,
@@ -375,7 +367,7 @@ def merge_room_building():
                                 building_name=results.building_name,
                                 campus_id=results.campus_id,
                                 campus_name=results.campus_name,
-                                capacity = results.capacity
+                                capacity=results.capacity
                                 )
 
             # try getting appending opening hours to the room if they exist.
@@ -412,10 +404,11 @@ def merge_room_building():
 def get_activities():
     # get the date in a format usable by the API
     now = datetime.datetime.utcnow()
-    current_date = str(now)[:-7].replace(' ', 'T') + '%2B0000'
-    tomorrow = str(now + datetime.timedelta(days=1))[:-7].replace(' ', 'T') + '%2B0000'
+    current_date = str(now - datetime.timedelta(days=1))[:-7].replace(' ', 'T') + '%2B0000'
+    tomorrow = str(now + datetime.timedelta(days=7))[:-7].replace(' ', 'T') + '%2B0000'
 
     # for testing - these dates have activities: SHOULD BE COMMENTED OUT!
+    # TODO: comment out
     current_date = "2015-08-12T08:00:00%2B0000"
     tomorrow = "2015-08-13T08:00:00%2B0000"
 
@@ -451,16 +444,6 @@ def get_activities():
                     pass
 
 
-''' For testing:
-def printTime(message):
-    from time import clock
-
-    global timer
-    print(message + ': ' + str(float(int((clock() - timer) * 1000)) / 1000) + 's')
-    timer = clock()
-'''
-
-
 def get_building_hours():
     """
     This function retrieves the opening hours for every building when available
@@ -486,5 +469,3 @@ def get_building_hours():
     records = ws.get_all_records()
 
     return records
-
-
