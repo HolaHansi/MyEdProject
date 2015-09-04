@@ -286,6 +286,8 @@ function getSuggestions(bookable, availableFor, pc, printer, whiteboard, blackbo
 			'longitude': userLongitude
 		})
 		.done(function (data) {
+            // hide the loading icon when ready
+            $('#busyAnimation').hide();
 			// if successful, save the data received
 			suggestions = data;
 			// if at least one room fits the criteria
@@ -316,6 +318,13 @@ function getSuggestions(bookable, availableFor, pc, printer, whiteboard, blackbo
         .fail(function(data){
             alert('Unable to get suggestions.  \n\nCheck your internet connection and refresh the page.  ');
         });
+    // bring up the loading icon
+    $('#busyAnimation').show();
+    // switch to/stay on the building suggester view (apart from being neater, that's also the only view of the two which contains the loading icon!)
+    if (searchingForBuildings){
+        switchView();
+        $('.arrow').addClass('disabled');
+    }
 }
 
 /* 

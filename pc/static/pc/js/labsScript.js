@@ -212,6 +212,8 @@ function getSuggestions(nearby, empty, campuses) {
 			'longitude': userLongitude
 		})
 		.done(function (data) {
+            // hide the loading icon when ready
+            $('#busyAnimation').hide();
 			// if successful, save the data received
 			suggestions = data;
 			// if at least one room fits the criteria
@@ -236,6 +238,8 @@ function getSuggestions(nearby, empty, campuses) {
         .fail(function(data){
             alert('Unable to get suggestions.  \n\nCheck your internet connection and refresh the page.  ');
         });
+    // bring up the loading icon
+    $('#busyAnimation').show();
 }
 
 /*
