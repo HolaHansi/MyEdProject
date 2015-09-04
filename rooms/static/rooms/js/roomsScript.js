@@ -271,7 +271,7 @@ function getSuggestionsUsingOptions(){
 */
 function getSuggestions(bookable, availableFor, pc, printer, whiteboard, blackboard, projector, building, nearby, campuses) {
 	// send the get request
-	$.get(rootURL + 'rooms/filter', {
+	$.get(rootURL + 'rooms/filter/', {
 			'bookable': bookable,
             'availableFor': availableFor,
 			'pc': pc,
