@@ -323,7 +323,6 @@ function getSuggestions(bookable, availableFor, pc, printer, whiteboard, blackbo
     // switch to/stay on the building suggester view (apart from being neater, that's also the only view of the two which contains the loading icon!)
     if (searchingForBuildings){
         switchView();
-        $('.arrow').addClass('disabled');
     }
 }
 
