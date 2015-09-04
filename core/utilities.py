@@ -529,6 +529,7 @@ def get_availability(room):
 
 
 def get_available_rooms(data, available_for_hours=0):
+    # get all centrally allocated rooms which will be available for the next x hours
     data = data.filter(locally_allocated=False)
     data = exclude_busy_rooms(data, available_for_hours)
     data = exclude_closed_locations(data)
@@ -536,12 +537,14 @@ def get_available_rooms(data, available_for_hours=0):
 
 
 def get_open_local_rooms(data):
+    # get all rooms which are locally booked but their building isn't closed
     data = data.filter(locally_allocated=True)
     data = exclude_closed_locations(data)
     return data
 
 
 def get_unavailable_rooms(data):
+    # get all rooms which are definitely shut
     rooms_globally_allocated = data.filter(locally_allocated=False)
     closed_rooms = exclude_open_locations(data, typeOfSpace='Room')
     rooms_currently_booked = exclude_avail_rooms(data=rooms_globally_allocated, available_for_hours=0)

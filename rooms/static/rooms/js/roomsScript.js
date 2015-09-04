@@ -122,7 +122,7 @@ $(document).ready(function () {
         roomLikedByUser=!roomLikedByUser;
 	});
     
-    // intialize options buttons to act as checkboxes
+    // initialise options buttons to act as checkboxes
     $('.campusCheckbox, .facilitiesCheckbox').click(function(){
         $(this).toggleClass('checked');
         $('input', this).prop('checked', !$('input', this).prop('checked'))
@@ -169,7 +169,7 @@ function toggleOptionsMenu(){
         $('#mainContainer').css('opacity',0.3);
     } else {
         // reenable the suggester interface
-        // note that arrows are reenabled seperately due to their also being disabled if on the first or last suggestion
+        // note that arrows are reenabled separately due to their also being disabled if on the first or last suggestion
         $('#mainContainer').css('opacity',1);
         $('#switchViewBtn').removeClass('disabled');
         $('#bookBtn').removeClass('disabled');
@@ -424,7 +424,7 @@ function switchView(){
         $('#roomRow').hide();
         // hide the favourites button
         $('#starContainer').hide();
-        //make the building name a title again
+        // make the building name a title again
         $('#buildingName').removeClass('subtitle');
         // show the number of rooms free
         $('#roomsFreeRow').show();
@@ -448,7 +448,7 @@ function switchView(){
         $('#roomRow').show();
         // show the favourites button
         $('#starContainer').show();
-        //make the building name a subtitle
+        // make the building name a subtitle
         $('#buildingName').addClass('subtitle');
         // hide the number of rooms free
         $('#roomsFreeRow').hide();

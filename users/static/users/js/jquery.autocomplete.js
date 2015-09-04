@@ -9,6 +9,8 @@
 /*jslint  browser: true, white: true, plusplus: true, vars: true */
 /*global define, window, document, jQuery, exports, require */
 
+// ever so slightly modified version (line 214)
+
 // Expose plugin as an AMD module if AMD loader is present:
 (function (factory) {
     'use strict';
@@ -209,7 +211,7 @@
         onFocus: function () {
             var that = this;
             that.fixPosition();
-            if (that.options.minChars <= that.el.val().length) { //was: if (that.options.minChars === 0 && that.el.val().length === 0) {
+            if (that.options.minChars <= that.el.val().length) { // was: if (that.options.minChars === 0 && that.el.val().length === 0) {
                 that.onValueChange();
             }
         },

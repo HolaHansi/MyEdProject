@@ -107,7 +107,7 @@ $(document).ready(function () {
         }
     });
     
-    // intialize campus buttons to act as checkboxes
+    // initialise campus buttons to act as checkboxes
     $('.campusCheckbox').click(function(){
         $(this).toggleClass('checked');
         $('input', this).prop('checked', !$('input', this).prop('checked'))
@@ -192,7 +192,7 @@ function getSuggestionsUsingOptions(){
         ids = [];
     }
     // get the suggestions
-    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), ids); //TODO FIX
+    getSuggestions( $('#nearbyCheckbox').is(':checked'), $('#quietCheckbox').is(':checked'), ids);
 }
 
 /* 

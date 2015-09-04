@@ -1,13 +1,22 @@
 //out: ../static/core/css/homeStyle.css
+
+body * {
+    text-transform: capitalize;
+    font-size: large;
+}
+
 .btn-lg {
     border-radius: 0px;
 }
+
 .btn-block + .btn-block {
     margin-top: 0px;
 }
+
 #mainMenu{
     padding: 0 5px;
 }
+
 // rounding corners appropriately
 #mainMenu div{
     padding:0px;
@@ -18,13 +27,11 @@
       border-radius: 0 0 4px 4px;
     }
 }
+
+// hide all navbar stuff other than the logo
 #mainHamburgerMenuOptions,
 *[data-target='#mainHamburgerMenuOptions'] {
     display: none !important;
-}
-body * {
-    text-transform: capitalize;
-    font-size: large;
 }
 // make logo bigger and centered
 .navbar {
@@ -50,7 +57,14 @@ body * {
     padding:0 0 5px 0;
 }
 
-//for bigger screens, switch to a larger 2x2 grid
+// don't get the container any bigger than 970px wide
+@media (min-width: 1200px){
+    .container {
+        width: 970px;
+    }
+}
+
+// for bigger screens, switch to a larger 2x2 grid
 @media (min-width: 992px) {
     #mainMenu{ 
         width:70%;
@@ -90,11 +104,5 @@ body * {
     .navbar #logo{
         height:100px;
         margin-bottom:20px;
-    }
-    
-}
-@media (min-width: 1200px){
-    .container {
-        width: 970px;
     }
 }

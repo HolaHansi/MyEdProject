@@ -3,14 +3,12 @@ TO RUN THE TEST SIMPLY RUN ./manage.py test rooms.test.ActivityTestCase.filter_o
 OR ANY OTHER OF THE TESTS..
 """
 
-
 from django.test import TestCase
 from rooms.models import Activity, Tutorial_Room
 import datetime
 from django.utils import timezone
 from core import utilities
-from rooms.views import filter_suggestions
-import random, string
+
 
 def makeClosedRoom(name="locallyAllocatedButClosed"):
     """
@@ -19,12 +17,13 @@ def makeClosedRoom(name="locallyAllocatedButClosed"):
     :return: nothing
     """
 
-    startTime = timezone.make_aware(datetime.datetime.now(),timezone.get_default_timezone())
+    startTime = timezone.make_aware(datetime.datetime.now(), timezone.get_default_timezone())
     startTime -= datetime.timedelta(hours=2)
 
     endTime = startTime + datetime.timedelta(hours=1)
 
-    a = Tutorial_Room(locationId=name, room_name=name, capacity=20, longitude=200.3, latitude=20003.3, whiteboard=True, weekdayOpen=startTime, weekdayClosed=endTime, locally_allocated=True)
+    a = Tutorial_Room(locationId=name, room_name=name, capacity=20, longitude=200.3, latitude=20003.3, whiteboard=True,
+                      weekdayOpen=startTime, weekdayClosed=endTime, locally_allocated=True)
 
     a.save()
 
@@ -41,25 +40,26 @@ class ActivityTestCase(TestCase):
     roomNoAct does not have any activities, and hence should not be excluded.
 
     """
+
     def setUp(self):
         # set up two rooms
         busyRoom = Tutorial_Room(locationId="busyRoom",
-                                    longitude=-3.18914651870728,
-                                    latitude=55.9427113171065,
-                                    abbreviation="0224",
-                                    capacity=20)
+                                 longitude=-3.18914651870728,
+                                 latitude=55.9427113171065,
+                                 abbreviation="0224",
+                                 capacity=20)
 
         nonBusyRoom = Tutorial_Room(locationId="NonBusyRoom",
                                     longitude=-3.17972660064697,
                                     latitude=55.9501219441208,
                                     abbreviation="0551",
-                                    capacity = 30)
+                                    capacity=30)
 
         roomNoAct = Tutorial_Room(locationId="roomNoAct",
-                                    longitude=-3.17972660064697,
-                                    latitude=55.9501219441208,
-                                    abbreviation="0552",
-                                    capacity = 30)
+                                  longitude=-3.17972660064697,
+                                  latitude=55.9501219441208,
+                                  abbreviation="0552",
+                                  capacity=30)
 
         busyRoom.save()
         nonBusyRoom.save()
@@ -76,15 +76,14 @@ class ActivityTestCase(TestCase):
         # set up two activities: one that is going on now and one that is not
 
         activityA = Activity(activityId="activityThatObstructs",
-                             name = "activityA",
-                             startTime = startTimeA,
-                             endTime = endTimeA)
-
+                             name="activityA",
+                             startTime=startTimeA,
+                             endTime=endTimeA)
 
         activityB = Activity(activityId="activityHarmless",
-                                name="activityB",
-                                startTime=startTimeB,
-                                endTime = endTimeB)
+                             name="activityB",
+                             startTime=startTimeB,
+                             endTime=endTimeB)
 
         activityA.save()
         activityB.save()
@@ -92,7 +91,6 @@ class ActivityTestCase(TestCase):
         # add busy room to this activity
         activityA.tutorialRooms.add(busyRoom)
         activityB.tutorialRooms.add(nonBusyRoom)
-
 
     def filter_out_busy_rooms(self):
         """
@@ -137,6 +135,3 @@ class ActivityTestCase(TestCase):
         # now we know that only rooms that are currently busy are removed from data,
         # and that rooms that either have no activities or no obstructing activities
         # are NOT excluded.
-
-
-

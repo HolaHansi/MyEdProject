@@ -14,26 +14,39 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
-
 
 urlpatterns = [
+    # webpages:
+
+    # homepage
     url(r'^$', 'users.views.index', name='home'),
+    # labs suggester page and API
     url(r'^labs/', include('pc.urls'), name='labs'),
+    # rooms suggester page and API
     url(r'^rooms/', include('rooms.urls'), name='rooms'),
+    # favourite page
     url(r'^favourites/$', 'users.views.favourites', name='favourites'),
+    # history page
     url(r'^history/$', 'users.views.history', name='history'),
+    # 'open link in new window' view for displaying in myed
     url(r'^myed/$', 'myed.views.index', name='myEdDesktop'),
 
-    url(r'^admin/', include(admin.site.urls)),
+    # APIs:
 
+    # get data for calendar
     url(r'^calendar/$', 'users.views.calendar', name='calendar'),
-    url(r'^favourites/panel/$', 'users.views.get_panel',name='panel'),
+    # get the HTML for a favourites panel
+    url(r'^favourites/panel/$', 'users.views.get_panel', name='panel'),
+    # like/unlike a location
     url(r'^like/', 'users.views.like'),
+    # get all this user's favourite labs or rooms
     url(r'^getLiked/', 'users.views.get_all_favourites'),
+    # registration (only used in development)
     url(r'^registration/$', 'users.views.register'),
+    # log out
     url(r'^logout/$', 'users.views.logout'),
+    # log in (only used in development)
     url(r'login/$', 'users.views.login'),
-    # url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'auth/login.html'})
+    # get data for autocomplete dropdown
     url(r'autocompleteAPI/', 'users.views.autocompleteAPI')
 ]

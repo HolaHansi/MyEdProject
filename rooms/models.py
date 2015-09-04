@@ -89,6 +89,7 @@ class Tutorial_Room(models.Model):
     def __str__(self):
         return self.building_name + ": " + self.room_name
 
+    # two tutorial rooms are equal if all their attributes are equal
     def __eq__(self, other):
         return (isinstance(other, self.__class__) and
                 self.locationId == other.locationId and

@@ -3,15 +3,13 @@
 {% load users_extra_tags %}
 
 {% block head %}
-
     <link href="{% static 'users/css/favouritesStyle.css' %}" rel="stylesheet">
 
-    <!-- amCharts javascript sources -->
+    <!-- AmCharts javascript sources -->
     <script type="text/javascript" src="//www.amcharts.com/lib/3/amcharts.js"></script>
     <script type="text/javascript" src="//www.amcharts.com/lib/3/pie.js"></script>
 
     <script type="text/javascript" src="{% static 'core/js/makeGraph.js' %}"></script>
-
     <script type="text/javascript" src="{% static 'users/js/jquery.autocomplete.js' %}"></script>
 
     <!-- Calendar static files -->
@@ -22,84 +20,80 @@
     <script type='text/javascript' src="{% static 'core/js/booking.js' %}"></script>
     <script type="text/javascript" src="{% static 'users/js/roomPanel.js' %}"></script>
     <script type="text/javascript" src="{% static 'users/js/favouritesScript.js' %}"></script>
-
 {% endblock %}
 
 {% block content %}
-<div class="containerForAllez">
+    <div class="containerForAllez">
 
-    <div class=header>
-        <h1 id='pageTitle'>Favourites<i class="fa fa-star"></i></h1>
-    </div>
-
-    {% if not labsOnly %}
-    <!--Computers and Rooms tabs-->
-    <div class="navbar-row">
-        <ul class="nav nav-pills">
-            <li class="active"><a data-toggle="tab" href="#labs">Computer Labs</a></li>
-            <li><a data-toggle="tab" href="#rooms">Tutorial Rooms</a></li>
-        </ul>
-    </div>
-    {% endif %}
-
-    <!--All labs' and rooms' info-->
-    <div class="tab-content">
-        
-        <!-- labs -->
-        <div id="labs" class="tab-pane fade in active">
-            <div class="panel-group" role="tablist" aria-multiselectable="true">
-                
-                {% for favourite in pc_favourites %}
-                    
-                    {% include "users/labPanel.html" with fav=favourite %}
-
-                {% endfor %}
-
-                <!-- AutoComplete -->
-                <div class="list-group-item autocompleteLi" id="autocompleteLabLi">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></div>
-                <!-- Blank box to allow autocomplete to expand into something -->
-                <div style="height:150px;"></div>
-            </div>
+        <div class=header>
+            <h1 id='pageTitle'>Favourites<i class="fa fa-star"></i></h1>
         </div>
 
-        <!--Rooms-->
-        <div id="rooms" class="tab-pane fade">
-            <div class="panel-group" role="tablist" aria-multiselectable="true">
-                
-            <!-- Calendar modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header" >
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Calendar</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="calendar"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
-                        </div>
-                    </div>
+        {% if not labsOnly %}
+        <!--Computers and Rooms tabs-->
+        <div class="navbar-row">
+            <ul class="nav nav-pills">
+                <li class="active"><a data-toggle="tab" href="#labs">Computer Labs</a></li>
+                <li><a data-toggle="tab" href="#rooms">Tutorial Rooms</a></li>
+            </ul>
+        </div>
+        {% endif %}
+
+        <!--All labs' and rooms' info-->
+        <div class="tab-content">
+
+            <!-- labs -->
+            <div id="labs" class="tab-pane fade in active">
+                <div class="panel-group" role="tablist" aria-multiselectable="true">
+
+                    {% for favourite in pc_favourites %}
+
+                        {% include "users/labPanel.html" with fav=favourite %}
+
+                    {% endfor %}
+
+                    <!-- AutoComplete -->
+                    <div class="list-group-item autocompleteLi" id="autocompleteLabLi">Add new lab: <input type="text" class="autocompleteForm" id="autocompleteLab"></div>
+                    <!-- Blank box to allow autocomplete to expand into something -->
+                    <div style="height:150px;"></div>
                 </div>
             </div>
 
-            {% for favourite in room_favourites %}
+            <!--Rooms-->
+            <div id="rooms" class="tab-pane fade">
+                <div class="panel-group" role="tablist" aria-multiselectable="true">
 
-                {% include "users/roomPanel.html" with fav=favourite type='favourite' %}
+                    <!-- Calendar modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" >
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Calendar</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="calendar"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            {% endfor %}
+                    {% for favourite in room_favourites %}
 
-            <!-- AutoComplete -->
-            <div class="list-group-item autocompleteLi" id="autocompleteRoomLi">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></div>
-            <!-- Blank box to allow autocomplete to expand into something -->
-            <div style="height:150px;"></div>
+                        {% include "users/roomPanel.html" with fav=favourite type='favourite' %}
+
+                    {% endfor %}
+
+                    <!-- AutoComplete -->
+                    <div class="list-group-item autocompleteLi" id="autocompleteRoomLi">Add new room: <input type="text" class="autocompleteForm" id="autocompleteRoom"></div>
+                    <!-- Blank box to allow autocomplete to expand into something -->
+                    <div style="height:150px;"></div>
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-
-
-
-    </div>
-
 {% endblock %}

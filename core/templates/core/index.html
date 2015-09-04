@@ -3,21 +3,19 @@
 
 {% block head %}
     <link href="{% static 'core/css/homeStyle.css' %}" rel="stylesheet">
-
 {% endblock %}
 
 {% block content %}
-<div id="contentContainer" class='container'>
-    <div id='mainMenu'>
-        <div class='col-xs-12 col-md-6'><a href="labs"       class="mainMenuOption btn btn-primary btn-lg btn-block {% if labsOnly %}reduced{% endif %}" role="button"><i class="fa fa-laptop fa-3x"></i><div>Computer Labs</div></a></div>
-        {% if not labsOnly %}
-        <div class='col-xs-12 col-md-6'><a href="rooms"      class="mainMenuOption btn btn-success btn-lg btn-block" role="button"><i class="fa fa-home fa-3x"></i><div>Tutorial Rooms</div></a></div>
-        {% endif %}
-        <div class='col-xs-12 col-md-6'><a href="favourites" class="mainMenuOption btn btn-warning btn-lg btn-block {% if labsOnly %}reduced{% endif %}" role="button"><i class="fa fa-star fa-3x"></i><div>Favourites</div></a></div>
-        {% if not labsOnly %}
-        <div class='col-xs-12 col-md-6'><a href="history"    class="mainMenuOption btn btn-info    btn-lg btn-block" role="button"><i class="fa fa-history fa-3x"></i><div>History</div></a></div>
-        {% endif %}
+    <div id="contentContainer" class='container'>
+        <div id='mainMenu'>
+            <div class='col-xs-12 col-md-6'><a href="labs"       class="mainMenuOption btn btn-primary btn-lg btn-block {% if labsOnly %}reduced{% endif %}" role="button"><i class="fa fa-laptop fa-3x"></i><div>Computer Labs</div></a></div>
+            {% if not labsOnly %}
+            <div class='col-xs-12 col-md-6'><a href="rooms"      class="mainMenuOption btn btn-success btn-lg btn-block" role="button"><i class="fa fa-home fa-3x"></i><div>Tutorial Rooms</div></a></div>
+            {% endif %}
+            <div class='col-xs-12 col-md-6'><a href="favourites" class="mainMenuOption btn btn-warning btn-lg btn-block {% if labsOnly %}reduced{% endif %}" role="button"><i class="fa fa-star fa-3x"></i><div>Favourites</div></a></div>
+            {% if not labsOnly %}
+            <div class='col-xs-12 col-md-6'><a href="history"    class="mainMenuOption btn btn-info    btn-lg btn-block" role="button"><i class="fa fa-history fa-3x"></i><div>History</div></a></div>
+            {% endif %}
+        </div>
     </div>
-</div>
-
 {% endblock %}

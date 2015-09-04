@@ -6,9 +6,7 @@ from core import utilities
 
 
 def index(request):
-    response = render(request, 'pc/index.html')
-    response['Access-Control-Allow-Origin']='https://www-test.myed.ed.ac.uk/'
-    return response
+    return render(request, 'pc/index.html')
 
 
 def filter_suggestions(request):
@@ -66,6 +64,4 @@ def filter_suggestions(request):
 
         # Serialize the response to a JSON file.
         serializer = PC_Space_Serializer(data, many=True)
-        response = utilities.JSONResponse(serializer.data)
-        response['Access-Control-Allow-Origin']='https://www-test.myed.ed.ac.uk/'
-        return response
+        return utilities.JSONResponse(serializer.data)

@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from rooms.models import Tutorial_Room
 from pc.models import Computer_Labs
 
+
 class User(AbstractUser):
     room_favourites = models.ManyToManyField(Tutorial_Room, related_name='room_fav')
     pc_favourites = models.ManyToManyField(Computer_Labs, related_name='pc_fav')
@@ -17,5 +18,3 @@ class RoomHistory(models.Model):
     booked_at_time = models.DateTimeField(null=True)
     room = models.ForeignKey(Tutorial_Room)
     user = models.ForeignKey(User)
-
-    # could potentially add in the room-booking link

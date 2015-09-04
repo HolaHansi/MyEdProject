@@ -3,71 +3,68 @@
 {% load users_extra_tags %}
 
 {% block head %}
+    <link href="{% static 'users/css/favouritesStyle.css' %}" rel="stylesheet">
 
-<link href="{% static 'users/css/favouritesStyle.css' %}" rel="stylesheet">
+    <!-- Calendar static files -->
+    <link rel="stylesheet" href="{% static 'core/fullcalendar/fullcalendar.css' %}" />
+    <script src="{% static 'core/fullcalendar/moment.min.js' %}"></script>
+    <script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
 
-
-<!-- Calendar static files -->
-<link rel="stylesheet" href="{% static 'core/fullcalendar/fullcalendar.css' %}" />
-<script src="{% static 'core/fullcalendar/moment.min.js' %}"></script>
-<script src="{% static 'core/fullcalendar/fullcalendar.js' %}"></script>
-
-<script type='text/javascript' src="{% static 'core/js/booking.js' %}"></script>
-<script type="text/javascript" src="{% static 'users/js/roomPanel.js' %}"></script>
-<script type="text/javascript" src="{% static 'users/js/history.js' %}"></script>
-
+    <script type='text/javascript' src="{% static 'core/js/booking.js' %}"></script>
+    <script type="text/javascript" src="{% static 'users/js/roomPanel.js' %}"></script>
+    <script type="text/javascript" src="{% static 'users/js/history.js' %}"></script>
 {% endblock %}
+
 {% block content %}
-<div class="containerForAllez">
+    <div class="containerForAllez">
 
-    <div class=header>
-        <h1 id='pageTitle'>History<i class="fa fa-history"></i></h1>
-    </div>
+        <div class=header>
+            <h1 id='pageTitle'>History<i class="fa fa-history"></i></h1>
+        </div>
 
-    {% if not roomHis %}
-    
-    <div class="noHistory">
-        <h4>No room booking history to show.</h4>
-    </div>
-    
-    {% else %}
+        {% if not roomHis %}
 
-    <div id="ROOMs" class="tab-pane">
-        <div class="panel-group" role="tablist" aria-multiselectable="true" style='margin-bottom: 10px;'>
+        <div class="noHistory">
+            <h4>No room booking history to show.</h4>
+        </div>
 
-            <!--Calendar modal-->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Calendar</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div id="calendar"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+        {% else %}
+
+        <div id="ROOMs" class="tab-pane">
+            <div class="panel-group" role="tablist" aria-multiselectable="true" style='margin-bottom: 10px;'>
+
+                <!--Calendar modal-->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Calendar</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div id="calendar"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal" id="closeModal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div id="historyCleared" style="display:none;">
-                <p>History cleared!</p>
-            </div>
+                <div id="historyCleared" style="display:none;">
+                    <p>History cleared!</p>
+                </div>
 
-            {% for favourite in roomHis %}
-                {% include "users/roomPanel.html" with fav=favourite type='history' %}
-            {% endfor %}
-            
+                {% for favourite in roomHis %}
+                    {% include "users/roomPanel.html" with fav=favourite type='history' %}
+                {% endfor %}
+
+            </div>
         </div>
+
+        <button type="button" class="btn btn-info" id="clearHistory">Clear History</button>
+
+        {% endif %}
+
     </div>
-    
-    <button type="button" class="btn btn-info" id="clearHistory">Clear History</button>
-    
-    {% endif %}
-
-</div>
-
 {% endblock %}

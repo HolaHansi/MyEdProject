@@ -6,7 +6,7 @@ var userFavourites = []; // all the rooms currently liked by the user
 
 var userLatitude = 55.943655; // current latitude of user
 var userLongitude = -3.188775; // current longitude of user
-// Note this is dummy data, pointed in the middle of George Square, which is simply used asa a default.  
+// Note this is dummy data, pointed in the middle of George Square, which is simply used as a default.
 // This will be overwritten if the user allows location finding or manually enters their location
 
 var idleReminder; // the timer variable which reminds the user they can swipe if they don't swipe within the first 5 seconds
@@ -24,7 +24,7 @@ $(window).resize(function(){
         $('#optionsMenu').removeClass('transitionOff');
     }, 100);
     
-    //ensure any hidden campus buttons have the same selection state as the 'other' checkbox
+    // ensure any hidden campus buttons have the same selection state as the 'other' checkbox
     matchHiddenCampusesToOther();
 });
 
@@ -40,7 +40,7 @@ $(document).ready(function(){
     $.fn.bootstrapSwitch.defaults.labelWidth = 20;
     $('#optionsContent input[type="checkbox"]').bootstrapSwitch();
     
-    //ensure the hamburger menu is always visible over the options menu
+    // ensure the hamburger menu is always visible over the options menu
     $('#mainHamburgerMenuOptions').on('shown.bs.collapse', resizeOptionsMenu)
     $('#mainHamburgerMenuOptions').on('hidden.bs.collapse', resizeOptionsMenu)
     
@@ -122,10 +122,8 @@ $(document).ready(function(){
 
 // refresh all the JS styling
 function resizeElements(){
-    
     // resize the arrows to take up the whole suggestion
     resizeArrows();
-    
     // reposition the menu:
     resizeOptionsMenu();
 }

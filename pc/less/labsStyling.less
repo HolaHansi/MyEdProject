@@ -36,16 +36,16 @@
     }
 }
 
-//left and right arrow styling and positioning
+// left and right arrow styling and positioning
 .arrow{
     height: 0px; // height is set dynamically by JS
     cursor: pointer;
     min-width:20px;
     max-width:40px;
-    //position the arrow using flexbox
+    // position the arrow using flex
     .flex(4%,0,1);
     
-    //center align the arrow icon itself using flexbox: 
+    // center align the arrow icon itself using flex:
     .flex-center();
     &:hover{
         background-color: rgba(200,200,200,0.2);
@@ -65,7 +65,7 @@
 #roomName{   
     margin: 0; 
     
-    //responsive text size
+    // responsive text size
     font-size: 14px;
     line-height: 14px;
     @media (min-width: 200px) {
@@ -88,7 +88,7 @@
     }
 }
 
-//room and availability row positioning
+// room and availability row positioning
 #roomRow, #computersFreeRow{
     .display-flex();
     margin: 0;
@@ -108,7 +108,7 @@
     }
     #computersFreeLabel, #computersInUseLabel{
         display:inline-block;
-        //responsive text size for both labels: 
+        // responsive text size for both labels:
         font-size: 12px;
         line-height: 12px;
         @media (min-width: 200px) {
@@ -121,25 +121,25 @@
             font-size: 18px;
             line-height: 18px;
         }
-        //custom version of bootstrap's .hidden-xs, this one hides it until a smaller point, and then sets it to inline-block rather than block
+        // custom version of bootstrap's .hidden-xs, this one hides it until a smaller point, and then sets it to inline-block rather than block
         .hidden-xs-custom{
             @media (max-width: 449px){
                 display:none;
             }
         }
-        //custom version of bootstrap's .visible-xs, this one shows it until a smaller point, and uses inline-block rather than block
+        // custom version of bootstrap's .visible-xs, this one shows it until a smaller point, and uses inline-block rather than block
         .visible-xs-custom{
             @media (min-width: 450px){
                 display:none;
             }
         }
-        //custom version of bootstrap's .hidden-xs, this one hides it until an even smaller point, and then sets it to inline-block rather than block
+        // custom version of bootstrap's .hidden-xs, this one hides it until an even smaller point, and then sets it to inline-block rather than block
         .hidden-xss-custom{
             @media (max-width: 349px){
                 display:none;
             }
         }
-        //custom version of bootstrap's .visible-xs, this one shows it until an even smaller point, and uses inline-block rather than block
+        // custom version of bootstrap's .visible-xs, this one shows it until an even smaller point, and uses inline-block rather than block
         .visible-xss-custom{
             @media (min-width: 350px){
                 display:none;
@@ -230,7 +230,7 @@
         height: 0;
         border-style: solid;
         cursor: pointer;
-        //positioning:
+        // positioning:
         position: relative;
         right: 0;
         left: 0;

@@ -12,17 +12,13 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import json
+from django.core.exceptions import ImproperlyConfigured
 
 # BASE_DIR refers to the path of the directory above core.
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
-# this gets the secrets.json file and extracts the secret key. Secrets.json is kept out of version control for
-# security reasons.
-
-import json
-
-from django.core.exceptions import ImproperlyConfigured
-
+# get the secrets.json file and extract the secret key. Secrets.json is kept out of version control for security reasons
 with open('secrets.json') as f:
     secrets_json = json.load(f)
 
@@ -73,7 +69,9 @@ REST_FRAMEWORK = {
     ]
 }
 
-# #Auth Settings
+# Auth Settings
+
+# For development only:
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
@@ -83,9 +81,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# use local backend that uses our models - not ease.
-
-
+# use local backend that uses our models - not EASE.
 AUTH_USER_MODEL = 'users.User'
 
 
@@ -117,8 +113,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'management.context_processors.labs_only_processor',
-                'management.context_processors.root_url_processor'
+                'management.context_processors.labs_only_processor', # send the value of LABS_ONLY to all templates
+                'management.context_processors.root_url_processor' # send the value of the root url to all templates
             ],
         },
     },

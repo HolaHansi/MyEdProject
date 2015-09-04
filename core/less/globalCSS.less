@@ -2,7 +2,7 @@
 
 @import "variables.less";
 
-//Default font set to Source Sans Pro
+// Default font set to Source Sans Pro
 body {
     // on bigger screens, give it a lightly shaded border
     background-color: #f9f9f9;
@@ -14,9 +14,10 @@ body {
     background-color: white;
     min-height:100%;
 }
-//Global navbar styling:
+
+// Global navbar styling:
 .navbar {
-    //standard styling
+    // standard styling
     background: none;
     border: none;
     margin-bottom: 5px;
@@ -108,7 +109,7 @@ body {
     }
 }
 
-//page title styling
+// page title styling
 #pageTitle{
     margin: 0 0 5px;
     padding: 0 0 5px;
@@ -170,7 +171,7 @@ p{
 	width: 20px;
 }
 
-//side = 'right' or 'bottom', opacity = float, 0% <= opacity <= 100%
+// side = 'right' or 'bottom', opacity = n%, 0 <= n <= 100
 .colouredBorderForNavTabs(@side, @opacity: 100%){
     border-@{side}: solid 3px;
     &.labsTab{

@@ -84,7 +84,8 @@ function makeMap(){
         rotateControl: false,
         draggable: false,
         scrollwheel: false,
-        // styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}], // disable Points of Interest (and therefore their popup menus)
+        // styles: [{ featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }]}],
+        // uncomment the above line to disable Points of Interest (and therefore their popup menus)
         maxZoom: 17,
         backgroundColor: '#ffffff'
     };

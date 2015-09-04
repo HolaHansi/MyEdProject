@@ -1,4 +1,4 @@
-//sets up the CRSF token for POST requests
+// sets up the CRSF token for POST requests
 
 // using jQuery
 function getCookie(name) {

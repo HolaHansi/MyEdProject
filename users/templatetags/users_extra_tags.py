@@ -191,8 +191,8 @@ def room_availability_icon_class(room):
     """
     if get_availability(room) == 'busy' or get_availability(room) == 'shut':
         return 'hourglass'
-    elif room.locally_allocated == 1 or (
-        get_availability(room) == 'available' and getOpenHours(room)['closingHour'] is None):
+    elif room.locally_allocated == 1 or (get_availability(room) == 'available'
+                                         and getOpenHours(room)['closingHour'] is None):
         return 'exclamation-triangle'
     else:
         return 'check-circle'

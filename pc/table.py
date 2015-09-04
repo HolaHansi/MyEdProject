@@ -1,4 +1,4 @@
-import xml.etree.ElementTree as ET
+import xml.etree.ElementTree as ElTree
 from .models import Computer_Labs
 from rooms.models import Building_Feed
 import requests
@@ -7,7 +7,7 @@ import re
 
 def get_pc_data():
     r = requests.get(url='http://labmonitor.ucs.ed.ac.uk/myed/index.cfm?fuseaction=XML')
-    root = ET.fromstring(r.content)
+    root = ElTree.fromstring(r.content)
 
     for child in root:
         if 'location' in child.keys():
@@ -33,8 +33,8 @@ def get_pc_data():
             else:
                 campus = group
 
-            # the variable openingHoursAvailable is false by default, and is set to true if opening hours are found.
-            openingHoursAvailable = False
+            # the variable opening_hours_available is false by default, and is set to true if opening hours are found.
+            opening_hours_available = False
 
             # for each building,
             for building in Building_Feed.objects.all():
@@ -53,9 +53,9 @@ def get_pc_data():
                         saturdayClosed = building.open_hours.saturdayClosed
                         sundayOpen = building.open_hours.sundayOpen
                         sundayClosed = building.open_hours.sundayClosed
-                        openingHoursAvailable = True
+                        opening_hours_available = True
                     except:
-                        openingHoursAvailable = False
+                        opening_hours_available = False
 
                     # a building was matched, hence no need to continue for-loop.
                     break
@@ -85,7 +85,7 @@ def get_pc_data():
                                 latitude=latitude,
                                 id=id)
 
-            if openingHoursAvailable:
+            if opening_hours_available:
                 obj.weekdayOpen = weekdayOpen
                 obj.weekdayClosed = weekdayClosed
                 obj.saturdayOpen = saturdayOpen

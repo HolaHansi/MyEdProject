@@ -1,6 +1,5 @@
 import re
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.utils import IntegrityError
 import requests
 import gspread
 import json
@@ -157,9 +156,9 @@ def update_building_table():
         # only save it if it has a name, otherwise it's useless to us
         # we're also not interested in buses, car parks, or 'information' (whatever that is)
         if 'name' in building.keys() and (len(building['categories']) == 0 or not
-        ('Buses' in building['categories'][0]
-         or 'Parking' in building['categories'][0]
-         or 'Information' in building['categories'][0])):
+                                          ('Buses' in building['categories'][0]
+                                          or 'Parking' in building['categories'][0]
+                                          or 'Information' in building['categories'][0])):
             # get the longitude, latitude and building name
             longitude = float(building["longitude"])
             latitude = float(building["latitude"])
@@ -407,11 +406,6 @@ def get_activities():
     current_date = str(now - datetime.timedelta(days=1))[:-7].replace(' ', 'T') + '%2B0000'
     tomorrow = str(now + datetime.timedelta(days=7))[:-7].replace(' ', 'T') + '%2B0000'
 
-    # for testing - these dates have activities: SHOULD BE COMMENTED OUT!
-    # TODO: comment out
-    current_date = "2015-08-12T08:00:00%2B0000"
-    tomorrow = "2015-08-13T08:00:00%2B0000"
-
     # get the activities data from the feed
     activities = requests.get(
         "http://nightside.is.ed.ac.uk:8080/activities?start-date-time=" + current_date + '&end-date-time=' + tomorrow
@@ -451,7 +445,7 @@ def get_building_hours():
     :return: a list of dictionaries for each building containing its opening hours.
     """
     # first authenticate with google using oAuth2
-    # the credentials are stored in googleCredentialsSecrets.json and are kept out of version control.
+    # the credentials are stored in secrets.json and are kept out of version control.
 
     json_key = json.load(open('secrets.json'))
     scope = ['https://spreadsheets.google.com/feeds']
