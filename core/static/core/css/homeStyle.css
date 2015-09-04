@@ -39,6 +39,9 @@ body * {
   text-align: center;
   float: none;
 }
+.navbar > .container-fluid .navbar-brand {
+  margin: 0;
+}
 #contentContainer {
   padding: 0 0 5px 0;
 }
